@@ -1,0 +1,117 @@
+CREATE TABLE users(
+  user_id SERIAL NOT NULL,
+  firstName VARCHAR(255),
+  lastName VARCHAR(255),
+  age INT,
+  email VARCHAR(255) UNIQUE,
+  password VARCHAR(255),
+  role_id INT,
+  is_deleted SMALLINT DEFAULT 0,
+	avatar VARCHAR(255),
+	bio VARCHAR(255),
+  FOREIGN KEY (role_id) REFERENCES roles(id),
+  PRIMARY KEY (user_id)
+);
+
+CREATE TABLE roles (
+  role_id SERIAL NOT NULL,
+  role VARCHAR(255) NOT NULL,
+  PRIMARY KEY (role_id)
+);
+
+CREATE TABLE permissions (
+  permission_id SERIAL NOT NULL,
+  permission VARCHAR(255) NOT NULL,
+  PRIMARY KEY (permission_id)
+);
+
+CREATE TABLE role_permission (
+  role_permission_id SERIAL NOT NULL,
+  role_id INT,
+  permission_id INT,
+  FOREIGN KEY (role_id) REFERENCES roles(role_id),
+  FOREIGN KEY (permission_id) REFERENCES permissions(permission_id),
+  PRIMARY KEY (role_permission_id)
+);
+
+
+CREATE TABLE posts (
+  post_id SERIAL NOT NULL,
+    content TEXT,
+	image TEXT, 
+	video TEXT,
+  user_id INT,
+  is_deleted SMALLINT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT NOW(),
+	likes INT,
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  PRIMARY KEY (post_id)
+);
+
+CREATE TABLE comments (
+  comment_id SERIAL NOT NULL,
+  post_id INT,
+    content TEXT,
+	image TEXT, 
+	video TEXT,
+  user_id INT,
+  is_deleted SMALLINT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT NOW(),
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (post_id) REFERENCES posts(post_id),
+  PRIMARY KEY (comment_id)
+);
+
+CREATE TABLE followers (
+   id SERIAL NOT NULL,
+   user_id INT,
+   follower_id INT,
+   FOREIGN KEY (user_id) REFERENCES users(user_id),
+   FOREIGN KEY (follower_id) REFERENCES users(user_id),
+);
+
+CREATE TABLE friends (
+   id SERIAL NOT NULL,
+   user_id INT,
+   friend_id INT,
+   created_at TIMESTAMP DEFAULT NOW(),
+   FOREIGN KEY (user_id) REFERENCES users(user_id),
+   FOREIGN KEY (friend_id) REFERENCES users(user_id),
+);
+
+CREATE TABLE messages (
+	message_id SERIAL NOT NULL,
+	sender_id INT,
+	receiver_id INT,
+  content TEXT,
+	image TEXT, 
+	video TEXT,
+  is_deleted SMALLINT DEFAULT 0,
+	created_at TIMESTAMP DEFAULT NOW(),
+  FOREIGN KEY (sender_id) REFERENCES users(user_id),
+  FOREIGN KEY (receiver_id) REFERENCES users(user_id),
+  PRIMARY KEY (message_id)
+);
+
+CREATE TABLE notifications (
+	notification_id SERIAL NOT NULL,
+      user_id INT,
+  content VARCHAR(255),
+  is_deleted SMALLINT DEFAULT 0,
+	created_at TIMESTAMP DEFAULT NOW(),
+    read BOOLEAN DEFAULT FALSE,
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  PRIMARY KEY (notification_id)
+);
+
+CREATE TABLE likes (
+	likes_id SERIAL NOT NULL,
+    user_id INT,
+    post_id INT,
+    is_deleted SMALLINT DEFAULT 0,
+	created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (post_id) REFERENCES users(post_id),
+    PRIMARY KEY (likes_id)
+);
+
