@@ -32,9 +32,39 @@ const getAllPosts = (req, res) => {
       res.status(200).json({
         success: true,
         message: "All the posts",
-        result: result.rows,
+        posts: result.rows,
         //userId: req.token.userId,
       });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
+const getPostsByUser = (req, res) => {
+  const user_id = req.query.user;
+  const query = `SELECT * FROM posts WHERE user_id = $1 AND is_deleted=0;`;
+  const data = [user_id];
+
+  pool
+    .query(query, data)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.status(404).json({
+          success: false,
+          message: `The user: ${user_id} has no posts`,
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: `All posts for the user: ${user_id}`,
+          posts: result.rows,
+        });
+      }
     })
     .catch((err) => {
       res.status(500).json({
@@ -47,4 +77,5 @@ const getAllPosts = (req, res) => {
 module.exports = {
   createNewPost,
   getAllPosts,
+  getPostsByUser,
 };
