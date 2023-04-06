@@ -90,8 +90,43 @@ const UpdateCommentById = (req, res) => {
     });
 };
 
+const deleteCommentById = (req, res) => {
+  const comment_id = req.params.id;
+  const user_id = req.token.userId;
+
+  const query = `UPDATE comments
+   SET is_deleted=1 
+   WHERE comment_id=$1, AND user_id= $2`;
+  const data = [comment_id, user_id];
+
+  pool
+    .query(query, data)
+    .then((result) => {
+      if (result.rowCount === 0) {
+        res.status(404).json({
+          success: false,
+          message: `The comment with id: ${post_id} is not found`,
+          err: err,
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: `Comment with id: ${post_id} deleted successfully`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
 module.exports = {
   createNewComment,
   getCommentsByPostId,
-  UpdateCommentById, 
+  UpdateCommentById,
+  deleteCommentById,
 };
