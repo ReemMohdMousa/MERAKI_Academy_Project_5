@@ -4,7 +4,7 @@ const pool = require("../models/db");
 //const  = require("../models/patientSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+nodemailer = require('nodemailer');
 // const saltRounds = parseInt(process.env.SALT);
 
 const register = async (req, res) => {
@@ -40,7 +40,7 @@ const register = async (req, res) => {
       res.status(200).json({
         success: true,
         token: token,
-        //userId: result.rows[0].id,
+        userId: result.rows[0].user_id,
         message: "Account created successfully",
       });
     })
@@ -86,7 +86,7 @@ const login = (req, res) => {
                 success: true,
                 message: `Valid login credentials`,
                 token,
-                userId: result.rows[0].id,
+                userId: result.rows[0].user_id,
               });
             } else {
               throw Error;
@@ -109,36 +109,42 @@ const login = (req, res) => {
       });
     });
 };
+
 const checkGoogleUser = (req, res) => {
   const { firstName, lastName, email } = req.body;
 
   const role_id = 2;
-  const password = "none";
+  const password = firstName+"!!";
+ 
 
   const query = `SELECT * FROM users WHERE email = $1`;
   const data = [email.toLowerCase()];
   pool
     .query(query, data)
     .then((results) => {
-      if (results.length == 0) {
+      console.log("check if not found",results.rows)
+      if (results.rows.length == 0) {
         //*register him as a new user
-        const newUser = new usersModel({
-          firstName,
-          lastName,
-          email,
-          password,
-          role,
-        });
-
-        newUser
-          .save()
-          .then((results) => {
-            console.log(results);
+       
+        const query = `INSERT INTO users (firstName, lastName ,email, password,role_id) VALUES ($1,$2,$3,$4,$5)RETURNING *`;
+    const data = [
+      firstName,
+      lastName,
+     
+      email.toLowerCase(),
+      password,
+       role_id || 2,
+    ];
+    pool
+    .query(query, data)
+    .then((results) => {
+            console.log(results.rows);
             //*if the registeration went correctly, log the user in
-            if (results) {
-              usersModel
-                .findOne({ email })
-                .populate("role")
+            if (results.rows) {
+              const query = `SELECT * FROM users WHERE email = $1`;
+              const data = [email.toLowerCase()];
+              pool
+                .query(query, data)
                 .then((results) => {
                   //if the email is not exsisted return an error msg
                   if (!results) {
@@ -149,39 +155,40 @@ const checkGoogleUser = (req, res) => {
                   }
                   //generate a token for google user
                   const payload = {
-                    userId: results._id,
-                    firstName: results.firstName,
-                    lastName: results.lastName,
-                    role: results.role,
+                    userId: results.rows[0].user_id,
+                    //country: result.rows[0].country,
+                    role: results.rows[0].role_id,
                   };
+            
                   const options = {
-                    expiresIn: process.env.TOKEN_EXP_Time,
+                    expiresIn: "24h",
                   };
-                  const token = jwt.sign(payload, process.env.SECRET, options);
-
+                  const token = genrateToken(payload, options);
+              
+                 
                   res.status(200).json({
                     success: true,
-                    message: `Valid login credentials`,
                     token: token,
-                    user: results,
+                    userId: results.rows[0].id,
+                    message: "Account created successfully",
                   });
+               
                 })
                 .catch((err) => {
                   res.json(err);
                 });
             }
-          })
-          .catch((err) => {
-            res.json(err);
+         
           });
       } else {
         //*if already registered, login
-        usersModel
-          .findOne({ email })
-          .populate("role")
+        const query = `SELECT * FROM users WHERE email = $1`;
+        const data = [email.toLowerCase()];
+        pool
+          .query(query, data)
           .then((results) => {
             //if the email is not exsisted return an error msg
-            if (!results) {
+            if (!results.rows) {
               res.status(403).json({
                 success: false,
                 message: `The email or the password is incorrect`,
@@ -189,22 +196,24 @@ const checkGoogleUser = (req, res) => {
             }
             //generate a token for google user
             const payload = {
-              userId: results._id,
-              firstName: results.firstName,
-              lastName: results.lastName,
-              role: results.role,
+              userId: results.rows[0].user_id,
+              //country: result.rows[0].country,
+              role: results.rows[0].role_id,
             };
+      
             const options = {
-              expiresIn: process.env.TOKEN_EXP_Time,
+              expiresIn: "24h",
             };
-            const token = jwt.sign(payload, process.env.SECRET, options);
-
+            const token = genrateToken(payload, options);
+        
+           
             res.status(200).json({
               success: true,
-              message: `Valid login credentials`,
               token: token,
-              user: results,
+              userId: results.rows[0].id,
+              message: "Account created successfully",
             });
+         
           })
           .catch((err) => {
             res.json(err);
@@ -219,7 +228,39 @@ const checkGoogleUser = (req, res) => {
       });
     });
 };
-
+const verfiyResjsterByEmail=(req,res)=>{
+  const {email,firstName,lastName}=req.body
+  
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'tasnim.gharaibeh@gmail.com',
+      pass: 'xryozjisiylignqh'
+    }
+  });
+  
+  const mailOptions = {
+    from: 'tasnim.gharaibeh@gmail.com',
+    to: email,
+    subject: 'Subject',
+    text: `Dear ${firstName}+${" "}+${lastName} 
+    welcome to mockingay  please click here to virify your rejestration
+    `
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+   console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+      res.json({
+        success:true,
+        message:"Email is sent"
+      })
+      // do something useful
+    }
+  });
+  }
 module.exports = {
   register,
   login,
