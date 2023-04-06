@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 == == == = CREATE TABLE users(
+=======
+
+CREATE TABLE users(
+>>>>>>> 22c6d30a10b246555ca817b7f09e1a646edc6376
   user_id SERIAL NOT NULL,
   firstName VARCHAR(255),
   lastName VARCHAR(255),
@@ -7,7 +12,8 @@
   password VARCHAR(255),
   role_id INT DEFAULT 2,
   is_deleted SMALLINT DEFAULT 0,
-  avatar VARCHAR(255),
+  avatar TEXT,
+  coverImg TEXT,
   bio VARCHAR(255),
   cover TEXT,
   created_at TIMESTAMP DEFAULT NOW(),
