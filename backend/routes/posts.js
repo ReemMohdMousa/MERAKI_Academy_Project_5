@@ -8,11 +8,12 @@ const {
   deletePostById,
   deletePostsByuserId,
 } = require("../controllers/posts");
+const authentication = require("../middlewares/authentication");
 
 const postsRouter = express.Router();
 
 postsRouter.post("/", createNewPost);
-postsRouter.get("/", getAllPosts);
+postsRouter.get("/",authentication, getAllPosts);
 postsRouter.get("/search_1", getPostsByUser);
 postsRouter.get("/search_2/:id", getPostById);
 postsRouter.put("/:id", updatePostById);
