@@ -166,6 +166,34 @@ const deletePostById = (req, res) => {
     });
 };
 
+const deletePostsByuserId = (req, res) => {
+    const user_id = req.params.id;
+    const query = `UPDATE posts SET is_deleted=1 WHERE user_id=$1 ;`;
+    const data = [user_id];
+    pool
+      .query(query, data)
+      .then((result) => {
+        if (result.rowCount === 0) {
+          res.status(404).json({
+            success: false,
+            message: `The user: ${user_id} has no articles`,
+          });
+        } else {
+          res.status(200).json({
+            success: true,
+            message: `Posts with author: ${user_id} deleted successfully`,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({
+          success: false,
+          message: "Server error",
+          err: err,
+        });
+      });
+  };
+
 module.exports = {
   createNewPost,
   getAllPosts,
@@ -173,4 +201,5 @@ module.exports = {
   getPostById,
   updatePostById,
   deletePostById,
+  deletePostsByuserId,
 };
