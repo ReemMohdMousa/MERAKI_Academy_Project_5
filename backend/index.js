@@ -13,6 +13,7 @@ const postsRouter = require("./routes/posts");
 const commentsRouter = require("./routes/comments");
 const rolesRouter = require("./routes/role");
 
+
 app.use(cors());
 app.use(express.json());
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use("/posts", postsRouter);
 app.use("/comments", commentsRouter)
 app.use("/roles", rolesRouter)
+
 
 
 
