@@ -1,17 +1,26 @@
 const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
-const db = require("./models/db");
-const commentsRouter = require("./routes/comments");
+
+const db=require("./models/db")
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Import Routers
+const postsRouter = require("./routes/posts");
+const commentsRouter = require("./routes/comments");
+
 app.use(cors());
 app.use(express.json());
 
-// router middleware
+
+// Routes Middleware
+app.use("/posts", postsRouter);
 app.use("/comments", commentsRouter)
+
+
 
 
 // Handles any other endpoints [unassigned - endpoints]
