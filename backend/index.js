@@ -1,13 +1,21 @@
 const express = require("express");
-// const pool = require("./models/db");
-
+require("dotenv").config();
 const cors = require("cors");
 require("dotenv").config();
 require("./models/db");
 
 
+const db=require("./models/db")
+
+
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Import Routers
+const postsRouter = require("./routes/posts");
+const commentsRouter = require("./routes/comments");
+const rolesRouter = require("./routes/role");
+
 
 app.use(cors());
 app.use(express.json());
@@ -22,6 +30,16 @@ const usersRouter = require("./routes/user");
 
 app.use("/users", usersRouter);
 app.use("/admin", usersRouter);
+
+
+// Routes Middleware
+app.use("/posts", postsRouter);
+app.use("/comments", commentsRouter)
+app.use("/roles", rolesRouter)
+
+
+
+
 
 // Handles any other endpoints [unassigned - endpoints]
 app.use("*", (req, res) => res.status(404).json("NO content at this path"));
