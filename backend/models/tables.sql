@@ -5,7 +5,7 @@ CREATE TABLE users(
   age INT,
   email VARCHAR(255) UNIQUE,
   password VARCHAR(255),
-  role_id INT,
+  role_id INT DEFAULT 2,
   is_deleted SMALLINT DEFAULT 0,
   avatar VARCHAR(255),
   bio VARCHAR(255),
