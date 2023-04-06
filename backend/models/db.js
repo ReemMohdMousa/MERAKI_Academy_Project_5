@@ -12,4 +12,4 @@ pool.connect((err, pool) => {
   console.log("connected to", pool.user);
 });
 
-module.exports = {pool}
+module.exports = { pool };
