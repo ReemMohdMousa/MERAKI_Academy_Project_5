@@ -1,11 +1,10 @@
-const { pool } = require("../models/db");
+const pool = require("../models/db");
 
-// This function checks if the user has a permission the passed permission
 const authorization = (string) => {
-  return (req, res, next) => {
+  return function (req, res, next) {
     const role_id = req.token.role;
     const data = [role_id, string];
-    const query = `SELECT * FROM role_permission  INNER JOIN permissions ON role_permission.permission_id = permissions.permission_id WHERE role_permission.role_id = ($1) AND permissions.permission = ($2)`;
+    const query = `SELECT * FROM role_permission RP INNER JOIN permissions P ON RP.permission_id = P.id WHERE RP.role_id = ($1) AND P.permission = ($2)`;
     pool
       .query(query, data)
       .then((result) => {
