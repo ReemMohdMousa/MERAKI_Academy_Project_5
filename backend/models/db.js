@@ -1,3 +1,4 @@
+
 const { Pool, Client } = require("pg");
 
 // const pool = new Pool({
@@ -28,4 +29,15 @@ pool.connect((err, client) => {
   console.log("connected to", client.user);
 });
 
+pool
+  .connect()
+  .then((res) => {
+    console.log(`DB connected to ${res.database}`);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+
 module.exports = { pool };
+
