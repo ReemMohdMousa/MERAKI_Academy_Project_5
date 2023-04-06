@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 5000;
 
 // Import Routers
 const postsRouter = require("./routes/posts");
+const rolesRouter = require("./routes/roles");
+
 
 
 app.use(cors());
@@ -15,6 +17,8 @@ app.use(express.json());
 
 // Routes Middleware
 app.use("/posts", postsRouter);
+app.use("/roles", rolesRouter);
+
 
 
 // Handles any other endpoints [unassigned - endpoints]
