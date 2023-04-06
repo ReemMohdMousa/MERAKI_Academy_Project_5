@@ -1,3 +1,5 @@
+
+=======
 CREATE TABLE users(
   user_id SERIAL NOT NULL,
   firstName VARCHAR(255),
@@ -15,15 +17,20 @@ CREATE TABLE users(
   PRIMARY KEY (user_id)
 );
 
+
 CREATE TABLE roles (
   role_id SERIAL NOT NULL,
   role VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP,
   PRIMARY KEY (role_id)
 );
 
 CREATE TABLE permissions (
   permission_id SERIAL NOT NULL,
   permission VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP,
   PRIMARY KEY (permission_id)
 );
 
@@ -31,10 +38,13 @@ CREATE TABLE role_permission (
   role_permission_id SERIAL NOT NULL,
   role_id INT,
   permission_id INT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP,
   FOREIGN KEY (role_id) REFERENCES roles(role_id),
   FOREIGN KEY (permission_id) REFERENCES permissions(permission_id),
   PRIMARY KEY (role_permission_id)
 );
+
 
 CREATE TABLE posts (
   post_id SERIAL NOT NULL,
@@ -66,13 +76,16 @@ CREATE TABLE comments (
 );
 
 CREATE TABLE followers (
-  id SERIAL NOT NULL,
-  user_id INT,
-  follower_id INT,
+
+   id SERIAL NOT NULL,
+   user_id INT,
+   follower_id INT,
   created_at TIMESTAMP DEFAULT NOW(),
-  FOREIGN KEY (user_id) REFERENCES users(user_id),
-  FOREIGN KEY (follower_id) REFERENCES users(user_id)
+  updated_at TIMESTAMP,
+   FOREIGN KEY (user_id) REFERENCES users(user_id),
+   FOREIGN KEY (follower_id) REFERENCES users(user_id)
 );
+
 
 CREATE TABLE friends (
   id SERIAL NOT NULL,
@@ -81,6 +94,7 @@ CREATE TABLE friends (
   created_at TIMESTAMP DEFAULT NOW(),
   FOREIGN KEY (user_id) REFERENCES users(user_id),
   FOREIGN KEY (friend_id) REFERENCES users(user_id)
+
 );
 
 CREATE TABLE messages (
@@ -91,7 +105,7 @@ CREATE TABLE messages (
   image TEXT,
   video TEXT,
   is_deleted SMALLINT DEFAULT 0,
-  created_at TIMESTAMP DEFAULT NOW(),
+	created_at TIMESTAMP DEFAULT NOW(),
   FOREIGN KEY (sender_id) REFERENCES users(user_id),
   FOREIGN KEY (receiver_id) REFERENCES users(user_id),
   PRIMARY KEY (message_id)
@@ -102,8 +116,9 @@ CREATE TABLE notifications (
   user_id INT,
   content VARCHAR(255),
   is_deleted SMALLINT DEFAULT 0,
-  created_at TIMESTAMP DEFAULT NOW(),
-  read BOOLEAN DEFAULT FALSE,
+	created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP,
+    read BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
   PRIMARY KEY (notification_id)
 );
