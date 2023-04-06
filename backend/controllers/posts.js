@@ -124,7 +124,7 @@ const updatePostById = (req, res) => {
         res.status(200).json({
           success: true,
           message: `Post with id: ${post_id} updated successfully `,
-          result: result.rows[0],
+          post: result.rows[0],
         });
       }
     })
@@ -136,10 +136,41 @@ const updatePostById = (req, res) => {
       });
     });
 };
+
+const deletePostById = (req, res) => {
+  const post_id = req.params.id;
+  const query = `UPDATE posts SET is_deleted=1 WHERE post_id=$1;`;
+  const data = [post_id];
+  pool
+    .query(query, data)
+    .then((result) => {
+      if (result.rowCount === 0) {
+        res.status(404).json({
+          success: false,
+          message: `The post with id: ${post_id} is not found`,
+          err: err,
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: `Post with id: ${post_id} deleted successfully`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
 module.exports = {
   createNewPost,
   getAllPosts,
   getPostsByUser,
   getPostById,
   updatePostById,
+  deletePostById,
 };
