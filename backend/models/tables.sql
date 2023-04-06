@@ -10,7 +10,7 @@ CREATE TABLE users(
   avatar VARCHAR(255),
   bio VARCHAR(255),
   created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (role_id) REFERENCES roles(role_id),
   PRIMARY KEY (user_id)
 );
@@ -44,7 +44,7 @@ CREATE TABLE posts (
   user_id INT,
   is_deleted SMALLINT DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   likes INT,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
   PRIMARY KEY (post_id)
@@ -59,7 +59,7 @@ CREATE TABLE comments (
   user_id INT,
   is_deleted SMALLINT DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id),
   PRIMARY KEY (comment_id)
