@@ -1,6 +1,9 @@
 const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
+require("dotenv").config();
+require("./models/db");
+
 
 const db=require("./models/db")
 
@@ -16,6 +19,17 @@ const rolesRouter = require("./routes/role");
 
 app.use(cors());
 app.use(express.json());
+//routers
+const usersRouter = require("./routes/user");
+//const adminRouter = require("./routes/admin");
+
+
+
+
+
+
+app.use("/users", usersRouter);
+app.use("/admin", usersRouter);
 
 
 // Routes Middleware

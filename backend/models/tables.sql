@@ -1,5 +1,4 @@
 
-=======
 CREATE TABLE users(
   user_id SERIAL NOT NULL,
   firstName VARCHAR(255),
@@ -9,7 +8,8 @@ CREATE TABLE users(
   password VARCHAR(255),
   role_id INT DEFAULT 2,
   is_deleted SMALLINT DEFAULT 0,
-  avatar VARCHAR(255),
+  avatar TEXT,
+  coverImg TEXT,
   bio VARCHAR(255),
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
