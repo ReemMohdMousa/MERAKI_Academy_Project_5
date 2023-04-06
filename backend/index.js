@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 // Import Routers
 const postsRouter = require("./routes/posts");
 const commentsRouter = require("./routes/comments");
-const rolesRouter = require("./routes/role");
+const rolesRouter = require("./routes/roles");
 
 
 app.use(cors());
