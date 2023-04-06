@@ -1,20 +1,6 @@
-CREATE TABLE users(
-  user_id SERIAL NOT NULL,
-  firstName VARCHAR(255),
-  lastName VARCHAR(255),
-  age INT,
-  email VARCHAR(255) UNIQUE,
-  password VARCHAR(255),
-  role_id INT,
-  is_deleted SMALLINT DEFAULT 0,
-	avatar VARCHAR(255),
-	bio VARCHAR(255),
-  FOREIGN KEY (role_id) REFERENCES roles(id),
-  PRIMARY KEY (user_id)
-);
 
 CREATE TABLE roles (
-  role_id SERIAL NOT NULL,
+  role_id SERIAL NOT NULL ,
   role VARCHAR(255) NOT NULL,
   PRIMARY KEY (role_id)
 );
@@ -35,6 +21,26 @@ CREATE TABLE role_permission (
 );
 
 
+CREATE TABLE users(
+  user_id SERIAL NOT NULL,
+  firstName VARCHAR(255),
+  lastName VARCHAR(255),
+  age INT,
+  email VARCHAR(255) UNIQUE,
+  password VARCHAR(255),
+  role_id INT ,
+  is_deleted SMALLINT DEFAULT 0,
+	avatar VARCHAR(255),
+  coverimg VARCHAR(255)
+	bio VARCHAR(255),
+  FOREIGN KEY (role_id) REFERENCES roles(role_id),
+  PRIMARY KEY (user_id),
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP
+);
+
+
+
 CREATE TABLE posts (
   post_id SERIAL NOT NULL,
     content TEXT,
@@ -45,7 +51,8 @@ CREATE TABLE posts (
   created_at TIMESTAMP DEFAULT NOW(),
 	likes INT,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
-  PRIMARY KEY (post_id)
+  PRIMARY KEY (post_id),
+   updated_at TIMESTAMP
 );
 
 CREATE TABLE comments (
@@ -59,7 +66,8 @@ CREATE TABLE comments (
   created_at TIMESTAMP DEFAULT NOW(),
   FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (post_id) REFERENCES posts(post_id),
-  PRIMARY KEY (comment_id)
+  PRIMARY KEY (comment_id),
+   updated_at TIMESTAMP
 );
 
 CREATE TABLE followers (
@@ -68,6 +76,10 @@ CREATE TABLE followers (
    follower_id INT,
    FOREIGN KEY (user_id) REFERENCES users(user_id),
    FOREIGN KEY (follower_id) REFERENCES users(user_id),
+   	created_at TIMESTAMP DEFAULT NOW(),
+   updated_at TIMESTAMP
+
+
 );
 
 CREATE TABLE friends (
@@ -77,6 +89,7 @@ CREATE TABLE friends (
    created_at TIMESTAMP DEFAULT NOW(),
    FOREIGN KEY (user_id) REFERENCES users(user_id),
    FOREIGN KEY (friend_id) REFERENCES users(user_id),
+    updated_at TIMESTAMP
 );
 
 CREATE TABLE messages (
@@ -90,7 +103,8 @@ CREATE TABLE messages (
 	created_at TIMESTAMP DEFAULT NOW(),
   FOREIGN KEY (sender_id) REFERENCES users(user_id),
   FOREIGN KEY (receiver_id) REFERENCES users(user_id),
-  PRIMARY KEY (message_id)
+  PRIMARY KEY (message_id),
+   updated_at TIMESTAMP
 );
 
 CREATE TABLE notifications (
@@ -101,7 +115,8 @@ CREATE TABLE notifications (
 	created_at TIMESTAMP DEFAULT NOW(),
     read BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
-  PRIMARY KEY (notification_id)
+  PRIMARY KEY (notification_id),
+   updated_at TIMESTAMP
 );
 
 CREATE TABLE likes (
@@ -111,7 +126,8 @@ CREATE TABLE likes (
     is_deleted SMALLINT DEFAULT 0,
 	created_at TIMESTAMP DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (post_id) REFERENCES users(post_id),
-    PRIMARY KEY (likes_id)
+    FOREIGN KEY (post_id) REFERENCES posts(post_id),
+    PRIMARY KEY (likes_id),
+     updated_at TIMESTAMP
 );
 
