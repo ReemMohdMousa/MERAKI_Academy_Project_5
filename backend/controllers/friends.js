@@ -107,7 +107,44 @@ const getAllReceivedRequestByUserId = (req, res) => {
     });
 };
 
-const acceptFriendRequest = (req, res) => {
+//*middleware to handle accepting friend request only once from backend
+const acceptRequestOnce = (req, res, next) => {
+  //the loggedin user
+  const user1_id = req.token.userId;
+
+  //the friend ID form body:
+  const { sender_id } = req.body;
+
+  const query = `SELECT * FROM friends 
+    WHERE user1_id=$1 OR user1_id=$2 AND 
+    user2_id=$1 OR user2_id=$2`;
+
+  const data = [user1_id, sender_id];
+
+  pool
+    .query(query, data)
+    .then((result) => {
+      //if the request not accepted yet
+      if (result.rows.length === 0) {
+        next();
+      } else {
+        res.status(200).json({
+          success: true,
+          message: "you have already accepted the friend request",
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
+const acceptFriendRequest = async (req, res) => {
   //user 2 accepted the friend request user 1 sent
 
   //the loggedin user
@@ -117,7 +154,8 @@ const acceptFriendRequest = (req, res) => {
   const { request_id, sender_id } = req.body;
 
   const query = `INSERT INTO friends (user1_id, user2_id, accepted_at)
-  VALUES ($1,$2, NOW());`;
+  VALUES ($1,$2, NOW())
+  RETURNING *`;
 
   const deleteReqQuery = `DELETE FROM friend_requests 
   WHERE request_id=$1
@@ -125,13 +163,12 @@ const acceptFriendRequest = (req, res) => {
 
   const data = [user1_id, sender_id];
   const data2 = [request_id];
+  await pool.query(deleteReqQuery, data2);
 
   pool
     .query(query, data)
-    .then(async (result) => {
+    .then((result) => {
       //delete the request after inserting the friend in the friends table
-      await pool.query(deleteReqQuery, data2);
-
       if (result.rows.length === 0) {
         res.status(404).json({
           success: false,
@@ -307,4 +344,5 @@ module.exports = {
   getAllSentRequestByUserId,
   getAllReceivedRequestByUserId,
   getAllFriendsByUserId,
+  acceptRequestOnce
 };

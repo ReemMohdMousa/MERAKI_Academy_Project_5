@@ -8,7 +8,8 @@ const {
   RemoveFriend,
   getAllSentRequestByUserId,
   getAllReceivedRequestByUserId,
-  getAllFriendsByUserId
+  getAllFriendsByUserId,
+  acceptRequestOnce
 } = require("../controllers/friends");
 
 const authentication = require("../middlewares/authentication");
@@ -16,7 +17,7 @@ const authentication = require("../middlewares/authentication");
 const friendsRouter = express.Router();
 
 friendsRouter.post("/add", authentication, AddFriendRequest);
-friendsRouter.post("/accept", authentication, acceptFriendRequest);
+friendsRouter.post("/accept", authentication, acceptRequestOnce, acceptFriendRequest);
 
 
 friendsRouter.delete("/cancel/:request_id", authentication, CancelFriendRequest);
