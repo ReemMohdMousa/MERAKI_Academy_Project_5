@@ -87,13 +87,33 @@ CREATE TABLE followers (
 );
 
 
+-- CREATE TABLE friends (
+--   id SERIAL NOT NULL,
+--   user_id INT,
+--   friend_id INT,
+--   created_at TIMESTAMP DEFAULT NOW(),
+--   FOREIGN KEY (user_id) REFERENCES users(user_id),
+--   FOREIGN KEY (friend_id) REFERENCES users(user_id)
+
+-- );
+
+CREATE TABLE friend_requests (
+  request_id SERIAL NOT NULL,
+  sender_id INT,
+  receiver_id INT,
+  status VARCHAR(255),
+  created_at TIMESTAMP DEFAULT NOW(),
+  FOREIGN KEY (sender_id) REFERENCES users(user_id),
+  FOREIGN KEY (receiver_id) REFERENCES users(user_id)
+);
+
 CREATE TABLE friends (
   id SERIAL NOT NULL,
-  user_id INT,
-  friend_id INT,
-  created_at TIMESTAMP DEFAULT NOW(),
-  FOREIGN KEY (user_id) REFERENCES users(user_id),
-  FOREIGN KEY (friend_id) REFERENCES users(user_id)
+  user1_id INT,
+  user2_id INT,
+  accepted_at TIMESTAMP,
+  FOREIGN KEY (user1_id) REFERENCES users(user_id),
+  FOREIGN KEY (user2_id) REFERENCES users(user_id)
 
 );
 

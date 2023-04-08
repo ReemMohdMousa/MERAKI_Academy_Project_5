@@ -1,4 +1,4 @@
-const pool = require("../models/db");
+const {pool} = require("../models/db");
 
 const createNewComment = (req, res) => {
   const post_id = req.params.id;
