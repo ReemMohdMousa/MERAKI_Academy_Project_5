@@ -8,6 +8,7 @@ const {
   RemoveFriend,
   getAllSentRequestByUserId,
   getAllReceivedRequestByUserId,
+  getAllFriendsByUserId
 } = require("../controllers/friends");
 
 const authentication = require("../middlewares/authentication");
@@ -26,5 +27,8 @@ friendsRouter.delete("/remove/:user2_id", authentication, RemoveFriend);
 friendsRouter.get("/sent/requests", authentication, getAllSentRequestByUserId);
 
 friendsRouter.get("/received/requests", authentication, getAllReceivedRequestByUserId);
+
+friendsRouter.get("/get/all", authentication, getAllFriendsByUserId);
+
 
 module.exports = friendsRouter;

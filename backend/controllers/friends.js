@@ -263,6 +263,41 @@ WHERE user1_id=$1 OR user1_id=$2 AND user2_id=$1 OR user2_id=$2
     });
 };
 
+const getAllFriendsByUserId = (req, res) => {
+  user_id = req.token.userId;
+  const request_id = req.params.request_id;
+
+  const query = `SELECT * FROM friends 
+  WHERE user1_id =$1 OR user2_id= $1
+  `;
+
+  const data = [user_id];
+
+  pool
+    .query(query, data)
+    .then((result) => {
+      if (result.rowCount === 0) {
+        res.status(404).json({
+          success: false,
+          message: `No Friends Found`,
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: "All friends",
+          result: result.rows[0],
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
 module.exports = {
   AddFriendRequest,
   acceptFriendRequest,
@@ -271,4 +306,5 @@ module.exports = {
   RemoveFriend,
   getAllSentRequestByUserId,
   getAllReceivedRequestByUserId,
+  getAllFriendsByUserId,
 };
