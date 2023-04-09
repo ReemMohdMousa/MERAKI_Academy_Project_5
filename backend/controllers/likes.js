@@ -3,16 +3,30 @@ const { pool } = require("../models/db");
 const addLike = (req, res) => {
   const { post_id } = req.body;
   const user_id = req.token.userId;
-  const query = `INSERT INTO likes (user_id, post_id) VALUES ($1,$2) RETURNING *;`;
-  const data = [user_id, post_id];
+
+  const query1 = `select exists(select 1 from likes where user_id=$1 AND post_id=$2)`;
+  const data1 = [user_id, post_id];
+  console.log({ query1, data1 });
   pool
-    .query(query, data)
+    .query(query1, data1)
     .then((result) => {
-      res.status(200).json({
-        success: true,
-        message: "Like added successfully",
-        result: result.rows[0],
-      });
+      console.log(result.rows[0].exists);
+      if (result.rows[0].exists) {
+        res.status(200).json({
+          success: false,
+          message: "Like is already exist",
+        });
+      } else {
+        const query = `INSERT INTO likes (user_id, post_id) VALUES ($1,$2) RETURNING *;`;
+        const data = [user_id, post_id];
+        pool.query(query, data).then((result) => {
+          res.status(200).json({
+            success: true,
+            message: "Like added successfully",
+            result: result.rows[0],
+          });
+        });
+      }
     })
     .catch((err) => {
       res.status(500).json({
