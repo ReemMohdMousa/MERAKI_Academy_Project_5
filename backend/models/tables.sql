@@ -92,9 +92,8 @@ CREATE TABLE followings (
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP,
    FOREIGN KEY (user_id) REFERENCES users(user_id),
-   FOREIGN KEY (follower_id) REFERENCES users(user_id)
+   FOREIGN KEY (following_id) REFERENCES users(user_id)
 );
-
 
 -- CREATE TABLE friends (
 --   id SERIAL NOT NULL,
