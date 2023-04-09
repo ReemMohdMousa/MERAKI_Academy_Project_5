@@ -17,6 +17,8 @@ const commentsRouter = require("./routes/comments")
 const rolesRouter = require("./routes/roles");
 const usersRouter = require("./routes/user");
 const friendsRouter = require("./routes/frineds");
+const likesRouter = require("./routes/likes");
+
 
 app.use(cors());
 app.use(express.json());
@@ -28,6 +30,8 @@ app.use("/roles", rolesRouter)
 app.use("/users", usersRouter);
 app.use("/admin", usersRouter);
 app.use("/friends", friendsRouter);
+app.use("/likes", likesRouter)
+
 
 
 

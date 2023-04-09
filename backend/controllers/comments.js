@@ -57,14 +57,17 @@ const getCommentsByPostId = (req, res) => {
 
 const UpdateCommentById = (req, res) => {
   const comment_id = req.params.id;
+  const user_id = req.token.userId;
+
   let { content, image, video } = req.body;
 
   const query = `UPDATE comments 
   SET content = COALESCE($1,content), 
   image = COALESCE($2, image), 
   video = COALESCE($3, video)
-  WHERE comment_id=$4 AND is_deleted = 0  RETURNING *;`;
-  const data = [content, image, video, comment_id];
+  WHERE comment_id=$4, user_id=$5 AND is_deleted = 0  RETURNING *;`;
+  const data = [content, image, video, comment_id, user_id];
+
   pool
     .query(query, data)
     .then((result) => {
@@ -94,24 +97,29 @@ const deleteCommentById = (req, res) => {
   const comment_id = req.params.id;
   const user_id = req.token.userId;
 
-  const query = `UPDATE comments
-   SET is_deleted=1 
-   WHERE comment_id=$1 AND user_id= $2`;
-  const data = [comment_id, user_id];
+
 
   pool
-    .query(query, data)
+    .query(
+      `SELECT * FROM comments WHERE comments.is_deleted=0 AND comments.comment_id = $1
+    `,
+      [comment_id]
+    )
     .then((result) => {
       if (result.rowCount === 0) {
-        res.status(404).json({
+        return res.status(404).json({
           success: false,
           message: `The comment with id: ${comment_id} is not found`,
-          err: err,
         });
       } else {
-        res.status(200).json({
-          success: true,
-          message: `Comment with id: ${comment_id} deleted successfully`,
+        const query = `UPDATE comments SET is_deleted=1 WHERE comment_id=$1 AND user_id= $2`;
+        const data = [comment_id, user_id];
+
+        pool.query(query, data).then((result) => {
+          res.status(200).json({
+            success: true,
+            message: `Comment with id: ${comment_id} deleted successfully`,
+          });
         });
       }
     })
