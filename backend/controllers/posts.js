@@ -181,7 +181,7 @@ const deletePostsByuserId = (req, res) => {
       } else {
         res.status(200).json({
           success: true,
-          message: `Posts with author: ${user_id} deleted successfully`,
+          message: `Posts with user: ${user_id} deleted successfully`,
         });
       }
     })

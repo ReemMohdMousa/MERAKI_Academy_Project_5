@@ -763,8 +763,8 @@ const getLikesByPost = (req, res) => {
     FROM likes 
     INNER JOIN users ON likes.user_id = users.user_id
     WHERE likes.is_deleted=0 AND likes.post_id = $1
-    `; 
-   
+    `;
+
   const data = [post_id];
   pool
     .query(query, data)
@@ -784,7 +784,35 @@ const getLikesByPost = (req, res) => {
     });
 };
 
-
+//hard delete
+const removeLike = (req, res) => {
+  const post_id = req.params.id;
+  const user_id = req.token.userId;
+  const query = `DELETE FROM likes WHERE user_id=$1 AND post_id = $2`;
+  const data = [user_id, post_id];
+  pool
+    .query(query, data)
+    .then((result) => {
+      if (result.rowCount === 0) {
+        res.status(404).json({
+          success: false,
+          message: `The user: ${user_id} has no likes on this post`,
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: `Like of user: ${user_id} removed successfully`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
 
 module.exports = {
   register,
@@ -793,12 +821,5 @@ module.exports = {
   addLike,
   getLikesByUser,
   getLikesByPost,
+  removeLike,
 };
-
-/*   likes_id SERIAL NOT NULL,
-  user_id INT,
-  post_id INT,
-  is_deleted SMALLINT DEFAULT 0,
-  created_at TIMESTAMP DEFAULT NOW(),
-  FOREIGN KEY (user_id) REFERENCES users(user_id),
-  FOREIGN KEY (post_id) REFERENCES posts(post_id) PRIMARY KEY (likes_id) */
