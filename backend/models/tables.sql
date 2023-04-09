@@ -76,10 +76,19 @@ CREATE TABLE comments (
 );
 
 CREATE TABLE followers (
-
    id SERIAL NOT NULL,
    user_id INT,
    follower_id INT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP,
+   FOREIGN KEY (user_id) REFERENCES users(user_id),
+   FOREIGN KEY (follower_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE followings (
+   id SERIAL NOT NULL,
+   user_id INT,
+   following_id INT,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP,
    FOREIGN KEY (user_id) REFERENCES users(user_id),

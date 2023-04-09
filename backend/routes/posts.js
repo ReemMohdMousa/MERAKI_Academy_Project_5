@@ -12,12 +12,12 @@ const authentication = require("../middlewares/authentication");
 
 const postsRouter = express.Router();
 
-postsRouter.post("/", createNewPost);
+postsRouter.post("/", authentication, createNewPost);
 postsRouter.get("/",authentication, getAllPosts);
 postsRouter.get("/search_1", getPostsByUser);
 postsRouter.get("/search_2/:id", getPostById);
 postsRouter.put("/:id", updatePostById);
 postsRouter.delete("/:id", deletePostById);
 postsRouter.delete("/user/:id", deletePostsByuserId);
-
+ 
 module.exports = postsRouter;

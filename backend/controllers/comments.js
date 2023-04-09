@@ -1,4 +1,4 @@
-const {pool} = require("../models/db");
+const { pool } = require("../models/db");
 
 const createNewComment = (req, res) => {
   const post_id = req.params.id;
@@ -32,7 +32,7 @@ const getCommentsByPostId = (req, res) => {
 
   const query = `SELECT comments.content, comments.image, comments.video, users.firstname, users.lastname 
     FROM comments 
-    INNER JOIN users ON comments user_id = users.user_id
+    INNER JOIN users ON comments.user_id = users.user_id
     WHERE comments.is_deleted=0 AND comments.post_id = $1
     `;
 
@@ -96,7 +96,7 @@ const deleteCommentById = (req, res) => {
 
   const query = `UPDATE comments
    SET is_deleted=1 
-   WHERE comment_id=$1, AND user_id= $2`;
+   WHERE comment_id=$1 AND user_id= $2`;
   const data = [comment_id, user_id];
 
   pool
@@ -105,17 +105,18 @@ const deleteCommentById = (req, res) => {
       if (result.rowCount === 0) {
         res.status(404).json({
           success: false,
-          message: `The comment with id: ${post_id} is not found`,
+          message: `The comment with id: ${comment_id} is not found`,
           err: err,
         });
       } else {
         res.status(200).json({
           success: true,
-          message: `Comment with id: ${post_id} deleted successfully`,
+          message: `Comment with id: ${comment_id} deleted successfully`,
         });
       }
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).json({
         success: false,
         message: "Server error",

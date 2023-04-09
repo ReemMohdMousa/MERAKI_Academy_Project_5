@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 
 // Import Routers
 const postsRouter = require("./routes/posts");
-const commentsRouter = require("./routes/comments");
+const commentsRouter = require("./routes/comments")
 const rolesRouter = require("./routes/roles");
 const usersRouter = require("./routes/user");
 const friendsRouter = require("./routes/frineds");

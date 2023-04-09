@@ -18,7 +18,6 @@ const pool = new Client({
   database: "project5_Reem", // create the database before connect
   password: "admin",
   port: "5432",
-  multipleStatements: true,
 });
 
 pool.connect((err, client) => {

@@ -1,4 +1,5 @@
 const express = require("express");
+
 const {
   createNewComment,
   getCommentsByPostId,
@@ -8,10 +9,11 @@ const {
 
 const commentsRouter = express.Router();
 
-commentsRouter.post("/comments/:id", createNewComment);
-commentsRouter.get("/comments/:id", getCommentsByPostId)
-commentsRouter.put("/comments/:id", UpdateCommentById)
-commentsRouter.delete("/comments/:id", deleteCommentById)
+const authentication = require("../middlewares/authentication");
 
+commentsRouter.post("/:id", authentication, createNewComment);
+commentsRouter.get("/:id", authentication, getCommentsByPostId);
+commentsRouter.put("/:id", authentication, UpdateCommentById);
+commentsRouter.delete("/:id", authentication, deleteCommentById);
 
 module.exports = commentsRouter;
