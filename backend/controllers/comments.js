@@ -57,14 +57,16 @@ const getCommentsByPostId = (req, res) => {
 
 const UpdateCommentById = (req, res) => {
   const comment_id = req.params.id;
+  const user_id = req.token.userId;
+
   let { content, image, video } = req.body;
 
   const query = `UPDATE comments 
   SET content = COALESCE($1,content), 
   image = COALESCE($2, image), 
   video = COALESCE($3, video)
-  WHERE comment_id=$4 AND is_deleted = 0  RETURNING *;`;
-  const data = [content, image, video, comment_id];
+  WHERE comment_id=$4, user_id=$5 AND is_deleted = 0  RETURNING *;`;
+  const data = [content, image, video, comment_id, user_id];
 
   pool
     .query(query, data)

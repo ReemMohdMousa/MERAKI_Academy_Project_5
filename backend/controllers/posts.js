@@ -107,11 +107,13 @@ const getPostById = (req, res) => {
 
 const updatePostById = (req, res) => {
   const post_id = req.params.id;
+  const user_id = req.token.userId;
+
   let { content, image, video, likes } = req.body;
 
   const query = `UPDATE posts SET content = COALESCE($1,content), image = COALESCE($2, image), video = COALESCE($3, video), likes = COALESCE($4, likes)
-  WHERE post_id=$5 AND is_deleted = 0  RETURNING *;`;
-  const data = [content, image, video, likes, post_id];
+  WHERE post_id=$5, user_id=$6 AND is_deleted = 0  RETURNING *;`;
+  const data = [content, image, video, likes, post_id, user_id];
   pool
     .query(query, data)
     .then((result) => {
@@ -139,8 +141,10 @@ const updatePostById = (req, res) => {
 
 const deletePostById = (req, res) => {
   const post_id = req.params.id;
-  const query = `UPDATE posts SET is_deleted=1 WHERE post_id=$1;`;
-  const data = [post_id];
+  const user_id = req.token.userId;
+
+  const query = `UPDATE posts SET is_deleted=1 WHERE post_id=$1 AND user_id=$2;`;
+  const data = [post_id,user_id];
   pool
     .query(query, data)
     .then((result) => {
@@ -166,8 +170,9 @@ const deletePostById = (req, res) => {
     });
 };
 
+//dectivate account 
 const deletePostsByuserId = (req, res) => {
-  const user_id = req.params.id;
+  const user_id = req.token.userId;
   const query = `UPDATE posts SET is_deleted=1 WHERE user_id=$1 ;`;
   const data = [user_id];
   pool
@@ -176,12 +181,12 @@ const deletePostsByuserId = (req, res) => {
       if (result.rowCount === 0) {
         res.status(404).json({
           success: false,
-          message: `The user: ${user_id} has no articles`,
+          message: `The user: ${user_id} has no posts`,
         });
       } else {
         res.status(200).json({
           success: true,
-          message: `Posts with author: ${user_id} deleted successfully`,
+          message: `Posts with user: ${user_id} deleted successfully`,
         });
       }
     })

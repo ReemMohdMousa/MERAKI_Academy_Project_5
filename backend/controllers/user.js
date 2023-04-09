@@ -1,11 +1,13 @@
 const { genrateToken } = require("./config");
-const {pool} = require("../models/db");
+
+const { pool } = require("../models/db");
+
 
 //const  = require("../models/patientSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { types } = require("pg");
-nodemailer = require('nodemailer');
+nodemailer = require("nodemailer");
 // const saltRounds = parseInt(process.env.SALT);
 
 const register = async (req, res) => {
@@ -20,44 +22,42 @@ const register = async (req, res) => {
       age,
       email.toLowerCase(),
       encryptedPassword,
-       role_id || 2,
+      role_id || 2,
     ];
     pool
-    .query(query, data)
-    .then((result) => {
-      //console.log("result",result);
-      const payload = {
-        userId: result.rows[0].user_id,
-        //country: result.rows[0].country,
-        role: result.rows[0].role_id,
-      };
+      .query(query, data)
+      .then((result) => {
+        //console.log("result",result);
+        const payload = {
+          userId: result.rows[0].user_id,
+          //country: result.rows[0].country,
+          role: result.rows[0].role_id,
+        };
 
-      const options = {
-        expiresIn: "24h",
-      };
-      const token = genrateToken(payload, options);
-  
-     
-      res.status(200).json({
-        success: true,
-        token: token,
-        userId: result.rows[0].user_id,
-        message: "Account created successfully",
+        const options = {
+          expiresIn: "24h",
+        };
+        const token = genrateToken(payload, options);
+
+        res.status(200).json({
+          success: true,
+          token: token,
+          userId: result.rows[0].user_id,
+          message: "Account created successfully",
+        });
+        verfiyResjsterByEmail(email, firstName, lastName);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(409).json({
+          success: false,
+          message: "The email already exists",
+          err,
+        });
       });
-      verfiyResjsterByEmail(email,firstName,lastName)
-    })
-    .catch((err) => {
-      console.log(err)
-      res.status(409).json({
-        success: false,
-        message: "The email already exists",
-        err,
-      });
-    });
   } catch (error) {
     console.log(error);
   }
-
 };
 const login = (req, res) => {
   const password = req.body.password;
@@ -67,7 +67,7 @@ const login = (req, res) => {
   pool
     .query(query, data)
     .then((result) => {
-      console.log(result.rows)
+      console.log(result.rows);
       if (result.rows.length) {
         bcrypt.compare(password, result.rows[0].password, (err, response) => {
           if (err) res.json(err);
@@ -77,12 +77,12 @@ const login = (req, res) => {
               //country: result.rows[0].country,
               role: result.rows[0].role_id,
             };
-      
+
             const options = {
               expiresIn: "24h",
             };
             const token = genrateToken(payload, options);
-        
+
             if (token) {
               return res.status(200).json({
                 success: true,
@@ -116,72 +116,66 @@ const checkGoogleUser = (req, res) => {
   const { firstName, lastName, email } = req.body;
 
   const role_id = 2;
-  const password = firstName+"!!";
- 
+  const password = firstName + "!!";
 
   const query = `SELECT * FROM users WHERE email = $1`;
   const data = [email.toLowerCase()];
   pool
     .query(query, data)
     .then((results) => {
-      console.log("check if not found",results.rows)
+      console.log("check if not found", results.rows);
       if (results.rows.length == 0) {
         //*register him as a new user
-       
+
         const query = `INSERT INTO users (firstName, lastName ,email, password,role_id) VALUES ($1,$2,$3,$4,$5)RETURNING *`;
-    const data = [
-      firstName,
-      lastName,
-     
-      email.toLowerCase(),
-      password,
-       role_id || 2,
-    ];
-    pool
-    .query(query, data)
-    .then((results) => {
-            console.log(results.rows);
-            //*if the registeration went correctly, log the user in
-            if (results.rows) {
-              const query = `SELECT * FROM users WHERE email = $1`;
-              const data = [email.toLowerCase()];
-              pool
-                .query(query, data)
-                .then((results) => {
-                  //if the email is not exsisted return an error msg
-                  if (!results) {
-                    res.status(403).json({
-                      success: false,
-                      message: `The email or the password is incorrect`,
-                    });
-                  }
-                  //generate a token for google user
-                  const payload = {
-                    userId: results.rows[0].user_id,
-                    //country: result.rows[0].country,
-                    role: results.rows[0].role_id,
-                  };
-            
-                  const options = {
-                    expiresIn: "24h",
-                  };
-                  const token = genrateToken(payload, options);
-              
-                 
-                  res.status(200).json({
-                    success: true,
-                    token: token,
-                    userId: results.rows[0].id,
-                    message: "Account created successfully",
+        const data = [
+          firstName,
+          lastName,
+
+          email.toLowerCase(),
+          password,
+          role_id || 2,
+        ];
+        pool.query(query, data).then((results) => {
+          console.log(results.rows);
+          //*if the registeration went correctly, log the user in
+          if (results.rows) {
+            const query = `SELECT * FROM users WHERE email = $1`;
+            const data = [email.toLowerCase()];
+            pool
+              .query(query, data)
+              .then((results) => {
+                //if the email is not exsisted return an error msg
+                if (!results) {
+                  res.status(403).json({
+                    success: false,
+                    message: `The email or the password is incorrect`,
                   });
-               
-                })
-                .catch((err) => {
-                  res.json(err);
+                }
+                //generate a token for google user
+                const payload = {
+                  userId: results.rows[0].user_id,
+                  //country: result.rows[0].country,
+                  role: results.rows[0].role_id,
+                };
+
+                const options = {
+                  expiresIn: "24h",
+                };
+                const token = genrateToken(payload, options);
+
+                res.status(200).json({
+                  success: true,
+                  token: token,
+                  userId: results.rows[0].id,
+                  message: "Account created successfully",
                 });
-            }
-         
-          });
+              })
+              .catch((err) => {
+                res.json(err);
+              });
+          }
+        });
       } else {
         //*if already registered, login
         const query = `SELECT * FROM users WHERE email = $1`;
@@ -202,20 +196,18 @@ const checkGoogleUser = (req, res) => {
               //country: result.rows[0].country,
               role: results.rows[0].role_id,
             };
-      
+
             const options = {
               expiresIn: "24h",
             };
             const token = genrateToken(payload, options);
-        
-           
+
             res.status(200).json({
               success: true,
               token: token,
               userId: results.rows[0].id,
               message: "Account created successfully",
             });
-         
           })
           .catch((err) => {
             res.json(err);
@@ -230,24 +222,23 @@ const checkGoogleUser = (req, res) => {
       });
     });
 };
-const verfiyResjsterByEmail=(email,firstName,lastName)=>{
+const verfiyResjsterByEmail = (email, firstName, lastName) => {
   //const {email,firstName,lastName}=req.body
-  console.log(email,firstName,lastName)
+  console.log(email, firstName, lastName);
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: "gmail",
     auth: {
-      user: 'tasnim.gharaibeh@gmail.com',
-      pass: 'tzzjtrcepxmotljz',
-    }
+      user: "tasnim.gharaibeh@gmail.com",
+      pass: "tzzjtrcepxmotljz",
+    },
   });
-  
+
   const mailOptions = {
-    from: 'tasnim.gharaibeh@gmail.com',
+    from: "tasnim.gharaibeh@gmail.com",
     to: email,
-    subject: 'Subject',
-   
-     html : 
-    `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    subject: "Subject",
+
+    html: `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <head>
     <!--[if gte mso 9]>
@@ -695,14 +686,14 @@ const verfiyResjsterByEmail=(email,firstName,lastName)=>{
     </body>
     
     </html>
-    `
+    `,
   };
-  
-  transporter.sendMail(mailOptions, function(error, info){
+
+  transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-   console.log(error);
+      console.log(error);
     } else {
-      console.log('Email sent: ' + info.response);
+      console.log("Email sent: " + info.response);
       // res.json({
       //   success:true,
       //   message:"Email is sent"
@@ -710,11 +701,12 @@ const verfiyResjsterByEmail=(email,firstName,lastName)=>{
       // do something useful
     }
   });
-  }
-  //https://beefree.io/templates/
+};
+//https://beefree.io/templates/
 //https://unlayer.com/
+
 module.exports = {
   register,
   login,
-  checkGoogleUser
+  checkGoogleUser,
 };
