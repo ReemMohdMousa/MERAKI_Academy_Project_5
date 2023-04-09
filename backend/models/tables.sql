@@ -76,7 +76,6 @@ CREATE TABLE comments (
 );
 
 CREATE TABLE followers (
-
    id SERIAL NOT NULL,
    user_id INT,
    follower_id INT,
@@ -86,14 +85,43 @@ CREATE TABLE followers (
    FOREIGN KEY (follower_id) REFERENCES users(user_id)
 );
 
+CREATE TABLE followings (
+   id SERIAL NOT NULL,
+   user_id INT,
+   following_id INT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP,
+   FOREIGN KEY (user_id) REFERENCES users(user_id),
+   FOREIGN KEY (following_id) REFERENCES users(user_id)
+);
+
+-- CREATE TABLE friends (
+--   id SERIAL NOT NULL,
+--   user_id INT,
+--   friend_id INT,
+--   created_at TIMESTAMP DEFAULT NOW(),
+--   FOREIGN KEY (user_id) REFERENCES users(user_id),
+--   FOREIGN KEY (friend_id) REFERENCES users(user_id)
+
+-- );
+
+CREATE TABLE friend_requests (
+  request_id SERIAL NOT NULL,
+  sender_id INT,
+  receiver_id INT,
+  status VARCHAR(255),
+  created_at TIMESTAMP DEFAULT NOW(),
+  FOREIGN KEY (sender_id) REFERENCES users(user_id),
+  FOREIGN KEY (receiver_id) REFERENCES users(user_id)
+);
 
 CREATE TABLE friends (
   id SERIAL NOT NULL,
-  user_id INT,
-  friend_id INT,
-  created_at TIMESTAMP DEFAULT NOW(),
-  FOREIGN KEY (user_id) REFERENCES users(user_id),
-  FOREIGN KEY (friend_id) REFERENCES users(user_id)
+  user1_id INT,
+  user2_id INT,
+  accepted_at TIMESTAMP,
+  FOREIGN KEY (user1_id) REFERENCES users(user_id),
+  FOREIGN KEY (user2_id) REFERENCES users(user_id)
 
 );
 
