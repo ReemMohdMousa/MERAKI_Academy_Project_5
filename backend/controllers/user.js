@@ -1,5 +1,6 @@
 const { genrateToken } = require("./config");
 
+
 const { pool } = require("../models/db");
 
 

@@ -97,6 +97,8 @@ const deleteCommentById = (req, res) => {
   const comment_id = req.params.id;
   const user_id = req.token.userId;
 
+
+
   pool
     .query(
       `SELECT * FROM comments WHERE comments.is_deleted=0 AND comments.comment_id = $1
@@ -122,6 +124,7 @@ const deleteCommentById = (req, res) => {
       }
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).json({
         success: false,
         message: "Server error",

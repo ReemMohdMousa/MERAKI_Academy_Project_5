@@ -137,7 +137,7 @@ const updatePostById = (req, res) => {
         err: err,
       });
     });
-};
+}; 
 
 const deletePostById = (req, res) => {
   const post_id = req.params.id;
