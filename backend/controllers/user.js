@@ -1,5 +1,7 @@
 const { genrateToken } = require("./config");
+
 const { pool } = require("../models/db");
+
 
 //const  = require("../models/patientSchema");
 const bcrypt = require("bcrypt");
