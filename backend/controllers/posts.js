@@ -176,7 +176,7 @@ const deletePostsByuserId = (req, res) => {
       if (result.rowCount === 0) {
         res.status(404).json({
           success: false,
-          message: `The user: ${user_id} has no articles`,
+          message: `The user: ${user_id} has no posts`,
         });
       } else {
         res.status(200).json({

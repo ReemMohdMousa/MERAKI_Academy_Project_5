@@ -713,8 +713,78 @@ const verfiyResjsterByEmail=(email,firstName,lastName)=>{
   }
   //https://beefree.io/templates/
 //https://unlayer.com/
+
+const addLike = (req, res) => {
+  const { post_id  } = req.body;
+  const user_id = req.token.userId;
+  const query = `INSERT INTO likes (user_id, post_id) VALUES ($1,$2) RETURNING *;`;
+  const data = [user_id, post_id];
+  pool
+    .query(query, data)
+    .then((result) => {
+      res.status(200).json({
+        success: true,
+        message: "Like added successfully",
+        result: result.rows[0],
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
+const getLikesByUser = (req, res) => {
+  const user_id = req.token.userId;
+
+  const query = `SELECT * FROM likes WHERE user_id = $1 AND is_deleted=0;`;
+  const data = [user_id];
+
+  pool
+    .query(query, data)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.status(404).json({
+          success: false,
+          message: `The user: ${user_id} has no likes`,
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: `All likes for the user: ${user_id}`,
+          result: result.rows,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
+
+
+
+
 module.exports = {
   register,
   login,
-  checkGoogleUser
+  checkGoogleUser,
+  addLike,
+  getLikesByUser
 };
+
+
+/*   likes_id SERIAL NOT NULL,
+  user_id INT,
+  post_id INT,
+  is_deleted SMALLINT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT NOW(),
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (post_id) REFERENCES posts(post_id) PRIMARY KEY (likes_id) */
