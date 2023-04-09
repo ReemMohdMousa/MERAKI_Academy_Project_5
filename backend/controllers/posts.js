@@ -33,7 +33,7 @@ const getAllPosts = (req, res) => {
         success: true,
         message: "All the posts",
         posts: result.rows,
-        //userId: req.token.userId,
+        userId: req.token.userId,
       });
     })
     .catch((err) => {
