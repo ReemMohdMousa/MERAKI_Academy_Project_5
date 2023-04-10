@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react'
 import  "./style.css"
 import axios from "axios";
@@ -8,6 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import  {setPosts,addpost,updatePost, removePost,setComments, addComment } from "../redux/reducers/posts/index"
 import AddPost from '../AddPost';
 const Profile = () => {
+
+const params = useParams();
+  const id = params.id;
+
    const dispatch=useDispatch()
    const {posts} = useSelector((state) => {
     return { posts: state.posts.posts };
@@ -113,6 +118,7 @@ getAllPostsByUserId()
         </MDBRow>
       </MDBContainer>
     </div>
+
 
 
         

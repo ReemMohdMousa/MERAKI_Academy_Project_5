@@ -115,8 +115,7 @@ const updatePostById = (req, res) => {
 
   let { content, image, video, likes } = req.body;
 
-  const query = `UPDATE posts SET content = COALESCE($1,content), image = COALESCE($2, image), video = COALESCE($3, video), likes = COALESCE($4, likes)
-  WHERE post_id=$5, user_id=$6 AND is_deleted = 0  RETURNING *;`;
+  const query = `UPDATE posts SET content = COALESCE($1,content), image = COALESCE($2, image), video = COALESCE($3, video), likes = COALESCE($4, likes), updated_at=NOW() WHERE post_id=$5 AND user_id=$6 AND is_deleted = 0  RETURNING *;`;
   const data = [content, image, video, likes, post_id, user_id];
   pool
     .query(query, data)
@@ -141,14 +140,14 @@ const updatePostById = (req, res) => {
         err: err,
       });
     });
-}; 
+};
 
 const deletePostById = (req, res) => {
   const post_id = req.params.id;
   const user_id = req.token.userId;
 
   const query = `UPDATE posts SET is_deleted=1 WHERE post_id=$1 AND user_id=$2;`;
-  const data = [post_id,user_id];
+  const data = [post_id, user_id];
   pool
     .query(query, data)
     .then((result) => {
@@ -174,7 +173,7 @@ const deletePostById = (req, res) => {
     });
 };
 
-//dectivate account 
+//dectivate account
 const deletePostsByuserId = (req, res) => {
   const user_id = req.token.userId;
   const query = `UPDATE posts SET is_deleted=1 WHERE user_id=$1 ;`;

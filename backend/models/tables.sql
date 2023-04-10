@@ -16,7 +16,7 @@ CREATE TABLE permissions (
 );
 CREATE TABLE users(
   user_id SERIAL NOT NULL,
-  firstName VARCHAR(255),
+  firstName VARCHAR(255) REQ,
   lastName VARCHAR(255),
   age INT,
   email VARCHAR(255) UNIQUE,
@@ -57,7 +57,7 @@ CREATE TABLE posts (
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   likes INT,
-  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   PRIMARY KEY (post_id)
 );
 
@@ -71,8 +71,8 @@ CREATE TABLE comments (
   is_deleted SMALLINT DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(user_id),
-  FOREIGN KEY (post_id) REFERENCES posts(post_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   PRIMARY KEY (comment_id)
 );
 
@@ -159,6 +159,6 @@ CREATE TABLE likes (
   is_deleted SMALLINT DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW(),
   FOREIGN KEY (user_id) REFERENCES users(user_id),
-  FOREIGN KEY (post_id) REFERENCES posts(post_id)
+  FOREIGN KEY (post_id) REFERENCES posts(post_id),
   PRIMARY KEY (likes_id)
 );

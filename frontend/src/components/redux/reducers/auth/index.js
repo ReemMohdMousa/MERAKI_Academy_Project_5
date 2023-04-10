@@ -28,8 +28,6 @@ export const auth = createSlice({
             state.userId=null
             localStorage.clear()
             
-
-          
         },
         setUserInfo:(state,action)=>{
             state.userinfo=action.payload[0]
