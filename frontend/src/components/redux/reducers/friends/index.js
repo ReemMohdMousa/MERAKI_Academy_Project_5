@@ -5,18 +5,25 @@ export const friends = createSlice({
 
   initialState: {
     friends: [],
+    isFriend: false,
+    isAdded: false,
   },
   reducers: {
     getAlluserFriends: (state, action) => {
       //payload = array of user's friends
+      console.log(action.payload);
       state.friends = action.payload;
     },
 
-    getAlluserSentReq: (state, action) => {},
+    getAlluserSentReq: (state, action) => {
+      console.log(action.payload);
+    },
 
     getAlluserReceivedReq: (state, action) => {},
 
-    addFriend: (state, action) => {},
+    addFriend: (state, action) => {
+      console.log(action.payload);
+    },
 
     acceptFriendRequest: (state, action) => {},
 
