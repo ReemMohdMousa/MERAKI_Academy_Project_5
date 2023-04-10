@@ -9,7 +9,7 @@ function App() {
         <h1>Project 5 </h1>
       </header>
       <Routes>
-        <Route path="/profile" element={<Profile/>} />
+        <Route path="/profile/:id" element={<Profile/>} />
       </Routes>
     </div>
   );

@@ -28,6 +28,15 @@ export const friends = createSlice({
   },
 });
 
-export const {} = friends.actions;
+export const {
+  getAlluserFriends,
+  getAlluserSentReq,
+  getAlluserReceivedReq,
+  addFriend,
+  acceptFriendRequest,
+  cancelFriendReq,
+  declineFriendReq,
+  removeFriend,
+} = friends.actions;
 
 export default friends.reducer;
