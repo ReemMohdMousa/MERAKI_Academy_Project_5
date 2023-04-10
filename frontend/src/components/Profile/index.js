@@ -8,6 +8,7 @@ import Posts from '../Posts';
 import { useDispatch, useSelector } from "react-redux";
 import  {setPosts,addpost,updatePost, removePost,setComments, addComment } from "../redux/reducers/posts/index"
 import AddPost from '../AddPost';
+import { useNavigate, useParams } from "react-router-dom";
 const Profile = () => {
 
 const params = useParams();
