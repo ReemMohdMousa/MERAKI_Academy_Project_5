@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import axios from "axios";
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setLogin, setUserId } from "../redux/reducers/auth";
+import { GoogleLogin } from "@react-oauth/google";
 
 import {
   MDBBtn,
@@ -14,6 +18,15 @@ import {
 } from "mdb-react-ui-kit";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const state = useSelector((state) => {
+    return {
+      auth: state.auth,
+    };
+  });
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [age, setAge] = useState(0);
@@ -22,15 +35,15 @@ const Register = () => {
   const [repassword, setRePassword] = useState("");
   const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
+  
 
   const handleClose = () => setShow(false);
-
 
   const createAccount = () => {
     if (firstName && lastName && email && password && age && repassword) {
       if (repassword === password) {
         if (!document.getElementById("agree").checked) {
-            setShow(true)
+          setShow(true);
           setMessage("If you agree with the terms, check the Agree check box");
         } else {
           axios
@@ -45,22 +58,62 @@ const Register = () => {
               localStorage.setItem("token", result.data.token);
               localStorage.setItem("userId", result.data.userId);
               localStorage.setItem("isLoggedIn", true);
+              dispatch(setLogin(result.data.token));
+              dispatch(setUserId(result.data.userId));
             })
             .catch((error) => {
-                setShow(true)
+              setShow(true);
               setMessage(error.response.data.message);
             });
         }
       } else {
-        setShow(true)
+        setShow(true);
         setMessage("Password and Confirm password doesn't match");
       }
     } else {
-        setShow(true)
+      setShow(true);
       setMessage("Please Enter all fields");
     }
   };
-console.log(message)
+
+  const loginGoogle = (result) => {
+    const { credential, clientId } = result;
+    axios
+      .post("http://localhost:5000/users/google", {
+        credential,
+        clientId,
+      })
+      .then((res) => {
+        const { family_name, given_name, email } = res.data;
+        const fakePass = family_name + 123456;
+       
+
+        axios
+          .post("http://localhost:5000/users/register", {
+            firstName: given_name,
+            lastName: family_name,
+            email,
+            password: fakePass,
+          })
+          .then((result) => {
+            localStorage.setItem("token", result.data.token);
+            localStorage.setItem("userId", result.data.userId);
+            localStorage.setItem("isLoggedIn", true);
+            dispatch(setLogin(result.data.token));
+            dispatch(setUserId(result.data.userId));
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+  };
+
+  useEffect(() => {
+    if (state.auth.isLoggedIn) {
+      navigate("/home");
+    }
+  });
+
   return (
     <MDBContainer
       fluid
@@ -138,26 +191,31 @@ console.log(message)
             className="mb-4 w-100 gradient-custom-4"
             size="lg"
             onClick={createAccount}
-            
-            
           >
             Register
           </MDBBtn>
           <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Message</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{message}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-    
-        </Modal.Footer>
-      </Modal>
+            <Modal.Header closeButton>
+              <Modal.Title>Message</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{message}</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          <GoogleLogin
+            width={"90000px"}
+            theme={"filled_black"}
+            size={"large"}
+            onSuccess={loginGoogle}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
         </MDBCardBody>
       </MDBCard>
-       
     </MDBContainer>
   );
 };
