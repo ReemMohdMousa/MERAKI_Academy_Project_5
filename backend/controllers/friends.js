@@ -116,20 +116,22 @@ const acceptRequestOnce = (req, res, next) => {
   const { sender_id } = req.body;
 
   const query = `SELECT * FROM friends 
-    WHERE user1_id=$1 OR user1_id=$2 AND 
-    user2_id=$1 OR user2_id=$2`;
+    WHERE user1_id=$1 AND user2_id=$2 OR 
+    user1_id=$1 AND user2_id=$2`;
 
   const data = [user1_id, sender_id];
+  console.log(data);
 
   pool
     .query(query, data)
     .then((result) => {
+      console.log(result.rows);
       //if the request not accepted yet
       if (result.rows.length === 0) {
         next();
       } else {
         res.status(200).json({
-          success: true,
+          success: false,
           message: "you have already accepted the friend request",
         });
       }
@@ -304,8 +306,10 @@ const getAllFriendsByUserId = (req, res) => {
   user_id = req.token.userId;
   const request_id = req.params.request_id;
 
-  const query = `SELECT * FROM friends 
-  WHERE user1_id =$1 OR user2_id= $1
+  const query = `SELECT * FROM friends AS F, users AS U WHERE CASE WHEN 
+  F.user1_id = $1 THEN F.user2_id = U.User_id WHEN F.user2_id = $1 THEN 
+  F.user1_id = U.user_id END 
+  
   `;
 
   const data = [user_id];
@@ -344,5 +348,5 @@ module.exports = {
   getAllSentRequestByUserId,
   getAllReceivedRequestByUserId,
   getAllFriendsByUserId,
-  acceptRequestOnce
+  acceptRequestOnce,
 };

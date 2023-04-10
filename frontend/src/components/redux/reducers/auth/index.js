@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const auth = createSlice({
   name: "auth",
-
   initialState: {
     token: null || localStorage.getItem("token"),
     userId: null || localStorage.getItem("userId"),
@@ -24,15 +23,7 @@ export const auth = createSlice({
       state.userId = null;
       localStorage.clear();
     },
-    // deletePost:(state,action)=>{
 
-    //     state.posts.forEach((post,idx)=>{
-    //         if(post.id===action.payload)
-    //         {
-    //             state.posts.splice(idx,1)
-    //         }
-    //     })
-    // },
   },
 });
 export const { setLogin, setUserId, setLogout } = auth.actions;
