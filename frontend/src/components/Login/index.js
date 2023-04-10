@@ -1,5 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import "./style.css";
+import axios from "axios";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setLogin, setUserId } from "../redux/reducers/auth";
+import { GoogleLogin } from "@react-oauth/google";
+
+
 import {
     MDBBtn,
     MDBContainer,
@@ -11,6 +20,20 @@ import {
     MDBIcon
   } from 'mdb-react-ui-kit';
 const Login = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+  
+    const state = useSelector((state) => {
+      return {
+        auth: state.auth,
+      };
+    });
+
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+    const [password, setPassword] = useState("");
+     
+const login =()=>{}
   return (
     <div className='cont'> 
     <MDBContainer fluid>
@@ -21,14 +44,18 @@ const Login = () => {
         <MDBCard className='bg-dark text-white my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
           <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
 
-            <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
-            <p className="text-white-50 mb-5">Please enter your login and password!</p>
+            <h2 className="fw-bold mb-2">Sign to your account</h2>
+        <br/>
+        <br/>
 
-            <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Email address' id='formControlLg' type='email' size="lg"/>
-            <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Password' id='formControlLg' type='password' size="lg"/>
 
-            <p className="small mb-3 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p>
-            <MDBBtn outline className='mx-2 px-5' color='white' size='lg'>
+            <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Email address' id='formControlLg' type='email' size="lg"  onChange={(e) => setEmail(e.target.value)}/>
+            <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Password' id='formControlLg' type='password' size="lg" onChange={(e) => setPassword(e.target.value)}/>
+
+            
+            <MDBBtn outline className='mx-2 px-5' color='white' size='lg' onClick={(e) => {
+              login(e);
+            }}>
               Login
             </MDBBtn>
 
