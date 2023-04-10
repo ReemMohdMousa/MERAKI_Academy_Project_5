@@ -12,6 +12,7 @@ nodemailer = require("nodemailer");
 // const saltRounds = parseInt(process.env.SALT);
 
 const register = async (req, res) => {
+  console.log(req.body)
   const { firstName, lastName, age, email, password, role_id } = req.body;
   try {
     const encryptedPassword = await bcrypt.hash(password, 7);

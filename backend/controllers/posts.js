@@ -46,8 +46,13 @@ const getAllPosts = (req, res) => {
 };
 
 const getPostsByUser = (req, res) => {
-  const user_id = req.query.user;
-  const query = `SELECT * FROM posts WHERE user_id = $1 AND is_deleted=0;`;
+  //const user_id = req.query.user;
+  console.log(req.token)
+  const user_id = req.token.userId;
+
+  const query = `SELECT *.posts *.users FROM posts
+  INNER JOIN users ON posts.user_id=users.user_id
+   WHERE user_id = $1 AND is_deleted=0;`;
   const data = [user_id];
 
   pool
@@ -199,6 +204,7 @@ const deletePostsByuserId = (req, res) => {
     });
 };
 
+
 module.exports = {
   createNewPost,
   getAllPosts,
@@ -206,5 +212,5 @@ module.exports = {
   getPostById,
   updatePostById,
   deletePostById,
-  deletePostsByuserId,
+  deletePostsByuserId
 };

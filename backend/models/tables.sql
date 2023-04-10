@@ -1,4 +1,19 @@
 
+CREATE TABLE roles (
+  role_id SERIAL NOT NULL,
+  role VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP,
+  PRIMARY KEY (role_id)
+);
+
+CREATE TABLE permissions (
+  permission_id SERIAL NOT NULL,
+  permission VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP,
+  PRIMARY KEY (permission_id)
+);
 CREATE TABLE users(
   user_id SERIAL NOT NULL,
   firstName VARCHAR(255),
@@ -18,21 +33,7 @@ CREATE TABLE users(
 );
 
 
-CREATE TABLE roles (
-  role_id SERIAL NOT NULL,
-  role VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP,
-  PRIMARY KEY (role_id)
-);
 
-CREATE TABLE permissions (
-  permission_id SERIAL NOT NULL,
-  permission VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP,
-  PRIMARY KEY (permission_id)
-);
 
 CREATE TABLE role_permission (
   role_permission_id SERIAL NOT NULL,
