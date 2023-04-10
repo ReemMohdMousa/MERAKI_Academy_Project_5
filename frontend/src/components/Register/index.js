@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./style.css";
 import axios from "axios";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 import {
   MDBBtn,
@@ -18,15 +20,20 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRePassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+
 
   const createAccount = () => {
     if (firstName && lastName && email && password && age && repassword) {
-        
       if (repassword === password) {
         if (!document.getElementById("agree").checked) {
-            alert("If you agree with the terms, check the Agree check box");
-          } else{
-            axios
+            setShow(true)
+          setMessage("If you agree with the terms, check the Agree check box");
+        } else {
+          axios
             .post("http://localhost:5000/users/register", {
               firstName,
               lastName,
@@ -35,23 +42,25 @@ const Register = () => {
               age,
             })
             .then((result) => {
-                localStorage.setItem("token", result.data.token);
-                localStorage.setItem("userId", result.data.userId);
-                localStorage.setItem("isLoggedIn", true);
+              localStorage.setItem("token", result.data.token);
+              localStorage.setItem("userId", result.data.userId);
+              localStorage.setItem("isLoggedIn", true);
             })
             .catch((error) => {
-              alert( error.response.data.message)
+                setShow(true)
+              setMessage(error.response.data.message);
             });
-          } 
-        
+        }
       } else {
-        alert("Password and Confirm password doesn't match");
+        setShow(true)
+        setMessage("Password and Confirm password doesn't match");
       }
     } else {
-      alert("Please Enter all fields");
+        setShow(true)
+      setMessage("Please Enter all fields");
     }
   };
- 
+console.log(message)
   return (
     <MDBContainer
       fluid
@@ -129,11 +138,26 @@ const Register = () => {
             className="mb-4 w-100 gradient-custom-4"
             size="lg"
             onClick={createAccount}
+            
+            
           >
             Register
           </MDBBtn>
+          <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Message</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{message}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+    
+        </Modal.Footer>
+      </Modal>
         </MDBCardBody>
       </MDBCard>
+       
     </MDBContainer>
   );
 };
