@@ -224,6 +224,32 @@ const checkGoogleUser = (req, res) => {
       });
     });
 };
+const profileInfo=(req,res)=>{
+  const user_id=req.token.userId
+  const query='SELECT * FROM users WHERE user_id=$1'
+  pool.query(query,[user_id])
+  .then((result) => {
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: `The user: ${user_id} has no info`,
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: `All info for the user: ${user_id}`,
+        info: result.rows,
+      });
+    }
+  })
+  .catch((err) => {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      err: err,
+    });
+  });
+}
 const verfiyResjsterByEmail = (email, firstName, lastName) => {
   //const {email,firstName,lastName}=req.body
   console.log(email, firstName, lastName);
@@ -710,5 +736,5 @@ const verfiyResjsterByEmail = (email, firstName, lastName) => {
 module.exports = {
   register,
   login,
-  checkGoogleUser,
+  checkGoogleUser,profileInfo
 };

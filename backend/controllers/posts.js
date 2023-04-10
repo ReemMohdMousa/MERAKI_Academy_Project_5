@@ -50,8 +50,7 @@ const getPostsByUser = (req, res) => {
   console.log(req.token)
   const user_id = req.token.userId;
 
-  const query = `SELECT *.posts *.users FROM posts
-  INNER JOIN users ON posts.user_id=users.user_id
+  const query = `SELECT * FROM posts 
    WHERE user_id = $1 AND is_deleted=0;`;
   const data = [user_id];
 

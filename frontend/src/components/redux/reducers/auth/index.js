@@ -4,6 +4,7 @@ export const auth = createSlice({
     name:"auth",
    
     initialState:{
+        userinfo:null ||localStorage.getItem("userinfo"),
         token:null||localStorage.getItem("token"),
         userId:null||localStorage.getItem("userId"),
         isLoggedIn:localStorage.getItem("token")?true:false,
@@ -30,6 +31,10 @@ export const auth = createSlice({
 
           
         },
+        setUserInfo:(state,action)=>{
+            state.userinfo=action.payload[0]
+    localStorage.setItem("userinfo",action.payload[0])
+        }
         // deletePost:(state,action)=>{
            
         //     state.posts.forEach((post,idx)=>{
@@ -41,7 +46,7 @@ export const auth = createSlice({
         // },
     }
 })
-export const {setLogin,setUserId,setLogout} =
+export const {setLogin,setUserId,setLogout,setUserInfo} =
   auth.actions;
 
 export default auth.reducer;

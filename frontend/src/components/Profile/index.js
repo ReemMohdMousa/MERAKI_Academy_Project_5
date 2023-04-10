@@ -6,10 +6,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Posts from '../Posts';
 import { useDispatch, useSelector } from "react-redux";
 import  {setPosts,addpost,updatePost, removePost,setComments, addComment } from "../redux/reducers/posts/index"
+import AddPost from '../AddPost';
 const Profile = () => {
    const dispatch=useDispatch()
    const {posts} = useSelector((state) => {
     return { posts: state.posts.posts };
+  });
+  const { userinfo } = useSelector((state) => {
+    return { userinfo: state.auth.userinfo };
   });
    /* const {token} = useSelector((state) => {
     return { token: state.auth.token };
@@ -46,8 +50,8 @@ getAllPostsByUserId()
             <MDBCard>
               <div className="rounded-top text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '200px' }}>
                 <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '150px' }}>
-                  <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                    alt="Generic placeholder image" className="mt-4 mb-2 img-thumbnail" fluid style={{ width: '150px', zIndex: '1' }} />
+                  <MDBCardImage src={userinfo.avatar ?userinfo.avatar :'https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg'}
+                    alt="" className="mt-4 mb-2 img-thumbnail" fluid style={{ width: '150px', zIndex: '1' }} />
                   <MDBBtn outline color="dark" style={{height: '36px', overflow: 'visible'}}>
                     Edit profile
                   </MDBBtn>
@@ -86,26 +90,23 @@ getAllPostsByUserId()
                   <MDBCardText className="lead fw-normal mb-0">Recent photos</MDBCardText>
                   <MDBCardText className="mb-0"><a href="#!" className="text-muted">Show all</a></MDBCardText>
                 </div>
+                <MDBRow className="g-2">
+                  <MDBCol className="mb-2">
+                  <AddPost/>
+                  
+                  </MDBCol>
+                </MDBRow>
                 <MDBRow>
                   <MDBCol className="mb-2">
                  {/* dispaly the posts */}
-                 {posts.map((elem)=>{
-                   return <Posts/>
+                 {posts && posts.map((elem)=>{
+                   return <Posts post={elem}/>
                  })}
                
                   </MDBCol>
                  
                 </MDBRow>
-                <MDBRow className="g-2">
-                  <MDBCol className="mb-2">
-                    <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
-                      alt="image 1" className="w-100 rounded-3" />
-                  </MDBCol>
-                  <MDBCol className="mb-2">
-                    <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
-                      alt="image 1" className="w-100 rounded-3" />
-                  </MDBCol>
-                </MDBRow>
+               
               </MDBCardBody>
             </MDBCard>
           </MDBCol>

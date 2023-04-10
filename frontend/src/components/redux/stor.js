@@ -5,6 +5,7 @@ export default configureStore({
     reducer:{
         auth:authReducer,
         posts:postsReducer,
+        
        
     }
 })
