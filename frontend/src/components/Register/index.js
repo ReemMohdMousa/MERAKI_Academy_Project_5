@@ -35,7 +35,6 @@ const Register = () => {
   const [repassword, setRePassword] = useState("");
   const [message, setMessage] = useState("");
   const [show, setShow] = useState(false);
-  
 
   const handleClose = () => setShow(false);
 
@@ -86,7 +85,6 @@ const Register = () => {
       .then((res) => {
         const { family_name, given_name, email } = res.data;
         const fakePass = family_name + 123456;
-       
 
         axios
           .post("http://localhost:5000/users/register", {
@@ -103,7 +101,27 @@ const Register = () => {
             dispatch(setUserId(result.data.userId));
           })
           .catch((err) => {
-            console.log(err);
+            if (err.response.data.message === "The email already exists") {
+              axios
+                .post("http://localhost:5000/users/login", {
+                  email,
+                  password: fakePass,
+                })
+                .then((result) => {
+                  localStorage.setItem("token", result.data.token);
+                  localStorage.setItem("userId", result.data.userId);
+                  localStorage.setItem("isLoggedIn", true);
+                  dispatch(setLogin(result.data.token));
+                  dispatch(setUserId(result.data.userId));
+                })
+                .catch((err) => {
+                  setShow(true);
+                  setMessage(err.response.data.message);
+                });
+            } else {
+              setShow(true);
+              setMessage(err.response.data.message);
+            }
           });
       });
   };
