@@ -2,7 +2,7 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Profile from "./components/Profile/index";
 
-
+import NavBar from "./components/NavBar";
 import Register from "./components/Register";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Login from "./components/Login";
@@ -10,7 +10,7 @@ import Login from "./components/Login";
 const clientId =
   "780019151998-ei1sl1vhch8egbkuff1ibrshuo1h68nd.apps.googleusercontent.com"; 
 
-import NavBar from "./components/NavBar";
+
 function App() {
   return (
     <GoogleOAuthProvider clientId={clientId}>
