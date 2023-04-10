@@ -158,6 +158,6 @@ CREATE TABLE likes (
   is_deleted SMALLINT DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW(),
   FOREIGN KEY (user_id) REFERENCES users(user_id),
-  FOREIGN KEY (post_id) REFERENCES posts(post_id)
+  FOREIGN KEY (post_id) REFERENCES posts(post_id),
   PRIMARY KEY (likes_id)
 );
