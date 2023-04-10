@@ -1,5 +1,6 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import "./style.css";
+import axios from "axios";
 
 import {
   MDBBtn,
@@ -16,7 +17,41 @@ const Register = () => {
   const [age, setAge] = useState(0);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [repassword, setRePassword] = useState("");
 
+  const createAccount = () => {
+    if (firstName && lastName && email && password && age && repassword) {
+        
+      if (repassword === password) {
+        if (!document.getElementById("agree").checked) {
+            alert("If you agree with the terms, check the Agree check box");
+          } else{
+            axios
+            .post("http://localhost:5000/users/register", {
+              firstName,
+              lastName,
+              email,
+              password,
+              age,
+            })
+            .then((result) => {
+                localStorage.setItem("token", result.data.token);
+                localStorage.setItem("userId", result.data.userId);
+                localStorage.setItem("isLoggedIn", true);
+            })
+            .catch((error) => {
+              alert( error.response.data.message)
+            });
+          } 
+        
+      } else {
+        alert("Password and Confirm password doesn't match");
+      }
+    } else {
+      alert("Please Enter all fields");
+    }
+  };
+ 
   return (
     <MDBContainer
       fluid
@@ -44,7 +79,7 @@ const Register = () => {
             wrapperClass="mb-4"
             label="Last Name"
             size="lg"
-            id="form1"
+            id="form12"
             type="text"
             onChange={(e) => {
               setLastName(e.target.value);
@@ -81,15 +116,20 @@ const Register = () => {
             size="lg"
             id="form4"
             type="password"
+            onChange={(e) => setRePassword(e.target.value)}
           />
           <div className="d-flex flex-row justify-content-center mb-4">
             <MDBCheckbox
               name="flexCheck"
-              id="flexCheckDefault"
+              id="agree"
               label="I agree all statements in Terms of service"
             />
           </div>
-          <MDBBtn className="mb-4 w-100 gradient-custom-4" size="lg">
+          <MDBBtn
+            className="mb-4 w-100 gradient-custom-4"
+            size="lg"
+            onClick={createAccount}
+          >
             Register
           </MDBBtn>
         </MDBCardBody>
