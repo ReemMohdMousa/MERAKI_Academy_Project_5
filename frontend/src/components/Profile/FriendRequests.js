@@ -14,6 +14,18 @@ import {
   removeFriend,
 } from "../redux/reducers/friends/index";
 
+import {
+  MDBCol,
+  MDBContainer,
+  MDBRow,
+  MDBCard,
+  MDBCardText,
+  MDBCardBody,
+  MDBCardImage,
+  MDBBtn,
+  MDBTypography,
+} from "mdb-react-ui-kit";
+
 const FriendRequests = ({ id }) => {
   //dispatch
   const dispatch = useDispatch();
@@ -29,8 +41,7 @@ const FriendRequests = ({ id }) => {
   let token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksInJvbGUiOjIsImlhdCI6MTY4MTE1NDE5NiwiZXhwIjoxNjgxMjQwNTk2fQ.7zhcTfo0EdmVyJ6jERk2GDwCLfOv9gtxKuKt9pRhaWk";
 
-
-    //get all friends of the loggedin user
+  //get all friends of the loggedin user
   useEffect(() => {
     axios
       .get(`http://localhost:5000/friends/get/all`, {
