@@ -31,15 +31,13 @@ const FriendRequests = ({ id }) => {
   const dispatch = useDispatch();
 
   //redux states
-  const { token1, userId, isLoggedIn } = useSelector((state) => {
+  const { token, userId, isLoggedIn } = useSelector((state) => {
     //return object contains the redux states
     return {
       userId: state.auth.userId,
     };
   });
 
-  let token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksInJvbGUiOjIsImlhdCI6MTY4MTE1NDE5NiwiZXhwIjoxNjgxMjQwNTk2fQ.7zhcTfo0EdmVyJ6jERk2GDwCLfOv9gtxKuKt9pRhaWk";
 
   //get all friends of the loggedin user
   useEffect(() => {
