@@ -1,6 +1,7 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Profile from "./components/Profile/index";
+import Register from "./components/Register";
 
 function App() {
   return (
@@ -9,7 +10,8 @@ function App() {
         <h1>Project 5 </h1>
       </header>
       <Routes>
-        <Route path="/profile" element={<Profile/>} />
+        <Route path={"/register"} element={<Register/>} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );
