@@ -10,21 +10,15 @@ const Posts = ({ post }) => {
   const [openComments, setopenComments] = useState(false);
   console.log(post);
   const dispatch = useDispatch();
-  const { userinfo,token,userId } = useSelector((state) => {
-    return { userinfo: state.auth.userinfo,
+<
+
+  const { userinfo, token, userId } = useSelector((state) => {
+    return {
+      userinfo: state.auth.userinfo,
       token: state.auth.token,
-      userId: state.auth.userId 
-    } 
+      userId: state.auth.userId,
+    };
   });
-   
-  /* const {token} = useSelector((state) => {
-    return { token: state.auth.token };
-  });
-  const {userId} = useSelector((state) => {
-    return { userId: state.auth.userId };
-  });
-*/
-  
 
   return (
     userinfo && (
@@ -33,7 +27,13 @@ const Posts = ({ post }) => {
           <div className="user">
             <div className="userInfo">
               <img
-                src={userinfo.avatar  ?userinfo.avatar :'https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg'}
+
+                src={
+                  userinfo.avatar
+                    ? userinfo.avatar
+                    : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                }
+
                 alt=""
               />
               <div className="details">
@@ -110,7 +110,7 @@ const Posts = ({ post }) => {
             </div>
           </div>
           {/*condition comments  */}
-         { openComments && <Comments />}
+          {openComments && <Comments />}
         </div>
       </div>
     )

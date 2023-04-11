@@ -17,6 +17,8 @@ import {
   MDBCardBody,
   MDBInput,
 } from "mdb-react-ui-kit";
+
+
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,11 +61,14 @@ const Login = () => {
   };
 
   useEffect(() => {
+
     if (isLoggedIn) {
+
       navigate("/home");
       getAllUserInfo();
     }
   });
+
   const loginGoogle = (result) => {
     const { credential, clientId } = result;
     axios
