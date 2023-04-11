@@ -24,9 +24,13 @@ import {
   addComment,
 } from "../redux/reducers/posts/index";
 import AddPost from "../AddPost";
+
+import { MDBFile } from "mdb-react-ui-kit";
+
 import { useNavigate, useParams } from "react-router-dom";
 import FriendRequests from "./FriendRequests";
 import AllFriends from "./AllFriends";
+
 
 const Profile = () => {
   const params = useParams();
@@ -34,6 +38,26 @@ const Profile = () => {
 
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getAllPostsByUserId = () => {
+      axios
+        .get(`http://localhost:5000/posts/search_1`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((Response) => {
+          console.log(Response.data.posts);
+          dispatch(setPosts(Response.data.posts));
+          //setAppointments(Response.data.appointment);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getAllPostsByUserId();
+  }, []);
+
+
 
   //redux states
   const { posts, userinfo, token, userId, friends } = useSelector((state) => {
@@ -45,6 +69,7 @@ const Profile = () => {
       friends: state.friends.friends,
     };
   });
+
 
   useEffect(() => {
     const getAllPostsByUserId = () => {
@@ -93,12 +118,17 @@ const Profile = () => {
                       className="mt-4 mb-2 img-thumbnail"
                       fluid
                       style={{ width: "150px", zIndex: "1" }}
+
+                    ></MDBCardImage>
                     />
+
                     <MDBBtn
                       outline
                       color="dark"
                       style={{ height: "36px", overflow: "visible" }}
                     >
+
+                      Change photo
                       Edit profile
                     </MDBBtn>
                   </div>
