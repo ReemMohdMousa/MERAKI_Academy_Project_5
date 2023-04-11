@@ -1,13 +1,9 @@
 const { genrateToken } = require("./config");
 
 const { pool } = require("../models/db");
-<<<<<<< HEAD
 
 const { OAuth2Client } = require("google-auth-library");
-=======
-const { OAuth2Client } = require("google-auth-library");
 
->>>>>>> a468142df43701f238b22d74ce4c863bfe6b3a73
 //const  = require("../models/patientSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
