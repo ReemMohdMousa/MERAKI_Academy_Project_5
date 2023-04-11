@@ -4,23 +4,70 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import "./style.css";
 
-const AllFriends = () => {
+import {
+  getAlluserFriends,
+  getAlluserSentReq,
+  getAlluserReceivedReq,
+  addFriend,
+  acceptFriendRequest,
+  cancelFriendReq,
+  declineFriendReq,
+  removeFriend,
+} from "../redux/reducers/friends/index";
+
+const AllFriends = ({ id }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  //dispatch
+  const dispatch = useDispatch();
+
   //redux states
-  const { friends } = useSelector((state) => {
+  const { token, userId, isLoggedIn, friends } = useSelector((state) => {
     return {
       friends: state.friends.friends,
+      userId: state.auth.userId,
+      token: state.auth.token,
+      isLoggedIn: state.auth.isLoggedIn,
     };
   });
+
+  //get all friends of the loggedin user
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/friends/get/all/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        dispatch(getAlluserFriends(response.data.result));
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  }, []);
+
+  //!remove friend function
+  // i need the user2_id as a params (the friend id i want to remove)
+  const UnFriend = (user2_id) => {
+    axios
+      .delete(`http://localhost:5000/friends/remove/${user2_id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        console.log(response.data);
+        dispatch(removeFriend());
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  };
 
   return (
     <div>
       <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
+        Friends
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -28,7 +75,7 @@ const AllFriends = () => {
           <Modal.Title>Friends</Modal.Title>
         </Modal.Header>
         <Modal.Body className="friend-list-body">
-          {friends &&
+          {friends.length == 0 ? "No Friends" : friends &&
             friends.map((element, i) => {
               return (
                 <div className="friend-list">
@@ -43,21 +90,25 @@ const AllFriends = () => {
 
                     <h6>{element.firstname + " " + element.lastname}</h6>
                   </div>
-                  <Button className="remove-btn" variant="danger">
-                    Remove
-                  </Button>
+                  {userId == id ? (
+                    <Button
+                      className="remove-btn"
+                      variant="danger"
+                      onClick={() => {
+                        UnFriend(element.user_id);
+                      }}
+                    >
+                      Remove
+                    </Button>
+                  ) : (
+                    ""
+                  )}
                 </div>
               );
             })}
+            
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
+        <Modal.Footer></Modal.Footer>
       </Modal>
     </div>
   );

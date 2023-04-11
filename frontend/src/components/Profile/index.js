@@ -34,7 +34,7 @@ const Profile = () => {
 
   const dispatch = useDispatch();
 
-  //! to be edited
+  //redux states
   const { posts, userinfo, token, userId, friends } = useSelector((state) => {
     return {
       posts: state.posts.posts,
@@ -44,7 +44,6 @@ const Profile = () => {
       friends: state.friends.friends,
     };
   });
-
 
   useEffect(() => {
     const getAllPostsByUserId = () => {
@@ -67,7 +66,7 @@ const Profile = () => {
   return (
     <div>
       <FriendRequests id={id} />
-      <AllFriends/>
+      <AllFriends id={id}/>
       <div className="gradient-custom-2" style={{ backgroundColor: "#9de2ff" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
@@ -83,7 +82,7 @@ const Profile = () => {
                   >
                     <MDBCardImage
                       src={
-                        userinfo
+                        userinfo.avatar
                           ? userinfo.avatar
                           : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                       }

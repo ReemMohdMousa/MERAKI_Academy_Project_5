@@ -31,7 +31,14 @@ export const friends = createSlice({
 
     declineFriendReq: (state, action) => {},
 
-    removeFriend: (state, action) => {},
+    removeFriend: (state, action) => {
+      //payload = user_id
+      state.friends.map((element, i) => {
+        if (element.user_id === action.payload) {
+          state.friends.splice(i, 0);
+        }
+      });
+    },
   },
 });
 

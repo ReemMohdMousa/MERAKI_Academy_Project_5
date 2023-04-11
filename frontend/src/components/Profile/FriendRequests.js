@@ -27,6 +27,9 @@ import {
 } from "mdb-react-ui-kit";
 
 const FriendRequests = ({ id }) => {
+  //componant states and variables
+  let isFriend = false;
+
   //dispatch
   const dispatch = useDispatch();
 
@@ -40,24 +43,6 @@ const FriendRequests = ({ id }) => {
       friends: state.friends.friends,
     };
   });
-
-  //get all friends of the loggedin user
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/friends/get/all`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(function (response) {
-        // console.log(
-        //   "*************************************************************************"
-        // );
-        // console.log(response.data);
-        dispatch(getAlluserFriends(response.data.result));
-      })
-      .catch(function (error) {
-        throw error;
-      });
-  }, []);
 
   //get user info
   useEffect(() => {
@@ -73,6 +58,31 @@ const FriendRequests = ({ id }) => {
       });
   }, []);
 
+  //!check if the visited profile user is friend of the logged user, ERROR with useEffect
+  const checkIfUser = () => {
+    friends.forEach((element) => {
+      if (element.user_id == userId) {
+        isFriend = true;
+      }
+    });
+  };
+  checkIfUser();
+
+  const checkIfReqWasSent = () => {
+    axios
+      .get(`http://localhost:5000/friends/sent/requests`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  };
+
+  checkIfReqWasSent();
+
   //add friend request
   const addFriendFun = ({ user2_id }) => {
     axios
@@ -86,8 +96,6 @@ const FriendRequests = ({ id }) => {
       .then(function (response) {
         console.log(response.data);
         dispatch(addFriend(response.data));
-
-        //
       })
       .catch(function (error) {
         throw error;
@@ -129,24 +137,9 @@ const FriendRequests = ({ id }) => {
       });
   };
 
-  //remove friend function
-  //! i need the user2_id as a params (the friend id i want to remove)
-  const UnFriend = () => {
-    axios
-      .delete(`http://localhost:5000/friends/decline/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        throw error;
-      });
-  };
-
   return (
     <div>
-      {userId == id ? (
+      {userId == id || isFriend ? (
         ""
       ) : (
         <button
