@@ -21,7 +21,7 @@ const AddFriendRequest = (req, res) => {
         res.status(200).json({
           success: true,
           message: "Friend request sent successfully",
-          result: result.rows[0],
+          result: result.rows,
         });
       })
       .catch((err) => {
@@ -60,7 +60,7 @@ const getAllSentRequestByUserId = (req, res) => {
         res.status(200).json({
           success: true,
           message: "Sent Requests",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
@@ -94,7 +94,7 @@ const getAllReceivedRequestByUserId = (req, res) => {
         res.status(200).json({
           success: true,
           message: "Received Requests",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
@@ -180,7 +180,7 @@ const acceptFriendRequest = async (req, res) => {
         res.status(200).json({
           success: true,
           message: "Friend request accepted successfully",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
@@ -218,7 +218,7 @@ const CancelFriendRequest = (req, res) => {
         res.status(200).json({
           success: true,
           message: "Friend request canceled successfully",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
@@ -254,7 +254,7 @@ const declineTheFriendReq = (req, res) => {
         res.status(200).json({
           success: true,
           message: "Friend request declined successfully",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
@@ -289,7 +289,7 @@ WHERE user1_id=$1 OR user1_id=$2 AND user2_id=$1 OR user2_id=$2
         res.status(200).json({
           success: true,
           message: "Friend deleted successfully",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
