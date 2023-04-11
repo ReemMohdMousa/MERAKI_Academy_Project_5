@@ -29,7 +29,7 @@ friendsRouter.get("/sent/requests", authentication, getAllSentRequestByUserId);
 
 friendsRouter.get("/received/requests", authentication, getAllReceivedRequestByUserId);
 
-friendsRouter.get("/get/all", authentication, getAllFriendsByUserId);
+friendsRouter.get("/get/all/:id", authentication, getAllFriendsByUserId);
 
 
 module.exports = friendsRouter;
