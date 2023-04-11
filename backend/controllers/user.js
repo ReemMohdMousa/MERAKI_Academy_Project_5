@@ -1,8 +1,6 @@
 const { genrateToken } = require("./config");
 
-
 const { pool } = require("../models/db");
-
 
 //const  = require("../models/patientSchema");
 const bcrypt = require("bcrypt");
@@ -706,8 +704,37 @@ const verfiyResjsterByEmail = (email, firstName, lastName) => {
 //https://beefree.io/templates/
 //https://unlayer.com/
 
+const profileInfo = (req, res) => {
+  const user_id = 9;
+  const query = "SELECT * FROM users WHERE user_id=$1";
+  pool
+    .query(query, [user_id])
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.status(404).json({
+          success: false,
+          message: `The user: ${user_id} has no info`,
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: `All info for the user: ${user_id}`,
+          info: result.rows,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
 module.exports = {
   register,
   login,
   checkGoogleUser,
+  profileInfo
 };
