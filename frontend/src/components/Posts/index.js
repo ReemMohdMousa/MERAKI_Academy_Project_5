@@ -5,7 +5,9 @@ import Comments from "../Comments";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setUserInfo } from "../redux/reducers/auth/index";
-
+import Dropdown from "react-bootstrap/Dropdown";
+import { format } from "timeago.js";
+import Iframe from "react-iframe";
 const Posts = ({ post }) => {
   const [openComments, setopenComments] = useState(false);
   console.log(post);
@@ -13,16 +15,10 @@ const Posts = ({ post }) => {
   const { userinfo } = useSelector((state) => {
     return { userinfo: state.auth.userinfo };
   });
-  /* const {token} = useSelector((state) => {
-    return { token: state.auth.token };
+  const { token, userId } = useSelector((state) => {
+    return { token: state.auth.token, userId: state.auth.userId };
   });
-  const {userId} = useSelector((state) => {
-    return { userId: state.auth.userId };
-  });
-*/
-  //const token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE4LCJyb2xlIjoyLCJpYXQiOjE2ODExMDczODYsImV4cCI6MTY4MTE5Mzc4Nn0.uVElWbGCw_-rfhcQddPKKkIHkvXVhORNEqDNGchKuXg'
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE4LCJyb2xlIjoyLCJpYXQiOjE2ODExNTM4MjAsImV4cCI6MTY4MTI0MDIyMH0.DGoFWIVvuOMTJL-148APXbnfwcVE99bW1UqwX4d_s4w";
+
   const getAllUserInfo = () => {
     axios
       .get(`http://localhost:5000/users/info`, {
@@ -50,7 +46,11 @@ const Posts = ({ post }) => {
           <div className="user">
             <div className="userInfo">
               <img
-                src={userinfo.avatar ?userinfo.avatar :'https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg'}
+                src={
+                  userinfo.avatar
+                    ? userinfo.avatar
+                    : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                }
                 alt=""
               />
               <div className="details">
@@ -62,23 +62,35 @@ const Posts = ({ post }) => {
                     {userinfo.firstname} {userinfo.lastname}
                   </span>
                 </Link>
-                <span className="date">{post.created_at}</span>
+                <span className="date">{format(post.created_at)}</span>
               </div>
             </div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-three-dots"
-              viewBox="0 0 16 16"
-            >
-              <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-            </svg>
+            <Dropdown>
+              <Dropdown.Toggle id="dropdown-basic">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-three-dots"
+                  viewBox="0 0 16 16"
+                  on
+                  onClick={() => {}}
+                >
+                  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                </svg>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item href="#/action-1">Edit Post</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Delete Post</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
           <div className="contant">
             <p>{post.content}</p>
             <img src={post.image} alt="" />
+            <embed type="video/webm" src={post.video} width="200" height="300"/>
           </div>
           <div className="infomation">
             <div className="item">
@@ -127,7 +139,7 @@ const Posts = ({ post }) => {
             </div>
           </div>
           {/*condition comments  */}
-         { openComments && <Comments />}
+          {openComments && <Comments />}
         </div>
       </div>
     )
@@ -135,57 +147,3 @@ const Posts = ({ post }) => {
 };
 
 export default Posts;
-// {
-/*<div>
-        
-         <div className="timeline-header">
-                  <div className="mt-3 mb-4">
-                                 <span className="rounded-circle"><img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt=""></img> </span>
-                                </div>
-                                 <span className="username"><a href="javascript:;">Sean Ngu</a> <small></small></span>
-                                 <span className="pull-right text-muted">18 Views</span>
-                              </div>
-                              <div className="timeline-content">
-                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                                    Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
-                                 </p>
-                              </div>
-                              <div class="timeline-likes">
-                                 <div class="stats-right">
-                                    <span class="stats-text">259 Shares</span>
-                                    <span class="stats-text">21 Comments</span>
-                                 </div>
-                                 <div class="stats">
-                                    <span class="fa-stack fa-fw stats-icon">
-                                    <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                                    <i class="fa fa-heart fa-stack-1x fa-inverse t-plus-1"></i>
-                                    </span>
-                                    <span class="fa-stack fa-fw stats-icon">
-                                    <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                                    <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                    <span class="stats-total">4.3k</span>
-                                 </div>
-                              </div>
-                              <div class="timeline-footer">
-                                 <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-thumbs-up fa-fw fa-lg m-r-3"></i> Like</a>
-                                 <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-comments fa-fw fa-lg m-r-3"></i> Comment</a> 
-                                 <a href="javascript:;" class="m-r-15 text-inverse-lighter"><i class="fa fa-share fa-fw fa-lg m-r-3"></i> Share</a>
-                              </div>
-                              <div class="timeline-comment-box">
-                                 <div class="user"><img src="https://bootdey.com/img/Content/avatar/avatar3.png"/></div>
-                                 <div class="input">
-                                    <form action="">
-                                       <div class="input-group">
-                                          <input type="text" class="form-control rounded-corner" placeholder="Write a comment..."/>
-                                          <span class="input-group-btn p-l-10">
-                                          <button class="btn btn-primary f-s-12 rounded-corner" type="button">Comment</button>
-                                          </span>
-                                       </div>
-                                    </form>
-                                    </div>
-                                    </div>
-    </div> 
- */
-// }

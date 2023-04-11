@@ -4,7 +4,7 @@ export const auth = createSlice({
   name: "auth",
 
   initialState: {
-    userinfo: null || localStorage.getItem("userinfo"),
+    userinfo: null ||JSON.parse( localStorage.getItem("userinfo")),
     token: null || localStorage.getItem("token"),
     userId: null || localStorage.getItem("userId"),
     isLoggedIn: localStorage.getItem("token") ? true : false,
@@ -27,7 +27,8 @@ export const auth = createSlice({
     },
     setUserInfo: (state, action) => {
       state.userinfo = action.payload[0];
-      localStorage.setItem("userinfo", action.payload[0]);
+     
+      localStorage.setItem("userinfo", JSON.stringify( action.payload[0]));
     },
  
   },
