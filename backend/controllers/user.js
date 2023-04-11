@@ -2,6 +2,8 @@ const { genrateToken } = require("./config");
 
 const { pool } = require("../models/db");
 
+const { OAuth2Client } = require("google-auth-library");
+
 //const  = require("../models/patientSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -10,6 +12,7 @@ nodemailer = require("nodemailer");
 // const saltRounds = parseInt(process.env.SALT);
 
 const register = async (req, res) => {
+  console.log(req.body);
   const { firstName, lastName, age, email, password, role_id } = req.body;
   try {
     const encryptedPassword = await bcrypt.hash(password, 7);
@@ -55,7 +58,10 @@ const register = async (req, res) => {
         });
       });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 };
 const login = (req, res) => {
@@ -112,115 +118,61 @@ const login = (req, res) => {
 };
 
 const checkGoogleUser = (req, res) => {
-  const { firstName, lastName, email } = req.body;
+  const token = req.body.credential;
+  const CLIENT_ID = req.body.clientId;
+  const client = new OAuth2Client(CLIENT_ID);
+  async function verify() {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    res.json(payload);
+  }
+  verify().catch((err) => {
+    if (err.keyPattern) {
+      res.status(409).json({
+        success: false,
+        message: `Email is already exist`,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: `Server error`,
+        err: err.message,
+      });
+    }
+  });
+};
 
-  const role_id = 2;
-  const password = firstName + "!!";
-
-  const query = `SELECT * FROM users WHERE email = $1`;
-  const data = [email.toLowerCase()];
+const profileInfo = (req, res) => {
+  const user_id = req.token.userId;
+  const query = "SELECT * FROM users WHERE user_id=$1";
   pool
-    .query(query, data)
-    .then((results) => {
-      console.log("check if not found", results.rows);
-      if (results.rows.length == 0) {
-        //*register him as a new user
-
-        const query = `INSERT INTO users (firstName, lastName ,email, password,role_id) VALUES ($1,$2,$3,$4,$5)RETURNING *`;
-        const data = [
-          firstName,
-          lastName,
-
-          email.toLowerCase(),
-          password,
-          role_id || 2,
-        ];
-        pool.query(query, data).then((results) => {
-          console.log(results.rows);
-          //*if the registeration went correctly, log the user in
-          if (results.rows) {
-            const query = `SELECT * FROM users WHERE email = $1`;
-            const data = [email.toLowerCase()];
-            pool
-              .query(query, data)
-              .then((results) => {
-                //if the email is not exsisted return an error msg
-                if (!results) {
-                  res.status(403).json({
-                    success: false,
-                    message: `The email or the password is incorrect`,
-                  });
-                }
-                //generate a token for google user
-                const payload = {
-                  userId: results.rows[0].user_id,
-                  //country: result.rows[0].country,
-                  role: results.rows[0].role_id,
-                };
-
-                const options = {
-                  expiresIn: "24h",
-                };
-                const token = genrateToken(payload, options);
-
-                res.status(200).json({
-                  success: true,
-                  token: token,
-                  userId: results.rows[0].id,
-                  message: "Account created successfully",
-                });
-              })
-              .catch((err) => {
-                res.json(err);
-              });
-          }
+    .query(query, [user_id])
+    .then((result) => {
+      if (result.rows.length === 0) {
+        res.status(404).json({
+          success: false,
+          message: `The user: ${user_id} has no info`,
         });
       } else {
-        //*if already registered, login
-        const query = `SELECT * FROM users WHERE email = $1`;
-        const data = [email.toLowerCase()];
-        pool
-          .query(query, data)
-          .then((results) => {
-            //if the email is not exsisted return an error msg
-            if (!results.rows) {
-              res.status(403).json({
-                success: false,
-                message: `The email or the password is incorrect`,
-              });
-            }
-            //generate a token for google user
-            const payload = {
-              userId: results.rows[0].user_id,
-              //country: result.rows[0].country,
-              role: results.rows[0].role_id,
-            };
-
-            const options = {
-              expiresIn: "24h",
-            };
-            const token = genrateToken(payload, options);
-
-            res.status(200).json({
-              success: true,
-              token: token,
-              userId: results.rows[0].id,
-              message: "Account created successfully",
-            });
-          })
-          .catch((err) => {
-            res.json(err);
-          });
+        res.status(200).json({
+          success: true,
+          message: `All info for the user: ${user_id}`,
+          info: result.rows,
+        });
       }
     })
     .catch((err) => {
       res.status(500).json({
         success: false,
-        message: `Server Error`,
-        err: err.message,
+        message: "Server error",
+        err: err,
       });
     });
 };
+
 const verfiyResjsterByEmail = (email, firstName, lastName) => {
   //const {email,firstName,lastName}=req.body
   console.log(email, firstName, lastName);
@@ -704,37 +656,9 @@ const verfiyResjsterByEmail = (email, firstName, lastName) => {
 //https://beefree.io/templates/
 //https://unlayer.com/
 
-const profileInfo = (req, res) => {
-  const user_id = 9;
-  const query = "SELECT * FROM users WHERE user_id=$1";
-  pool
-    .query(query, [user_id])
-    .then((result) => {
-      if (result.rows.length === 0) {
-        res.status(404).json({
-          success: false,
-          message: `The user: ${user_id} has no info`,
-        });
-      } else {
-        res.status(200).json({
-          success: true,
-          message: `All info for the user: ${user_id}`,
-          info: result.rows,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error",
-        err: err,
-      });
-    });
-};
-
 module.exports = {
   register,
   login,
   checkGoogleUser,
-  profileInfo
+  profileInfo,
 };

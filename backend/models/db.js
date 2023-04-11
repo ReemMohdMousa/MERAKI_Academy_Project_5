@@ -20,12 +20,13 @@ const { Pool, Client } = require("pg");
   port: "5432",
 });  
 
-pool.connect((err, client) => {
+pool.connect((err, pool) => {
   if (err) {
     console.log("ERROR", err.message);
     return;
   }
   console.log("connected to", client.user);
 });
+
 
 module.exports = { pool };
