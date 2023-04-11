@@ -15,20 +15,19 @@ const params = useParams();
   const id = params.id;
 
    const dispatch=useDispatch()
-   const {posts} = useSelector((state) => {
-    return { posts: state.posts.posts };
+  
+  const { userinfo,token,userId,posts,auth } = useSelector((state) => {
+    return {
+      auth:state.auth,
+      userinfo: state.auth.userinfo,
+      token: state.auth.token,
+      userId: state.auth.userId,
+      posts: state.posts.posts, 
+    };
   });
-  const { userinfo } = useSelector((state) => {
-    return { userinfo: state.auth.userinfo };
-  });
-   /* const {token} = useSelector((state) => {
-    return { token: state.auth.token };
-  });
-  const {userId} = useSelector((state) => {
-    return { userId: state.auth.userId };
-  });
-*/
-const token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE4LCJyb2xlIjoyLCJpYXQiOjE2ODExMDczODYsImV4cCI6MTY4MTE5Mzc4Nn0.uVElWbGCw_-rfhcQddPKKkIHkvXVhORNEqDNGchKuXg'
+   
+ 
+  console.log(auth )
 useEffect(()=>{
 const getAllPostsByUserId=()=>{
     axios
@@ -47,6 +46,7 @@ const getAllPostsByUserId=()=>{
 getAllPostsByUserId()
 },[])
 
+ 
   return (
     <div>
     <div className="gradient-custom-2" style={{ backgroundColor: '#9de2ff' }}>

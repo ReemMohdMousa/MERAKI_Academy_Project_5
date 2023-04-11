@@ -10,9 +10,13 @@ const Posts = ({ post }) => {
   const [openComments, setopenComments] = useState(false);
   console.log(post);
   const dispatch = useDispatch();
-  const { userinfo } = useSelector((state) => {
-    return { userinfo: state.auth.userinfo };
+  const { userinfo,token,userId } = useSelector((state) => {
+    return { userinfo: state.auth.userinfo,
+      token: state.auth.token,
+      userId: state.auth.userId 
+    } 
   });
+   
   /* const {token} = useSelector((state) => {
     return { token: state.auth.token };
   });
@@ -20,28 +24,7 @@ const Posts = ({ post }) => {
     return { userId: state.auth.userId };
   });
 */
-  //const token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE4LCJyb2xlIjoyLCJpYXQiOjE2ODExMDczODYsImV4cCI6MTY4MTE5Mzc4Nn0.uVElWbGCw_-rfhcQddPKKkIHkvXVhORNEqDNGchKuXg'
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE4LCJyb2xlIjoyLCJpYXQiOjE2ODExNTM4MjAsImV4cCI6MTY4MTI0MDIyMH0.DGoFWIVvuOMTJL-148APXbnfwcVE99bW1UqwX4d_s4w";
-  const getAllUserInfo = () => {
-    axios
-      .get(`http://localhost:5000/users/info`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((Response) => {
-        console.log(Response.data.info);
-        dispatch(setUserInfo(Response.data.info));
-        //setAppointments(Response.data.appointment);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  useEffect(() => {
-    console.log("hi");
-    getAllUserInfo();
-  }, []);
-  //console.log(userinfo[0].firstname)
+  
 
   return (
     userinfo && (
@@ -50,7 +33,7 @@ const Posts = ({ post }) => {
           <div className="user">
             <div className="userInfo">
               <img
-                src={userinfo.avatar ?userinfo.avatar :'https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg'}
+                src={userinfo.avatar  ?userinfo.avatar :'https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg'}
                 alt=""
               />
               <div className="details">
