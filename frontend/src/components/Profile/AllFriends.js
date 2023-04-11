@@ -57,7 +57,7 @@ const AllFriends = ({ id }) => {
       })
       .then(function (response) {
         console.log(response.data);
-        dispatch(removeFriend());
+        dispatch(removeFriend(user2_id));
       })
       .catch(function (error) {
         throw error;
