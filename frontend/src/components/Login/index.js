@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import "./style.css";
 import axios from "axios";
@@ -6,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLogin, setUserId } from "../redux/reducers/auth";
+import { setLogin, setUserId,setUserInfo } from "../redux/reducers/auth";
 import { GoogleLogin } from "@react-oauth/google";
 
 import {
@@ -24,12 +23,15 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const state = useSelector((state) => {
+  const { isLoggedIn, token, userinfo, userId } = useSelector((state) => {
     return {
-      auth: state.auth,
+      isLoggedIn: state.auth.isLoggedIn,
+      userinfo: state.auth.userinfo,
+      token: state.auth.token,
+      userId: state.auth.userId,
     };
   });
-
+  console.log();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -47,6 +49,8 @@ const Login = () => {
         localStorage.setItem("token", result.data.token);
         localStorage.setItem("userId", result.data.userId);
         localStorage.setItem("isLoggedIn", true);
+        
+
         dispatch(setLogin(result.data.token));
         dispatch(setUserId(result.data.userId));
       })
@@ -55,16 +59,17 @@ const Login = () => {
         setMessage(error.response.data.message);
       });
   };
- 
+
   useEffect(() => {
-    if (state.auth.isLoggedIn) {
-      console.log(state.auth.isLoggedIn);
+
+    if (isLoggedIn) {
+
       navigate("/home");
+      getAllUserInfo();
     }
   });
 
-
-  const loginGoogle=(result)=>{
+  const loginGoogle = (result) => {
     const { credential, clientId } = result;
     axios
       .post("http://localhost:5000/users/google", {
@@ -76,24 +81,41 @@ const Login = () => {
         const fakePass = family_name + 123456;
 
         axios
-        .post("http://localhost:5000/users/login", {
-          email,
-          password: fakePass,
-        })
-        .then((result) => {
-          localStorage.setItem("token", result.data.token);
-          localStorage.setItem("userId", result.data.userId);
-          localStorage.setItem("isLoggedIn", true);
-          dispatch(setLogin(result.data.token));
-          dispatch(setUserId(result.data.userId));
-        })
-        .catch((err) => {
-          setShow(true);
-          setMessage(err.response.data.message);
-        });
-          
+          .post("http://localhost:5000/users/login", {
+            email,
+            password: fakePass,
+          })
+          .then((result) => {
+            localStorage.setItem("token", result.data.token);
+            localStorage.setItem("userId", result.data.userId);
+            localStorage.setItem("isLoggedIn", true);
+            dispatch(setLogin(result.data.token));
+            dispatch(setUserId(result.data.userId));
+          })
+          .catch((err) => {
+            setShow(true);
+            setMessage(err.response.data.message);
+          });
       });
-  }
+  };
+  const getAllUserInfo = () => {
+    axios
+      .get(`http://localhost:5000/users/info`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((Response) => {
+        console.log(Response.data.info);
+        dispatch(setUserInfo(Response.data.info));
+        //setAppointments(Response.data.appointment);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+   
+     
+  
+  console.log(userinfo);
   return (
     <div className="cont">
       <MDBContainer fluid>
@@ -151,25 +173,25 @@ const Login = () => {
                   </p>
                 </div>
                 <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Message</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{message}</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
-          <GoogleLogin
-            width={"90000px"}
-            theme={"filled_black"}
-            size={"large"}
-            onSuccess={loginGoogle}
-            onError={() => {
-              console.log("Login Failed");
-            }}
-          />
+                  <Modal.Header closeButton>
+                    <Modal.Title>Message</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>{message}</Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                      Close
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+                <GoogleLogin
+                  width={"90000px"}
+                  theme={"filled_black"}
+                  size={"large"}
+                  onSuccess={loginGoogle}
+                  onError={() => {
+                    console.log("Login Failed");
+                  }}
+                />
               </MDBCardBody>
             </MDBCard>
           </MDBCol>
@@ -180,5 +202,3 @@ const Login = () => {
 };
 
 export default Login;
-
-

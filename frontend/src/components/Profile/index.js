@@ -32,6 +32,7 @@ const Profile = () => {
   const params = useParams();
   const id = params.id;
 
+
   const dispatch = useDispatch();
 
   //redux states
@@ -63,6 +64,8 @@ const Profile = () => {
     getAllPostsByUserId();
   }, []);
 
+
+ 
   return (
     <div>
       <FriendRequests id={id} />

@@ -10,6 +10,7 @@ const Posts = ({ post }) => {
   const [openComments, setopenComments] = useState(false);
   console.log(post);
   const dispatch = useDispatch();
+<
 
   const { userinfo, token, userId } = useSelector((state) => {
     return {
@@ -19,24 +20,6 @@ const Posts = ({ post }) => {
     };
   });
 
-  const getAllUserInfo = () => {
-    axios
-      .get(`http://localhost:5000/users/info`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((Response) => {
-        dispatch(setUserInfo(Response.data.info));
-        //setAppointments(Response.data.appointment);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    getAllUserInfo();
-  }, []);
-
   return (
     userinfo && (
       <div className="posts">
@@ -44,11 +27,13 @@ const Posts = ({ post }) => {
           <div className="user">
             <div className="userInfo">
               <img
+
                 src={
                   userinfo.avatar
                     ? userinfo.avatar
                     : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                 }
+
                 alt=""
               />
               <div className="details">
