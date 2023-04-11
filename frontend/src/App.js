@@ -6,29 +6,38 @@ import NavBar from "./components/NavBar";
 import Register from "./components/Register";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Login from "./components/Login";
+import { useDispatch, useSelector } from "react-redux";
+import Home from "./components/Home/Home";
 
 const clientId =
-  "780019151998-ei1sl1vhch8egbkuff1ibrshuo1h68nd.apps.googleusercontent.com"; 
-
+  "780019151998-ei1sl1vhch8egbkuff1ibrshuo1h68nd.apps.googleusercontent.com";
 
 function App() {
+  //redux states
+  const { token, userId, isLoggedIn } = useSelector((state) => {
+    //return object contains the redux states
+    return {
+      userId: state.auth.userId,
+    };
+  });
+
   return (
     <GoogleOAuthProvider clientId={clientId}>
-    <div className="App">
-      <NavBar/>
-      <header className="App-header">
-        <h1>Project 5 </h1>
-      </header>
-      <Routes>
+      <div className="App">
+        <NavBar />
 
-        <Route path="/login" element={<Login/>} />
-        <Route path={"/register"} element={<Register/>} />
-        <Route path="/profile" element={<Profile />} />
+        <header className="App-header">
+          <h1>Project 5 </h1>
+        </header>
 
-      </Routes>
-    </div>
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path={"/register"} element={<Register />} />
+          <Route path="/profile/:id" element={<Profile />} />
+        </Routes>
+      </div>
     </GoogleOAuthProvider>
-
   );
 }
 

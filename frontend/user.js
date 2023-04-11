@@ -1,7 +1,6 @@
 const { genrateToken } = require("./config");
 
 const { pool } = require("../models/db");
-
 const { OAuth2Client } = require("google-auth-library");
 
 //const  = require("../models/patientSchema");
@@ -12,7 +11,7 @@ nodemailer = require("nodemailer");
 // const saltRounds = parseInt(process.env.SALT);
 
 const register = async (req, res) => {
-  console.log(req.body);
+  console.log(req.body)
   const { firstName, lastName, age, email, password, role_id } = req.body;
   try {
     const encryptedPassword = await bcrypt.hash(password, 7);
@@ -145,33 +144,33 @@ const checkGoogleUser = (req, res) => {
   });
 };
 
-const profileInfo = (req, res) => {
-  const user_id = req.token.userId;
-  const query = "SELECT * FROM users WHERE user_id=$1";
-  pool
-    .query(query, [user_id])
-    .then((result) => {
-      if (result.rows.length === 0) {
-        res.status(404).json({
-          success: false,
-          message: `The user: ${user_id} has no info`,
-        });
-      } else {
-        res.status(200).json({
-          success: true,
-          message: `All info for the user: ${user_id}`,
-          info: result.rows,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
+
+const profileInfo=(req,res)=>{
+  const user_id=req.token.userId
+  const query='SELECT * FROM users WHERE user_id=$1'
+  pool.query(query,[user_id])
+  .then((result) => {
+    if (result.rows.length === 0) {
+      res.status(404).json({
         success: false,
-        message: "Server error",
-        err: err,
+        message: `The user: ${user_id} has no info`,
       });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: `All info for the user: ${user_id}`,
+        info: result.rows,
+      });
+    }
+  })
+  .catch((err) => {
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      err: err,
     });
-};
+  });
+}
 
 const verfiyResjsterByEmail = (email, firstName, lastName) => {
   //const {email,firstName,lastName}=req.body
@@ -659,6 +658,5 @@ const verfiyResjsterByEmail = (email, firstName, lastName) => {
 module.exports = {
   register,
   login,
-  checkGoogleUser,
-  profileInfo,
+  checkGoogleUser,profileInfo
 };

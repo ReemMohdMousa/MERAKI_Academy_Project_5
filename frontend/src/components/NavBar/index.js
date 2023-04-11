@@ -30,6 +30,8 @@ const NavBar = () => {
     //return object contains the redux states
     return {
       token: state.auth.token,
+      isLoggedIn: state.auth.isLoggedIn,
+      userId: state.auth.userId,
     };
   });
 
@@ -48,8 +50,21 @@ const NavBar = () => {
       });
   }, []);
 
+  //navigations functions
   const goToMyProfile = () => {
     navigate(`/profile/${userId}`);
+  };
+
+  const login = () => {
+    navigate(`/login`);
+  };
+
+  const register = () => {
+    navigate(`/register`);
+  };
+
+  const goToHome = () => {
+    navigate(`/home`);
   };
 
   return (
@@ -71,7 +86,11 @@ const NavBar = () => {
 
             <MDBCollapse navbar show={showBasic}>
               <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
-                <MDBNavbarItem>
+                <MDBNavbarItem
+                  onClick={() => {
+                    goToHome();
+                  }}
+                >
                   <MDBNavbarLink active aria-current="page" href="#">
                     Home
                   </MDBNavbarLink>
@@ -102,7 +121,43 @@ const NavBar = () => {
           </MDBContainer>
         </MDBNavbar>
       ) : (
-        ""
+        <MDBNavbar expand="lg" light bgColor="light">
+          <MDBContainer fluid>
+            <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
+
+            <MDBNavbarToggler
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+              style={{ border: " 1px solid black" }}
+              onClick={() => setShowBasic(!showBasic)}
+            >
+              <MDBIcon icon="bars" fas />
+            </MDBNavbarToggler>
+
+            <MDBCollapse navbar show={showBasic}>
+              <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
+                <MDBNavbarItem
+                  onClick={() => {
+                    login();
+                  }}
+                >
+                  <MDBNavbarLink active aria-current="page" href="#">
+                    Login
+                  </MDBNavbarLink>
+                </MDBNavbarItem>
+
+                <MDBNavbarItem
+                  onClick={() => {
+                    register();
+                  }}
+                >
+                  <MDBNavbarLink active>Register</MDBNavbarLink>
+                </MDBNavbarItem>
+              </MDBNavbarNav>
+            </MDBCollapse>
+          </MDBContainer>
+        </MDBNavbar>
       )}
     </div>
   );

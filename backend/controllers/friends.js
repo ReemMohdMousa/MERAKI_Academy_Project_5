@@ -21,7 +21,7 @@ const AddFriendRequest = (req, res) => {
         res.status(200).json({
           success: true,
           message: "Friend request sent successfully",
-          result: result.rows[0],
+          result: result.rows,
         });
       })
       .catch((err) => {
@@ -60,7 +60,7 @@ const getAllSentRequestByUserId = (req, res) => {
         res.status(200).json({
           success: true,
           message: "Sent Requests",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
@@ -94,7 +94,7 @@ const getAllReceivedRequestByUserId = (req, res) => {
         res.status(200).json({
           success: true,
           message: "Received Requests",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
@@ -180,7 +180,7 @@ const acceptFriendRequest = async (req, res) => {
         res.status(200).json({
           success: true,
           message: "Friend request accepted successfully",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
@@ -218,7 +218,7 @@ const CancelFriendRequest = (req, res) => {
         res.status(200).json({
           success: true,
           message: "Friend request canceled successfully",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
@@ -254,7 +254,7 @@ const declineTheFriendReq = (req, res) => {
         res.status(200).json({
           success: true,
           message: "Friend request declined successfully",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
@@ -289,7 +289,7 @@ WHERE user1_id=$1 OR user1_id=$2 AND user2_id=$1 OR user2_id=$2
         res.status(200).json({
           success: true,
           message: "Friend deleted successfully",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
@@ -303,11 +303,11 @@ WHERE user1_id=$1 OR user1_id=$2 AND user2_id=$1 OR user2_id=$2
 };
 
 const getAllFriendsByUserId = (req, res) => {
-  user_id = req.token.userId;
+  const user_id = req.params.id;
   const request_id = req.params.request_id;
 
-  const query = `SELECT * FROM friends AS F, users AS U WHERE CASE WHEN 
-  F.user1_id = $1 THEN F.user2_id = U.User_id WHEN F.user2_id = $1 THEN 
+  const query = `SELECT  id, accepted_at, user_id, firstname, lastname, avatar FROM friends AS F, users AS U WHERE CASE WHEN  
+  F.user1_id = $1 THEN F.user2_id = U.user_id WHEN F.user2_id = $1 THEN 
   F.user1_id = U.user_id END 
   
   `;
@@ -326,7 +326,7 @@ const getAllFriendsByUserId = (req, res) => {
         res.status(200).json({
           success: true,
           message: "All friends",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
@@ -338,6 +338,43 @@ const getAllFriendsByUserId = (req, res) => {
       });
     });
 };
+
+// const isFriend = () => {
+//   const loggedUserId = req.token.userId;
+//   const visitedProfileUser = req.params.id;
+
+//   const query = `SELECT  id, accepted_at, user_id, firstname, lastname, avatar FROM friends AS F, users AS U WHERE CASE WHEN  
+//   F.user1_id = $1 THEN F.user2_id = U.user_id WHEN F.user2_id = $1 THEN 
+//   F.user1_id = U.user_id END 
+  
+//   `;
+
+//   const data = [loggedUserId, visitedProfileUser];
+
+//   pool
+//     .query(query, data)
+//     .then((result) => {
+//       if (result.rowCount === 0) {
+//         res.status(404).json({
+//           success: false,
+//           message: `No Friends Found`,
+//         });
+//       } else {
+//         res.status(200).json({
+//           success: true,
+//           message: "All friends",
+//           result: result.rows,
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       res.status(500).json({
+//         success: false,
+//         message: "Server error",
+//         err: err,
+//       });
+//     });
+// };
 
 module.exports = {
   AddFriendRequest,

@@ -12,32 +12,16 @@ const Posts = ({ post }) => {
   const [openComments, setopenComments] = useState(false);
   console.log(post);
   const dispatch = useDispatch();
-  const { userinfo } = useSelector((state) => {
-    return { userinfo: state.auth.userinfo };
-  });
-  const { token, userId } = useSelector((state) => {
-    return { token: state.auth.token, userId: state.auth.userId };
+
+
+  const { userinfo, token, userId } = useSelector((state) => {
+    return {
+      userinfo: state.auth.userinfo,
+      token: state.auth.token,
+      userId: state.auth.userId,
+    };
   });
 
-  const getAllUserInfo = () => {
-    axios
-      .get(`http://localhost:5000/users/info`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((Response) => {
-        console.log(Response.data.info);
-        dispatch(setUserInfo(Response.data.info));
-        //setAppointments(Response.data.appointment);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  useEffect(() => {
-    console.log("hi");
-    getAllUserInfo();
-  }, []);
-  //console.log(userinfo[0].firstname)
 
   return (
     userinfo && (
