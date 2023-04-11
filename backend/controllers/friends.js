@@ -306,8 +306,8 @@ const getAllFriendsByUserId = (req, res) => {
   user_id = req.token.userId;
   const request_id = req.params.request_id;
 
-  const query = `SELECT * FROM friends AS F, users AS U WHERE CASE WHEN 
-  F.user1_id = $1 THEN F.user2_id = U.User_id WHEN F.user2_id = $1 THEN 
+  const query = `SELECT  id, accepted_at, user_id, firstname, lastname FROM friends AS F, users AS U WHERE CASE WHEN  
+  F.user1_id = $1 THEN F.user2_id = U.user_id WHEN F.user2_id = $1 THEN 
   F.user1_id = U.user_id END 
   
   `;
@@ -326,7 +326,7 @@ const getAllFriendsByUserId = (req, res) => {
         res.status(200).json({
           success: true,
           message: "All friends",
-          result: result.rows[0],
+          result: result.rows,
         });
       }
     })
