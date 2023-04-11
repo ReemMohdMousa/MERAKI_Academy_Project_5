@@ -29,7 +29,6 @@ export const auth = createSlice({
       state.userinfo = action.payload[0];
       localStorage.setItem("userinfo", action.payload[0]);
     },
- 
   },
 });
 export const { setLogin, setUserId, setLogout, setUserInfo } = auth.actions;

@@ -31,13 +31,15 @@ const FriendRequests = ({ id }) => {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, userId, isLoggedIn } = useSelector((state) => {
+  const { token, userId, isLoggedIn, friends } = useSelector((state) => {
     //return object contains the redux states
     return {
       userId: state.auth.userId,
+      token: state.auth.token,
+      isLoggedIn: state.auth.isLoggedIn,
+      friends: state.friends.friends,
     };
   });
-
 
   //get all friends of the loggedin user
   useEffect(() => {
@@ -46,7 +48,11 @@ const FriendRequests = ({ id }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data);
+        // console.log(
+        //   "*************************************************************************"
+        // );
+        // console.log(response.data);
+        dispatch(getAlluserFriends(response.data.result));
       })
       .catch(function (error) {
         throw error;
