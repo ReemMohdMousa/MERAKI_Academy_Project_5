@@ -1,50 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {
-  MDBContainer,
-  MDBNavbar,
-  MDBNavbarBrand,
-  MDBNavbarToggler,
-  MDBIcon,
-  MDBNavbarNav,
-  MDBNavbarItem,
-  MDBNavbarLink,
-  MDBBtn,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem,
-  MDBCollapse,
-} from "mdb-react-ui-kit";
-import { useNavigate, useParams} from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import Card from "react-bootstrap/Card";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import { setLogout } from "../redux/reducers/auth";
 
 const Search = () => {
-  const [searchValue, setSearchValue] = useState("");
-  const [showResult, setShowResult] = useState(false);
+  const [searchResult, setSearchResult] = useState("");
 
-  //useNavigate
-  const navigate = useNavigate();
-
-  //useDispatch
-  const dispatch = useDispatch();
-
-  //redux login states
-  const { token, userId, isLoggedIn } = useSelector((state) => {
-    //return object contains the redux states
-    return {
-      token: state.auth.token,
-      isLoggedIn: state.auth.isLoggedIn,
-      userId: state.auth.userId,
-    };
-  });
   const { user } = useParams();
   useEffect(() => {
     axios
       .get(`http://localhost:5000/search?firstName=${user}`)
       .then((result) => {
         console.log(result.data);
+        setSearchResult(result.data.result);
       })
       .catch((error) => {
         throw error;
@@ -52,7 +20,30 @@ const Search = () => {
   }, []);
 
   return (
-   <div>""hello from search result</div>
+    <div>
+      {searchResult &&
+        searchResult.map((element, i) => {
+          return (
+            <Card
+              style={{ width: "40rem", marginLeft: "4rem", marginTop: "2rem" }}
+            >
+              <div className="friend-list">
+                <div className="friend-img-name">
+                  <img
+                    className="friend-img"
+                    src={
+                      element.avatar ||
+                      "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                    }
+                  />
+
+                  <h6>{element.firstname + " " + element.lastname}</h6>
+                </div>
+              </div>
+            </Card>
+          );
+        })}
+    </div>
   );
 };
 
