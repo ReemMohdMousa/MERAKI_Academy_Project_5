@@ -1,19 +1,15 @@
 const { pool } = require("../models/db");
 
 const mainSearch = (req, res) => {
-  const value = req.query;
+  const value = req.query.firstName;
+  const val = value.charAt(0).toUpperCase() + value.slice(1);
 
-  const a = Object.keys(value).join().replaceAll('"', "");
-  const b = Object.values(value).join().toString();
-
-  const query = `SELECT firstName, lastName, avatar, coverImg, bio,content, video, image, post_id, likes FROM users
-    INNER JOIN posts ON users.user_id=posts.user_id  
-         WHERE to_tsvector(${a}) @@ to_tsquery($1)`;
+  const query = `SELECT firstName, lastName, avatar, user_id FROM users
+      WHERE to_tsvector(firstName) @@ to_tsquery($1) OR firstName LIKE  '%${value}%' OR lastName LIKE '%${value}%' OR firstName LIKE  '${val}%' OR lastName LIKE '${val}%'`;
 
   pool
-    .query(query, [b])
+    .query(query, [value])
     .then((result) => {
-      console.log(result);
       res.status(201).json({
         success: true,
         message: "Results",
