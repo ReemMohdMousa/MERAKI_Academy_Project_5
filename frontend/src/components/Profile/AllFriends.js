@@ -13,6 +13,7 @@ import {
   cancelFriendReq,
   declineFriendReq,
   removeFriend,
+  isTheUserIsFriend,
 } from "../redux/reducers/friends/index";
 
 const AllFriends = ({ id }) => {
@@ -34,7 +35,7 @@ const AllFriends = ({ id }) => {
     };
   });
 
-  //get all friends of the loggedin user
+  //!get all friends of any person depending on the user id
   useEffect(() => {
     axios
       .get(`http://localhost:5000/friends/get/all/${id}`, {
@@ -42,13 +43,16 @@ const AllFriends = ({ id }) => {
       })
       .then(function (response) {
         dispatch(getAlluserFriends(response.data.result));
+
+        //check if this profile is a friend of the loggedin user
+        dispatch(isTheUserIsFriend(userId));
       })
       .catch(function (error) {
         throw error;
       });
   }, []);
 
-  //!remove friend function
+  //*remove friend function
   // i need the user2_id as a params (the friend id i want to remove)
   const UnFriend = (user2_id) => {
     axios
@@ -75,38 +79,39 @@ const AllFriends = ({ id }) => {
           <Modal.Title>Friends</Modal.Title>
         </Modal.Header>
         <Modal.Body className="friend-list-body">
-          {friends.length == 0 ? "No Friends" : friends &&
-            friends.map((element, i) => {
-              return (
-                <div className="friend-list">
-                  <div className="friend-img-name">
-                    <img
-                      className="friend-img"
-                      src={
-                        element.avatar ||
-                        "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                      }
-                    />
+          {friends.length == 0
+            ? "No Friends"
+            : friends &&
+              friends.map((element, i) => {
+                return (
+                  <div className="friend-list">
+                    <div className="friend-img-name">
+                      <img
+                        className="friend-img"
+                        src={
+                          element.avatar ||
+                          "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                        }
+                      />
 
-                    <h6>{element.firstname + " " + element.lastname}</h6>
+                      <h6>{element.firstname + " " + element.lastname}</h6>
+                    </div>
+                    {userId == id ? (
+                      <Button
+                        className="remove-btn"
+                        variant="danger"
+                        onClick={() => {
+                          UnFriend(element.user_id);
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    ) : (
+                      ""
+                    )}
                   </div>
-                  {userId == id ? (
-                    <Button
-                      className="remove-btn"
-                      variant="danger"
-                      onClick={() => {
-                        UnFriend(element.user_id);
-                      }}
-                    >
-                      Remove
-                    </Button>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              );
-            })}
-            
+                );
+              })}
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>

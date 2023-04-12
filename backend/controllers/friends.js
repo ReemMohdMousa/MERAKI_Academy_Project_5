@@ -7,6 +7,8 @@ const AddFriendRequest = (req, res) => {
   const status = "pending";
   const user_id = req.token.userId;
 
+  console.log(user2_id);
+
   //user 1 sent a friend request to user 2
   // sender_id: user 1 : user_id
   // receiver_id: user 2: friend_id
@@ -107,6 +109,43 @@ const getAllReceivedRequestByUserId = (req, res) => {
     });
 };
 
+//*middleware to handle adding friend request only once from backend
+const addRequestOnce = (req, res, next) => {
+  //the loggedin user
+  const user1_id = req.token.userId;
+
+  //the friend ID form body:
+  const { user2_id } = req.body;
+
+  const query = `SELECT * FROM friend_requests 
+    WHERE sender_id=$1 AND receiver_id=$2`;
+
+  const data = [user1_id, user2_id];
+
+  pool
+    .query(query, data)
+    .then((result) => {
+      console.log(result.rows);
+      //if the request not accepted yet
+      if (result.rows.length === 0) {
+        next();
+      } else {
+        res.status(200).json({
+          success: false,
+          message: "you have already sent the friend request",
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
 //*middleware to handle accepting friend request only once from backend
 const acceptRequestOnce = (req, res, next) => {
   //the loggedin user
@@ -120,7 +159,6 @@ const acceptRequestOnce = (req, res, next) => {
     user1_id=$1 AND user2_id=$2`;
 
   const data = [user1_id, sender_id];
-  console.log(data);
 
   pool
     .query(query, data)
@@ -153,18 +191,18 @@ const acceptFriendRequest = async (req, res) => {
   const user1_id = req.token.userId;
 
   //the request and the friend ID form body:
-  const { request_id, sender_id } = req.body;
+  const { user2_id } = req.body;
 
   const query = `INSERT INTO friends (user1_id, user2_id, accepted_at)
   VALUES ($1,$2, NOW())
   RETURNING *`;
 
   const deleteReqQuery = `DELETE FROM friend_requests 
-  WHERE request_id=$1
+  WHERE sender_id=$1 AND receiver_id=$2
   `;
 
-  const data = [user1_id, sender_id];
-  const data2 = [request_id];
+  const data = [user1_id, user2_id];
+  const data2 = [user2_id, user1_id];
   await pool.query(deleteReqQuery, data2);
 
   pool
@@ -196,14 +234,18 @@ const acceptFriendRequest = async (req, res) => {
 
 //when user who sent the friend request cancel the request
 const CancelFriendRequest = (req, res) => {
-  //the request ID:
-  const request_id = req.params.request_id;
+  //the receiver ID:
+  const receiver_id = req.params.id;
+
+  //user ID:
+  const sender_id = req.token.userId;
 
   const query = `DELETE FROM friend_requests 
-   WHERE request_id=$1 
+   WHERE sender_id=$1 AND receiver_id=$2
+   RETURNING *
 `;
 
-  const data = [request_id];
+  const data = [sender_id, receiver_id];
 
   pool
     .query(query, data)
@@ -211,7 +253,7 @@ const CancelFriendRequest = (req, res) => {
       if (result.rowCount === 0) {
         res.status(404).json({
           success: false,
-          message: `The request with id: ${request_id} is not found`,
+          message: `The request is not found`,
         });
       } else {
         console.log("enterd");
@@ -343,10 +385,10 @@ const getAllFriendsByUserId = (req, res) => {
 //   const loggedUserId = req.token.userId;
 //   const visitedProfileUser = req.params.id;
 
-//   const query = `SELECT  id, accepted_at, user_id, firstname, lastname, avatar FROM friends AS F, users AS U WHERE CASE WHEN  
-//   F.user1_id = $1 THEN F.user2_id = U.user_id WHEN F.user2_id = $1 THEN 
-//   F.user1_id = U.user_id END 
-  
+//   const query = `SELECT  id, accepted_at, user_id, firstname, lastname, avatar FROM friends AS F, users AS U WHERE CASE WHEN
+//   F.user1_id = $1 THEN F.user2_id = U.user_id WHEN F.user2_id = $1 THEN
+//   F.user1_id = U.user_id END
+
 //   `;
 
 //   const data = [loggedUserId, visitedProfileUser];
@@ -386,4 +428,5 @@ module.exports = {
   getAllReceivedRequestByUserId,
   getAllFriendsByUserId,
   acceptRequestOnce,
+  addRequestOnce,
 };
