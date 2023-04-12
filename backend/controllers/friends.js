@@ -191,18 +191,18 @@ const acceptFriendRequest = async (req, res) => {
   const user1_id = req.token.userId;
 
   //the request and the friend ID form body:
-  const { request_id, sender_id } = req.body;
+  const { user2_id } = req.body;
 
   const query = `INSERT INTO friends (user1_id, user2_id, accepted_at)
   VALUES ($1,$2, NOW())
   RETURNING *`;
 
   const deleteReqQuery = `DELETE FROM friend_requests 
-  WHERE request_id=$1
+  WHERE sender_id=$1 AND receiver_id=$2
   `;
 
-  const data = [user1_id, sender_id];
-  const data2 = [request_id];
+  const data = [user1_id, user2_id];
+  const data2 = [user2_id, user1_id];
   await pool.query(deleteReqQuery, data2);
 
   pool
@@ -242,6 +242,7 @@ const CancelFriendRequest = (req, res) => {
 
   const query = `DELETE FROM friend_requests 
    WHERE sender_id=$1 AND receiver_id=$2
+   RETURNING *
 `;
 
   const data = [sender_id, receiver_id];
