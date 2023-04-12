@@ -109,6 +109,43 @@ const getAllReceivedRequestByUserId = (req, res) => {
     });
 };
 
+//*middleware to handle adding friend request only once from backend
+const addRequestOnce = (req, res, next) => {
+  //the loggedin user
+  const user1_id = req.token.userId;
+
+  //the friend ID form body:
+  const { user2_id } = req.body;
+
+  const query = `SELECT * FROM friend_requests 
+    WHERE sender_id=$1 AND receiver_id=$2`;
+
+  const data = [user1_id, user2_id];
+
+  pool
+    .query(query, data)
+    .then((result) => {
+      console.log(result.rows);
+      //if the request not accepted yet
+      if (result.rows.length === 0) {
+        next();
+      } else {
+        res.status(200).json({
+          success: false,
+          message: "you have already sent the friend request",
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
 //*middleware to handle accepting friend request only once from backend
 const acceptRequestOnce = (req, res, next) => {
   //the loggedin user
@@ -122,7 +159,6 @@ const acceptRequestOnce = (req, res, next) => {
     user1_id=$1 AND user2_id=$2`;
 
   const data = [user1_id, sender_id];
-  console.log(data);
 
   pool
     .query(query, data)
@@ -388,4 +424,5 @@ module.exports = {
   getAllReceivedRequestByUserId,
   getAllFriendsByUserId,
   acceptRequestOnce,
+  addRequestOnce,
 };
