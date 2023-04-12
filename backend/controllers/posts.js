@@ -51,7 +51,9 @@ const getPostsByUser = (req, res) => {
   const user_id = req.token.userId;
 
   const query = `SELECT * FROM posts 
-   WHERE user_id = $1 AND is_deleted=0;`;
+  WHERE user_id = $1 AND is_deleted=0
+  ORDER BY created_at DESC
+`;
   const data = [user_id];
 
   pool

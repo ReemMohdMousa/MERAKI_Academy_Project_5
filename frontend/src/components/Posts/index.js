@@ -8,11 +8,14 @@ import { setUserInfo } from "../redux/reducers/auth/index";
 import Dropdown from "react-bootstrap/Dropdown";
 import { format } from "timeago.js";
 import Iframe from "react-iframe";
+import UpdatePost from "../AddPost/UpdatePost";
+
 const Posts = ({ post }) => {
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
   const [openComments, setopenComments] = useState(false);
   console.log(post);
   const dispatch = useDispatch();
-
 
   const { userinfo, token, userId } = useSelector((state) => {
     return {
@@ -21,7 +24,6 @@ const Posts = ({ post }) => {
       userId: state.auth.userId,
     };
   });
-
 
   return (
     userinfo && (
@@ -39,7 +41,7 @@ const Posts = ({ post }) => {
               />
               <div className="details">
                 <Link
-                  to={"/profile"}
+                  to={`/profile/${userId}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <span className="name">
@@ -66,7 +68,13 @@ const Posts = ({ post }) => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Edit Post</Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    setShow(true);
+                  }}
+                >
+                  Edit Post
+                </Dropdown.Item>
                 <Dropdown.Item href="#/action-2">Delete Post</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -74,7 +82,12 @@ const Posts = ({ post }) => {
           <div className="contant">
             <p>{post.content}</p>
             <img src={post.image} alt="" />
-            <embed type="video/webm" src={post.video} width="200" height="300"/>
+            <embed
+              type="video/webm"
+              src={post.video}
+              width="400"
+              height="500"
+            />
           </div>
           <div className="infomation">
             <div className="item">
@@ -124,6 +137,8 @@ const Posts = ({ post }) => {
           </div>
           {/*condition comments  */}
           {openComments && <Comments />}
+          {show ? <UpdatePost showModal={show} post={post} setShowModal={setShow} />:""}
+          
         </div>
       </div>
     )
