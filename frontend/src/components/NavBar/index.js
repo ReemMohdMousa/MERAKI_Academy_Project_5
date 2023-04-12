@@ -18,6 +18,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { setLogout } from "../redux/reducers/auth";
 
 const NavBar = () => {
   const [showBasic, setShowBasic] = useState(false);
@@ -25,6 +26,9 @@ const NavBar = () => {
 
   //useNavigate
   const navigate = useNavigate();
+
+  //useDispatch
+  const dispatch = useDispatch();
 
   //redux login states
   const { token, userId, isLoggedIn } = useSelector((state) => {
@@ -117,6 +121,12 @@ const NavBar = () => {
 
                 <MDBNavbarItem>
                   <MDBNavbarLink href="#">Friend Requests</MDBNavbarLink>
+                </MDBNavbarItem>
+
+                <MDBNavbarItem onClick={() => {
+                     dispatch(setLogout())
+                  }}>
+                  <MDBNavbarLink href="#">Logout</MDBNavbarLink>
                 </MDBNavbarItem>
               </MDBNavbarNav>
 
