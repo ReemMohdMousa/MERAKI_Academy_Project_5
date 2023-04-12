@@ -14,6 +14,7 @@ import {
   declineFriendReq,
   removeFriend,
   isFriendFun,
+  isTheUserIsFriend,
 } from "../redux/reducers/friends/index";
 
 const AllFriends = ({ id }) => {
@@ -41,15 +42,11 @@ const AllFriends = ({ id }) => {
       .get(`http://localhost:5000/friends/get/all/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then(async function (response) {
+      .then(function (response) {
         dispatch(getAlluserFriends(response.data.result));
 
         //check if this profile is a friend of the loggedin user
-        await friends.map((element) => {
-          if (element.user_id == userId) {
-            dispatch(isFriendFun(true));
-          }
-        });
+        dispatch(isTheUserIsFriend(userId));
       })
       .catch(function (error) {
         throw error;

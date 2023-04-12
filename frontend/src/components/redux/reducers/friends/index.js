@@ -16,6 +16,14 @@ export const friends = createSlice({
       state.friends = action.payload;
     },
 
+    isTheUserIsFriend: (state, action) => {
+      state.friends.map((element) => {
+        if (element.user_id == action.payload) {
+          state.isFriend = true;
+        }
+      });
+    },
+
     isFriendFun: (state, action) => {
       state.isFriend = true;
     },
@@ -58,6 +66,7 @@ export const {
   declineFriendReq,
   removeFriend,
   isFriendFun,
+  isTheUserIsFriend,
 } = friends.actions;
 
 export default friends.reducer;

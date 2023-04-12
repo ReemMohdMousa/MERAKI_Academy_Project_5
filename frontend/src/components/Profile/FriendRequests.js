@@ -22,8 +22,15 @@ import {
   MDBCardText,
   MDBCardBody,
   MDBCardImage,
-  MDBBtn,
   MDBTypography,
+} from "mdb-react-ui-kit";
+
+import {
+  MDBDropdown,
+  MDBDropdownMenu,
+  MDBDropdownToggle,
+  MDBDropdownItem,
+  MDBBtn,
 } from "mdb-react-ui-kit";
 
 const FriendRequests = ({ id }) => {
@@ -75,12 +82,10 @@ const FriendRequests = ({ id }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data.result);
-
-        //response.data.result => array of add requests
+        //response.data.result => array of received requests
         response.data.result.map((element, i) => {
-          if (element.receiver_id == id) {
-            setIsReqAdded(true);
+          if (element.sender_id == id) {
+            setisReqReceived(true);
           }
         });
       })
@@ -91,6 +96,7 @@ const FriendRequests = ({ id }) => {
 
   useEffect(() => {
     checkIfReqWasSent();
+    checkIfReqWasReceived();
   }, []);
 
   //add friend request
@@ -112,18 +118,17 @@ const FriendRequests = ({ id }) => {
   };
 
   //cancel friend request
-  //! i need the request id as a params
   const cancelFriendReqFun = () => {
     axios
-      .delete(
-        `http://localhost:5000/friends/cancel`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
+      .delete(`http://localhost:5000/friends/cancel/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(function (response) {
-        console.log(response.data);
+        response.data.result.map((element, i) => {
+          if (element.receiver_id == id) {
+            setIsReqAdded(false);
+          }
+        });
       })
       .catch(function (error) {
         throw error;
@@ -146,22 +151,33 @@ const FriendRequests = ({ id }) => {
       });
   };
 
-  console.log("ffffff", isFriend);
-
   return (
     <div>
       {userId == id || isFriend ? (
         ""
       ) : isReqAdded ? (
-        <button>Cancel Request</button>
+        <MDBBtn color="danger" onClick={cancelFriendReqFun}>
+          Cancel Request
+        </MDBBtn>
+      ) : isReqReceived ? (
+        <MDBDropdown>
+          <MDBDropdownToggle color="success">
+            Respond to request
+          </MDBDropdownToggle>
+          <MDBDropdownMenu>
+            <MDBDropdownItem link>Accept</MDBDropdownItem>
+            <MDBDropdownItem link>Decline</MDBDropdownItem>
+          </MDBDropdownMenu>
+        </MDBDropdown>
       ) : (
-        <button
+        <MDBBtn
+          color="primary"
           onClick={() => {
             addFriendFun(id);
           }}
         >
           Add Friend
-        </button>
+        </MDBBtn>
       )}
     </div>
   );
