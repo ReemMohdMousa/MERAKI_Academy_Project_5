@@ -28,74 +28,83 @@ import {
 
 const FriendRequests = ({ id }) => {
   //componant states and variables
-  let isFriend = false;
+  const [isReqAdded, setIsReqAdded] = useState(false);
+  const [isReqReceived, setisReqReceived] = useState(false);
 
   //dispatch
   const dispatch = useDispatch();
 
   //redux states
-  const { token, userId, isLoggedIn, friends } = useSelector((state) => {
-    //return object contains the redux states
-    return {
-      userId: state.auth.userId,
-      token: state.auth.token,
-      isLoggedIn: state.auth.isLoggedIn,
-      friends: state.friends.friends,
-    };
-  });
+  const { token, userId, isLoggedIn, friends, isFriend } = useSelector(
+    (state) => {
+      //return object contains the redux states
+      return {
+        userId: state.auth.userId,
+        token: state.auth.token,
+        isLoggedIn: state.auth.isLoggedIn,
+        friends: state.friends.friends,
+        isFriend: state.friends.isFriend,
+      };
+    }
+  );
 
-  //get user info
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/users/info`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(function (response) {
-        console.log(response.data.info);
-      })
-      .catch(function (error) {
-        throw error;
-      });
-  }, []);
-
-  //!check if the visited profile user is friend of the logged user, ERROR with useEffect
-  const checkIfUser = () => {
-    friends.forEach((element) => {
-      if (element.user_id == userId) {
-        isFriend = true;
-      }
-    });
-  };
-  checkIfUser();
-
+  // change the isReqAdded state
   const checkIfReqWasSent = () => {
     axios
       .get(`http://localhost:5000/friends/sent/requests`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data);
+        console.log(response.data.result);
+
+        //response.data.result => array of add requests
+        response.data.result.map((element, i) => {
+          if (element.receiver_id == id) {
+            setIsReqAdded(true);
+          }
+        });
       })
       .catch(function (error) {
         throw error;
       });
   };
 
-  checkIfReqWasSent();
+  const checkIfReqWasReceived = () => {
+    axios
+      .get(`http://localhost:5000/friends/received/requests`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        console.log(response.data.result);
+
+        //response.data.result => array of add requests
+        response.data.result.map((element, i) => {
+          if (element.receiver_id == id) {
+            setIsReqAdded(true);
+          }
+        });
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  };
+
+  useEffect(() => {
+    checkIfReqWasSent();
+  }, []);
 
   //add friend request
-  const addFriendFun = ({ user2_id }) => {
+  const addFriendFun = (id) => {
     axios
       .post(
         `http://localhost:5000/friends/add`,
-        { user2_id },
+        { user2_id: id },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then(function (response) {
         console.log(response.data);
-        dispatch(addFriend(response.data));
       })
       .catch(function (error) {
         throw error;
@@ -137,10 +146,14 @@ const FriendRequests = ({ id }) => {
       });
   };
 
+  console.log("ffffff", isFriend);
+
   return (
     <div>
       {userId == id || isFriend ? (
         ""
+      ) : isReqAdded ? (
+        <button>Cancel Request</button>
       ) : (
         <button
           onClick={() => {
