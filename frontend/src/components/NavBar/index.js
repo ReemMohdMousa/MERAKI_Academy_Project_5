@@ -21,6 +21,7 @@ import axios from "axios";
 
 const NavBar = () => {
   const [showBasic, setShowBasic] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   //useNavigate
   const navigate = useNavigate();
@@ -67,6 +68,17 @@ const NavBar = () => {
     navigate(`/home`);
   };
 
+  const searchNow = () => {
+    axios
+      .get(`http://localhost:5000/search?firstName=${searchValue}`)
+      .then((result) =>{
+        console.log(result.data);
+      })
+      .catch((error)=> {
+        throw error;
+      });
+  };
+
   return (
     <div>
       {isLoggedIn ? (
@@ -109,13 +121,19 @@ const NavBar = () => {
               </MDBNavbarNav>
 
               <form className="d-flex input-group w-auto">
+                 
                 <input
                   type="search"
                   className="form-control"
                   placeholder="Type query"
                   aria-label="Search"
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                  }}
                 />
-                <MDBBtn color="primary">Search</MDBBtn>
+                <MDBBtn color="primary" onClick={searchNow}>
+                  Search
+                </MDBBtn>
               </form>
             </MDBCollapse>
           </MDBContainer>

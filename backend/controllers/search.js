@@ -6,7 +6,7 @@ const mainSearch = (req, res) => {
   const a = Object.keys(value).join().replaceAll('"', "");
   const b = Object.values(value).join().toString();
 
-  const query = `SELECT firstName, lastName, avatar, coverImg, bio,content, video, image, likes FROM users
+  const query = `SELECT firstName, lastName, avatar, coverImg, bio,content, video, image, post_id, likes FROM users
     INNER JOIN posts ON users.user_id=posts.user_id  
          WHERE to_tsvector(${a}) @@ to_tsquery($1)`;
 
