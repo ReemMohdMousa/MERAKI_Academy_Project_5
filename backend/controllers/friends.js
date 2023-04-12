@@ -7,6 +7,8 @@ const AddFriendRequest = (req, res) => {
   const status = "pending";
   const user_id = req.token.userId;
 
+  console.log(user2_id);
+
   //user 1 sent a friend request to user 2
   // sender_id: user 1 : user_id
   // receiver_id: user 2: friend_id
@@ -343,10 +345,10 @@ const getAllFriendsByUserId = (req, res) => {
 //   const loggedUserId = req.token.userId;
 //   const visitedProfileUser = req.params.id;
 
-//   const query = `SELECT  id, accepted_at, user_id, firstname, lastname, avatar FROM friends AS F, users AS U WHERE CASE WHEN  
-//   F.user1_id = $1 THEN F.user2_id = U.user_id WHEN F.user2_id = $1 THEN 
-//   F.user1_id = U.user_id END 
-  
+//   const query = `SELECT  id, accepted_at, user_id, firstname, lastname, avatar FROM friends AS F, users AS U WHERE CASE WHEN
+//   F.user1_id = $1 THEN F.user2_id = U.user_id WHEN F.user2_id = $1 THEN
+//   F.user1_id = U.user_id END
+
 //   `;
 
 //   const data = [loggedUserId, visitedProfileUser];
