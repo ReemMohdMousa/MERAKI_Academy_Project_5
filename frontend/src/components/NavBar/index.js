@@ -73,14 +73,7 @@ const NavBar = () => {
   };
 
   const searchNow = () => {
-    axios
-      .get(`http://localhost:5000/search?firstName=${searchValue}`)
-      .then((result) =>{
-        console.log(result.data);
-      })
-      .catch((error)=> {
-        throw error;
-      });
+    navigate(`/home/${searchValue}`);
   };
 
   return (
@@ -123,19 +116,20 @@ const NavBar = () => {
                   <MDBNavbarLink href="#">Friend Requests</MDBNavbarLink>
                 </MDBNavbarItem>
 
-                <MDBNavbarItem onClick={() => {
-                     dispatch(setLogout())
-                  }}>
+                <MDBNavbarItem
+                  onClick={() => {
+                    dispatch(setLogout());
+                  }}
+                >
                   <MDBNavbarLink href="#">Logout</MDBNavbarLink>
                 </MDBNavbarItem>
               </MDBNavbarNav>
 
               <form className="d-flex input-group w-auto">
-                 
                 <input
                   type="search"
                   className="form-control"
-                  placeholder="Type query"
+                  placeholder="Search"
                   aria-label="Search"
                   onChange={(e) => {
                     setSearchValue(e.target.value);
