@@ -30,9 +30,10 @@ const AddPost = () => {
   const [showVideo, setShowVideo] = useState(false);
   const handleCloseVideo = () => setShowVideo(false);
   const handleShowVideo = () => setShowVideo(true);
+  
   const [post, setpost] = useState({});
   const dispatch = useDispatch();
-
+const[selectedvideo,setSelectedVideo]=useState("")
   const { token,userId,userinfo } = useSelector((state) => {
     return {
       token: state.auth.token,
@@ -44,6 +45,7 @@ const AddPost = () => {
   /********************************************/
   const [image, setImage] = useState("");
   const [video, setVedio] = useState("");
+  const [selectedimage,setSelectedImage]=useState("")
   const uploadImage = () => {
     const data = new FormData();
     data.append("file", image);
@@ -58,6 +60,8 @@ const AddPost = () => {
         //setpost()
         console.log("dataurl",data.url)
         setpost((image) => {
+          setDisabled(false)
+
          return { ...image, image: data.url };
         });
         
@@ -70,14 +74,16 @@ const uploadVedio = () => {
   data.append("file", video);
   data.append("upload_preset", "kowezfsv");
   data.append("cloud_name", "deqwvkyth");
-  fetch("  https://api.cloudinary.com/v1_1/deqwvkyth/image/upload", {
+  fetch(" https://api.cloudinary.com/v1_1/deqwvkyth/video/upload", {
     method: "post",
     body: data,
   })
     .then((resp) => resp.json())
     .then((data) => {
       //setpost()
+      console.log("dataurl",data.url)
       setpost((video) => {
+        setDisabled(false)
         return { ...video, video: data.url };
        
       });
@@ -88,22 +94,8 @@ const uploadVedio = () => {
  const [disabled,setDisabled]=useState(false)
 const AddingPost =async () => {
 
-    if(image)
-    {
-      if(! post.image)
-      {
-        setDisabled(true)
-
-      }
-    }
-    if(video)
-    {
-      if(! post.video)
-      {
-        setDisabled(true)
-
-      }
-    }
+    
+ 
     axios
       .post(
         "http://localhost:5000/posts",
@@ -122,7 +114,7 @@ const AddingPost =async () => {
 
   return (
     userinfo && (
-      <div className="posts" style={{ height: "300px" }}>
+      <div className="posts" style={{ height: "400px" }}>
         <div className="containers">
           <div className="user">
             <div className="userInfo">
@@ -143,11 +135,11 @@ const AddingPost =async () => {
                     {userinfo.firstname} {userinfo.lastname}
                   </span>
                 </Link>
-                <span className="date">imin</span>
+                <span className="date">{Date()}</span>
               </div>
             </div>
           </div>
-          <div className="contant1" style={{ marginTop: "-23px" }}>
+          <div className="contant1" style={{ marginTop: "-10px" }}>
          
             <section>
               <MDBContainer>
@@ -156,7 +148,7 @@ const AddingPost =async () => {
                     <MDBCard style={{ borderRadius: "15px" }}>
                       <MDBCardBody className="p-4">
                         <MDBInput
-                          style={{ height: "90px" }}
+                          style={{ height: "80px" }}
                           wrapperClass="mb-4"
                           placeholder="whats in your mind"
                           id="form1"
@@ -167,6 +159,10 @@ const AddingPost =async () => {
                             });
                           }}
                         />
+                        {post.video&& <p variant="success" style={{backgroundColor:"green", width:"50%",marginLeft:"120px",padding:"15px"}}>video Uplodded successfully</p>}
+                       
+                        {post.image&& <p variant="success" style={{backgroundColor:"green", width:"50%",marginLeft:"120px",padding:"15px"}}>image Uplodded successfully</p>}
+                        {disabled  && (<div><p variant="warning">Please wait untile file uploaded</p><img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif"/></div>)}
                         <hr className="my-4" />
                         <div className="d-flex justify-content-start align-items-center">
                           <MDBCardText className="text-uppercase mb-0">
@@ -226,7 +222,7 @@ const AddingPost =async () => {
                             color="dark"
                             floating
                             size="sm"
-                            disabled={disabled}
+                           
                             style={{ width: "25%", marginLeft: "50px" }}
                             onClick={() => {
                               console.log("totalpost",post)
@@ -244,11 +240,13 @@ const AddingPost =async () => {
               </MDBContainer>
             </section>
     
-            <Modal className="popup" show={show} onHide={handleClose}>
+            <Modal  show={show} onHide={handleClose}>
               <Modal.Header>
-                <Modal.Title>Choose Image</Modal.Title>
+
+                
               </Modal.Header>
               <Modal.Body>
+                <div className="modalcontainer">
                 <MDBFile
                   label=""
                   size="sm"
@@ -256,41 +254,76 @@ const AddingPost =async () => {
                   accept="image/*"
                   onChange={(e) => {
                     setImage(e.target.files[0]);
+                    setSelectedImage( URL.createObjectURL(e.target.files[0]))
                   }}
                 />
+               <div className="imgarea">
+                <svg className="icon" xmlns="http://www.w3.org/2000/svg"fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">
+  <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z"/>
+</svg>
+<h3>Upload Image</h3>
+<img src={selectedimage}/>
+            
+
+
+</div>
+                
+                </div>
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
-                  close
+                  Cancel
                 </Button>
                 <Button
                   variant="primary"
                   onClick={(e) => {
                     uploadImage()
-                    // UpdateByID(article._id, i);
-                  
+                    if(image)
+                    {
+                      if(! post.image)
+                      {
+                        setDisabled(true)
+                
+                      }
+                    }
                     handleClose();
                   }}
                 >
-                  Save
+                  SelectImage
                 </Button>
+                
               </Modal.Footer>
             </Modal>
          
             <Modal className="popup" show={showVideo} onHide={handleCloseVideo}>
               <Modal.Header>
-                <Modal.Title>Choose Video</Modal.Title>
+               
               </Modal.Header>
               <Modal.Body>
-                <MDBFile
+               
+                 <div className="modalcontainer">
+                 <MDBFile
                   label=""
                   size="sm"
                   id="formFileSm"
                   accept="video/mp3 ,gif/*"
                   onChange={(e) => {
                     setVedio(e.target.files[0]);
+                    setSelectedVideo(URL.createObjectURL(e.target.files[0]))
                   }}
                 />
+               <div className="imgarea">
+                <svg className="icon" xmlns="http://www.w3.org/2000/svg"fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">
+  <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z"/>
+</svg>
+<h3>Upload vedio</h3>
+<embed src={selectedvideo}/>
+            
+
+
+</div>
+                
+                </div>
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseVideo}>
@@ -301,6 +334,18 @@ const AddingPost =async () => {
                   onClick={(e) => {
                     // UpdateByID(article._id, i);
                     uploadVedio()
+                    if(video)
+                    {
+                      if(! post.video)
+                      {
+                        setDisabled(true)
+                
+                      }
+                      else{
+                        setDisabled(false)
+                      }
+                    }
+                  
                     handleCloseVideo();
                   }}
                 >

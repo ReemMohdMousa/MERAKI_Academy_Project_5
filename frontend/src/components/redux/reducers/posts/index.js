@@ -20,13 +20,16 @@ export const posts = createSlice({
       //   })
     },
     updatePost: (state, action) => {
-      state.posts.map((elem, i) => {
-        if (elem.id === action.payload.id) {
-          return state.posts.splice(i, 1, action.payload.updatedArticle);
-        }
-        return elem;
-        //dont forget return please
-      });
+
+        console.log("payload",action.payload)
+        state.posts.map((elem,i)=>{
+            if(elem.post_id==action.payload.updatedpost.post_id)
+            {
+                return(state.posts.splice(i,1,action.payload.updatedpost))
+            }
+            return elem
+            //dont forget return please
+        })
     },
     removePost: (state, action) => {
       state.posts.forEach((elem, idx) => {
