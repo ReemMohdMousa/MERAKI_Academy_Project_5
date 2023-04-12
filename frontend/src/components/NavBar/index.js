@@ -58,22 +58,27 @@ const NavBar = () => {
   //navigations functions
   const goToMyProfile = () => {
     navigate(`/profile/${userId}`);
+    setShowBasic(false);
   };
 
   const login = () => {
     navigate(`/login`);
+    setShowBasic(false);
   };
 
   const register = () => {
     navigate(`/register`);
+    setShowBasic(false);
   };
 
   const goToHome = () => {
     navigate(`/home`);
+    setShowBasic(false);
   };
 
   const searchNow = () => {
     navigate(`/home/${searchValue}`);
+    setShowBasic(false);
   };
 
   return (
@@ -119,6 +124,8 @@ const NavBar = () => {
                 <MDBNavbarItem
                   onClick={() => {
                     dispatch(setLogout());
+                    setShowBasic(false);
+                    navigate("/login");
                   }}
                 >
                   <MDBNavbarLink href="#">Logout</MDBNavbarLink>
