@@ -18,12 +18,17 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { setLogout } from "../redux/reducers/auth";
 
 const NavBar = () => {
   const [showBasic, setShowBasic] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   //useNavigate
   const navigate = useNavigate();
+
+  //useDispatch
+  const dispatch = useDispatch();
 
   //redux login states
   const { token, userId, isLoggedIn } = useSelector((state) => {
@@ -53,18 +58,27 @@ const NavBar = () => {
   //navigations functions
   const goToMyProfile = () => {
     navigate(`/profile/${userId}`);
+    setShowBasic(false);
   };
 
   const login = () => {
     navigate(`/login`);
+    setShowBasic(false);
   };
 
   const register = () => {
     navigate(`/register`);
+    setShowBasic(false);
   };
 
   const goToHome = () => {
     navigate(`/home`);
+    setShowBasic(false);
+  };
+
+  const searchNow = () => {
+    navigate(`/home/${searchValue}`);
+    setShowBasic(false);
   };
 
   return (
@@ -106,16 +120,31 @@ const NavBar = () => {
                 <MDBNavbarItem>
                   <MDBNavbarLink href="#">Friend Requests</MDBNavbarLink>
                 </MDBNavbarItem>
+
+                <MDBNavbarItem
+                  onClick={() => {
+                    dispatch(setLogout());
+                    setShowBasic(false);
+                    navigate("/login");
+                  }}
+                >
+                  <MDBNavbarLink href="#">Logout</MDBNavbarLink>
+                </MDBNavbarItem>
               </MDBNavbarNav>
 
               <form className="d-flex input-group w-auto">
                 <input
                   type="search"
                   className="form-control"
-                  placeholder="Type query"
+                  placeholder="Search"
                   aria-label="Search"
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                  }}
                 />
-                <MDBBtn color="primary">Search</MDBBtn>
+                <MDBBtn color="primary" onClick={searchNow}>
+                  Search
+                </MDBBtn>
               </form>
             </MDBCollapse>
           </MDBContainer>
