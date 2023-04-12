@@ -24,10 +24,6 @@ export const friends = createSlice({
       });
     },
 
-    isFriendFun: (state, action) => {
-      state.isFriend = true;
-    },
-
     getAlluserSentReq: (state, action) => {
       console.log(action.payload);
     },

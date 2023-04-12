@@ -110,7 +110,12 @@ const FriendRequests = ({ id }) => {
         }
       )
       .then(function (response) {
-        console.log(response.data);
+        console.log(response.data.result);
+        response.data.result.map((element, i) => {
+          if (element.sender_id == userId) {
+            setIsReqAdded(true);
+          }
+        });
       })
       .catch(function (error) {
         throw error;
@@ -165,7 +170,7 @@ const FriendRequests = ({ id }) => {
             Respond to request
           </MDBDropdownToggle>
           <MDBDropdownMenu>
-            <MDBDropdownItem link>Accept</MDBDropdownItem>
+            <MDBDropdownItem link onClick={()=>{}}>Accept</MDBDropdownItem>
             <MDBDropdownItem link>Decline</MDBDropdownItem>
           </MDBDropdownMenu>
         </MDBDropdown>

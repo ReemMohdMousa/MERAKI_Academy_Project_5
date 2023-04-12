@@ -13,7 +13,6 @@ import {
   cancelFriendReq,
   declineFriendReq,
   removeFriend,
-  isFriendFun,
   isTheUserIsFriend,
 } from "../redux/reducers/friends/index";
 
