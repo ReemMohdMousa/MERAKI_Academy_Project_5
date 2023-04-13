@@ -125,6 +125,7 @@ const FriendRequests = ({ id }) => {
       });
   };
 
+  //!BUG
   const acceptFriendReq = () => {
     axios
       .post(
@@ -135,9 +136,7 @@ const FriendRequests = ({ id }) => {
         }
       )
       .then(function (response) {
-        console.log("*************", response.data.result[0]);
-        console.log("*************", response.data.result[0].user2_id);
-        let friendId = response.data.result[0].user2_id;
+        let friendId = response.data.result[0].user1_id;
 
         //get the friend info to push it to friends state, so i could rerender the friends array
         axios
@@ -179,19 +178,26 @@ const FriendRequests = ({ id }) => {
 
   //decline the friend request
   // when the receiver delete or decline the request
-  //! i need the request id as a params
   const declineFriendReqFun = () => {
     axios
-      .delete(`http://localhost:5000/friends/remove/`, {
+      .delete(`http://localhost:5000/friends/decline/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data);
+        console.log(response.data.result);
+        response.data.result.map((element, i) => {
+          if (element.sender_id == id && element.receiver_id == userId) {
+            setisReqReceived(false);
+          }
+        });
       })
       .catch(function (error) {
         throw error;
       });
   };
+
+  console.log("isReqAdded", isReqAdded);
+  console.log("isReqReceived", isReqReceived);
 
   return (
     <div>
@@ -210,7 +216,9 @@ const FriendRequests = ({ id }) => {
             <MDBDropdownItem link onClick={acceptFriendReq}>
               Accept
             </MDBDropdownItem>
-            <MDBDropdownItem link>Decline</MDBDropdownItem>
+            <MDBDropdownItem link onClick={declineFriendReqFun}>
+              Decline
+            </MDBDropdownItem>
           </MDBDropdownMenu>
         </MDBDropdown>
       ) : (
