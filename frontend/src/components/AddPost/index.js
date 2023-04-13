@@ -114,7 +114,7 @@ const AddingPost =async () => {
 
   return (
     userinfo && (
-      <div className="posts" style={{ height: "400px" }}>
+      <div className="posts" >
         <div className="containers">
           <div className="user">
             <div className="userInfo">

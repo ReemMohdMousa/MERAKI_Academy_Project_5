@@ -16,12 +16,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setPosts,
-  addpost,
-  updatePost,
-  removePost,
-  setComments,
-  addComment,
+  setPosts
+
 } from "../redux/reducers/posts/index";
 import AddPost from "../AddPost";
 
