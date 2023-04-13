@@ -65,3 +65,8 @@ flex-direction: column;
 .yes{
     color: blue;
 }
+
+#post-info{
+    align-items: flex-end;
+ 
+}

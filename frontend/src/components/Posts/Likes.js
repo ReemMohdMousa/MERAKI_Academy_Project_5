@@ -3,6 +3,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addLike, setLike } from "../redux/reducers/posts";
 import { AiFillLike } from "react-icons/ai";
+
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 const Likes = ({ post_id, post }) => {
@@ -54,8 +55,8 @@ const Likes = ({ post_id, post }) => {
       });
   };
   useEffect(() => {
-     getPostLikes();
-     getUserLike();
+    getPostLikes();
+    getUserLike();
   }, []);
 
   const handleLike = (e) => {
@@ -70,9 +71,8 @@ const Likes = ({ post_id, post }) => {
         })
         .then((result) => {
           console.log(result);
-          dispatch(setLike(setClicked("no")));
+            dispatch(setLike(setClicked("no")));
           dispatch(addLike(result.data));
-
         })
         .catch((error) => {
           console.log(error);
@@ -90,23 +90,30 @@ const Likes = ({ post_id, post }) => {
           }
         )
         .then((result) => {
-          console.log(result);
-          dispatch(setLike(setClicked("yes")));
+          dispatch(addLike(result.data.result));
+
+          // dispatch(setLike(setClicked("yes")));
         })
         .catch((error) => {
           console.log(error);
         });
     }
   };
-console.log(likedUser)
+  console.log(likedUser);
   return (
-    <div>
-      <p>
-        <AiFillLike style={{ color: "blue" }} onClick={(e) => {setShow(true)}} />{" "}
-        <span>{likesNo}</span>
-      </p>
-
-      <div className="item" onClick={handleLike} id={post_id}>
+    <>
+      {/*    <div id="post-info">
+        <p>
+          <AiFillLike
+            style={{ color: "blue" }}
+            onClick={(e) => {
+              setShow(true);
+            }}
+          />{" "}
+          <span>{likesNo}</span>
+        </p>
+      </div> */}
+      <div className="item information" onClick={handleLike} id={post_id}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -122,33 +129,46 @@ console.log(likedUser)
             id={post_id}
           />
         </svg>{" "}
-        likes
+        <span
+          onClick={(e) => {
+            setShow(true);
+          }}
+        >
+          likes {likesNo}
+        </span>
       </div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        animation={false}
+        dialogClassName="modal-90w"
+      >
         <Modal.Header closeButton>
-          <Modal.Title>Message</Modal.Title>
+          <Modal.Title>
+            <AiFillLike style={{ color: "blue", fontSize: "1.2rem" }} />
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {likedUser
+          {likedUser && likedUser.length > 0
             ? likedUser.map((element) => {
-              console.log(element)
-               return( <div className="friend-list">
-                  <div className="friend-img-name">
-                    <img
-                      className="friend-img"
-                      src={
-                        element.avatar ||
-                        "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                      }
-                    />
+                console.log(element);
+                return (
+                  <div className="friend-list">
+                    <div className="friend-img-name">
+                      <img
+                        className="friend-img"
+                        src={
+                          element.avatar ||
+                          "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                        }
+                      />
 
-                    <h6>{element.firstname + " " + element.lastname}</h6>
+                      <h6>{element.firstname + " " + element.lastname}</h6>
+                    </div>
                   </div>
-                </div>
-                 )
+                );
               })
-            :<p>no likes</p>}
-             
+            : "There is no likes on this post"}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -156,7 +176,7 @@ console.log(likedUser)
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   );
 };
 

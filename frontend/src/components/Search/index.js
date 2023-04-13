@@ -11,7 +11,6 @@ const Search = () => {
     axios
       .get(`http://localhost:5000/search?firstName=${user}`)
       .then((result) => {
-        console.log(result.data);
         setSearchResult(result.data.result);
       })
       .catch((error) => {

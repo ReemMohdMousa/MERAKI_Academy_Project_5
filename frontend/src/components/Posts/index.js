@@ -90,8 +90,9 @@ const Posts = ({ post }) => {
               height="500"
             />
           </div>
+
           <div className="infomation">
-        {post.post_id && <Likes post_id={post.post_id} post={post}/>}      
+            {post.post_id && <Likes post_id={post.post_id} post={post} />}
             <div
               onClick={() => {
                 setopenComments(!openComments);
@@ -126,8 +127,11 @@ const Posts = ({ post }) => {
           </div>
           {/*condition comments  */}
           {openComments && <Comments />}
-          {show ? <UpdatePost showModal={show} post={post} setShowModal={setShow} />:""}
-          
+          {show ? (
+            <UpdatePost showModal={show} post={post} setShowModal={setShow} />
+          ) : (
+            ""
+          )}
         </div>
       </div>
     )
