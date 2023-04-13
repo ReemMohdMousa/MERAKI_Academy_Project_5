@@ -12,7 +12,7 @@ import {
   cancelFriendReq,
   declineFriendReq,
   removeFriend,
-  isTheUserIsFriend
+  isTheUserIsFriend,
 } from "../redux/reducers/friends/index";
 
 import {
@@ -135,12 +135,24 @@ const FriendRequests = ({ id }) => {
         }
       )
       .then(function (response) {
-        console.log(response.data.result[0]);
-        //add the new friend to the friends array state
-        dispatch(acceptFriendRequest(response.data.result[0]));
+        console.log("*************", response.data.result[0]);
+        console.log("*************", response.data.result[0].user2_id);
+        let friendId = response.data.result[0].user2_id;
 
-        //change isFriend state
-        dispatch(isTheUserIsFriend(response.data.result[0].user_id));
+        //get the friend info to push it to friends state, so i could rerender the friends array
+        axios
+          .get(`http://localhost:5000/users/others/info/${friendId}`)
+          .then((response) => {
+            console.log(response.data.result);
+            //add the new friend to the friends array state
+            dispatch(acceptFriendRequest(response.data.result));
+
+            //change isFriend state
+            dispatch(isTheUserIsFriend(response.data.result.user_id));
+          })
+          .catch((err) => {
+            throw err;
+          });
       })
       .catch(function (error) {
         throw error;

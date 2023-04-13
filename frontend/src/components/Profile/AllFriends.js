@@ -42,6 +42,7 @@ const AllFriends = ({ id }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
+        console.log(response);
         dispatch(getAlluserFriends(response.data.result));
 
         //check if this profile is a friend of the loggedin user
