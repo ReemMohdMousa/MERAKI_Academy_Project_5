@@ -32,7 +32,7 @@ export const posts = createSlice({
     },
     removePost: (state, action) => {
       state.posts.forEach((elem, idx) => {
-        if (elem.id === action.payload) {
+        if (elem.post_id === action.payload) {
           state.posts.splice(idx, 1);
         }
       });
@@ -43,14 +43,14 @@ export const posts = createSlice({
     setComments: (state, action) => {
       // state.articles = action.payload.comments;
       state.posts.map((elem, i) => {
-        if (elem.id === action.payload.post_id) {
+        if (elem.post_id === action.payload.id) {
           elem.comments = action.payload.comments;
         }
       });
     },
     addComment: (state, action) => {
       state.posts.map((elem, i) => {
-        if (elem.id === action.payload.post_id) {
+        if (elem.post_id === action.payload.post_id) {
           elem.comments.push(action.payload.newComment);
         }
       });

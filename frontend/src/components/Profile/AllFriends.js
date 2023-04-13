@@ -42,13 +42,14 @@ const AllFriends = ({ id }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
+        console.log(response);
         dispatch(getAlluserFriends(response.data.result));
 
         //check if this profile is a friend of the loggedin user
         dispatch(isTheUserIsFriend(userId));
       })
       .catch(function (error) {
-        throw error;
+        console.log(error);
       });
   }, []);
 
@@ -84,7 +85,7 @@ const AllFriends = ({ id }) => {
             : friends &&
               friends.map((element, i) => {
                 return (
-                  <div className="friend-list">
+                  <div className="friend-list" key={element.id}>
                     <div className="friend-img-name">
                       <img
                         className="friend-img"
