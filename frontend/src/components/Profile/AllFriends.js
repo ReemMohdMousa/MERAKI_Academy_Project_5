@@ -84,7 +84,7 @@ const AllFriends = ({ id }) => {
             : friends &&
               friends.map((element, i) => {
                 return (
-                  <div className="friend-list">
+                  <div className="friend-list" key={element.id}>
                     <div className="friend-img-name">
                       <img
                         className="friend-img"

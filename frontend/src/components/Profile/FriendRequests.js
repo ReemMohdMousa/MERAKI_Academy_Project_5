@@ -12,6 +12,7 @@ import {
   cancelFriendReq,
   declineFriendReq,
   removeFriend,
+  isTheUserIsFriend
 } from "../redux/reducers/friends/index";
 
 import {
@@ -65,11 +66,12 @@ const FriendRequests = ({ id }) => {
         console.log(response.data.result);
 
         //response.data.result => array of add requests
-        response.data.result.map((element, i) => {
-          if (element.receiver_id == id) {
-            setIsReqAdded(true);
-          }
-        });
+        response.data.result &&
+          response.data.result.map((element, i) => {
+            if (element.receiver_id == id) {
+              setIsReqAdded(true);
+            }
+          });
       })
       .catch(function (error) {
         throw error;
@@ -83,11 +85,12 @@ const FriendRequests = ({ id }) => {
       })
       .then(function (response) {
         //response.data.result => array of received requests
-        response.data.result.map((element, i) => {
-          if (element.sender_id == id) {
-            setisReqReceived(true);
-          }
-        });
+        response.data.result &&
+          response.data.result.map((element, i) => {
+            if (element.sender_id == id) {
+              setisReqReceived(true);
+            }
+          });
       })
       .catch(function (error) {
         throw error;
@@ -116,6 +119,28 @@ const FriendRequests = ({ id }) => {
             setIsReqAdded(true);
           }
         });
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  };
+
+  const acceptFriendReq = () => {
+    axios
+      .post(
+        `http://localhost:5000/friends/accept`,
+        { user2_id: id },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then(function (response) {
+        console.log(response.data.result[0]);
+        //add the new friend to the friends array state
+        dispatch(acceptFriendRequest(response.data.result[0]));
+
+        //change isFriend state
+        dispatch(isTheUserIsFriend(response.data.result[0].user_id));
       })
       .catch(function (error) {
         throw error;
@@ -170,7 +195,9 @@ const FriendRequests = ({ id }) => {
             Respond to request
           </MDBDropdownToggle>
           <MDBDropdownMenu>
-            <MDBDropdownItem link onClick={()=>{}}>Accept</MDBDropdownItem>
+            <MDBDropdownItem link onClick={acceptFriendReq}>
+              Accept
+            </MDBDropdownItem>
             <MDBDropdownItem link>Decline</MDBDropdownItem>
           </MDBDropdownMenu>
         </MDBDropdown>

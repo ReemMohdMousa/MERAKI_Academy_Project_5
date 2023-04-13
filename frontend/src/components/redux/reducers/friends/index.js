@@ -35,7 +35,10 @@ export const friends = createSlice({
       state.isAdded = true;
     },
 
-    acceptFriendRequest: (state, action) => {},
+    acceptFriendRequest: (state, action) => {
+      //payload= newFriend
+      state.friends.push(action.payload);
+    },
 
     cancelFriendReq: (state, action) => {},
 
