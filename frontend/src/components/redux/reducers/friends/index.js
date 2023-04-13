@@ -8,6 +8,8 @@ export const friends = createSlice({
     isFriend: false,
     isAdded: false,
     isReceived: false,
+    sentReq: [],
+    ReceivedReq: [],
   },
   reducers: {
     getAlluserFriends: (state, action) => {
@@ -29,6 +31,8 @@ export const friends = createSlice({
     },
 
     getAlluserReceivedReq: (state, action) => {},
+
+    addFriendToReceivedReq: (state, action) => {},
 
     addFriend: (state, action) => {
       console.log(action.payload);
@@ -66,6 +70,7 @@ export const {
   removeFriend,
   isFriendFun,
   isTheUserIsFriend,
+  addFriendToReceivedReq,
 } = friends.actions;
 
 export default friends.reducer;

@@ -22,12 +22,8 @@ export default function BasicMenu() {
   //dispatch
   const dispatch = useDispatch();
 
-  //componants state
-  const [sentReq, setSentReq] = useState([]);
-  const [ReceivedReq, setReceivedReq] = useState([]);
-
   //redux states
-  const { token, userId, isLoggedIn, friends, isFriend } = useSelector(
+  const { token, sentReq, ReceivedReq, userId, isLoggedIn, friends, isFriend } = useSelector(
     (state) => {
       //return object contains the redux states
       return {
@@ -36,6 +32,9 @@ export default function BasicMenu() {
         isLoggedIn: state.auth.isLoggedIn,
         friends: state.friends.friends,
         isFriend: state.friends.isFriend,
+        sentReq: state.friends.sentReq,
+        ReceivedReq: state.friends,
+        ReceivedReq,
       };
     }
   );
@@ -48,10 +47,11 @@ export default function BasicMenu() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
 
         //response.data.result => array of received requests
-        setReceivedReq(response.data.result);
+        // setReceivedReq(response.data.result);
+        dispatch()
       })
       .catch(function (error) {
         throw error;
@@ -66,7 +66,7 @@ export default function BasicMenu() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
 
         //response.data.result => array of sent requests
         setSentReq(response.data.result);
@@ -92,11 +92,25 @@ export default function BasicMenu() {
       .then(function (response) {
         console.log(response.data.result);
 
-        
         const newSentArr = sentReq.filter((element, i) => {
           return element.receiver_id !== receiver_id;
         });
         setSentReq(newSentArr);
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  };
+
+  //decline the friend request
+  // when the receiver delete or decline the request
+  const declineFriendReqFun = () => {
+    axios
+      .delete(`http://localhost:5000/friends/decline/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        // console.log(response.data.result);
       })
       .catch(function (error) {
         throw error;

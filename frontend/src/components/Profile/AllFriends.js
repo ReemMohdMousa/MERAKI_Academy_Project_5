@@ -49,7 +49,7 @@ const AllFriends = ({ id }) => {
         dispatch(isTheUserIsFriend(userId));
       })
       .catch(function (error) {
-        throw error;
+        console.log(error);
       });
   }, []);
 
