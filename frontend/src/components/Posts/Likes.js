@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addLike } from "../redux/reducers/posts";
+import { addLike, setLike } from "../redux/reducers/posts";
 
-const Likes = ({ post_id }) => {
+const Likes = ({ post_id, post }) => {
   const [clicked, setClicked] = useState("no");
   const dispatch = useDispatch();
 
@@ -15,11 +15,28 @@ const Likes = ({ post_id }) => {
     };
   });
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/likes", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((result) => {
+        const like = result.data.result;
+        like.map((elem) => {
+          if (elem.post_id == post.post_id) {
+            dispatch(setLike(setClicked("yes")));
+          }
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const handleLike = (e) => {
     const id = e.target.id;
     console.log(e);
     console.log(id);
-
     setClicked("yes");
     axios
       .post(
@@ -33,7 +50,7 @@ const Likes = ({ post_id }) => {
       )
       .then((result) => {
         console.log(result);
-        dispatch(addLike(result.data.result));
+        dispatch(setLike(setClicked("yes")));
       })
       .catch((error) => {
         console.log(error);
