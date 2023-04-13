@@ -91,7 +91,7 @@ const Posts = ({ post }) => {
             />
           </div>
           <div className="infomation">
-             <Likes post_id={post.post_id} post={post}/>
+        {post.post_id && <Likes post_id={post.post_id} post={post}/>}      
             <div
               onClick={() => {
                 setopenComments(!openComments);
