@@ -30,11 +30,12 @@ const AddPost = () => {
   const [showVideo, setShowVideo] = useState(false);
   const handleCloseVideo = () => setShowVideo(false);
   const handleShowVideo = () => setShowVideo(true);
-  
+  const [disabled, setDisabled] = useState(false);
+
   const [post, setpost] = useState({});
   const dispatch = useDispatch();
-const[selectedvideo,setSelectedVideo]=useState("")
-  const { token,userId,userinfo } = useSelector((state) => {
+  const [selectedvideo, setSelectedVideo] = useState("");
+  const { token, userId, userinfo } = useSelector((state) => {
     return {
       token: state.auth.token,
       userId: state.auth.userId,
@@ -43,9 +44,10 @@ const[selectedvideo,setSelectedVideo]=useState("")
   });
 
   /********************************************/
-  const [image, setImage] = useState("");
   const [video, setVedio] = useState("");
-  const [selectedimage,setSelectedImage]=useState("")
+  const [image, setImage] = useState("");
+
+  const [selectedimage, setSelectedImage] = useState("");
   const uploadImage = () => {
     const data = new FormData();
     data.append("file", image);
@@ -58,44 +60,38 @@ const[selectedvideo,setSelectedVideo]=useState("")
       .then((resp) => resp.json())
       .then((data) => {
         //setpost()
-        console.log("dataurl",data.url)
+        console.log("dataurl", data.url);
         setpost((image) => {
-          setDisabled(false)
+          setDisabled(false);
 
-         return { ...image, image: data.url };
+          return { ...image, image: data.url };
         });
-        
       })
       .catch((err) => console.log(err));
   };
-//******************************************** */
-const uploadVedio = () => {
-  const data = new FormData();
-  data.append("file", video);
-  data.append("upload_preset", "kowezfsv");
-  data.append("cloud_name", "deqwvkyth");
-  fetch(" https://api.cloudinary.com/v1_1/deqwvkyth/video/upload", {
-    method: "post",
-    body: data,
-  })
-    .then((resp) => resp.json())
-    .then((data) => {
-      //setpost()
-      console.log("dataurl",data.url)
-      setpost((video) => {
-        setDisabled(false)
-        return { ...video, video: data.url };
-       
-      });
+  //******************************************** */
+  const uploadVedio = () => {
+    const data = new FormData();
+    data.append("file", video);
+    data.append("upload_preset", "kowezfsv");
+    data.append("cloud_name", "deqwvkyth");
+    fetch(" https://api.cloudinary.com/v1_1/deqwvkyth/video/upload", {
+      method: "post",
+      body: data,
     })
-    .catch((err) => console.log(err));
-};
-/**************************************** */
- const [disabled,setDisabled]=useState(false)
-const AddingPost =async () => {
-
-    
- 
+      .then((resp) => resp.json())
+      .then((data) => {
+        //setpost()
+        console.log("dataurl", data.url);
+        setpost((video) => {
+          setDisabled(false);
+          return { ...video, video: data.url };
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+  /**************************************** */
+  const AddingPost = async () => {
     axios
       .post(
         "http://localhost:5000/posts",
@@ -109,17 +105,16 @@ const AddingPost =async () => {
       .catch((err) => {
         console.log(err);
       });
-   
   };
 
   return (
     userinfo && (
-      <div className="posts" >
+      <div className="posts">
         <div className="containers">
           <div className="user">
             <div className="userInfo">
               <img
-                src={ 
+                src={
                   userinfo.avatar
                     ? userinfo.avatar
                     : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
@@ -140,7 +135,6 @@ const AddingPost =async () => {
             </div>
           </div>
           <div className="contant1" style={{ marginTop: "-10px" }}>
-         
             <section>
               <MDBContainer>
                 <MDBRow className="justify-content-center align-items-center">
@@ -159,15 +153,34 @@ const AddingPost =async () => {
                             });
                           }}
                         />
-                        {post.video&& <p variant="success" style={{backgroundColor:"green", width:"50%",marginLeft:"120px",padding:"15px"}}>video Uplodded successfully</p>}
-                       
-                        {post.image&& <p variant="success" style={{backgroundColor:"green", width:"50%",marginLeft:"120px",padding:"15px"}}>image Uplodded successfully</p>}
-                        {disabled  && (<div><p variant="warning">Please wait untile file uploaded</p><img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif"/></div>)}
+                        {post.video && (
+                          <embed
+                            className="embed"
+                            type="video/webm"
+                            src={post.video}
+                          />
+                        )}
+
+                        {post.image && (
+                          <img
+                            variant="success"
+                           
+                            src={post.image}
+                          />
+                        )}
+                        {disabled && (
+                          <div>
+                            <p variant="warning">
+                              Please wait untile file uploaded
+                            </p>
+                            <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
+                          </div>
+                        )}
                         <hr className="my-4" />
                         <div className="d-flex justify-content-start align-items-center">
                           <MDBCardText className="text-uppercase mb-0">
                             <MDBIcon fas icon="cog me-2" />
-                          
+
                             <button
                               onClick={(e) => {
                                 handleShow();
@@ -195,7 +208,7 @@ const AddingPost =async () => {
                           <MDBCardText className="text-uppercase mb-0">
                             <span className="ms-3 me-4">|</span>
                           </MDBCardText>
-                       
+
                           <button
                             onClick={(e) => {
                               handleShowVideo();
@@ -222,10 +235,9 @@ const AddingPost =async () => {
                             color="dark"
                             floating
                             size="sm"
-                           
                             style={{ width: "25%", marginLeft: "50px" }}
                             onClick={() => {
-                              console.log("totalpost",post)
+                              console.log("totalpost", post);
                               AddingPost();
                             }}
                           >
@@ -239,35 +251,34 @@ const AddingPost =async () => {
                 </MDBRow>
               </MDBContainer>
             </section>
-    
-            <Modal  show={show} onHide={handleClose}>
-              <Modal.Header>
 
-                
-              </Modal.Header>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header></Modal.Header>
               <Modal.Body>
                 <div className="modalcontainer">
-                <MDBFile
-                  label=""
-                  size="sm"
-                  id="formFileSm"
-                  accept="image/*"
-                  onChange={(e) => {
-                    setImage(e.target.files[0]);
-                    setSelectedImage( URL.createObjectURL(e.target.files[0]))
-                  }}
-                />
-               <div className="imgarea">
-                <svg className="icon" xmlns="http://www.w3.org/2000/svg"fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">
-  <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z"/>
-</svg>
-<h3>Upload Image</h3>
-<img src={selectedimage}/>
-            
-
-
-</div>
-                
+                  <MDBFile
+                    label=""
+                    size="sm"
+                    id="formFileSm"
+                    accept="image/*"
+                    onChange={(e) => {
+                      setImage(e.target.files[0]);
+                      setSelectedImage(URL.createObjectURL(e.target.files[0]));
+                    }}
+                  />
+                  <div className="imgarea">
+                    <svg
+                      className="icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      class="bi bi-cloud-arrow-up-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z" />
+                    </svg>
+                    <h3>Upload Image</h3>
+                    <img src={selectedimage} />
+                  </div>
                 </div>
               </Modal.Body>
               <Modal.Footer>
@@ -277,13 +288,10 @@ const AddingPost =async () => {
                 <Button
                   variant="primary"
                   onClick={(e) => {
-                    uploadImage()
-                    if(image)
-                    {
-                      if(! post.image)
-                      {
-                        setDisabled(true)
-                
+                    uploadImage();
+                    if (image) {
+                      if (!post.image) {
+                        setDisabled(true);
                       }
                     }
                     handleClose();
@@ -291,38 +299,36 @@ const AddingPost =async () => {
                 >
                   SelectImage
                 </Button>
-                
               </Modal.Footer>
             </Modal>
-         
+
             <Modal className="popup" show={showVideo} onHide={handleCloseVideo}>
-              <Modal.Header>
-               
-              </Modal.Header>
+              <Modal.Header></Modal.Header>
               <Modal.Body>
-               
-                 <div className="modalcontainer">
-                 <MDBFile
-                  label=""
-                  size="sm"
-                  id="formFileSm"
-                  accept="video/mp3 ,gif/*"
-                  onChange={(e) => {
-                    setVedio(e.target.files[0]);
-                    setSelectedVideo(URL.createObjectURL(e.target.files[0]))
-                  }}
-                />
-               <div className="imgarea">
-                <svg className="icon" xmlns="http://www.w3.org/2000/svg"fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">
-  <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z"/>
-</svg>
-<h3>Upload vedio</h3>
-<embed src={selectedvideo}/>
-            
-
-
-</div>
-                
+                <div className="modalcontainer">
+                  <MDBFile
+                    label=""
+                    size="sm"
+                    id="formFileSm"
+                    accept="video/mp3 ,gif/*"
+                    onChange={(e) => {
+                      setVedio(e.target.files[0]);
+                      setSelectedVideo(URL.createObjectURL(e.target.files[0]));
+                    }}
+                  />
+                  <div className="imgarea">
+                    <svg
+                      className="icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      class="bi bi-cloud-arrow-up-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z" />
+                    </svg>
+                    <h3>Upload vedio</h3>
+                    <embed src={selectedvideo} />
+                  </div>
                 </div>
               </Modal.Body>
               <Modal.Footer>
@@ -333,19 +339,15 @@ const AddingPost =async () => {
                   variant="primary"
                   onClick={(e) => {
                     // UpdateByID(article._id, i);
-                    uploadVedio()
-                    if(video)
-                    {
-                      if(! post.video)
-                      {
-                        setDisabled(true)
-                
-                      }
-                      else{
-                        setDisabled(false)
+                    uploadVedio();
+                    if (video) {
+                      if (!post.video) {
+                        setDisabled(true);
+                      } else {
+                        setDisabled(false);
                       }
                     }
-                  
+
                     handleCloseVideo();
                   }}
                 >
