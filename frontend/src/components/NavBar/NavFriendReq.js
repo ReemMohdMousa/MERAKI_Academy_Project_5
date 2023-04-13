@@ -23,7 +23,7 @@ export default function BasicMenu() {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, sentReq, ReceivedReq, userId, isLoggedIn, friends, isFriend } = useSelector(
+  const { token, userId, isLoggedIn, friends, isFriend } = useSelector(
     (state) => {
       //return object contains the redux states
       return {
@@ -32,9 +32,7 @@ export default function BasicMenu() {
         isLoggedIn: state.auth.isLoggedIn,
         friends: state.friends.friends,
         isFriend: state.friends.isFriend,
-        sentReq: state.friends.sentReq,
-        ReceivedReq: state.friends,
-        ReceivedReq,
+
       };
     }
   );
@@ -51,7 +49,7 @@ export default function BasicMenu() {
 
         //response.data.result => array of received requests
         // setReceivedReq(response.data.result);
-        dispatch()
+        // dispatch()
       })
       .catch(function (error) {
         throw error;
@@ -69,7 +67,7 @@ export default function BasicMenu() {
         // console.log(response.data);
 
         //response.data.result => array of sent requests
-        setSentReq(response.data.result);
+        // setSentReq(response.data.result);
       })
       .catch(function (error) {
         throw error;
@@ -81,7 +79,7 @@ export default function BasicMenu() {
     ReceivedRequests();
   }, []);
 
-  console.log("ooooooooo", sentReq);
+//   console.log("ooooooooo", sentReq);
 
   //cancel friend request
   const cancelFriendReqFun = (receiver_id) => {
@@ -92,10 +90,10 @@ export default function BasicMenu() {
       .then(function (response) {
         console.log(response.data.result);
 
-        const newSentArr = sentReq.filter((element, i) => {
-          return element.receiver_id !== receiver_id;
-        });
-        setSentReq(newSentArr);
+        // const newSentArr = sentReq.filter((element, i) => {
+        //   return element.receiver_id !== receiver_id;
+        // });
+        // setSentReq(newSentArr);
       })
       .catch(function (error) {
         throw error;
@@ -144,7 +142,7 @@ export default function BasicMenu() {
           className="mb-3"
         >
           <Tab eventKey="Add Requests" title="Add Requests">
-            <div className="friend-list-body">
+            {/* <div className="friend-list-body">
               {ReceivedReq &&
                 ReceivedReq.map((element) => {
                   return (
@@ -181,10 +179,10 @@ export default function BasicMenu() {
                     </div>
                   );
                 })}
-            </div>
+            </div> */}
           </Tab>
           <Tab eventKey="Sent Requests" title="Sent Requests">
-            <div className="friend-list-body">
+            {/* <div className="friend-list-body">
               {sentReq &&
                 sentReq.map((element) => {
                   return (
@@ -217,7 +215,7 @@ export default function BasicMenu() {
                     </div>
                   );
                 })}
-            </div>
+            </div> */}
           </Tab>
         </Tabs>
 
