@@ -70,7 +70,7 @@ const getLikesByUser = (req, res) => {
 const getLikesByPost = (req, res) => {
   const post_id = req.params.id;
 
-  const query = `SELECT users.firstname, users.lastname, likes.post_id
+  const query = `SELECT users.firstname, users.lastname, likes.post_id, users.avatar
     FROM likes 
     INNER JOIN users ON likes.user_id = users.user_id
     WHERE likes.is_deleted=0 AND likes.post_id = $1

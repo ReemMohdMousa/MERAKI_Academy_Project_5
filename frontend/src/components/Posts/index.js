@@ -99,7 +99,11 @@ const Posts = ({ post }) => {
             
             />
           </div>
+
           <div className="infomation">
+
+            {post.post_id && <Likes post_id={post.post_id} post={post} />}
+
             <div className="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -152,6 +156,7 @@ const Posts = ({ post }) => {
           {show ? <UpdatePost showModal={show} post={post}
            setShowModal={setShow} />:""}
           
+
         </div>
       </div>
     )
