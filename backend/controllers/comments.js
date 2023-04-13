@@ -30,7 +30,7 @@ const createNewComment = (req, res) => {
 const getCommentsByPostId = (req, res) => {
   const post_id = req.params.id;
 
-  const query = `SELECT comments.content, comments.image, comments.video, users.firstname, users.lastname 
+  const query = `SELECT *
     FROM comments 
     INNER JOIN users ON comments.user_id = users.user_id
     WHERE comments.is_deleted=0 AND comments.post_id = $1
