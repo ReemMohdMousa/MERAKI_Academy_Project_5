@@ -275,14 +275,19 @@ const CancelFriendRequest = (req, res) => {
 
 //when the request receiver decline the request
 const declineTheFriendReq = (req, res) => {
-  //the request ID:
-  const request_id = req.params.request_id;
+  //the loggedin user
+  const user1_id = req.token.userId;
+
+  //the friend ID form body:
+  const user2_id = req.params.id;
 
   const query = `DELETE FROM friend_requests 
-  WHERE request_id=$1 
+  WHERE sender_id=$2 AND receiver_id=$1 
+  RETURNING *
 `;
-
-  const data = [request_id];
+  console.log(user1_id);
+  console.log(user2_id);
+  const data = [user1_id, user2_id];
 
   pool
     .query(query, data)
@@ -290,7 +295,7 @@ const declineTheFriendReq = (req, res) => {
       if (result.rowCount === 0) {
         res.status(404).json({
           success: false,
-          message: `The request with id: ${request_id} is not found`,
+          message: `The request is not found`,
         });
       } else {
         res.status(200).json({
