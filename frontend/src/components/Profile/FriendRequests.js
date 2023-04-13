@@ -41,7 +41,7 @@ const FriendRequests = ({ id }) => {
 
   //dispatch
   const dispatch = useDispatch();
-
+ 
   //redux states
   const { token, userId, isLoggedIn, friends, isFriend } = useSelector(
     (state) => {

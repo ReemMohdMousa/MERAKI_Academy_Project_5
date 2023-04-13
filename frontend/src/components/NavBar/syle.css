@@ -23,8 +23,14 @@
   height: 3rem;
 }
 
+/*menu*/
 .css-6hp17o-MuiList-root-MuiMenu-list {
   width: 25rem;
+}
+
+/*navs*/
+.mb-3.nav.nav-tabs {
+  justify-content: center;
 }
 
 .buttons {

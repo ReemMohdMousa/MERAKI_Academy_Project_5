@@ -8,7 +8,6 @@ import Tabs from "react-bootstrap/Tabs";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import "./syle.css";
-// import { Modal, Button, Form } from "react-bootstrap";
 
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -19,6 +18,9 @@ export default function BasicMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  //dispatch
+  const dispatch = useDispatch();
 
   //componants state
   const [sentReq, setSentReq] = useState([]);
@@ -65,6 +67,9 @@ export default function BasicMenu() {
       })
       .then(function (response) {
         console.log(response.data);
+
+        //response.data.result => array of sent requests
+        setSentReq(response.data.result);
       })
       .catch(function (error) {
         throw error;
@@ -76,7 +81,27 @@ export default function BasicMenu() {
     ReceivedRequests();
   }, []);
 
-  console.log(ReceivedReq);
+  console.log("ooooooooo", sentReq);
+
+  //cancel friend request
+  const cancelFriendReqFun = (receiver_id) => {
+    axios
+      .delete(`http://localhost:5000/friends/cancel/${receiver_id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        console.log(response.data.result);
+
+        
+        const newSentArr = sentReq.filter((element, i) => {
+          return element.receiver_id !== receiver_id;
+        });
+        setSentReq(newSentArr);
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  };
 
   return (
     <div>
@@ -145,7 +170,40 @@ export default function BasicMenu() {
             </div>
           </Tab>
           <Tab eventKey="Sent Requests" title="Sent Requests">
-            2
+            <div className="friend-list-body">
+              {sentReq &&
+                sentReq.map((element) => {
+                  return (
+                    <div key={element.request_id}>
+                      <div className="friend-list">
+                        <div className="friend-img-name">
+                          <img
+                            className="friend-img"
+                            src={
+                              element.avatar ||
+                              "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                            }
+                          />
+
+                          <p>{element.firstname + " " + element.lastname}</p>
+                        </div>
+                        <div className="buttons">
+                          <Button
+                            variant="contained"
+                            size="small"
+                            color="error"
+                            onClick={() => {
+                              cancelFriendReqFun(element.receiver_id);
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
           </Tab>
         </Tabs>
 
