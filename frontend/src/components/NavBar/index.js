@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setLogout } from "../redux/reducers/auth";
+import NavFriendReq from "./NavFriendReq";
 
 const NavBar = () => {
   const [showBasic, setShowBasic] = useState(false);
@@ -48,7 +49,7 @@ const NavBar = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data.info);
+        // console.log(response.data.info);
       })
       .catch(function (error) {
         throw error;
@@ -118,7 +119,9 @@ const NavBar = () => {
                 </MDBNavbarItem>
 
                 <MDBNavbarItem>
-                  <MDBNavbarLink href="#">Friend Requests</MDBNavbarLink>
+                  <MDBNavbarLink href="#">
+                    <NavFriendReq/>
+                  </MDBNavbarLink>
                 </MDBNavbarItem>
 
                 <MDBNavbarItem

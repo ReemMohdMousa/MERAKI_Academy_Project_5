@@ -184,7 +184,7 @@ const FriendRequests = ({ id }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data.result);
+        // console.log(response.data.result);
         response.data.result.map((element, i) => {
           if (element.sender_id == id && element.receiver_id == userId) {
             setisReqReceived(false);
@@ -195,9 +195,6 @@ const FriendRequests = ({ id }) => {
         throw error;
       });
   };
-
-  console.log("isReqAdded", isReqAdded);
-  console.log("isReqReceived", isReqReceived);
 
   return (
     <div>
