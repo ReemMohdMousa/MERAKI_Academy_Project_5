@@ -79,8 +79,9 @@ const getAllSentRequestByUserId = (req, res) => {
 const getAllReceivedRequestByUserId = (req, res) => {
   const user_id = req.token.userId;
 
-  const query = `SELECT * FROM friend_requests 
-      WHERE receiver_id=$1`;
+  const query = `SELECT friend_requests.*, users.firstname, users.lastname, users.avatar FROM friend_requests 
+  INNER JOIN users ON friend_requests.sender_id = users.user_id
+  WHERE receiver_id=$1`;
 
   const data = [user_id];
 
