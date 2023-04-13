@@ -10,6 +10,11 @@ import { format } from "timeago.js";
 import Iframe from "react-iframe";
 import UpdatePost from "../AddPost/UpdatePost";
 
+import {
+ 
+  setComments,
+  addComment
+} from "../redux/reducers/posts/index";
 const Posts = ({ post }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -29,21 +34,8 @@ const Posts = ({ post }) => {
 
    
 
-useEffect(() => {
-  axios
-    .get(`http://localhost:5000/comments/${post.post_id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((Response) => {
-      console.log(Response.data.result);
-      dispatch(setComments(Response.data.result));
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+
  
-  
-}, []);
   return (
     userinfo && (
       <div className="posts">
@@ -124,6 +116,8 @@ useEffect(() => {
             <div
               onClick={() => {
                 setopenComments(!openComments);
+              
+                
               }}
               className="item"
             >
@@ -154,8 +148,9 @@ useEffect(() => {
             </div>
           </div>
           {/*condition comments  */}
-          {openComments && <Comments />}
-          {show ? <UpdatePost showModal={show} post={post} setShowModal={setShow} />:""}
+          {openComments && <Comments id={post.post_id}  />}
+          {show ? <UpdatePost showModal={show} post={post}
+           setShowModal={setShow} />:""}
           
         </div>
       </div>
