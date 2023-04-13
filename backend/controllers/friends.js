@@ -152,13 +152,13 @@ const acceptRequestOnce = (req, res, next) => {
   const user1_id = req.token.userId;
 
   //the friend ID form body:
-  const { sender_id } = req.body;
+  const { user2_id } = req.body;
 
   const query = `SELECT * FROM friends 
     WHERE user1_id=$1 AND user2_id=$2 OR 
     user1_id=$1 AND user2_id=$2`;
 
-  const data = [user1_id, sender_id];
+  const data = [user1_id, user2_id];
 
   pool
     .query(query, data)
@@ -190,7 +190,7 @@ const acceptFriendRequest = async (req, res) => {
   //the loggedin user
   const user1_id = req.token.userId;
 
-  //the request and the friend ID form body:
+  //the friend ID form body:
   const { user2_id } = req.body;
 
   const query = `INSERT INTO friends (user1_id, user2_id, accepted_at)
