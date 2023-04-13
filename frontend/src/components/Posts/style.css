@@ -61,3 +61,7 @@ flex-direction: column;
     cursor: pointer;
     font-size: 14px;
 }
+
+.yes{
+    color: blue;
+}

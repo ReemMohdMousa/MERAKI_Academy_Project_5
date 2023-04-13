@@ -58,7 +58,7 @@ export const posts = createSlice({
     },
 
 addLike:(state, action) => {
-    console.log(action.payload)
+    console.log("from reducer",action.payload)
    /*  state.posts.map((elem, i) => {
       if (elem.id === action.payload.post_id) {
         elem.comments.push(action.payload.newComment);
