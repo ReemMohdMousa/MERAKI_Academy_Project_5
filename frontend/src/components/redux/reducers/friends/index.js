@@ -32,7 +32,13 @@ export const friends = createSlice({
 
     getAlluserReceivedReq: (state, action) => {},
 
-    addFriendToReceivedReq: (state, action) => {},
+    setSentReq: (state, action) => {
+      state.sentReq = action.payload;
+    },
+
+    setReceivedReq: (state, action) => {
+      state.ReceivedReq = action.payload;
+    },
 
     addFriend: (state, action) => {
       console.log(action.payload);
@@ -44,7 +50,14 @@ export const friends = createSlice({
       state.friends.push(action.payload);
     },
 
-    cancelFriendReq: (state, action) => {},
+    cancelFriendReq: (state, action) => {
+      //action.payload = reciver_id
+      state.sentReq.map((element, i) => {
+        if (element.receiver_id === action.payload.receiver_id) {
+          element.splice(i, 1);
+        }
+      });
+    },
 
     declineFriendReq: (state, action) => {},
 
@@ -70,7 +83,8 @@ export const {
   removeFriend,
   isFriendFun,
   isTheUserIsFriend,
-  addFriendToReceivedReq,
+  setSentReq,
+  setReceivedReq,
 } = friends.actions;
 
 export default friends.reducer;

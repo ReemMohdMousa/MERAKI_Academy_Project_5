@@ -9,12 +9,9 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { format } from "timeago.js";
 import Iframe from "react-iframe";
 import UpdatePost from "../AddPost/UpdatePost";
+import { setComments, addComment } from "../redux/reducers/posts/index";
+import Likes from "./Likes";
 
-import {
- 
-  setComments,
-  addComment
-} from "../redux/reducers/posts/index";
 const Posts = ({ post }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -29,13 +26,7 @@ const Posts = ({ post }) => {
       userId: state.auth.userId,
     };
   });
-  
- 
 
-   
-
-
- 
   return (
     userinfo && (
       <div className="posts">
@@ -93,15 +84,10 @@ const Posts = ({ post }) => {
           <div className="contant">
             <p>{post.content}</p>
             <img src={post.image} alt="" />
-            <embed className="embed"
-              type="video/webm"
-              src={post.video}
-            
-            />
+            <embed className="embed" type="video/webm" src={post.video} />
           </div>
 
           <div className="infomation">
-
             {post.post_id && <Likes post_id={post.post_id} post={post} />}
 
             <div className="item">
@@ -120,8 +106,6 @@ const Posts = ({ post }) => {
             <div
               onClick={() => {
                 setopenComments(!openComments);
-              
-                
               }}
               className="item"
             >
@@ -152,11 +136,12 @@ const Posts = ({ post }) => {
             </div>
           </div>
           {/*condition comments  */}
-          {openComments && <Comments id={post.post_id}  />}
-          {show ? <UpdatePost showModal={show} post={post}
-           setShowModal={setShow} />:""}
-          
-
+          {openComments && <Comments id={post.post_id} />}
+          {show ? (
+            <UpdatePost showModal={show} post={post} setShowModal={setShow} />
+          ) : (
+            ""
+          )}
         </div>
       </div>
     )

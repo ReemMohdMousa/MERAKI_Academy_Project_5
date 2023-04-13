@@ -8,6 +8,11 @@ import Tabs from "react-bootstrap/Tabs";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import "./syle.css";
+import {
+  setSentReq,
+  setReceivedReq,
+  cancelFriendReq,
+} from "../redux/reducers/friends/index";
 
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -23,19 +28,14 @@ export default function BasicMenu() {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, userId, isLoggedIn, friends, isFriend } = useSelector(
-    (state) => {
-      //return object contains the redux states
-      return {
-        userId: state.auth.userId,
-        token: state.auth.token,
-        isLoggedIn: state.auth.isLoggedIn,
-        friends: state.friends.friends,
-        isFriend: state.friends.isFriend,
-
-      };
-    }
-  );
+  const { token, sentReq, ReceivedReq } = useSelector((state) => {
+    //return object contains the redux states
+    return {
+      token: state.auth.token,
+      sentReq: state.friends.sentReq,
+      ReceivedReq: state.friends.ReceivedReq,
+    };
+  });
 
   const ReceivedRequests = () => {
     //*ME => receiver_id
@@ -45,11 +45,8 @@ export default function BasicMenu() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        // console.log(response.data);
-
         //response.data.result => array of received requests
-        // setReceivedReq(response.data.result);
-        // dispatch()
+        dispatch(setReceivedReq(response.data.result));
       })
       .catch(function (error) {
         throw error;
@@ -64,10 +61,8 @@ export default function BasicMenu() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        // console.log(response.data);
-
         //response.data.result => array of sent requests
-        // setSentReq(response.data.result);
+        dispatch(setSentReq(response.data.result));
       })
       .catch(function (error) {
         throw error;
@@ -79,7 +74,7 @@ export default function BasicMenu() {
     ReceivedRequests();
   }, []);
 
-//   console.log("ooooooooo", sentReq);
+  //   console.log("ooooooooo", sentReq);
 
   //cancel friend request
   const cancelFriendReqFun = (receiver_id) => {
@@ -94,6 +89,8 @@ export default function BasicMenu() {
         //   return element.receiver_id !== receiver_id;
         // });
         // setSentReq(newSentArr);
+
+        dispatch(cancelFriendReq(receiver_id));
       })
       .catch(function (error) {
         throw error;
@@ -142,7 +139,7 @@ export default function BasicMenu() {
           className="mb-3"
         >
           <Tab eventKey="Add Requests" title="Add Requests">
-            {/* <div className="friend-list-body">
+            <div className="friend-list-body">
               {ReceivedReq &&
                 ReceivedReq.map((element) => {
                   return (
@@ -179,10 +176,10 @@ export default function BasicMenu() {
                     </div>
                   );
                 })}
-            </div> */}
+            </div>
           </Tab>
           <Tab eventKey="Sent Requests" title="Sent Requests">
-            {/* <div className="friend-list-body">
+            <div className="friend-list-body">
               {sentReq &&
                 sentReq.map((element) => {
                   return (
@@ -215,7 +212,7 @@ export default function BasicMenu() {
                     </div>
                   );
                 })}
-            </div> */}
+            </div>
           </Tab>
         </Tabs>
 
