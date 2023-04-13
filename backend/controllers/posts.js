@@ -47,7 +47,7 @@ const getAllPosts = (req, res) => {
 
 const getPostsByUser = (req, res) => {
   //const user_id = req.query.user;
-  console.log(req.token)
+  console.log(req.token);
   const user_id = req.token.userId;
 
   const query = `SELECT * FROM posts 
@@ -93,6 +93,7 @@ const getPostById = (req, res) => {
         res.status(404).json({
           success: false,
           message: `The post with id: ${id} is not found`,
+          result: result.rows,
         });
       } else {
         res.status(200).json({
@@ -204,7 +205,6 @@ const deletePostsByuserId = (req, res) => {
     });
 };
 
-
 module.exports = {
   createNewPost,
   getAllPosts,
@@ -212,5 +212,5 @@ module.exports = {
   getPostById,
   updatePostById,
   deletePostById,
-  deletePostsByuserId
+  deletePostsByuserId,
 };

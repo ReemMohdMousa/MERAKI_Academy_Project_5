@@ -12,6 +12,7 @@ import {
   cancelFriendReq,
   declineFriendReq,
   removeFriend,
+  isTheUserIsFriend,
 } from "../redux/reducers/friends/index";
 
 import {
@@ -40,7 +41,7 @@ const FriendRequests = ({ id }) => {
 
   //dispatch
   const dispatch = useDispatch();
-
+ 
   //redux states
   const { token, userId, isLoggedIn, friends, isFriend } = useSelector(
     (state) => {
@@ -65,11 +66,12 @@ const FriendRequests = ({ id }) => {
         console.log(response.data.result);
 
         //response.data.result => array of add requests
-        response.data.result.map((element, i) => {
-          if (element.receiver_id == id) {
-            setIsReqAdded(true);
-          }
-        });
+        response.data.result &&
+          response.data.result.map((element, i) => {
+            if (element.receiver_id == id) {
+              setIsReqAdded(true);
+            }
+          });
       })
       .catch(function (error) {
         throw error;
@@ -83,11 +85,12 @@ const FriendRequests = ({ id }) => {
       })
       .then(function (response) {
         //response.data.result => array of received requests
-        response.data.result.map((element, i) => {
-          if (element.sender_id == id) {
-            setisReqReceived(true);
-          }
-        });
+        response.data.result &&
+          response.data.result.map((element, i) => {
+            if (element.sender_id == id) {
+              setisReqReceived(true);
+            }
+          });
       })
       .catch(function (error) {
         throw error;
@@ -122,6 +125,39 @@ const FriendRequests = ({ id }) => {
       });
   };
 
+  //!BUG
+  const acceptFriendReq = () => {
+    axios
+      .post(
+        `http://localhost:5000/friends/accept`,
+        { user2_id: id },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then(function (response) {
+        let friendId = response.data.result[0].user1_id;
+
+        //get the friend info to push it to friends state, so i could rerender the friends array
+        axios
+          .get(`http://localhost:5000/users/others/info/${friendId}`)
+          .then((response) => {
+            console.log(response.data.result);
+            //add the new friend to the friends array state
+            dispatch(acceptFriendRequest(response.data.result));
+
+            //change isFriend state
+            dispatch(isTheUserIsFriend(response.data.result.user_id));
+          })
+          .catch((err) => {
+            throw err;
+          });
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  };
+
   //cancel friend request
   const cancelFriendReqFun = () => {
     axios
@@ -142,14 +178,18 @@ const FriendRequests = ({ id }) => {
 
   //decline the friend request
   // when the receiver delete or decline the request
-  //! i need the request id as a params
   const declineFriendReqFun = () => {
     axios
-      .delete(`http://localhost:5000/friends/remove/`, {
+      .delete(`http://localhost:5000/friends/decline/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data);
+        // console.log(response.data.result);
+        response.data.result.map((element, i) => {
+          if (element.sender_id == id && element.receiver_id == userId) {
+            setisReqReceived(false);
+          }
+        });
       })
       .catch(function (error) {
         throw error;
@@ -170,8 +210,12 @@ const FriendRequests = ({ id }) => {
             Respond to request
           </MDBDropdownToggle>
           <MDBDropdownMenu>
-            <MDBDropdownItem link onClick={()=>{}}>Accept</MDBDropdownItem>
-            <MDBDropdownItem link>Decline</MDBDropdownItem>
+            <MDBDropdownItem link onClick={acceptFriendReq}>
+              Accept
+            </MDBDropdownItem>
+            <MDBDropdownItem link onClick={declineFriendReqFun}>
+              Decline
+            </MDBDropdownItem>
           </MDBDropdownMenu>
         </MDBDropdown>
       ) : (

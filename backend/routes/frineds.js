@@ -31,7 +31,7 @@ friendsRouter.delete(
   CancelFriendRequest
 );
 friendsRouter.delete(
-  "/decline/:request_id",
+  "/decline/:id",
   authentication,
   declineTheFriendReq
 );
