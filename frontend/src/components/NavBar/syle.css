@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin: 0.5rem;
 }
 
 .friend-list {
@@ -20,4 +21,13 @@
 .friend-img {
   width: 3rem;
   height: 3rem;
+}
+
+.css-6hp17o-MuiList-root-MuiMenu-list {
+  width: 25rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 0.2rem;
 }

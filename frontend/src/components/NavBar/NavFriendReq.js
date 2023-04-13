@@ -8,6 +8,7 @@ import Tabs from "react-bootstrap/Tabs";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import "./syle.css";
+// import { Modal, Button, Form } from "react-bootstrap";
 
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -93,6 +94,7 @@ export default function BasicMenu() {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        style={{ width: "500rem" }}
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
@@ -119,6 +121,22 @@ export default function BasicMenu() {
                           />
 
                           <p>{element.firstname + " " + element.lastname}</p>
+                        </div>
+                        <div className="buttons">
+                          <Button
+                            variant="contained"
+                            size="small"
+                            color="success"
+                          >
+                            Accept
+                          </Button>
+                          <Button
+                            variant="contained"
+                            size="small"
+                            color="error"
+                          >
+                            Decline
+                          </Button>
                         </div>
                       </div>
                     </div>
