@@ -45,8 +45,9 @@ const AddFriendRequest = (req, res) => {
 const getAllSentRequestByUserId = (req, res) => {
   const user_id = req.token.userId;
 
-  const query = `SELECT * FROM friend_requests 
-    WHERE sender_id=$1`;
+  const query = `SELECT friend_requests.*, users.firstname, users.lastname, users.avatar FROM friend_requests 
+  INNER JOIN users ON friend_requests.receiver_id = users.user_id 
+  WHERE sender_id=$1`;
 
   const data = [user_id];
 
