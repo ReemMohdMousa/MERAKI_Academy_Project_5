@@ -96,6 +96,38 @@ const getLikesByPost = (req, res) => {
     });
 };
 
+const getLikes = (req, res) => {
+  const query = `SELECT users.firstname, users.lastname, likes.post_id, users.avatar FROM (( likes INNER JOIN posts ON likes.post_id =posts.post_id) INNER JOIN users ON likes.user_id = users.user_id) 
+    `;
+
+  pool
+    .query(query)
+    .then((result) => {
+      pool
+        .query(
+          `SELECT post_id ,COUNT(post_id) AS  total_likes FROM  likes
+        GROUP BY post_id`
+        )
+        .then((result2) => {
+          res.status(200).json({
+            success: true,
+            users: result.rows,
+            num:[result2.rows],
+          });
+        })
+        .catch((err) => {
+          res.json(err);
+        });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
 //hard delete
 const removeLike = (req, res) => {
   const post_id = req.params.id;
@@ -131,4 +163,5 @@ module.exports = {
   getLikesByUser,
   getLikesByPost,
   removeLike,
+  getLikes,
 };
