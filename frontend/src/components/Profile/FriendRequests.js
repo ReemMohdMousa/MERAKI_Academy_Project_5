@@ -5,14 +5,17 @@ import axios from "axios";
 //import reducer's functions
 import {
   getAlluserFriends,
-  getAlluserSentReq,
-  getAlluserReceivedReq,
   addFriend,
   acceptFriendRequest,
   cancelFriendReq,
   declineFriendReq,
   removeFriend,
   isTheUserIsFriend,
+  addToSentReq,
+  setSentReq,
+  setReceivedReq,
+  setIsAdded,
+  setIsReceived,
 } from "../redux/reducers/friends/index";
 
 import {
@@ -36,15 +39,15 @@ import {
 
 const FriendRequests = ({ id }) => {
   //componant states and variables
-  const [isReqAdded, setIsReqAdded] = useState(false);
-  const [isReqReceived, setisReqReceived] = useState(false);
+  // const [isReqAdded, setIsReqAdded] = useState(false);
+  // const [isReqReceived, setisReqReceived] = useState(false);
 
   //dispatch
   const dispatch = useDispatch();
- 
+
   //redux states
-  const { token, userId, isLoggedIn, friends, isFriend } = useSelector(
-    (state) => {
+  const { token, userId, isLoggedIn, friends, isFriend, isAdded, isReceived } =
+    useSelector((state) => {
       //return object contains the redux states
       return {
         userId: state.auth.userId,
@@ -52,9 +55,10 @@ const FriendRequests = ({ id }) => {
         isLoggedIn: state.auth.isLoggedIn,
         friends: state.friends.friends,
         isFriend: state.friends.isFriend,
+        isAdded: state.friends.isAdded,
+        isReceived: state.friends.isReceived,
       };
-    }
-  );
+    });
 
   // change the isReqAdded state
   const checkIfReqWasSent = () => {
@@ -69,7 +73,8 @@ const FriendRequests = ({ id }) => {
         response.data.result &&
           response.data.result.map((element, i) => {
             if (element.receiver_id == id) {
-              setIsReqAdded(true);
+              dispatch(setIsAdded(true));
+              // setIsReqAdded(true);
             }
           });
       })
@@ -88,7 +93,8 @@ const FriendRequests = ({ id }) => {
         response.data.result &&
           response.data.result.map((element, i) => {
             if (element.sender_id == id) {
-              setisReqReceived(true);
+              dispatch(setIsReceived(true));
+              // setisReqReceived(true);
             }
           });
       })
@@ -114,9 +120,15 @@ const FriendRequests = ({ id }) => {
       )
       .then(function (response) {
         console.log(response.data.result);
+
+        //add the new request to the sentReq redux state
+        // dispatch(addToSentReq(response.data.result[0]));
+
+        //check if i sent this person a friend reques
         response.data.result.map((element, i) => {
           if (element.sender_id == userId) {
-            setIsReqAdded(true);
+            dispatch(setIsAdded(true));
+            // setIsReqAdded(true);
           }
         });
       })
@@ -167,7 +179,8 @@ const FriendRequests = ({ id }) => {
       .then(function (response) {
         response.data.result.map((element, i) => {
           if (element.receiver_id == id) {
-            setIsReqAdded(false);
+            dispatch(setIsAdded(false));
+            // setIsReqAdded(false);
           }
         });
       })
@@ -187,7 +200,8 @@ const FriendRequests = ({ id }) => {
         // console.log(response.data.result);
         response.data.result.map((element, i) => {
           if (element.sender_id == id && element.receiver_id == userId) {
-            setisReqReceived(false);
+            dispatch(setIsReceived(false));
+            // setisReqReceived(false);
           }
         });
       })
@@ -200,11 +214,11 @@ const FriendRequests = ({ id }) => {
     <div>
       {userId == id || isFriend ? (
         ""
-      ) : isReqAdded ? (
+      ) : isAdded ? (
         <MDBBtn color="danger" onClick={cancelFriendReqFun}>
           Cancel Request
         </MDBBtn>
-      ) : isReqReceived ? (
+      ) : isReceived ? (
         <MDBDropdown>
           <MDBDropdownToggle color="success">
             Respond to request

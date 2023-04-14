@@ -26,14 +26,39 @@ export const friends = createSlice({
       });
     },
 
-    getAlluserSentReq: (state, action) => {
-      console.log(action.payload);
+    setIsAdded: (state, action) => {
+      console.log("isAdded", action.payload);
+      state.isAdded = action.payload;
     },
 
-    getAlluserReceivedReq: (state, action) => {},
+    setIsReceived: (state, action) => {
+      console.log("isReceived", action.payload);
+      state.isReceived = action.payload;
+    },
 
     setSentReq: (state, action) => {
+      console.log("bbbbbbbbbb", action.payload);
       state.sentReq = action.payload;
+    },
+
+    addToSentReq: (state, action) => {
+      console.log("bbbbbbbbbb", action.payload);
+      console.log("bbbbbbbbbb", state.sentReq);
+
+      //save the sent request in the sentReq State
+      state.sentReq.push(action.payload);
+    },
+
+    cancelFriendReq: (state, action) => {
+      console.log("**************", action.payload);
+      console.log(state.sentReq);
+      //action.payload = reciver_id
+      state.sentReq.forEach((element, i) => {
+        if (element.receiver_id === action.payload) {
+          console.log(element);
+          element.splice(i, 1);
+        }
+      });
     },
 
     setReceivedReq: (state, action) => {
@@ -48,15 +73,6 @@ export const friends = createSlice({
     acceptFriendRequest: (state, action) => {
       //payload= newFriend
       state.friends.push(action.payload);
-    },
-
-    cancelFriendReq: (state, action) => {
-      //action.payload = reciver_id
-      state.sentReq.map((element, i) => {
-        if (element.receiver_id === action.payload.receiver_id) {
-          element.splice(i, 1);
-        }
-      });
     },
 
     declineFriendReq: (state, action) => {},
@@ -74,8 +90,6 @@ export const friends = createSlice({
 
 export const {
   getAlluserFriends,
-  getAlluserSentReq,
-  getAlluserReceivedReq,
   addFriend,
   acceptFriendRequest,
   cancelFriendReq,
@@ -85,6 +99,9 @@ export const {
   isTheUserIsFriend,
   setSentReq,
   setReceivedReq,
+  addToSentReq,
+  setIsAdded,
+  setIsReceived,
 } = friends.actions;
 
 export default friends.reducer;

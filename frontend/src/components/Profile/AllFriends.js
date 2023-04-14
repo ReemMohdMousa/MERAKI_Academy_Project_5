@@ -6,8 +6,6 @@ import "./style.css";
 
 import {
   getAlluserFriends,
-  getAlluserSentReq,
-  getAlluserReceivedReq,
   addFriend,
   acceptFriendRequest,
   cancelFriendReq,

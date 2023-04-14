@@ -12,7 +12,10 @@ import {
   setSentReq,
   setReceivedReq,
   cancelFriendReq,
+  setIsAdded,
+  setIsReceived,
 } from "../redux/reducers/friends/index";
+import { isPending } from "@reduxjs/toolkit";
 
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -28,14 +31,18 @@ export default function BasicMenu() {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, sentReq, ReceivedReq } = useSelector((state) => {
-    //return object contains the redux states
-    return {
-      token: state.auth.token,
-      sentReq: state.friends.sentReq,
-      ReceivedReq: state.friends.ReceivedReq,
-    };
-  });
+  const { token, sentReq, ReceivedReq, isAdded, isReceived } = useSelector(
+    (state) => {
+      //return object contains the redux states
+      return {
+        token: state.auth.token,
+        sentReq: state.friends.sentReq,
+        ReceivedReq: state.friends.ReceivedReq,
+        isAdded: state.friends.isAdded,
+        isReceived: state.friends.isReceived,
+      };
+    }
+  );
 
   const ReceivedRequests = () => {
     //*ME => receiver_id
@@ -61,6 +68,7 @@ export default function BasicMenu() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
+        console.log(response.data.result);
         //response.data.result => array of sent requests
         dispatch(setSentReq(response.data.result));
       })
@@ -72,7 +80,7 @@ export default function BasicMenu() {
   useEffect(() => {
     SentRequests();
     ReceivedRequests();
-  }, []);
+  }, [isAdded, isReceived]);
 
   //   console.log("ooooooooo", sentReq);
 
@@ -84,13 +92,13 @@ export default function BasicMenu() {
       })
       .then(function (response) {
         console.log(response.data.result);
+        dispatch(setIsAdded(false));
+        dispatch(cancelFriendReq(receiver_id));
 
         // const newSentArr = sentReq.filter((element, i) => {
         //   return element.receiver_id !== receiver_id;
         // });
         // setSentReq(newSentArr);
-
-        dispatch(cancelFriendReq(receiver_id));
       })
       .catch(function (error) {
         throw error;
