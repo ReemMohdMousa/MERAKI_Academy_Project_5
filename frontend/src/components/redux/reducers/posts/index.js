@@ -56,18 +56,26 @@ export const posts = createSlice({
       });
     },
 
-    addLike: (state, action) => {
-      console.log("from reducer", action.payload);
-      state.posts.map((elem, i) => {
-        if (elem.post_id === action.payload.post_id) {
-          console.log("****");
-          state.likes.push(action.payload);
-        }
-      });
+    setLike: (state, action) => {
+      state.likes = [action.payload];
+      console.log("set", state.likes);
     },
 
-    setLike: (state, action) => {
-      console.log("state", action);
+    addLike: (state, action) => {
+      console.log("from reducer", state.likes);
+      state.likes.push(action.payload);
+      /*  state.posts.map((elem, i) => {
+        if (elem.post_id === action.payload.post_id) {
+          console.log("****");
+        
+        }
+      }); */
+    },
+
+    removeLike: (state, action) => {
+      state.likes = state.likes.filter((elem) => {
+        return elem.post_id !== action.payload;
+      });
     },
   },
 });
@@ -80,6 +88,7 @@ export const {
   addComment,
   addLike,
   setLike,
+  removeLike,
 } = posts.actions;
 
 export default posts.reducer;

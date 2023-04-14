@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addLike, setLike } from "../redux/reducers/posts";
+import { addLike, setLike, removeLike } from "../redux/reducers/posts";
 import { AiFillLike } from "react-icons/ai";
 
 import Modal from "react-bootstrap/Modal";
@@ -15,12 +15,13 @@ const Likes = ({ post_id, post }) => {
   const handleClose = () => setShow(false);
   const dispatch = useDispatch();
 
-  const { token } = useSelector((state) => {
+  const { token, likes } = useSelector((state) => {
     return {
       token: state.auth.token,
+      likes: state.posts.likes,
     };
   });
-
+  console.log(likes);
   const getUserLike = () => {
     axios
       .get("http://localhost:5000/likes", {
@@ -31,7 +32,7 @@ const Likes = ({ post_id, post }) => {
         like.map((elem) => {
           if (elem.post_id === post.post_id) {
             setClicked("yes");
-            dispatch(setLike(setClicked("yes")));
+            // dispatch(setLike());
           }
         });
       })
@@ -47,16 +48,31 @@ const Likes = ({ post_id, post }) => {
       .get(`http://localhost:5000/likes/${post_id}`)
       .then((result) => {
         console.log(result.data);
-        setLikesNo(result.data.likesNo);
-        setLikedUser(result.data.result);
+        console.log("*******", result.data);
+        const LikedUser2 = result.data.result;
+        const LikesNo2 = result.data.likesNo;
+        dispatch(setLike({ LikedUser2, LikesNo2 }));
+
+        // setLikesNo(result.data.likesNo);
+        // setLikedUser(result.data.result);
       })
       .catch((error) => {
         console.log(error);
       });
   };
   useEffect(() => {
-    getPostLikes();
-    getUserLike();
+    axios
+      .get(`http://localhost:5000/likes/l`)
+      .then((result) => {
+        console.log(result.data);
+        console.log("*******", result.data);
+        const user = result.data.users;
+        const LikesNo2 = result.data.num;
+        dispatch(setLike({ user, LikesNo2 }));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const handleLike = (e) => {
@@ -71,8 +87,8 @@ const Likes = ({ post_id, post }) => {
         })
         .then((result) => {
           console.log(result);
-            dispatch(setLike(setClicked("no")));
-          dispatch(addLike(result.data));
+
+          dispatch(removeLike(id));
         })
         .catch((error) => {
           console.log(error);
@@ -102,7 +118,7 @@ const Likes = ({ post_id, post }) => {
   console.log(likedUser);
   return (
     <>
-      {/*    <div id="post-info">
+      <div id="post-info">
         <p>
           <AiFillLike
             style={{ color: "blue" }}
@@ -110,9 +126,16 @@ const Likes = ({ post_id, post }) => {
               setShow(true);
             }}
           />{" "}
-          <span>{likesNo}</span>
+           
+             {likes.LikesNo2 && likes.LikesNo2.length > 0 &&
+              likes.LikesNo2.map((elem) => {
+               if (elem.post_id==post.post_id){
+                return <span>elem.total_likes</span>
+               }
+              })}  
+           
         </p>
-      </div> */}
+      </div>
       <div className="item information" onClick={handleLike} id={post_id}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -129,13 +152,7 @@ const Likes = ({ post_id, post }) => {
             id={post_id}
           />
         </svg>{" "}
-        <span
-          onClick={(e) => {
-            setShow(true);
-          }}
-        >
-          likes {likesNo}
-        </span>
+        likes
       </div>
       <Modal
         show={show}
@@ -149,8 +166,8 @@ const Likes = ({ post_id, post }) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {likedUser && likedUser.length > 0
-            ? likedUser.map((element) => {
+          {likes.user && likes.user.length > 0
+            ? likes.user.map((element) => {
                 console.log(element);
                 return (
                   <div className="friend-list">
