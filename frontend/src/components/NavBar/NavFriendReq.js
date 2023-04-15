@@ -14,6 +14,7 @@ import {
   cancelFriendReq,
   setIsAdded,
   setIsReceived,
+  declineFriendReq,
 } from "../redux/reducers/friends/index";
 import { isPending } from "@reduxjs/toolkit";
 
@@ -107,13 +108,15 @@ export default function BasicMenu() {
 
   //decline the friend request
   // when the receiver delete or decline the request
-  const declineFriendReqFun = () => {
+  const declineFriendReqFun = (sender_id) => {
     axios
-      .delete(`http://localhost:5000/friends/decline/`, {
+      .delete(`http://localhost:5000/friends/decline/${sender_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
         // console.log(response.data.result);
+        dispatch(setIsReceived(false));
+        dispatch(declineFriendReq(sender_id));
       })
       .catch(function (error) {
         throw error;
@@ -176,6 +179,9 @@ export default function BasicMenu() {
                             variant="contained"
                             size="small"
                             color="error"
+                            onClick={() => {
+                              declineFriendReqFun(element.sender_id);
+                            }}
                           >
                             Decline
                           </Button>

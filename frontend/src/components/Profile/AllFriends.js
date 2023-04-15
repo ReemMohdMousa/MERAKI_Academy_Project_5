@@ -24,14 +24,17 @@ const AllFriends = ({ id }) => {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, userId, isLoggedIn, friends } = useSelector((state) => {
-    return {
-      friends: state.friends.friends,
-      userId: state.auth.userId,
-      token: state.auth.token,
-      isLoggedIn: state.auth.isLoggedIn,
-    };
-  });
+  const { token, userId, isLoggedIn, friends, isFriend } = useSelector(
+    (state) => {
+      return {
+        friends: state.friends.friends,
+        userId: state.auth.userId,
+        token: state.auth.token,
+        isLoggedIn: state.auth.isLoggedIn,
+        isFriend: state.friends.isFriend,
+      };
+    }
+  );
 
   //!get all friends of any person depending on the user id
   useEffect(() => {
@@ -49,7 +52,7 @@ const AllFriends = ({ id }) => {
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  }, [isFriend]);
 
   //*remove friend function
   // i need the user2_id as a params (the friend id i want to remove)

@@ -16,6 +16,7 @@ import {
   setReceivedReq,
   setIsAdded,
   setIsReceived,
+  setIsFriend,
 } from "../redux/reducers/friends/index";
 
 import {
@@ -148,22 +149,21 @@ const FriendRequests = ({ id }) => {
         }
       )
       .then(function (response) {
-        let friendId = response.data.result[0].user1_id;
+        //add the friend to friends array by changing isFriend redux state
+        dispatch(setIsFriend(true));
 
+        
         //get the friend info to push it to friends state, so i could rerender the friends array
-        axios
-          .get(`http://localhost:5000/users/others/info/${friendId}`)
-          .then((response) => {
-            console.log(response.data.result);
-            //add the new friend to the friends array state
-            dispatch(acceptFriendRequest(response.data.result));
-
-            //change isFriend state
-            dispatch(isTheUserIsFriend(response.data.result.user_id));
-          })
-          .catch((err) => {
-            throw err;
-          });
+        // axios
+        //   .get(`http://localhost:5000/users/others/info/${friendId}`)
+        //   .then((response) => {
+        //     console.log(response.data.result);
+        //     //add the new friend to the friends array state
+        //     dispatch(acceptFriendRequest(response.data.result));
+        //   })
+        //   .catch((err) => {
+        //     throw err;
+        //   });
       })
       .catch(function (error) {
         throw error;
