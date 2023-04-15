@@ -86,32 +86,32 @@ const Likes = ({ post_id, post }) => {
         });
     }
   };
-  
+
   const box = document.getElementById("#mess");
 
   return (
     <>
-     
-        <span id="post-info">
-          <AiFillLike
-            style={{ color: "blue" }}
-            onClick={(e) => {
-              setShow(true);
-            }}
-          />{" "}
-          {likes.length > 0 &&
-            likes[0].LikesNo2.length > 0 &&
-            likes[0].LikesNo2.flat().map((elem) => {
-              console.log("111111111", elem);
-              if (post_id == elem.post_id) {
-                return <span>{elem.total_likes}</span>;
-              }
-            })}
-             
-        </span>
-     
-     
-      
+      <p id="post-info">
+        <AiFillLike
+          style={{ color: "blue" }}
+          onClick={(e) => {
+            setShow(true);
+          }}
+        />{" "}
+        {likes.length > 0 &&
+          likes[0].LikesNo2.length > 0 &&
+          likes[0].LikesNo2.flat().reduce((acc, elem) => {
+            if (post_id == elem.post_id) {
+              const a = elem.total_likes;
+              console.log(">>>>>>", { post_id, a });
+
+              return <span>{elem.total_likes}</span>;
+            } else {
+              return <span>{acc}</span>;
+            }
+          }, 0)}
+      </p>
+
       <div className="item information" onClick={handleLike} id={post_id}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
