@@ -8,9 +8,12 @@ export const friends = createSlice({
     isFriend: false,
     isAdded: false,
     isReceived: false,
+    isRemoved: false,
     sentReq: [],
     ReceivedReq: [],
   },
+
+  
   reducers: {
     getAlluserFriends: (state, action) => {
       //payload = array of user's friends
@@ -22,20 +25,66 @@ export const friends = createSlice({
       state.friends.map((element) => {
         if (element.user_id == action.payload) {
           state.isFriend = true;
+        } else {
+          state.isFriend = false;
         }
       });
     },
 
-    getAlluserSentReq: (state, action) => {
-      console.log(action.payload);
+    setIsFriend: (state, action) => {
+      state.isFriend = action.payload;
     },
 
-    getAlluserReceivedReq: (state, action) => {},
+    setIsAdded: (state, action) => {
+      console.log("isAdded", action.payload);
+      state.isAdded = action.payload;
+    },
 
-    addFriendToReceivedReq: (state, action) => {},
+    setIsReceived: (state, action) => {
+      console.log("isReceived", action.payload);
+      state.isReceived = action.payload;
+    },
+
+    setSentReq: (state, action) => {
+      console.log("bbbbbbbbbb", action.payload);
+      state.sentReq = action.payload;
+    },
+
+    addToSentReq: (state, action) => {
+      console.log("bbbbbbbbbb", action.payload);
+      console.log("bbbbbbbbbb", state.sentReq);
+
+      //save the sent request in the sentReq State
+      state.sentReq.push(action.payload);
+    },
+
+    cancelFriendReq: (state, action) => {
+      console.log("**************", action.payload);
+      console.log(state.sentReq);
+      //action.payload = reciver_id
+      state.sentReq.forEach((element, i) => {
+        if (element.receiver_id === action.payload) {
+          console.log(element);
+          element.splice(i, 1);
+        }
+      });
+    },
+
+    setReceivedReq: (state, action) => {
+      state.ReceivedReq = action.payload;
+    },
+
+    declineFriendReq: (state, action) => {
+      //action.payload = sender_id
+      state.sentReq.forEach((element, i) => {
+        if (element.sender_id === action.payload) {
+          console.log(element);
+          element.splice(i, 1);
+        }
+      });
+    },
 
     addFriend: (state, action) => {
-      console.log(action.payload);
       state.isAdded = true;
     },
 
@@ -44,25 +93,24 @@ export const friends = createSlice({
       state.friends.push(action.payload);
     },
 
-    cancelFriendReq: (state, action) => {},
-
-    declineFriendReq: (state, action) => {},
-
     removeFriend: (state, action) => {
+      console.log(action.payload);
       //payload = user_id
       state.friends.map((element, i) => {
-        if (element.user_id === action.payload) {
+        if (element.user_id == action.payload) {
           state.friends.splice(i, 0);
         }
       });
+    },
+
+    setIsRemoved: (state, action) => {
+      state.isRemoved = (action.payload);
     },
   },
 });
 
 export const {
   getAlluserFriends,
-  getAlluserSentReq,
-  getAlluserReceivedReq,
   addFriend,
   acceptFriendRequest,
   cancelFriendReq,
@@ -70,7 +118,13 @@ export const {
   removeFriend,
   isFriendFun,
   isTheUserIsFriend,
-  addFriendToReceivedReq,
+  setSentReq,
+  setReceivedReq,
+  addToSentReq,
+  setIsAdded,
+  setIsReceived,
+  setIsFriend,
+  setIsRemoved
 } = friends.actions;
 
 export default friends.reducer;

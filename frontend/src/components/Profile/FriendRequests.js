@@ -5,14 +5,18 @@ import axios from "axios";
 //import reducer's functions
 import {
   getAlluserFriends,
-  getAlluserSentReq,
-  getAlluserReceivedReq,
   addFriend,
   acceptFriendRequest,
   cancelFriendReq,
   declineFriendReq,
   removeFriend,
   isTheUserIsFriend,
+  addToSentReq,
+  setSentReq,
+  setReceivedReq,
+  setIsAdded,
+  setIsReceived,
+  setIsFriend,
 } from "../redux/reducers/friends/index";
 
 import {
@@ -36,25 +40,34 @@ import {
 
 const FriendRequests = ({ id }) => {
   //componant states and variables
-  const [isReqAdded, setIsReqAdded] = useState(false);
-  const [isReqReceived, setisReqReceived] = useState(false);
+  // const [isReqAdded, setIsReqAdded] = useState(false);
+  // const [isReqReceived, setisReqReceived] = useState(false);
 
   //dispatch
   const dispatch = useDispatch();
- 
+
   //redux states
-  const { token, userId, isLoggedIn, friends, isFriend } = useSelector(
-    (state) => {
-      //return object contains the redux states
-      return {
-        userId: state.auth.userId,
-        token: state.auth.token,
-        isLoggedIn: state.auth.isLoggedIn,
-        friends: state.friends.friends,
-        isFriend: state.friends.isFriend,
-      };
-    }
-  );
+  const {
+    token,
+    userId,
+    isLoggedIn,
+    friends,
+    isFriend,
+    isAdded,
+    isReceived,
+    
+  } = useSelector((state) => {
+    //return object contains the redux states
+    return {
+      userId: state.auth.userId,
+      token: state.auth.token,
+      isLoggedIn: state.auth.isLoggedIn,
+      friends: state.friends.friends,
+      isFriend: state.friends.isFriend,
+      isAdded: state.friends.isAdded,
+      isReceived: state.friends.isReceived,
+    };
+  });
 
   // change the isReqAdded state
   const checkIfReqWasSent = () => {
@@ -69,7 +82,8 @@ const FriendRequests = ({ id }) => {
         response.data.result &&
           response.data.result.map((element, i) => {
             if (element.receiver_id == id) {
-              setIsReqAdded(true);
+              dispatch(setIsAdded(true));
+              // setIsReqAdded(true);
             }
           });
       })
@@ -88,7 +102,8 @@ const FriendRequests = ({ id }) => {
         response.data.result &&
           response.data.result.map((element, i) => {
             if (element.sender_id == id) {
-              setisReqReceived(true);
+              dispatch(setIsReceived(true));
+              // setisReqReceived(true);
             }
           });
       })
@@ -114,9 +129,15 @@ const FriendRequests = ({ id }) => {
       )
       .then(function (response) {
         console.log(response.data.result);
+
+        //add the new request to the sentReq redux state
+        // dispatch(addToSentReq(response.data.result[0]));
+
+        //check if i sent this person a friend reques
         response.data.result.map((element, i) => {
           if (element.sender_id == userId) {
-            setIsReqAdded(true);
+            dispatch(setIsAdded(true));
+            // setIsReqAdded(true);
           }
         });
       })
@@ -125,7 +146,7 @@ const FriendRequests = ({ id }) => {
       });
   };
 
-  //!BUG
+ 
   const acceptFriendReq = () => {
     axios
       .post(
@@ -136,22 +157,28 @@ const FriendRequests = ({ id }) => {
         }
       )
       .then(function (response) {
-        let friendId = response.data.result[0].user1_id;
+        //add the friend to friends array by changing isFriend redux state
+        // if (response.data.result[0].user1_id == userId) {
+        //   let friendId = response.data.result[0].user2_id;
+
+        //   friends.forEach(element => {
+        //     if(element.user_id ==)
+        //   });
+        // }
+
+        dispatch(setIsFriend(true));
 
         //get the friend info to push it to friends state, so i could rerender the friends array
-        axios
-          .get(`http://localhost:5000/users/others/info/${friendId}`)
-          .then((response) => {
-            console.log(response.data.result);
-            //add the new friend to the friends array state
-            dispatch(acceptFriendRequest(response.data.result));
-
-            //change isFriend state
-            dispatch(isTheUserIsFriend(response.data.result.user_id));
-          })
-          .catch((err) => {
-            throw err;
-          });
+        // axios
+        //   .get(`http://localhost:5000/users/others/info/${friendId}`)
+        //   .then((response) => {
+        //     console.log(response.data.result);
+        //     //add the new friend to the friends array state
+        //     dispatch(acceptFriendRequest(response.data.result));
+        //   })
+        //   .catch((err) => {
+        //     throw err;
+        //   });
       })
       .catch(function (error) {
         throw error;
@@ -167,7 +194,8 @@ const FriendRequests = ({ id }) => {
       .then(function (response) {
         response.data.result.map((element, i) => {
           if (element.receiver_id == id) {
-            setIsReqAdded(false);
+            dispatch(setIsAdded(false));
+            // setIsReqAdded(false);
           }
         });
       })
@@ -187,7 +215,8 @@ const FriendRequests = ({ id }) => {
         // console.log(response.data.result);
         response.data.result.map((element, i) => {
           if (element.sender_id == id && element.receiver_id == userId) {
-            setisReqReceived(false);
+            dispatch(setIsReceived(false));
+            // setisReqReceived(false);
           }
         });
       })
@@ -200,11 +229,11 @@ const FriendRequests = ({ id }) => {
     <div>
       {userId == id || isFriend ? (
         ""
-      ) : isReqAdded ? (
+      ) : isAdded ? (
         <MDBBtn color="danger" onClick={cancelFriendReqFun}>
           Cancel Request
         </MDBBtn>
-      ) : isReqReceived ? (
+      ) : isReceived ? (
         <MDBDropdown>
           <MDBDropdownToggle color="success">
             Respond to request

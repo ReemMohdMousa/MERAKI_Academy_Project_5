@@ -8,6 +8,16 @@ import Tabs from "react-bootstrap/Tabs";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import "./syle.css";
+import {
+  setSentReq,
+  setReceivedReq,
+  cancelFriendReq,
+  setIsAdded,
+  setIsReceived,
+  declineFriendReq,
+  setIsFriend,
+} from "../redux/reducers/friends/index";
+import { isPending } from "@reduxjs/toolkit";
 
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -23,19 +33,18 @@ export default function BasicMenu() {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, userId, isLoggedIn, friends, isFriend } = useSelector(
-    (state) => {
+  const { token, sentReq, ReceivedReq, isAdded, isReceived, isFriend } =
+    useSelector((state) => {
       //return object contains the redux states
       return {
-        userId: state.auth.userId,
         token: state.auth.token,
-        isLoggedIn: state.auth.isLoggedIn,
-        friends: state.friends.friends,
+        sentReq: state.friends.sentReq,
+        ReceivedReq: state.friends.ReceivedReq,
+        isAdded: state.friends.isAdded,
+        isReceived: state.friends.isReceived,
         isFriend: state.friends.isFriend,
-
       };
-    }
-  );
+    });
 
   const ReceivedRequests = () => {
     //*ME => receiver_id
@@ -45,11 +54,8 @@ export default function BasicMenu() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        // console.log(response.data);
-
         //response.data.result => array of received requests
-        // setReceivedReq(response.data.result);
-        // dispatch()
+        dispatch(setReceivedReq(response.data.result));
       })
       .catch(function (error) {
         throw error;
@@ -64,10 +70,28 @@ export default function BasicMenu() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        // console.log(response.data);
-
+        console.log(response.data.result);
         //response.data.result => array of sent requests
-        // setSentReq(response.data.result);
+        dispatch(setSentReq(response.data.result));
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  };
+
+  const acceptFriendReq = (sender_id) => {
+    axios
+      .post(
+        `http://localhost:5000/friends/accept`,
+        { user2_id: sender_id },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then(function (response) {
+        dispatch(setIsFriend(true));
+        dispatch(setIsAdded(false));
+        dispatch(setIsReceived(false));
       })
       .catch(function (error) {
         throw error;
@@ -77,9 +101,8 @@ export default function BasicMenu() {
   useEffect(() => {
     SentRequests();
     ReceivedRequests();
-  }, []);
+  }, [isAdded, isReceived]);
 
-//   console.log("ooooooooo", sentReq);
 
   //cancel friend request
   const cancelFriendReqFun = (receiver_id) => {
@@ -89,6 +112,8 @@ export default function BasicMenu() {
       })
       .then(function (response) {
         console.log(response.data.result);
+        dispatch(setIsAdded(false));
+        dispatch(cancelFriendReq(receiver_id));
 
         // const newSentArr = sentReq.filter((element, i) => {
         //   return element.receiver_id !== receiver_id;
@@ -102,13 +127,15 @@ export default function BasicMenu() {
 
   //decline the friend request
   // when the receiver delete or decline the request
-  const declineFriendReqFun = () => {
+  const declineFriendReqFun = (sender_id) => {
     axios
-      .delete(`http://localhost:5000/friends/decline/`, {
+      .delete(`http://localhost:5000/friends/decline/${sender_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
         // console.log(response.data.result);
+        dispatch(setIsReceived(false));
+        dispatch(declineFriendReq(sender_id));
       })
       .catch(function (error) {
         throw error;
@@ -142,7 +169,7 @@ export default function BasicMenu() {
           className="mb-3"
         >
           <Tab eventKey="Add Requests" title="Add Requests">
-            {/* <div className="friend-list-body">
+            <div className="friend-list-body">
               {ReceivedReq &&
                 ReceivedReq.map((element) => {
                   return (
@@ -164,6 +191,9 @@ export default function BasicMenu() {
                             variant="contained"
                             size="small"
                             color="success"
+                            onClick={() => {
+                              acceptFriendReq(element.sender_id);
+                            }}
                           >
                             Accept
                           </Button>
@@ -171,6 +201,9 @@ export default function BasicMenu() {
                             variant="contained"
                             size="small"
                             color="error"
+                            onClick={() => {
+                              declineFriendReqFun(element.sender_id);
+                            }}
                           >
                             Decline
                           </Button>
@@ -179,10 +212,10 @@ export default function BasicMenu() {
                     </div>
                   );
                 })}
-            </div> */}
+            </div>
           </Tab>
           <Tab eventKey="Sent Requests" title="Sent Requests">
-            {/* <div className="friend-list-body">
+            <div className="friend-list-body">
               {sentReq &&
                 sentReq.map((element) => {
                   return (
@@ -215,7 +248,7 @@ export default function BasicMenu() {
                     </div>
                   );
                 })}
-            </div> */}
+            </div>
           </Tab>
         </Tabs>
 
