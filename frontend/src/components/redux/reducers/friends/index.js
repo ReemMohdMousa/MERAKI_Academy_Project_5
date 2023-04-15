@@ -12,6 +12,8 @@ export const friends = createSlice({
     sentReq: [],
     ReceivedReq: [],
   },
+
+  
   reducers: {
     getAlluserFriends: (state, action) => {
       //payload = array of user's friends

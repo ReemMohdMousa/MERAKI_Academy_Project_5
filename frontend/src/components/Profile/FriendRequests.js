@@ -146,7 +146,7 @@ const FriendRequests = ({ id }) => {
       });
   };
 
-  //!BUG
+ 
   const acceptFriendReq = () => {
     axios
       .post(
