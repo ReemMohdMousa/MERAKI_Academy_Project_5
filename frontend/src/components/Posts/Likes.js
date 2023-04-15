@@ -86,13 +86,13 @@ const Likes = ({ post_id, post }) => {
         });
     }
   };
-  console.log(likedUser);
+  
   const box = document.getElementById("#mess");
 
   return (
     <>
-      <div id="post-info">
-        <p>
+     
+        <span id="post-info">
           <AiFillLike
             style={{ color: "blue" }}
             onClick={(e) => {
@@ -107,8 +107,11 @@ const Likes = ({ post_id, post }) => {
                 return <span>{elem.total_likes}</span>;
               }
             })}
-        </p>
-      </div>
+             
+        </span>
+     
+     
+      
       <div className="item information" onClick={handleLike} id={post_id}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
