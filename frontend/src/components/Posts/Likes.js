@@ -15,13 +15,15 @@ const Likes = ({ post_id, post }) => {
   const handleClose = () => setShow(false);
   const dispatch = useDispatch();
 
-  const { token, likes } = useSelector((state) => {
+  const { token, likes, userId } = useSelector((state) => {
     return {
       token: state.auth.token,
       likes: state.posts.likes,
+      userId: state.auth.userId,
     };
   });
-  console.log(likes);
+  console.log(likes.flat());
+
   const getUserLike = () => {
     axios
       .get("http://localhost:5000/likes", {
@@ -51,7 +53,7 @@ const Likes = ({ post_id, post }) => {
         console.log("*******", result.data);
         const LikedUser2 = result.data.result;
         const LikesNo2 = result.data.likesNo;
-        dispatch(setLike({ LikedUser2, LikesNo2 }));
+        dispatch(setLike([LikedUser2, LikesNo2]));
 
         // setLikesNo(result.data.likesNo);
         // setLikedUser(result.data.result);
@@ -69,6 +71,11 @@ const Likes = ({ post_id, post }) => {
         const user = result.data.users;
         const LikesNo2 = result.data.num;
         dispatch(setLike({ user, LikesNo2 }));
+        user.map((elem) => {
+          if (elem.post_id== post_id  && userId==elem.user_id) {
+            setClicked("yes");
+          }
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -126,14 +133,14 @@ const Likes = ({ post_id, post }) => {
               setShow(true);
             }}
           />{" "}
-           
-             {likes.LikesNo2 && likes.LikesNo2.length > 0 &&
-              likes.LikesNo2.map((elem) => {
-               if (elem.post_id==post.post_id){
-                return <span>elem.total_likes</span>
-               }
-              })}  
-           
+          {likes.length > 0 &&
+            likes[0].LikesNo2.length > 0 &&
+            likes[0].LikesNo2.flat().map((elem) => {
+              console.log("111111111", elem);
+              if (post_id == elem.post_id) {
+                return <span>{elem.total_likes}</span>;
+              }
+            })}
         </p>
       </div>
       <div className="item information" onClick={handleLike} id={post_id}>
@@ -166,24 +173,29 @@ const Likes = ({ post_id, post }) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {likes.user && likes.user.length > 0
-            ? likes.user.map((element) => {
-                console.log(element);
-                return (
-                  <div className="friend-list">
-                    <div className="friend-img-name">
-                      <img
-                        className="friend-img"
-                        src={
-                          element.avatar ||
-                          "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                        }
-                      />
+          {likes.length > 0 && likes[0].user.length > 0
+            ? likes[0].user.flat().map((element) => {
+                if (element.post_id == post_id) {
+                  console.log(element);
+                  return (
+                    <div
+                      className="friend-list"
+                      style={{ marginBottom: ".5rem" }}
+                    >
+                      <div className="friend-img-name">
+                        <img
+                          className="friend-img"
+                          src={
+                            element.avatar ||
+                            "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                          }
+                        />
 
-                      <h6>{element.firstname + " " + element.lastname}</h6>
+                        <h6>{element.firstname + " " + element.lastname}</h6>
+                      </div>
                     </div>
-                  </div>
-                );
+                  );
+                }
               })
             : "There is no likes on this post"}
         </Modal.Body>

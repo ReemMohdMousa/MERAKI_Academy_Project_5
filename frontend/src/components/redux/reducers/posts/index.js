@@ -58,7 +58,8 @@ export const posts = createSlice({
 
     setLike: (state, action) => {
       state.likes = [action.payload];
-      console.log("set", state.likes);
+      console.log("set", action.payload);
+      
     },
 
     addLike: (state, action) => {
