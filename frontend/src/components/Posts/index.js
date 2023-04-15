@@ -9,7 +9,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { format } from "timeago.js";
 import Iframe from "react-iframe";
 import UpdatePost from "../AddPost/UpdatePost";
-
+import Likes from "./Likes"
 import {
  
   setComments,

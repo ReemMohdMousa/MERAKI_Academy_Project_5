@@ -58,6 +58,19 @@ const Comments = ({ id }) => {
       })
       .catch((err) => console.log(err));
   };
+  const addNewComment=()=>{
+    axios.post(`http://localhost:5000/comments/${id}`, {
+       ...nemcomment }, { headers: { Authorization: token } }
+      ).then((Response) => {
+      console.log(Response.data.result);
+      let comment = Response.data.result;
+     
+      dispatch(addComment({ id, comment }));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
   const getAllCommentsByPostId = (id) => {
     axios
       .get(`http://localhost:5000/comments/${id}`, {
@@ -121,7 +134,7 @@ const Comments = ({ id }) => {
                               onClick={(e)=>{
                                 setNewComment((content) => {
                                   setDisabled(false)
-                        
+                                  
                                  return { ...content, content:e.target.value };
                                 });
                                 
@@ -184,7 +197,7 @@ const Comments = ({ id }) => {
                                   reply
                                 </span>
                               </a>
-                              <button onClick={()=>{}}>comment</button>
+                              <button onClick={()=>{addNewComment()}}>comment</button>
                             </div>
                           </div>
                         </div>
@@ -219,16 +232,30 @@ const Comments = ({ id }) => {
                                       </span>
                                     </p>
                                     <a href="#!">
-                                      <MDBIcon fas icon="reply fa-xs" />
                                       <span className="small"> reply</span>
                                     </a>
                                   </div>
-                                  <p className="small mb-0">
+                                  {nemcomment.content &&( <p className="small mb-0">
                                     {element.content}
-                                  </p>
-                                  <img className="small mb-0">
-                                    {element.image}
-                                  </img>
+                                  </p>)}
+                                  <div className="d-flex justify-content-between align-items-center">
+                             {nemcomment.image && (
+                          <img style={{width:"100px",marginLeft:"20%"}}
+                            variant="success"
+                           
+                            src={element.image}
+                          />
+                        )}
+                        {disabled && (
+                          <div>
+                            <p variant="warning">
+                              Please wait untile file uploaded
+                            </p>
+                            <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
+                          </div>
+                        )}
+                            </div>
+                                    
                                 </div>
 
                                 {/* <div className="d-flex flex-start mt-4">
