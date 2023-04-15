@@ -47,19 +47,27 @@ const FriendRequests = ({ id }) => {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, userId, isLoggedIn, friends, isFriend, isAdded, isReceived } =
-    useSelector((state) => {
-      //return object contains the redux states
-      return {
-        userId: state.auth.userId,
-        token: state.auth.token,
-        isLoggedIn: state.auth.isLoggedIn,
-        friends: state.friends.friends,
-        isFriend: state.friends.isFriend,
-        isAdded: state.friends.isAdded,
-        isReceived: state.friends.isReceived,
-      };
-    });
+  const {
+    token,
+    userId,
+    isLoggedIn,
+    friends,
+    isFriend,
+    isAdded,
+    isReceived,
+    
+  } = useSelector((state) => {
+    //return object contains the redux states
+    return {
+      userId: state.auth.userId,
+      token: state.auth.token,
+      isLoggedIn: state.auth.isLoggedIn,
+      friends: state.friends.friends,
+      isFriend: state.friends.isFriend,
+      isAdded: state.friends.isAdded,
+      isReceived: state.friends.isReceived,
+    };
+  });
 
   // change the isReqAdded state
   const checkIfReqWasSent = () => {
@@ -150,9 +158,16 @@ const FriendRequests = ({ id }) => {
       )
       .then(function (response) {
         //add the friend to friends array by changing isFriend redux state
+        // if (response.data.result[0].user1_id == userId) {
+        //   let friendId = response.data.result[0].user2_id;
+
+        //   friends.forEach(element => {
+        //     if(element.user_id ==)
+        //   });
+        // }
+
         dispatch(setIsFriend(true));
 
-        
         //get the friend info to push it to friends state, so i could rerender the friends array
         // axios
         //   .get(`http://localhost:5000/users/others/info/${friendId}`)

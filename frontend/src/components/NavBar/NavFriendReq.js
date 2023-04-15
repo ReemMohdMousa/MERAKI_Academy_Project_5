@@ -15,6 +15,7 @@ import {
   setIsAdded,
   setIsReceived,
   declineFriendReq,
+  setIsFriend,
 } from "../redux/reducers/friends/index";
 import { isPending } from "@reduxjs/toolkit";
 
@@ -32,8 +33,8 @@ export default function BasicMenu() {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, sentReq, ReceivedReq, isAdded, isReceived } = useSelector(
-    (state) => {
+  const { token, sentReq, ReceivedReq, isAdded, isReceived, isFriend } =
+    useSelector((state) => {
       //return object contains the redux states
       return {
         token: state.auth.token,
@@ -41,9 +42,9 @@ export default function BasicMenu() {
         ReceivedReq: state.friends.ReceivedReq,
         isAdded: state.friends.isAdded,
         isReceived: state.friends.isReceived,
+        isFriend: state.friends.isFriend,
       };
-    }
-  );
+    });
 
   const ReceivedRequests = () => {
     //*ME => receiver_id
@@ -78,12 +79,30 @@ export default function BasicMenu() {
       });
   };
 
+  const acceptFriendReq = (sender_id) => {
+    axios
+      .post(
+        `http://localhost:5000/friends/accept`,
+        { user2_id: sender_id },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then(function (response) {
+        dispatch(setIsFriend(true));
+        dispatch(setIsAdded(false));
+        dispatch(setIsReceived(false));
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  };
+
   useEffect(() => {
     SentRequests();
     ReceivedRequests();
   }, [isAdded, isReceived]);
 
-  //   console.log("ooooooooo", sentReq);
 
   //cancel friend request
   const cancelFriendReqFun = (receiver_id) => {
@@ -172,6 +191,9 @@ export default function BasicMenu() {
                             variant="contained"
                             size="small"
                             color="success"
+                            onClick={() => {
+                              acceptFriendReq(element.sender_id);
+                            }}
                           >
                             Accept
                           </Button>

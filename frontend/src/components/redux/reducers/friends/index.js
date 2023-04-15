@@ -8,6 +8,7 @@ export const friends = createSlice({
     isFriend: false,
     isAdded: false,
     isReceived: false,
+    isRemoved: false,
     sentReq: [],
     ReceivedReq: [],
   },
@@ -91,12 +92,17 @@ export const friends = createSlice({
     },
 
     removeFriend: (state, action) => {
+      console.log(action.payload);
       //payload = user_id
       state.friends.map((element, i) => {
-        if (element.user_id === action.payload) {
+        if (element.user_id == action.payload) {
           state.friends.splice(i, 0);
         }
       });
+    },
+
+    setIsRemoved: (state, action) => {
+      state.isRemoved = (action.payload);
     },
   },
 });
@@ -116,6 +122,7 @@ export const {
   setIsAdded,
   setIsReceived,
   setIsFriend,
+  setIsRemoved
 } = friends.actions;
 
 export default friends.reducer;

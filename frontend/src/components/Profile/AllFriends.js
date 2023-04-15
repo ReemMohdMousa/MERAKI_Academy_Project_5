@@ -12,6 +12,8 @@ import {
   declineFriendReq,
   removeFriend,
   isTheUserIsFriend,
+  setIsFriend,
+  setIsRemoved,
 } from "../redux/reducers/friends/index";
 
 const AllFriends = ({ id }) => {
@@ -24,20 +26,20 @@ const AllFriends = ({ id }) => {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, userId, isLoggedIn, friends, isFriend } = useSelector(
-    (state) => {
+  const { token, userId, isLoggedIn, friends, isFriend, isRemoved } =
+    useSelector((state) => {
       return {
         friends: state.friends.friends,
         userId: state.auth.userId,
         token: state.auth.token,
         isLoggedIn: state.auth.isLoggedIn,
         isFriend: state.friends.isFriend,
+        isRemoved: state.friends.isRemoved,
       };
-    }
-  );
+    });
 
   //!get all friends of any person depending on the user id
-  useEffect(() => {
+  const getAllFriends = () => {
     axios
       .get(`http://localhost:5000/friends/get/all/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -52,6 +54,10 @@ const AllFriends = ({ id }) => {
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  useEffect(() => {
+    getAllFriends();
   }, [isFriend]);
 
   //*remove friend function
@@ -62,8 +68,8 @@ const AllFriends = ({ id }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data);
         dispatch(removeFriend(user2_id));
+        getAllFriends();
       })
       .catch(function (error) {
         throw error;
