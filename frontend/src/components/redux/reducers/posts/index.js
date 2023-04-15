@@ -59,18 +59,11 @@ export const posts = createSlice({
     setLike: (state, action) => {
       state.likes = [action.payload];
       console.log("set", action.payload);
-      
     },
 
     addLike: (state, action) => {
       console.log("from reducer", state.likes);
       state.likes.push(action.payload);
-      /*  state.posts.map((elem, i) => {
-        if (elem.post_id === action.payload.post_id) {
-          console.log("****");
-        
-        }
-      }); */
     },
 
     removeLike: (state, action) => {
@@ -90,6 +83,7 @@ export const {
   addLike,
   setLike,
   removeLike,
+  updateLike,
 } = posts.actions;
 
 export default posts.reducer;

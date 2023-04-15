@@ -22,47 +22,8 @@ const Likes = ({ post_id, post }) => {
       userId: state.auth.userId,
     };
   });
-  console.log(likes.flat());
 
-  const getUserLike = () => {
-    axios
-      .get("http://localhost:5000/likes", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((result) => {
-        const like = result.data.result;
-        like.map((elem) => {
-          if (elem.post_id === post.post_id) {
-            setClicked("yes");
-            // dispatch(setLike());
-          }
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const getPostLikes = () => {
-    const id = post.post_id;
-    console.log(id);
-    axios
-      .get(`http://localhost:5000/likes/${post_id}`)
-      .then((result) => {
-        console.log(result.data);
-        console.log("*******", result.data);
-        const LikedUser2 = result.data.result;
-        const LikesNo2 = result.data.likesNo;
-        dispatch(setLike([LikedUser2, LikesNo2]));
-
-        // setLikesNo(result.data.likesNo);
-        // setLikedUser(result.data.result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  useEffect(() => {
+  const getLikes = () => {
     axios
       .get(`http://localhost:5000/likes/l`)
       .then((result) => {
@@ -72,7 +33,7 @@ const Likes = ({ post_id, post }) => {
         const LikesNo2 = result.data.num;
         dispatch(setLike({ user, LikesNo2 }));
         user.map((elem) => {
-          if (elem.post_id== post_id  && userId==elem.user_id) {
+          if (elem.post_id == post_id && userId == elem.user_id) {
             setClicked("yes");
           }
         });
@@ -80,6 +41,9 @@ const Likes = ({ post_id, post }) => {
       .catch((error) => {
         console.log(error);
       });
+  };
+  useEffect(() => {
+    getLikes();
   }, []);
 
   const handleLike = (e) => {
@@ -96,6 +60,7 @@ const Likes = ({ post_id, post }) => {
           console.log(result);
 
           dispatch(removeLike(id));
+          getLikes();
         })
         .catch((error) => {
           console.log(error);
@@ -114,8 +79,7 @@ const Likes = ({ post_id, post }) => {
         )
         .then((result) => {
           dispatch(addLike(result.data.result));
-
-          // dispatch(setLike(setClicked("yes")));
+          getLikes();
         })
         .catch((error) => {
           console.log(error);
@@ -123,6 +87,8 @@ const Likes = ({ post_id, post }) => {
     }
   };
   console.log(likedUser);
+  const box = document.getElementById("#mess");
+
   return (
     <>
       <div id="post-info">
@@ -179,6 +145,7 @@ const Likes = ({ post_id, post }) => {
                   console.log(element);
                   return (
                     <div
+                      id="mess"
                       className="friend-list"
                       style={{ marginBottom: ".5rem" }}
                     >
