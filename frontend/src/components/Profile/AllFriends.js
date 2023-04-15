@@ -58,7 +58,7 @@ const AllFriends = ({ id }) => {
 
   useEffect(() => {
     getAllFriends();
-  }, [isFriend]);
+  }, [isFriend, id]);
 
   //*remove friend function
   // i need the user2_id as a params (the friend id i want to remove)
