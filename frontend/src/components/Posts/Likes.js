@@ -57,10 +57,8 @@ const Likes = ({ post_id, post }) => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((result) => {
-          console.log(result);
-
-          dispatch(removeLike(id));
           getLikes();
+          dispatch(removeLike(id));
         })
         .catch((error) => {
           console.log(error);
@@ -78,16 +76,14 @@ const Likes = ({ post_id, post }) => {
           }
         )
         .then((result) => {
-          dispatch(addLike(result.data.result));
           getLikes();
+          dispatch(addLike(result.data.result));
         })
         .catch((error) => {
           console.log(error);
         });
     }
   };
-
-  const box = document.getElementById("#mess");
 
   return (
     <>
@@ -102,12 +98,9 @@ const Likes = ({ post_id, post }) => {
           likes[0].LikesNo2.length > 0 &&
           likes[0].LikesNo2.flat().reduce((acc, elem) => {
             if (post_id == elem.post_id) {
-              const a = elem.total_likes;
-              console.log(">>>>>>", { post_id, a });
-
-              return <span>{elem.total_likes}</span>;
+              return <span key={post_id}>{elem.total_likes}</span>;
             } else {
-              return <span>{acc}</span>;
+              return <span key={post_id}>{acc}</span>;
             }
           }, 0)}
       </p>
@@ -142,32 +135,36 @@ const Likes = ({ post_id, post }) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {likes.length > 0 && likes[0].user.length > 0
-            ? likes[0].user.flat().map((element) => {
-                if (element.post_id == post_id) {
-                  console.log(element);
-                  return (
-                    <div
-                      id="mess"
-                      className="friend-list"
-                      style={{ marginBottom: ".5rem" }}
-                    >
-                      <div className="friend-img-name">
-                        <img
-                          className="friend-img"
-                          src={
-                            element.avatar ||
-                            "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                          }
-                        />
+          {likes.length > 0 &&
+            likes[0].user.flat().map((element, id) => {
+              if (element.post_id == post_id) {
+                return (
+                  <div
+                    className="friend-list"
+                    key={id}
+                    style={{ marginBottom: ".5rem" }}
+                  >
+                    <div className="friend-img-name">
+                      <img
+                        className="friend-img"
+                        src={
+                          element.avatar ||
+                          "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                        }
+                      />
 
-                        <h6>{element.firstname + " " + element.lastname}</h6>
-                      </div>
+                      <p>{element.firstname + " " + element.lastname}</p>
                     </div>
-                  );
-                }
-              })
-            : "There is no likes on this post"}
+                  </div>
+                );
+              }
+            })}
+          {likes.length > 0 &&
+            likes[0].user.flat().reduce((acc, element) => {
+              if (element.post_id !== post_id) {
+                return <p key={post_id}>{acc}</p>;
+              }
+            }, "There is no likes on this post")}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
