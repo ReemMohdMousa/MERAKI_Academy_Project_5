@@ -120,7 +120,7 @@ const Profile = () => {
                       style={{ width: "150px", zIndex: "1" }}
 
                     ></MDBCardImage>
-                    />
+                  
 
                     <MDBBtn
                       outline
