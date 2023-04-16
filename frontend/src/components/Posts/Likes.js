@@ -27,8 +27,6 @@ const Likes = ({ post_id, post }) => {
     axios
       .get(`http://localhost:5000/likes/l`)
       .then((result) => {
-        console.log(result.data);
-        console.log("*******", result.data);
         const user = result.data.users;
         const LikesNo2 = result.data.num;
         dispatch(setLike({ user, LikesNo2 }));
@@ -48,8 +46,6 @@ const Likes = ({ post_id, post }) => {
 
   const handleLike = (e) => {
     const id = e.target.id;
-    console.log(e);
-    console.log(id);
     if (clicked === "yes") {
       setClicked("no");
       axios

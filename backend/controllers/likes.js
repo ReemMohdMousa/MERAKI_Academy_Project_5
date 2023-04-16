@@ -6,11 +6,9 @@ const addLike = (req, res) => {
 
   const query1 = `select exists(select 1 from likes where user_id=$1 AND post_id=$2)`;
   const data1 = [user_id, post_id];
-  console.log({ query1, data1 });
   pool
     .query(query1, data1)
     .then((result) => {
-      console.log(result.rows[0].exists);
       if (result.rows[0].exists) {
         res.status(200).json({
           success: false,
@@ -97,7 +95,7 @@ const getLikesByPost = (req, res) => {
 };
 
 const getLikes = (req, res) => {
-  const query = `SELECT users.firstname, users.lastname, likes.post_id, users.avatar FROM (( likes INNER JOIN posts ON likes.post_id =posts.post_id) INNER JOIN users ON likes.user_id = users.user_id) 
+  const query = `SELECT users.firstname, users.lastname,likes.user_id, likes.post_id, users.avatar FROM (( likes INNER JOIN posts ON likes.post_id =posts.post_id) INNER JOIN users ON likes.user_id = users.user_id) 
     `;
 
   pool
@@ -112,7 +110,7 @@ const getLikes = (req, res) => {
           res.status(200).json({
             success: true,
             users: result.rows,
-            num:[result2.rows],
+            num: [result2.rows],
           });
         })
         .catch((err) => {
@@ -143,10 +141,21 @@ const removeLike = (req, res) => {
           message: `The user: ${user_id} has no likes on this post`,
         });
       } else {
-        res.status(200).json({
-          success: true,
-          message: `Like of user: ${user_id} removed successfully`,
-        });
+        pool
+          .query(
+            `SELECT post_id ,COUNT(post_id) AS  total_likes FROM  likes
+        GROUP BY post_id`
+          )
+          .then((result2) => {
+            res.status(200).json({
+              success: true,
+              message: `Like of user: ${user_id} removed successfully`,
+              num: [result2.rows],
+            });
+          })
+          .catch((err) => {
+            res.json(err);
+          });
       }
     })
     .catch((err) => {

@@ -15,7 +15,6 @@ const Posts = ({ post }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const [openComments, setopenComments] = useState(false);
-  console.log(post);
   const dispatch = useDispatch();
 
   const { userinfo, token, userId } = useSelector((state) => {
