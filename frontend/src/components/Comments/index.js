@@ -21,7 +21,7 @@ import axios from "axios";
 import Dropdown from "react-bootstrap/Dropdown";
 import posts, { setComments, addComment,removeComment } from "../redux/reducers/posts/index";
 import UpdateComment from "./UpdateComment";
-const Comments = ({ id }) => {
+const Comments = ({ id,firstname,lastname }) => {
 
   const dispatch = useDispatch();
   const [image, setImage] = useState("");

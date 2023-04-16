@@ -46,7 +46,7 @@ const getAllPosts = (req, res) => {
 };
 
 const getPostsByUser = (req, res) => {
-  const user_id = req.token.userId;
+  const user_id = req.params.id;
   const query = `SELECT * FROM posts 
   WHERE user_id = $1 AND is_deleted=0
   ORDER BY created_at DESC

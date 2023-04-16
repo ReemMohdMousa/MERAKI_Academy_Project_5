@@ -36,9 +36,7 @@ export const posts = createSlice({
           state.posts.splice(idx, 1);
         }
       });
-      // state.articles.map((elem)=>{
-      //     console.log("DELETEArticles",elem)
-      //   })
+      
     },
     setComments: (state, action) => {
       // state.articles = action.payload.comments;
