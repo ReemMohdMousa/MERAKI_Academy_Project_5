@@ -15,7 +15,7 @@ import {
 import Likes from "./Likes";
 import { setComments, addComment } from "../redux/reducers/posts/index";
 
-const Posts = ({ post }) => {
+const Posts = ({ post,firstname,lastname }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
 
@@ -65,7 +65,7 @@ const Posts = ({ post }) => {
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <span className="name">
-                    {userinfo.firstname} {userinfo.lastname}
+                    {firstname} {lastname}
                   </span>
                 </Link>
                 <span className="date">{format(post.created_at)}</span>
@@ -144,7 +144,7 @@ const Posts = ({ post }) => {
           </div>
           {/*condition comments  */}
 
-          {openComments &&post.post_id && <Comments id={post.post_id}  />}
+          {openComments &&post.post_id && <Comments id={post.post_id} firstname={firstname} lastname={lastname} />}
           {show ? <UpdatePost showModal={show} post={post}
            setShowModal={setShow} />:""}
           
