@@ -70,7 +70,7 @@ export default function BasicMenu() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data.result);
+        // console.log(response.data.result);
         //response.data.result => array of sent requests
         dispatch(setSentReq(response.data.result));
       })
@@ -111,7 +111,6 @@ export default function BasicMenu() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data.result);
         dispatch(setIsAdded(false));
         dispatch(cancelFriendReq(receiver_id));
 

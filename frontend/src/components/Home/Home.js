@@ -46,7 +46,7 @@ const Home = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        console.log("*******", response.data.result);
+        // console.log("*******", response.data.result);
         dispatch(setHomePosts(response.data.result));
       })
       .catch((err) => {

@@ -76,7 +76,7 @@ const FriendRequests = ({ id }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data.result);
+        // console.log(response.data.result);
 
         //response.data.result => array of add requests
         response.data.result &&
@@ -128,7 +128,7 @@ const FriendRequests = ({ id }) => {
         }
       )
       .then(function (response) {
-        console.log(response.data.result);
+        // console.log(response.data.result);
 
         //add the new request to the sentReq redux state
         // dispatch(addToSentReq(response.data.result[0]));
