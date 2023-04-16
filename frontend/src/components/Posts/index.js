@@ -9,23 +9,42 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { format } from "timeago.js";
 import Iframe from "react-iframe";
 import UpdatePost from "../AddPost/UpdatePost";
+import {
+  removePost
+} from "../redux/reducers/posts/index";
 import Likes from "./Likes";
 import { setComments, addComment } from "../redux/reducers/posts/index";
 
 const Posts = ({ post }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
+
   const [openComments, setopenComments] = useState(false);
   const dispatch = useDispatch();
 
-  const { userinfo, token, userId } = useSelector((state) => {
+  const { userinfo, token, userId,posts } = useSelector((state) => {
     return {
+      posts:state.posts.posts,
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
     };
   });
 
+  
+  const deletePost = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/posts/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }).then((result)=>{
+        dispatch(removePost(id))
+      })
+      //getAllP();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+ 
   return (
     userinfo && (
       <div className="posts">
@@ -76,7 +95,7 @@ const Posts = ({ post }) => {
                 >
                   Edit Post
                 </Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Delete Post</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{deletePost(post.post_id)}}>Delete Post</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>
@@ -124,12 +143,13 @@ const Posts = ({ post }) => {
             </div>
           </div>
           {/*condition comments  */}
-          {openComments && <Comments id={post.post_id} />}
-          {show ? (
-            <UpdatePost showModal={show} post={post} setShowModal={setShow} />
-          ) : (
-            ""
-          )}
+
+          {openComments &&post.post_id && <Comments id={post.post_id}  />}
+          {show ? <UpdatePost showModal={show} post={post}
+           setShowModal={setShow} />:""}
+          
+
+
         </div>
       </div>
     )

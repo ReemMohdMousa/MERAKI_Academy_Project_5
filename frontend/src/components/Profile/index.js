@@ -37,7 +37,6 @@ const Profile = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((Response) => {
-          // console.log(Response.data.posts);
           dispatch(setPosts(Response.data.posts));
           //setAppointments(Response.data.appointment);
         })
@@ -66,7 +65,6 @@ const Profile = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((Response) => {
-          // console.log(Response.data.posts);
           dispatch(setPosts(Response.data.posts));
           //setAppointments(Response.data.appointment);
         })

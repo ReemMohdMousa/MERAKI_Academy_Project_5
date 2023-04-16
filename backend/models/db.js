@@ -1,18 +1,18 @@
 const { Pool, Client } = require("pg");
 
-   const pool = new Pool({
-     connectionString: process.env.CONNECTION_STRING,
-  });
+//  const pool = new Pool({
+//    connectionString: process.env.CONNECTION_STRING,
+//  });
 
-   pool.connect((err, pool) => {
-     if (err) {
-      console.log("ERROR", err.message);
-      return;
-   }
-    console.log("connected to", pool.user);
-   });
+//  pool.connect((err, pool) => {
+//    if (err) {
+//     console.log("ERROR", err.message);
+//     return;
+//   }
+//   console.log("connected to", pool.user);
+//  });
 
-/* const pool = new Client({
+const pool = new Client({
   user: "postgres",
   host: "localhost",
   database: "project5_Reem", // create the database before connect
@@ -26,6 +26,6 @@ pool.connect((err, pool) => {
     return;
   }
   console.log("connected to", pool.user);
-}); */
+});
 
 module.exports = { pool };

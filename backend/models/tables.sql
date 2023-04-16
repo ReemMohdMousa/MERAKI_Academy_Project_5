@@ -162,3 +162,15 @@ CREATE TABLE likes (
   FOREIGN KEY (post_id) REFERENCES posts(post_id),
   PRIMARY KEY (likes_id)
 );
+CREATE TABLE nestedComments (
+  nestedComments_id SERIAL NOT NULL,
+  post_id INT,
+  comment_id INT,
+  content VARCHAR(255),
+  image TEXT,
+  is_deleted SMALLINT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT NOW(),
+  FOREIGN KEY (post_id) REFERENCES posts(post_id),
+  FOREIGN KEY (comment_id) REFERENCES comments(comment_id),
+  PRIMARY KEY (nestedComments_id)
+);

@@ -78,12 +78,32 @@
 
   border-top: 1px solid rgb(206, 201, 201);
 }
-.item {
-  display: flex;
-  padding-right: 5rem;
-  justify-content: space-between;
-  cursor: pointer;
-  font-size: 14px;
+
+.contant img{
+    width: 100%;
+ 
+ 
+    object-fit: cover;
+    margin-top: 10px;
+}
+.embed{
+   
+
+  
+    object-fit: cover;
+    margin-top: 10px;
+}
+.infomation{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.item{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
 }
 
 .yes {

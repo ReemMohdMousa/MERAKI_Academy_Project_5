@@ -27,8 +27,8 @@ postsRouter.put("/:id",  authentication,
 authorization("UPDATE_POST"), updatePostById);
 postsRouter.delete("/:id", authentication,
 authorization("DELETE_POST"), deletePostById);
-postsRouter.delete("/", authentication,
-authorization("DELETE_POST"), deletePostsByuserId);
+// postsRouter.delete("/", authentication,
+// authorization("DELETE_POST"), deletePostsByuserId);
 module.exports = postsRouter;
 
 

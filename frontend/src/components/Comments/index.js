@@ -15,11 +15,14 @@ import { format } from "timeago.js";
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
+import InputEmoji from 'react-input-emoji'
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-import posts, { setComments, addComment } from "../redux/reducers/posts/index";
+import Dropdown from "react-bootstrap/Dropdown";
+import posts, { setComments, addComment,removeComment } from "../redux/reducers/posts/index";
+import UpdateComment from "./UpdateComment";
 const Comments = ({ id }) => {
-  console.log(id);
+
   const dispatch = useDispatch();
   const [image, setImage] = useState("");
   const [disabled,setDisabled]=useState(false)
@@ -27,15 +30,27 @@ const Comments = ({ id }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [showEdit, setShowEdit] = useState(false);
+  const handleCloseEdit = () => setShowEdit(false);
+  const handleShowEdit = () => setShowEdit(true);
   const [comments, setcomments] = useState(null);
+  const [emoji,setEmoji]=useState(false)
+  const [ text, setText ] = useState('')
+  const [currentEmoji,setCurrentEmoji]=useState("")
+
+  function handleOnEnter (text) {
+  
+  }
   const[nemcomment,setNewComment]=useState({})
-  const { userinfo, token, userId } = useSelector((state) => {
+  const { userinfo, token, userId,posts } = useSelector((state) => {
     return {
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
+      posts:state.posts.posts
     };
   });
+ 
   const uploadImage = () => {
     const data = new FormData();
     data.append("file", image);
@@ -48,7 +63,7 @@ const Comments = ({ id }) => {
       .then((resp) => resp.json())
       .then((data) => {
         //setpost()
-        console.log("dataurl",data.url)
+     
         setNewComment((image) => {
           setDisabled(false)
 
@@ -64,7 +79,7 @@ const Comments = ({ id }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((Response) => {
-        console.log(Response.data.result);
+        
         let comments = Response.data.result;
         //this is for local use state
         setcomments(comments);
@@ -74,6 +89,34 @@ const Comments = ({ id }) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+  const addNewComment=()=>{
+    axios.post(`http://localhost:5000/comments/${id}`, {
+       ...nemcomment }, { headers: { Authorization: token } }
+      ).then((Response) => {
+     
+      let newComment = Response.data.result;
+     
+      dispatch(addComment({ id, newComment }));
+      getAllCommentsByPostId(id)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+  const deleteComment = async (post_id,comment_id) => {
+    try {
+      await axios.delete(`http://localhost:5000/comments/comment/${comment_id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }).then((result)=>{
+        
+        dispatch(removeComment({post_id,comment_id}))
+      })
+      getAllCommentsByPostId(id)
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     getAllCommentsByPostId(id);
@@ -116,13 +159,14 @@ const Comments = ({ id }) => {
                               style={{ height: "80px" }}
                               wrapperClass="mb-4"
                               placeholder="write a comment..."
-                              id="form1"
+                              id="mytextarea"
                               type="text"
-                              onClick={(e)=>{
+                              onChange={(e)=>{
                                 setNewComment((content) => {
                                   setDisabled(false)
-                        
-                                 return { ...content, content:e.target.value };
+                                  
+                                 return { ...content, content:e.target.value
+                                 };
                                 });
                                 
                               }}
@@ -143,6 +187,7 @@ const Comments = ({ id }) => {
                             <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
                           </div>
                         )}
+                        {text &&text}
                             </div>
                           
                             <div className="commentbtn">
@@ -150,7 +195,7 @@ const Comments = ({ id }) => {
                                 <button
                                   onClick={(e) => {
                                     handleShow();
-                                    //console.log(show);
+                                    
                                   }}
                                   style={{
                                     border: "none",
@@ -172,29 +217,28 @@ const Comments = ({ id }) => {
                                 </button>
 
                                 <a href="#!">
-                                  <MDBIcon fas icon="reply fa-xs" />
-                                  <span> 😃</span>
+                                  {/* <MDBIcon fas icon="reply fa-xs" />
+                                  <span onClick={()=>{setEmoji(true)}}> 😃</span> */}
                                 </a>
-                                
+                              
                               </div>
-                              <a href="#!">
-                                <MDBIcon fas icon="reply fa-xs" />
-                                <span style={{ width: "50", height: "40" }}>
-                                  {" "}
-                                  reply
-                                </span>
-                              </a>
-                              <button onClick={()=>{}}>comment</button>
+                             
+                              <button onClick={()=>{addNewComment()}}>comment</button>
                             </div>
                           </div>
                         </div>
                       </div>
-
+                      {emoji &&    <InputEmoji
+          value={text}
+          onChange={setText}
+          cleanOnEnter
+          onEnter={handleOnEnter}
+          selector="#mytextarea"
+          placeholder="Type a message"
+        />}
                       {comments?.length > 0 &&
                         comments.map((element) => {
-                          {
-                            console.log(element);
-                          }
+                          
                           return (
                             <div className="d-flex flex-start mt-4">
                               <MDBCardImage
@@ -218,17 +262,58 @@ const Comments = ({ id }) => {
                                         - {format(element.created_at)}
                                       </span>
                                     </p>
-                                    <a href="#!">
-                                      <MDBIcon fas icon="reply fa-xs" />
-                                      <span className="small"> reply</span>
-                                    </a>
+                                   <Dropdown>
+              <Dropdown.Toggle id="dropdown-basic">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-three-dots"
+                  viewBox="0 0 16 16"
+                  on
+                  onClick={() => {}}
+                >
+                  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                </svg>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  onClick={() => {
+                    setShowEdit(true);
+                  }}
+                >
+                  Edit 
+                </Dropdown.Item>
+              
+                <Dropdown.Item onClick={()=>
+                 {deleteComment(id,element.comment_id)
+                  { }}}>Delete </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
                                   </div>
-                                  <p className="small mb-0">
+                                  {element.content &&( <p className="small mb-0">
                                     {element.content}
-                                  </p>
-                                  <img className="small mb-0">
-                                    {element.image}
-                                  </img>
+                                  </p>)}
+                                  <div className="d-flex justify-content-between align-items-center">
+                             {element.image && (
+                          <img style={{width:"100px",marginLeft:"20%"}}
+                            variant="success"
+                           
+                            src={element.image}
+                          />
+                        )}
+                        {disabled && (
+                          <div>
+                            <p variant="warning">
+                              Please wait untile file uploaded
+                            </p>
+                            <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
+                          </div>
+                        )}
+                            </div>
+                                    
                                 </div>
 
                                 {/* <div className="d-flex flex-start mt-4">
@@ -288,8 +373,11 @@ const Comments = ({ id }) => {
                             </div>
                           </div> 
                         </div>*/}
+                         {showEdit ? <UpdateComment showModal={showEdit} comment={element}
+                               setShowModal={setShowEdit} />:""}
                               </div>
                             </div>
+                              
                           );
                         })}
                     </MDBCol>
@@ -300,7 +388,7 @@ const Comments = ({ id }) => {
           </MDBRow>
         </MDBContainer>
       </section>
-
+   
       <Modal show={show} onHide={handleClose}>
         <Modal.Header></Modal.Header>
         <Modal.Body>
@@ -350,8 +438,10 @@ const Comments = ({ id }) => {
           </Button>
         </Modal.Footer>
       </Modal>
+     
     </>
-  );
+    
+     );
 };
 
 export default Comments;

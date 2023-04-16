@@ -42,22 +42,40 @@ export const posts = createSlice({
     },
     setComments: (state, action) => {
       // state.articles = action.payload.comments;
+      console.log(state.posts);
       state.posts.map((elem, i) => {
         if (elem.post_id === action.payload.id) {
           elem.comments = action.payload.comments;
         }
       });
+      console.log("*****************", state.posts);
     },
     addComment: (state, action) => {
+      console.log(action.payload);
       state.posts.map((elem, i) => {
-        if (elem.post_id === action.payload.post_id) {
+        if (elem.post_id === action.payload.id) {
           elem.comments.push(action.payload.newComment);
         }
       });
     },
 
+
+    removeComment: (state, action) => {
+      console.log(action.payload);
+      state.posts.forEach((elem, idx) => {
+        console.log(elem);
+        let found = state.posts.find((elem) => {
+       return elem.post_id === action.payload.post_id;
+        });
+        console.log("found",found)
+        if (elem.comment_id === action.payload) {
+          state.posts.comments.splice(idx, 1);
+        }
+      });
+
     setLike: (state, action) => {
       state.likes = [action.payload];
+
     },
 
     addLike: (state, action) => {
@@ -85,6 +103,9 @@ export const {
   addComment,
   addLike,
   setLike,
+
+  updateComment,
+  removeComment,
   removeLike,
   setHomePosts,
 } = posts.actions;
