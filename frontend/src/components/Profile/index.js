@@ -15,10 +15,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setPosts
-
-} from "../redux/reducers/posts/index";
+import { setPosts } from "../redux/reducers/posts/index";
 import AddPost from "../AddPost";
 
 import { MDBFile } from "mdb-react-ui-kit";
@@ -27,11 +24,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import FriendRequests from "./FriendRequests";
 import AllFriends from "./AllFriends";
 
-
 const Profile = () => {
   const params = useParams();
   const id = params.id;
-
 
   const dispatch = useDispatch();
 
@@ -53,8 +48,6 @@ const Profile = () => {
     getAllPostsByUserId();
   }, []);
 
-
-
   //redux states
   const { posts, userinfo, token, userId, friends } = useSelector((state) => {
     return {
@@ -65,7 +58,6 @@ const Profile = () => {
       friends: state.friends.friends,
     };
   });
-
 
   useEffect(() => {
     const getAllPostsByUserId = () => {
@@ -85,12 +77,10 @@ const Profile = () => {
     getAllPostsByUserId();
   }, []);
 
-
- 
   return (
     <div>
       <FriendRequests id={id} />
-      <AllFriends id={id}/>
+      <AllFriends id={id} />
       <div className="gradient-custom-2" style={{ backgroundColor: "#9de2ff" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
@@ -114,7 +104,6 @@ const Profile = () => {
                       className="mt-4 mb-2 img-thumbnail"
                       fluid
                       style={{ width: "150px", zIndex: "1" }}
-
                     ></MDBCardImage>
 
                     <MDBBtn
@@ -122,9 +111,7 @@ const Profile = () => {
                       color="dark"
                       style={{ height: "36px", overflow: "visible" }}
                     >
-
-                      Change photo
-                      Edit profile
+                      Change photo Edit profile
                     </MDBBtn>
                   </div>
                   <div className="ms-3" style={{ marginTop: "130px" }}>
