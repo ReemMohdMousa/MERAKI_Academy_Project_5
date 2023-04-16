@@ -46,10 +46,7 @@ const getAllPosts = (req, res) => {
 };
 
 const getPostsByUser = (req, res) => {
-  //const user_id = req.query.user;
-  console.log(req.token);
   const user_id = req.token.userId;
-
   const query = `SELECT * FROM posts 
   WHERE user_id = $1 AND is_deleted=0
   ORDER BY created_at DESC
@@ -60,7 +57,7 @@ const getPostsByUser = (req, res) => {
     .query(query, data)
     .then((result) => {
       if (result.rows.length === 0) {
-        res.status(404).json({
+        res.status(200).json({
           success: false,
           message: `The user: ${user_id} has no posts`,
         });

@@ -31,7 +31,7 @@ const Login = () => {
       userId: state.auth.userId,
     };
   });
-  console.log();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -104,9 +104,7 @@ const Login = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((Response) => {
-        console.log(Response.data.info);
         dispatch(setUserInfo(Response.data.info));
-        //setAppointments(Response.data.appointment);
       })
       .catch((err) => {
         console.log(err);
@@ -114,8 +112,6 @@ const Login = () => {
   };
    
      
-  
-  console.log(userinfo);
   return (
     <div className="cont">
       <MDBContainer fluid>

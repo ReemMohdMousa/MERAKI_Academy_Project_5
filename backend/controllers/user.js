@@ -12,11 +12,9 @@ nodemailer = require("nodemailer");
 // const saltRounds = parseInt(process.env.SALT);
 
 const register = async (req, res) => {
-  console.log(req.body);
   const { firstName, lastName, age, email, password, role_id } = req.body;
   try {
     const encryptedPassword = await bcrypt.hash(password, 7);
-    // console.log(encryptedPassword);
     const query = `INSERT INTO users (firstName, lastName, age, email, password,role_id) VALUES ($1,$2,$3,$4,$5,$6)RETURNING *`;
     const data = [
       firstName,
@@ -29,10 +27,8 @@ const register = async (req, res) => {
     pool
       .query(query, data)
       .then((result) => {
-        //console.log("result",result);
         const payload = {
           userId: result.rows[0].user_id,
-          //country: result.rows[0].country,
           role: result.rows[0].role_id,
         };
 
@@ -50,7 +46,6 @@ const register = async (req, res) => {
         verfiyResjsterByEmail(email, firstName, lastName);
       })
       .catch((err) => {
-        console.log(err);
         res.status(409).json({
           success: false,
           message: "The email already exists",
@@ -72,7 +67,6 @@ const login = (req, res) => {
   pool
     .query(query, data)
     .then((result) => {
-      console.log(result.rows);
       if (result.rows.length) {
         bcrypt.compare(password, result.rows[0].password, (err, response) => {
           if (err) res.json(err);
@@ -202,8 +196,6 @@ const otherUsersInfo = (req, res) => {
 };
 
 const verfiyResjsterByEmail = (email, firstName, lastName) => {
-  //const {email,firstName,lastName}=req.body
-  console.log(email, firstName, lastName);
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {

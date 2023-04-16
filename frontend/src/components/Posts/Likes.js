@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addLike, setLike } from "../redux/reducers/posts";
+import { addLike, setLike, removeLike } from "../redux/reducers/posts";
 import { AiFillLike } from "react-icons/ai";
 
 import Modal from "react-bootstrap/Modal";
@@ -15,23 +15,24 @@ const Likes = ({ post_id, post }) => {
   const handleClose = () => setShow(false);
   const dispatch = useDispatch();
 
-  const { token } = useSelector((state) => {
+  const { token, likes, userId } = useSelector((state) => {
     return {
       token: state.auth.token,
+      likes: state.posts.likes,
+      userId: state.auth.userId,
     };
   });
 
-  const getUserLike = () => {
+  const getLikes = () => {
     axios
-      .get("http://localhost:5000/likes", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(`http://localhost:5000/likes/l`)
       .then((result) => {
-        const like = result.data.result;
-        like.map((elem) => {
-          if (elem.post_id === post.post_id) {
+        const user = result.data.users;
+        const LikesNo2 = result.data.num;
+        dispatch(setLike({ user, LikesNo2 }));
+        user.map((elem) => {
+          if (elem.post_id == post_id && userId == elem.user_id) {
             setClicked("yes");
-            dispatch(setLike(setClicked("yes")));
           }
         });
       })
@@ -39,30 +40,12 @@ const Likes = ({ post_id, post }) => {
         console.log(error);
       });
   };
-
-  const getPostLikes = () => {
-    const id = post.post_id;
-    console.log(id);
-    axios
-      .get(`http://localhost:5000/likes/${post_id}`)
-      .then((result) => {
-        console.log(result.data);
-        setLikesNo(result.data.likesNo);
-        setLikedUser(result.data.result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   useEffect(() => {
-    getPostLikes();
-    getUserLike();
+    getLikes();
   }, []);
 
   const handleLike = (e) => {
     const id = e.target.id;
-    console.log(e);
-    console.log(id);
     if (clicked === "yes") {
       setClicked("no");
       axios
@@ -70,9 +53,8 @@ const Likes = ({ post_id, post }) => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((result) => {
-          console.log(result);
-            dispatch(setLike(setClicked("no")));
-          dispatch(addLike(result.data));
+          getLikes();
+          dispatch(removeLike(id));
         })
         .catch((error) => {
           console.log(error);
@@ -90,29 +72,35 @@ const Likes = ({ post_id, post }) => {
           }
         )
         .then((result) => {
+          getLikes();
           dispatch(addLike(result.data.result));
-
-          // dispatch(setLike(setClicked("yes")));
         })
         .catch((error) => {
           console.log(error);
         });
     }
   };
-  console.log(likedUser);
+
   return (
     <>
-      {/*    <div id="post-info">
-        <p>
-          <AiFillLike
-            style={{ color: "blue" }}
-            onClick={(e) => {
-              setShow(true);
-            }}
-          />{" "}
-          <span>{likesNo}</span>
-        </p>
-      </div> */}
+      <p id="post-info">
+        <AiFillLike
+          style={{ color: "blue" }}
+          onClick={(e) => {
+            setShow(true);
+          }}
+        />{" "}
+        {likes.length > 0 &&
+          likes[0].LikesNo2.length > 0 &&
+          likes[0].LikesNo2.flat().reduce((acc, elem) => {
+            if (post_id == elem.post_id) {
+              return <span key={post_id}>{elem.total_likes}</span>;
+            } else {
+              return <span key={post_id}>{acc}</span>;
+            }
+          }, 0)}
+      </p>
+
       <div className="item information" onClick={handleLike} id={post_id}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -129,13 +117,7 @@ const Likes = ({ post_id, post }) => {
             id={post_id}
           />
         </svg>{" "}
-        <span
-          onClick={(e) => {
-            setShow(true);
-          }}
-        >
-          likes {likesNo}
-        </span>
+        likes
       </div>
       <Modal
         show={show}
@@ -149,11 +131,15 @@ const Likes = ({ post_id, post }) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {likedUser && likedUser.length > 0
-            ? likedUser.map((element) => {
-                console.log(element);
+          {likes.length > 0 &&
+            likes[0].user.flat().map((element, id) => {
+              if (element.post_id == post_id) {
                 return (
-                  <div className="friend-list">
+                  <div
+                    className="friend-list"
+                    key={id}
+                    style={{ marginBottom: ".5rem" }}
+                  >
                     <div className="friend-img-name">
                       <img
                         className="friend-img"
@@ -163,12 +149,18 @@ const Likes = ({ post_id, post }) => {
                         }
                       />
 
-                      <h6>{element.firstname + " " + element.lastname}</h6>
+                      <p>{element.firstname + " " + element.lastname}</p>
                     </div>
                   </div>
                 );
-              })
-            : "There is no likes on this post"}
+              }
+            })}
+          {likes.length > 0 &&
+            likes[0].user.flat().reduce((acc, element) => {
+              if (element.post_id !== post_id) {
+                return <p key={post_id}>{acc}</p>;
+              }
+            }, "There is no likes on this post")}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

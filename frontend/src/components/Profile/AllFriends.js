@@ -6,14 +6,14 @@ import "./style.css";
 
 import {
   getAlluserFriends,
-  getAlluserSentReq,
-  getAlluserReceivedReq,
   addFriend,
   acceptFriendRequest,
   cancelFriendReq,
   declineFriendReq,
   removeFriend,
   isTheUserIsFriend,
+  setIsFriend,
+  setIsRemoved,
 } from "../redux/reducers/friends/index";
 
 const AllFriends = ({ id }) => {
@@ -26,23 +26,25 @@ const AllFriends = ({ id }) => {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, userId, isLoggedIn, friends } = useSelector((state) => {
-    return {
-      friends: state.friends.friends,
-      userId: state.auth.userId,
-      token: state.auth.token,
-      isLoggedIn: state.auth.isLoggedIn,
-    };
-  });
+  const { token, userId, isLoggedIn, friends, isFriend, isRemoved } =
+    useSelector((state) => {
+      return {
+        friends: state.friends.friends,
+        userId: state.auth.userId,
+        token: state.auth.token,
+        isLoggedIn: state.auth.isLoggedIn,
+        isFriend: state.friends.isFriend,
+        isRemoved: state.friends.isRemoved,
+      };
+    });
 
   //!get all friends of any person depending on the user id
-  useEffect(() => {
+  const getAllFriends = () => {
     axios
       .get(`http://localhost:5000/friends/get/all/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response);
         dispatch(getAlluserFriends(response.data.result));
 
         //check if this profile is a friend of the loggedin user
@@ -51,7 +53,11 @@ const AllFriends = ({ id }) => {
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    getAllFriends();
+  }, [isFriend, id]);
 
   //*remove friend function
   // i need the user2_id as a params (the friend id i want to remove)
@@ -61,8 +67,8 @@ const AllFriends = ({ id }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data);
         dispatch(removeFriend(user2_id));
+        getAllFriends();
       })
       .catch(function (error) {
         throw error;
