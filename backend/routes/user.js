@@ -10,7 +10,7 @@ usersRouter.post("/register", register);
 usersRouter.get("/info",authentication,profileInfo)
 usersRouter.post("/login", login);
 usersRouter.post("/google", checkGoogleUser);
-usersRouter.get("/info", profileInfo);
+
 usersRouter.get("/others/info/:id", otherUsersInfo);
 
 module.exports = usersRouter;

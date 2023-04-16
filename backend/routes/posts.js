@@ -21,7 +21,7 @@ postsRouter.post(
 );
 postsRouter.get("/", authentication, getAllPosts);
 
-postsRouter.get("/search_1",authentication, getPostsByUser);
+postsRouter.get("/search_1/:id",authentication, getPostsByUser);
 postsRouter.get("/search_2/:id", getPostById);
 postsRouter.put("/:id",  authentication,
 authorization("UPDATE_POST"), updatePostById);
