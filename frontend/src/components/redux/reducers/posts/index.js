@@ -6,6 +6,7 @@ export const posts = createSlice({
   initialState: {
     posts: [],
     likes: [],
+    homePosts: [],
   },
   reducers: {
     setPosts: (state, action) => {
@@ -68,6 +69,11 @@ export const posts = createSlice({
         return elem.post_id !== action.payload;
       });
     },
+
+    setHomePosts: (state, action) => {
+      console.log(action.payload);
+      state.homePosts = action.payload;
+    },
   },
 });
 export const {
@@ -80,7 +86,7 @@ export const {
   addLike,
   setLike,
   removeLike,
-  updateLike,
+  setHomePosts,
 } = posts.actions;
 
 export default posts.reducer;
