@@ -22,7 +22,6 @@ export const posts = createSlice({
       //   })
     },
     updatePost: (state, action) => {
-      console.log("payload", action.payload);
       state.posts.map((elem, i) => {
         if (elem.post_id == action.payload.updatedpost.post_id) {
           return state.posts.splice(i, 1, action.payload.updatedpost);
@@ -57,18 +56,18 @@ export const posts = createSlice({
       });
     },
 
-    addLike: (state, action) => {
-      console.log("from reducer", action.payload);
-      state.posts.map((elem, i) => {
-        if (elem.post_id === action.payload.post_id) {
-          console.log("****");
-          state.likes.push(action.payload);
-        }
-      });
+    setLike: (state, action) => {
+      state.likes = [action.payload];
     },
 
-    setLike: (state, action) => {
-      console.log("state", action);
+    addLike: (state, action) => {
+      state.likes.push(action.payload);
+    },
+
+    removeLike: (state, action) => {
+      state.likes = state.likes.filter((elem) => {
+        return elem.post_id !== action.payload;
+      });
     },
 
     setHomePosts: (state, action) => {
@@ -86,6 +85,7 @@ export const {
   addComment,
   addLike,
   setLike,
+  removeLike,
   setHomePosts,
 } = posts.actions;
 
