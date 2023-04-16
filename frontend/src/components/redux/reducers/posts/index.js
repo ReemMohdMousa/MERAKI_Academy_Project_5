@@ -72,6 +72,7 @@ export const posts = createSlice({
           state.posts.comments.splice(idx, 1);
         }
       });
+    },
 
     setLike: (state, action) => {
       state.likes = [action.payload];

@@ -16,7 +16,7 @@ const postsRouter = express.Router();
 postsRouter.post(
   "/",
   authentication,
-  authorization("CREATE_POST"),
+  
   createNewPost
 );
 postsRouter.get("/", authentication, getAllPosts);
