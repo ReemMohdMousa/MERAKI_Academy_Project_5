@@ -36,9 +36,7 @@ export const posts = createSlice({
           state.posts.splice(idx, 1);
         }
       });
-      // state.articles.map((elem)=>{
-      //     console.log("DELETEArticles",elem)
-      //   })
+      
     },
     setComments: (state, action) => {
       // state.articles = action.payload.comments;
@@ -73,7 +71,11 @@ export const posts = createSlice({
         }
       });
     },
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> ddc7af66d88ab6b9ba05a8e6385df0ee549daa7e
     setLike: (state, action) => {
       state.likes = [action.payload];
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import axios from "axios";
 import {
@@ -27,25 +27,27 @@ import AllFriends from "./AllFriends";
 const Profile = () => {
   const params = useParams();
   const id = params.id;
-
+  const [user, setUser] = useState({});
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const getAllPostsByUserId = () => {
-      axios
-        .get(`http://localhost:5000/posts/search_1`, {
-          headers: { Authorization: `Bearer ${token}` },
+  const getuserdata = () => {
+    axios
+      .get(`http://localhost:5000/users/others/info/${id}`)
+      .then((Response) => {
+        console.log(Response.data.result);
+        setUser((firstname)=>{
+          return {...firstname,firstname:Response.data.result.firstname}
         })
-        .then((Response) => {
-          dispatch(setPosts(Response.data.posts));
-          //setAppointments(Response.data.appointment);
+        setUser((lastname)=>{
+          return {...lastname,lastname:Response.data.result.lastname}
         })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    getAllPostsByUserId();
-  }, []);
+        //setUser(())
+        //dispatch(setPosts(Response.data.posts));
+        //setAppointments(Response.data.appointment);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   //redux states
   const { posts, userinfo, token, userId, friends } = useSelector((state) => {
@@ -57,21 +59,21 @@ const Profile = () => {
       friends: state.friends.friends,
     };
   });
-
+  const getAllPostsByUserId = () => {
+    axios
+      .get(`http://localhost:5000/posts/search_1/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((Response) => {
+        dispatch(setPosts(Response.data.posts));
+        //setAppointments(Response.data.appointment);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
-    const getAllPostsByUserId = () => {
-      axios
-        .get(`http://localhost:5000/posts/search_1`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((Response) => {
-          dispatch(setPosts(Response.data.posts));
-          //setAppointments(Response.data.appointment);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    getuserdata();
     getAllPostsByUserId();
   }, []);
 
@@ -113,7 +115,7 @@ const Profile = () => {
                     </MDBBtn>
                   </div>
                   <div className="ms-3" style={{ marginTop: "130px" }}>
-                    <MDBTypography tag="h5">Andy Horwitz</MDBTypography>
+                    <MDBTypography tag="h5">{user.firstname}{"  "}{user.lastname}</MDBTypography>
                     <MDBCardText>New York</MDBCardText>
                   </div>
                 </div>
@@ -169,7 +171,7 @@ const Profile = () => {
                   </div>
                   <MDBRow className="g-2">
                     <MDBCol className="mb-2">
-                      <AddPost />
+                      {id===userId &&<AddPost />}
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -177,7 +179,7 @@ const Profile = () => {
                       {/* dispaly the posts */}
                       {posts &&
                         posts.map((elem) => {
-                          return <Posts post={elem} />;
+                          return <Posts post={elem} firstname={user.firstname} lastname={user.lastname} />;
                         })}
                     </MDBCol>
                   </MDBRow>
