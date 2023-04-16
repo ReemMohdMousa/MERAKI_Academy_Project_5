@@ -20,7 +20,7 @@ const Posts = ({ post }) => {
   const handleShow = () => setShow(true);
 
   const [openComments, setopenComments] = useState(false);
-  console.log(post);
+ 
   const dispatch = useDispatch();
 
   const { userinfo, token, userId,posts } = useSelector((state) => {
@@ -31,7 +31,7 @@ const Posts = ({ post }) => {
       userId: state.auth.userId,
     };
   });
-  console.log(posts)
+  
   const deletePost = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/posts/${id}`, {

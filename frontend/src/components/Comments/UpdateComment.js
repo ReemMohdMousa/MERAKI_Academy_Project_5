@@ -58,7 +58,7 @@ const [isdeleted,setIsDeleted]=useState(false)
       .then((resp) => resp.json())
       .then((data) => {
         //setpost()
-        console.log("dataurl",data.url)
+      
         setUpdatedpost((image) => {
           setDisabled(false)
 
@@ -84,7 +84,6 @@ const [isdeleted,setIsDeleted]=useState(false)
           { headers: { Authorization: token } }
         )
         .then((Response) => {
-          console.log(Response.data);
           let updatedcomment=Response.data.comment
           dispatch(updateComment({updatedcomment}));
 
@@ -171,7 +170,6 @@ const [isdeleted,setIsDeleted]=useState(false)
                             <button
                               onClick={(e) => {
                                 handleShow();
-                                console.log(show);
                               }}
                               style={{
                                 border: "none",
@@ -201,7 +199,6 @@ const [isdeleted,setIsDeleted]=useState(false)
                            
                             style={{ width: "25%", marginLeft: "50px" }}
                             onClick={() => {
-                              console.log("totalpost",comment)
                               editPost();
                               handleCloseModal()
                             }}

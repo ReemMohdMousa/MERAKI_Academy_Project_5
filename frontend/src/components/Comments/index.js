@@ -22,7 +22,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import posts, { setComments, addComment,removeComment } from "../redux/reducers/posts/index";
 import UpdateComment from "./UpdateComment";
 const Comments = ({ id }) => {
-  console.log(id);
+
   const dispatch = useDispatch();
   const [image, setImage] = useState("");
   const [disabled,setDisabled]=useState(false)
@@ -39,7 +39,7 @@ const Comments = ({ id }) => {
   const [currentEmoji,setCurrentEmoji]=useState("")
 
   function handleOnEnter (text) {
-    console.log('enter', text)
+  
   }
   const[nemcomment,setNewComment]=useState({})
   const { userinfo, token, userId,posts } = useSelector((state) => {
@@ -50,7 +50,7 @@ const Comments = ({ id }) => {
       posts:state.posts.posts
     };
   });
-  console.log(posts)
+ 
   const uploadImage = () => {
     const data = new FormData();
     data.append("file", image);
@@ -63,7 +63,7 @@ const Comments = ({ id }) => {
       .then((resp) => resp.json())
       .then((data) => {
         //setpost()
-        console.log("dataurl",data.url)
+     
         setNewComment((image) => {
           setDisabled(false)
 
@@ -79,7 +79,7 @@ const Comments = ({ id }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((Response) => {
-        console.log(Response.data.result);
+        
         let comments = Response.data.result;
         //this is for local use state
         setcomments(comments);
@@ -94,7 +94,7 @@ const Comments = ({ id }) => {
     axios.post(`http://localhost:5000/comments/${id}`, {
        ...nemcomment }, { headers: { Authorization: token } }
       ).then((Response) => {
-      console.log(Response.data.result);
+     
       let newComment = Response.data.result;
      
       dispatch(addComment({ id, newComment }));
@@ -110,7 +110,7 @@ const Comments = ({ id }) => {
       await axios.delete(`http://localhost:5000/comments/comment/${comment_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       }).then((result)=>{
-        console.log(result.data)
+        
         dispatch(removeComment({post_id,comment_id}))
       })
       getAllCommentsByPostId(id)
@@ -195,7 +195,7 @@ const Comments = ({ id }) => {
                                 <button
                                   onClick={(e) => {
                                     handleShow();
-                                    //console.log(show);
+                                    
                                   }}
                                   style={{
                                     border: "none",
@@ -238,9 +238,7 @@ const Comments = ({ id }) => {
         />}
                       {comments?.length > 0 &&
                         comments.map((element) => {
-                          {
-                            console.log(element);
-                          }
+                          
                           return (
                             <div className="d-flex flex-start mt-4">
                               <MDBCardImage
@@ -291,7 +289,7 @@ const Comments = ({ id }) => {
               
                 <Dropdown.Item onClick={()=>
                  {deleteComment(id,element.comment_id)
-                  { console.log(element.comment_id)}}}>Delete </Dropdown.Item>
+                  { }}}>Delete </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
                                   </div>

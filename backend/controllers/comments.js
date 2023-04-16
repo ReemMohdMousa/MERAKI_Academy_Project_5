@@ -29,7 +29,7 @@ const createNewComment = (req, res) => {
 const createNewNestedComment = (req, res) => {
   const comment_id = req.query.comment_id;
   const post_id = req.query.post_id;
-
+console.log(comment_id,post_id)
   const { content, image } = req.body;
 
   const query = `INSERT INTO nestedComments (post_id, comment_id, content, image) VALUES ($1,$2,$3,$4) RETURNING *`;
