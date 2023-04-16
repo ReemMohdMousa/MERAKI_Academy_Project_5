@@ -26,15 +26,40 @@ const createNewComment = (req, res) => {
       });
     });
 };
+const createNewNestedComment = (req, res) => {
+  const comment_id = req.query.comment_id;
+  const post_id = req.query.post_id;
 
+  const { content, image } = req.body;
+
+  const query = `INSERT INTO nestedComments (post_id, comment_id, content, image) VALUES ($1,$2,$3,$4) RETURNING *`;
+  const data = [post_id, comment_id, content||null, image||null];
+
+  pool
+    .query(query, data)
+    .then((result) => {
+      res.status(201).json({
+        success: true,
+        message: "Comment created successfully",
+        result: result.rows[0],
+      });
+    })
+    .catch((err) => {
+      res.status(404).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
 const getCommentsByPostId = (req, res) => {
   const post_id = req.params.id;
 
   const query = `SELECT *
-    FROM comments 
-    INNER JOIN users ON comments.user_id = users.user_id
-    WHERE comments.is_deleted=0 AND comments.post_id = $1
-    `;
+  FROM comments 
+  INNER JOIN users ON comments.user_id = users.user_id
+  WHERE comments.is_deleted=0 AND comments.post_id =$1 
+ORDER BY comments.created_at DESC`;
 
   const data = [post_id];
   pool
@@ -85,7 +110,7 @@ const UpdateCommentById = (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err)
+      console.log(err);
       res.status(500).json({
         success: false,
         message: "Server error",
@@ -97,8 +122,6 @@ const UpdateCommentById = (req, res) => {
 const deleteCommentById = (req, res) => {
   const comment_id = req.params.id;
   const user_id = req.token.userId;
-
-
 
   pool
     .query(
@@ -139,4 +162,5 @@ module.exports = {
   getCommentsByPostId,
   UpdateCommentById,
   deleteCommentById,
+  createNewNestedComment,
 };

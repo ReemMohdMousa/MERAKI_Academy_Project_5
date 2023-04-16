@@ -18,7 +18,7 @@ import {
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { MDBFile } from "mdb-react-ui-kit";
-import {  updateComment } from "../redux/reducers/posts";
+import {  updateComment,removeComment } from "../redux/reducers/posts";
 
 const UpdateComment = ({showModal,comment,setShowModal}) => {
   
@@ -79,7 +79,7 @@ const [isdeleted,setIsDeleted]=useState(false)
    
       axios
         .put(
-          `http://localhost:5000/comments/${comment.comment_id}`,
+          `http://localhost:5000/comments/comment/${comment.comment_id}`,
           { ...Updatedpost },
           { headers: { Authorization: token } }
         )
@@ -94,7 +94,7 @@ const [isdeleted,setIsDeleted]=useState(false)
         });
      
     };
-
+   
 
   return (
     <div>

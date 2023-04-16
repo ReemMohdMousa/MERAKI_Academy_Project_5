@@ -15,10 +15,11 @@ import { format } from "timeago.js";
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
+import InputEmoji from 'react-input-emoji'
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import Dropdown from "react-bootstrap/Dropdown";
-import posts, { setComments, addComment } from "../redux/reducers/posts/index";
+import posts, { setComments, addComment,removeComment } from "../redux/reducers/posts/index";
 import UpdateComment from "./UpdateComment";
 const Comments = ({ id }) => {
   console.log(id);
@@ -33,14 +34,23 @@ const Comments = ({ id }) => {
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = () => setShowEdit(true);
   const [comments, setcomments] = useState(null);
+  const [emoji,setEmoji]=useState(false)
+  const [ text, setText ] = useState('')
+  const [currentEmoji,setCurrentEmoji]=useState("")
+
+  function handleOnEnter (text) {
+    console.log('enter', text)
+  }
   const[nemcomment,setNewComment]=useState({})
-  const { userinfo, token, userId } = useSelector((state) => {
+  const { userinfo, token, userId,posts } = useSelector((state) => {
     return {
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
+      posts:state.posts.posts
     };
   });
+  console.log(posts)
   const uploadImage = () => {
     const data = new FormData();
     data.append("file", image);
@@ -63,19 +73,6 @@ const Comments = ({ id }) => {
       })
       .catch((err) => console.log(err));
   };
-  const addNewComment=()=>{
-    axios.post(`http://localhost:5000/comments/${id}`, {
-       ...nemcomment }, { headers: { Authorization: token } }
-      ).then((Response) => {
-      console.log(Response.data.result);
-      let newComment = Response.data.result;
-     
-      dispatch(addComment({ id, newComment }));
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
   const getAllCommentsByPostId = (id) => {
     axios
       .get(`http://localhost:5000/comments/${id}`, {
@@ -92,6 +89,34 @@ const Comments = ({ id }) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+  const addNewComment=()=>{
+    axios.post(`http://localhost:5000/comments/${id}`, {
+       ...nemcomment }, { headers: { Authorization: token } }
+      ).then((Response) => {
+      console.log(Response.data.result);
+      let newComment = Response.data.result;
+     
+      dispatch(addComment({ id, newComment }));
+      getAllCommentsByPostId(id)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+  const deleteComment = async (post_id,comment_id) => {
+    try {
+      await axios.delete(`http://localhost:5000/comments/comment/${comment_id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }).then((result)=>{
+        console.log(result.data)
+        dispatch(removeComment({post_id,comment_id}))
+      })
+      getAllCommentsByPostId(id)
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     getAllCommentsByPostId(id);
@@ -134,13 +159,14 @@ const Comments = ({ id }) => {
                               style={{ height: "80px" }}
                               wrapperClass="mb-4"
                               placeholder="write a comment..."
-                              id="form1"
+                              id="mytextarea"
                               type="text"
-                              onClick={(e)=>{
+                              onChange={(e)=>{
                                 setNewComment((content) => {
                                   setDisabled(false)
                                   
-                                 return { ...content, content:e.target.value };
+                                 return { ...content, content:e.target.value
+                                 };
                                 });
                                 
                               }}
@@ -161,6 +187,7 @@ const Comments = ({ id }) => {
                             <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
                           </div>
                         )}
+                        {text &&text}
                             </div>
                           
                             <div className="commentbtn">
@@ -190,10 +217,10 @@ const Comments = ({ id }) => {
                                 </button>
 
                                 <a href="#!">
-                                  <MDBIcon fas icon="reply fa-xs" />
-                                  <span> 😃</span>
+                                  {/* <MDBIcon fas icon="reply fa-xs" />
+                                  <span onClick={()=>{setEmoji(true)}}> 😃</span> */}
                                 </a>
-                                
+                              
                               </div>
                              
                               <button onClick={()=>{addNewComment()}}>comment</button>
@@ -201,7 +228,14 @@ const Comments = ({ id }) => {
                           </div>
                         </div>
                       </div>
-
+                      {emoji &&    <InputEmoji
+          value={text}
+          onChange={setText}
+          cleanOnEnter
+          onEnter={handleOnEnter}
+          selector="#mytextarea"
+          placeholder="Type a message"
+        />}
                       {comments?.length > 0 &&
                         comments.map((element) => {
                           {
@@ -254,15 +288,18 @@ const Comments = ({ id }) => {
                 >
                   Edit 
                 </Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Delete Post</Dropdown.Item>
+              
+                <Dropdown.Item onClick={()=>
+                 {deleteComment(id,element.comment_id)
+                  { console.log(element.comment_id)}}}>Delete </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
                                   </div>
-                                  {nemcomment.content &&( <p className="small mb-0">
+                                  {element.content &&( <p className="small mb-0">
                                     {element.content}
                                   </p>)}
                                   <div className="d-flex justify-content-between align-items-center">
-                             {nemcomment.image && (
+                             {element.image && (
                           <img style={{width:"100px",marginLeft:"20%"}}
                             variant="success"
                            

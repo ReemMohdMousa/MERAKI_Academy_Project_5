@@ -42,28 +42,38 @@ export const posts = createSlice({
     },
     setComments: (state, action) => {
       // state.articles = action.payload.comments;
+      console.log(state.posts);
       state.posts.map((elem, i) => {
         if (elem.post_id === action.payload.id) {
           elem.comments = action.payload.comments;
         }
       });
+      console.log("*****************", state.posts);
     },
     addComment: (state, action) => {
+      console.log(action.payload);
       state.posts.map((elem, i) => {
         if (elem.post_id === action.payload.id) {
           elem.comments.push(action.payload.newComment);
         }
       });
     },
-    updateComment: (state, action) => {
-      console.log("payload", state.posts.comments);
-      state.posts.comments.map((elem, i) => {
-        if (elem.comment_id == action.payload.updatedcomment.comment_id ) {
-          return state.posts.comments.splice(i, 1, action.payload.updatedcomment);
+
+    removeComment: (state, action) => {
+      console.log(action.payload);
+      state.posts.forEach((elem, idx) => {
+        console.log(elem);
+        let found = state.posts.find((elem) => {
+       return elem.post_id === action.payload.post_id;
+        });
+        console.log("found",found)
+        if (elem.comment_id === action.payload) {
+          state.posts.comments.splice(idx, 1);
         }
-        return elem;
-        //dont forget return please
       });
+      // state.articles.map((elem)=>{
+      //     console.log("DELETEArticles",elem)
+      //   })
     },
 
     addLike: (state, action) => {
@@ -91,6 +101,7 @@ export const {
   addLike,
   setLike,
   updateComment,
+  removeComment,
 } = posts.actions;
 
 export default posts.reducer;
