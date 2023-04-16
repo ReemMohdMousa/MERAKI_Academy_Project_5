@@ -17,7 +17,6 @@ export const friends = createSlice({
   reducers: {
     getAlluserFriends: (state, action) => {
       //payload = array of user's friends
-      console.log(action.payload);
       state.friends = action.payload;
     },
 
@@ -36,35 +35,26 @@ export const friends = createSlice({
     },
 
     setIsAdded: (state, action) => {
-      console.log("isAdded", action.payload);
       state.isAdded = action.payload;
     },
 
     setIsReceived: (state, action) => {
-      console.log("isReceived", action.payload);
       state.isReceived = action.payload;
     },
 
     setSentReq: (state, action) => {
-      console.log("bbbbbbbbbb", action.payload);
       state.sentReq = action.payload;
     },
 
     addToSentReq: (state, action) => {
-      console.log("bbbbbbbbbb", action.payload);
-      console.log("bbbbbbbbbb", state.sentReq);
-
       //save the sent request in the sentReq State
       state.sentReq.push(action.payload);
     },
 
     cancelFriendReq: (state, action) => {
-      console.log("**************", action.payload);
-      console.log(state.sentReq);
       //action.payload = reciver_id
       state.sentReq.forEach((element, i) => {
         if (element.receiver_id === action.payload) {
-          console.log(element);
           element.splice(i, 1);
         }
       });
@@ -78,7 +68,6 @@ export const friends = createSlice({
       //action.payload = sender_id
       state.sentReq.forEach((element, i) => {
         if (element.sender_id === action.payload) {
-          console.log(element);
           element.splice(i, 1);
         }
       });
@@ -94,7 +83,6 @@ export const friends = createSlice({
     },
 
     removeFriend: (state, action) => {
-      console.log(action.payload);
       //payload = user_id
       state.friends.map((element, i) => {
         if (element.user_id == action.payload) {

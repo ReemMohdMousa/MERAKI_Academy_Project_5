@@ -6,6 +6,7 @@ export const posts = createSlice({
   initialState: {
     posts: [],
     likes: [],
+    homePosts: [],
   },
   reducers: {
     setPosts: (state, action) => {
@@ -69,6 +70,11 @@ export const posts = createSlice({
     setLike: (state, action) => {
       console.log("state", action);
     },
+
+    setHomePosts: (state, action) => {
+      console.log(action.payload);
+      state.homePosts = action.payload;
+    },
   },
 });
 export const {
@@ -80,6 +86,7 @@ export const {
   addComment,
   addLike,
   setLike,
+  setHomePosts,
 } = posts.actions;
 
 export default posts.reducer;

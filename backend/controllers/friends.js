@@ -367,7 +367,7 @@ const getAllFriendsByUserId = (req, res) => {
     .query(query, data)
     .then((result) => {
       if (result.rows.length === 0) {
-        res.status(404).json({
+        res.status(200).json({
           success: false,
           message: `No Friends Found`,
         });
