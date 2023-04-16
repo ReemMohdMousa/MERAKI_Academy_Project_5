@@ -65,7 +65,7 @@ const UpdateCommentById = (req, res) => {
   SET content = COALESCE($1,content), 
   image = COALESCE($2, image), 
   video = COALESCE($3, video), updated_at=NOW()
-  WHERE comment_id=$4, user_id=$5 AND is_deleted = 0  RETURNING *;`;
+  WHERE comment_id=$4 AND user_id=$5 AND is_deleted = 0  RETURNING *;`;
   const data = [content, image, video, comment_id, user_id];
 
   pool
@@ -85,6 +85,7 @@ const UpdateCommentById = (req, res) => {
       }
     })
     .catch((err) => {
+      console.log(err)
       res.status(500).json({
         success: false,
         message: "Server error",

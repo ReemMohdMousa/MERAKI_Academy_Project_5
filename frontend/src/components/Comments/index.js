@@ -17,7 +17,9 @@ import { MDBFile } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import Dropdown from "react-bootstrap/Dropdown";
 import posts, { setComments, addComment } from "../redux/reducers/posts/index";
+import UpdateComment from "./UpdateComment";
 const Comments = ({ id }) => {
   console.log(id);
   const dispatch = useDispatch();
@@ -27,6 +29,9 @@ const Comments = ({ id }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [showEdit, setShowEdit] = useState(false);
+  const handleCloseEdit = () => setShowEdit(false);
+  const handleShowEdit = () => setShowEdit(true);
   const [comments, setcomments] = useState(null);
   const[nemcomment,setNewComment]=useState({})
   const { userinfo, token, userId } = useSelector((state) => {
@@ -63,9 +68,9 @@ const Comments = ({ id }) => {
        ...nemcomment }, { headers: { Authorization: token } }
       ).then((Response) => {
       console.log(Response.data.result);
-      let comment = Response.data.result;
+      let newComment = Response.data.result;
      
-      dispatch(addComment({ id, comment }));
+      dispatch(addComment({ id, newComment }));
     })
     .catch((err) => {
       console.log(err);
@@ -190,13 +195,7 @@ const Comments = ({ id }) => {
                                 </a>
                                 
                               </div>
-                              <a href="#!">
-                                <MDBIcon fas icon="reply fa-xs" />
-                                <span style={{ width: "50", height: "40" }}>
-                                  {" "}
-                                  reply
-                                </span>
-                              </a>
+                             
                               <button onClick={()=>{addNewComment()}}>comment</button>
                             </div>
                           </div>
@@ -231,9 +230,33 @@ const Comments = ({ id }) => {
                                         - {format(element.created_at)}
                                       </span>
                                     </p>
-                                    <a href="#!">
-                                      <span className="small"> reply</span>
-                                    </a>
+                                   <Dropdown>
+              <Dropdown.Toggle id="dropdown-basic">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-three-dots"
+                  viewBox="0 0 16 16"
+                  on
+                  onClick={() => {}}
+                >
+                  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                </svg>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  onClick={() => {
+                    setShowEdit(true);
+                  }}
+                >
+                  Edit 
+                </Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Delete Post</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
                                   </div>
                                   {nemcomment.content &&( <p className="small mb-0">
                                     {element.content}
@@ -315,8 +338,11 @@ const Comments = ({ id }) => {
                             </div>
                           </div> 
                         </div>*/}
+                         {showEdit ? <UpdateComment showModal={showEdit} comment={element}
+                               setShowModal={setShowEdit} />:""}
                               </div>
                             </div>
+                              
                           );
                         })}
                     </MDBCol>
@@ -327,7 +353,7 @@ const Comments = ({ id }) => {
           </MDBRow>
         </MDBContainer>
       </section>
-
+   
       <Modal show={show} onHide={handleClose}>
         <Modal.Header></Modal.Header>
         <Modal.Body>
@@ -377,8 +403,10 @@ const Comments = ({ id }) => {
           </Button>
         </Modal.Footer>
       </Modal>
+     
     </>
-  );
+    
+     );
 };
 
 export default Comments;

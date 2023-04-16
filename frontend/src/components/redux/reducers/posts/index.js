@@ -50,9 +50,19 @@ export const posts = createSlice({
     },
     addComment: (state, action) => {
       state.posts.map((elem, i) => {
-        if (elem.post_id === action.payload.post_id) {
+        if (elem.post_id === action.payload.id) {
           elem.comments.push(action.payload.newComment);
         }
+      });
+    },
+    updateComment: (state, action) => {
+      console.log("payload", state.posts.comments);
+      state.posts.comments.map((elem, i) => {
+        if (elem.comment_id == action.payload.updatedcomment.comment_id ) {
+          return state.posts.comments.splice(i, 1, action.payload.updatedcomment);
+        }
+        return elem;
+        //dont forget return please
       });
     },
 
@@ -80,6 +90,7 @@ export const {
   addComment,
   addLike,
   setLike,
+  updateComment,
 } = posts.actions;
 
 export default posts.reducer;
