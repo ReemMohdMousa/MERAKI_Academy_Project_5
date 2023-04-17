@@ -42,7 +42,7 @@ const Comments = ({ id, firstname, lastname }) => {
   const [text, setText] = useState("");
   const [currentEmoji, setCurrentEmoji] = useState("");
   const [allnested, setAllNested] = useState(null);
-  const[newnrested,setNewNested]=useState("")
+  const[newnrested,setNewNested]=useState({})
   function handleOnEnter(text) {}
   const [nemcomment, setNewComment] = useState({});
   const { userinfo, token, userId, posts } = useSelector((state) => {
@@ -87,7 +87,8 @@ const Comments = ({ id, firstname, lastname }) => {
         console.log(Response.data.result);
         setAllNested(Response.data.result);
         //this is for redux
-        dispatch(setNestedComments({ post_id, comment_id, nestedcomments }));
+        dispatch(setNestedComments({ post_id, comment_id, nestedcomments}));
+       
         //console.log(allnested);
       })
       .catch((err) => {
@@ -104,7 +105,8 @@ const Comments = ({ id, firstname, lastname }) => {
     .then((Response) => {
       let nestedcomment=Response.data.result
       console.log(Response.data.result);
-      dispatch((addNested({post_id,comment_id,nestedcomment})));
+      dispatch(addNested({post_id,comment_id,nestedcomment}));
+      getAllNestedCommentsBycommentId(post_id,comment_id)  
     })
     .catch((err) => {
       console.log(err);
@@ -379,10 +381,7 @@ const Comments = ({ id, firstname, lastname }) => {
                                     )}
                                     <button
                                       onClick={() => {
-                                        getAllNestedCommentsBycommentId(
-                                          element.post_id,
-                                          element.comment_id
-                                        );
+                                        getAllNestedCommentsBycommentId(element.post_id, element.comment_id)
                                       }}
                                     >
                                       all replies
@@ -418,7 +417,7 @@ const Comments = ({ id, firstname, lastname }) => {
                               id="mytextarea"
                               type="text"
                               onChange={(e) => {
-                                setNewNested(e.target.value) 
+                                setNewNested((content)=>{return{...content,content:e.target.value}}) 
                                 
                               }}
                             />

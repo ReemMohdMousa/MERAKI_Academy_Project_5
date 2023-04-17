@@ -104,15 +104,15 @@ const Posts = ({ post,firstname,lastname }) => {
             
           </div>
           <div className="contant">
-            <p>{post.content}</p>
-            <img src={post.image} alt="" />
-            <embed className="embed" type="video/webm" src={post.video} />
+          {post.content && <p>{post.content}</p>}  
+            {post.image && <img src={post.image} alt="" />}   
+            {post.video && <embed width="100%" height="300px" className="embed" type="video/webm" src={post.video} /> }  
           </div>
-
+          <br></br>
           <div className="infomation">
 
           {post.post_id && <Likes post_id={post.post_id} post={post} />}
-
+          
 
             <div
               onClick={() => {
