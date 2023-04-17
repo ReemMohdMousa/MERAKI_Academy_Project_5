@@ -59,7 +59,7 @@ const addedPostPerDay = (req, res) => {
     });
 };
 
-const registeredUserDetailWithin24h = (req,res) => {
+const registeredUserDetailWithin24h = (req, res) => {
   pool
     .query(
       `SELECT user_id, firstname, lastname, email
@@ -68,10 +68,43 @@ const registeredUserDetailWithin24h = (req,res) => {
       ORDER BY "users"."created_at" DESC`
     )
     .then((result) => {
+      res.status(200).json({
+        detail: result.rows,
+        count: result.rowCount,
+      });
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+};
+
+const postsEveryHour = (req, res) => {
+  pool
+    .query(
+      ` Select  extract (hour FROM date_trunc('hour', created_at)) AS time, count(*) from posts group by 1`
+    )
+    .then((result) => {
       res.status(200).json(result.rows);
     })
     .catch((err) => {
       res.json(err);
+    });
+};
+
+const activeUserOrNot = (req, res) => {
+  const query = `SELECT users.user_id, count( posts.user_id ) FROM users LEFT JOIN posts ON users.user_id=posts.user_id GROUP BY users.user_id
+`;
+  pool
+    .query(query)
+    .then((result) => {
+      res.status(200).json(result.rows);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
     });
 };
 module.exports = {
@@ -81,4 +114,6 @@ module.exports = {
   registeredUserPerDay,
   addedPostPerDay,
   registeredUserDetailWithin24h,
+  postsEveryHour,
+  activeUserOrNot,
 };
