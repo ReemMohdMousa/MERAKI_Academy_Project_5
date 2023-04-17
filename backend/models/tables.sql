@@ -167,9 +167,11 @@ CREATE TABLE nestedComments (
   post_id INT,
   comment_id INT,
   content VARCHAR(255),
+  user_id INT,
   image TEXT,
   is_deleted SMALLINT DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW(),
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id),
   FOREIGN KEY (comment_id) REFERENCES comments(comment_id),
   PRIMARY KEY (nestedComments_id)

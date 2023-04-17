@@ -82,6 +82,7 @@ const Comments = ({ id,firstname,lastname }) => {
         
         let comments = Response.data.result;
         //this is for local use state
+        console.log(Response.data.result)
         setcomments(comments);
         //this is for redux
         dispatch(setComments({ id, comments }));
@@ -90,6 +91,7 @@ const Comments = ({ id,firstname,lastname }) => {
         console.log(err);
       });
   };
+
   const addNewComment=()=>{
     axios.post(`http://localhost:5000/comments/${id}`, {
        ...nemcomment }, { headers: { Authorization: token } }
@@ -240,7 +242,7 @@ const Comments = ({ id,firstname,lastname }) => {
                         comments.map((element) => {
                           
                           return (
-                            <div className="d-flex flex-start mt-4">
+                            <div className="d-flex flex-start mt-4" key={element.comment_id}>
                               <MDBCardImage
                                 className="rounded-circle shadow-1-strong me-3"
                                 src={
@@ -316,7 +318,7 @@ const Comments = ({ id,firstname,lastname }) => {
                                     
                                 </div>
 
-                                {/* <div className="d-flex flex-start mt-4">
+                                <div className="d-flex flex-start mt-4">
                           <a className="me-3" href="#">
                             <MDBCardImage
                               className="rounded-circle shadow-1-strong me-3"
@@ -343,9 +345,9 @@ const Comments = ({ id,firstname,lastname }) => {
                               </p>
                             </div>
                           </div>
-                        </div> */}
+                        </div>
 
-                                {/* <div className="d-flex flex-start mt-4">
+                                <div className="d-flex flex-start mt-4">
                           <a className="me-3" href="#">
                             <MDBCardImage
                               className="rounded-circle shadow-1-strong me-3"
@@ -372,7 +374,7 @@ const Comments = ({ id,firstname,lastname }) => {
                               </p>
                             </div>
                           </div> 
-                        </div>*/}
+                        </div>
                          {showEdit ? <UpdateComment showModal={showEdit} comment={element}
                                setShowModal={setShowEdit} />:""}
                               </div>

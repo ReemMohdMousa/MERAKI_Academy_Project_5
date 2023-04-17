@@ -40,16 +40,16 @@ export const posts = createSlice({
     },
     setComments: (state, action) => {
       // state.articles = action.payload.comments;
-      console.log(state.posts);
+      
       state.posts.map((elem, i) => {
         if (elem.post_id === action.payload.id) {
           elem.comments = action.payload.comments;
         }
       });
-      console.log("*****************", state.posts);
+      
     },
     addComment: (state, action) => {
-      console.log(action.payload);
+      
       state.posts.map((elem, i) => {
         if (elem.post_id === action.payload.id) {
           elem.comments.push(action.payload.newComment);
@@ -88,7 +88,7 @@ export const posts = createSlice({
     },
 
     setHomePosts: (state, action) => {
-      console.log(action.payload);
+    
       state.homePosts = action.payload;
     },
   },

@@ -31,8 +31,6 @@ const AddPost = () => {
   const handleCloseVideo = () => setShowVideo(false);
   const handleShowVideo = () => setShowVideo(true);
   const [disabled, setDisabled] = useState(false);
-
-
   const [post, setpost] = useState({});
   const dispatch = useDispatch();
   const [selectedvideo, setSelectedVideo] = useState("");

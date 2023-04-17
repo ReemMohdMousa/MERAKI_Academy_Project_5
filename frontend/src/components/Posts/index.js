@@ -48,7 +48,7 @@ const Posts = ({ post,firstname,lastname }) => {
   return (
     userinfo && (
       <div className="posts">
-        <div className="container">
+        <div className="containers">
           <div className="user">
             <div className="userInfo">
               <img
@@ -71,7 +71,9 @@ const Posts = ({ post,firstname,lastname }) => {
                 <span className="date">{format(post.created_at)}</span>
               </div>
             </div>
-            <Dropdown>
+
+
+  <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -93,11 +95,13 @@ const Posts = ({ post,firstname,lastname }) => {
                     setShow(true);
                   }}
                 >
-                  Edit Post
+                  Edit 
                 </Dropdown.Item>
-                <Dropdown.Item onClick={()=>{deletePost(post.post_id)}}>Delete Post</Dropdown.Item>
+              
+                <Dropdown.Item  onClick={()=>{deletePost(post.post_id)}} >Delete </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+            
           </div>
           <div className="contant">
             <p>{post.content}</p>

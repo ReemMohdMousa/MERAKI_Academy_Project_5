@@ -180,7 +180,7 @@ const Profile = () => {
                       {/* dispaly the posts */}
                       {posts &&
                         posts.map((elem) => {
-                          return <Posts post={elem} firstname={user.firstname} lastname={user.lastname} />;
+                          return <Posts post={elem} firstname={user.firstname} lastname={user.lastname} key={elem.post_id}/>;
                         })}
                     </MDBCol>
                   </MDBRow>
