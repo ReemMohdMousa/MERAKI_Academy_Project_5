@@ -26,15 +26,40 @@ const createNewComment = (req, res) => {
       });
     });
 };
+const createNewNestedComment = (req, res) => {
+  const comment_id = req.query.comment_id;
+  const post_id = req.query.post_id;
+console.log(comment_id,post_id)
+  const { content, image } = req.body;
 
+  const query = `INSERT INTO nestedComments (post_id, comment_id, content, image) VALUES ($1,$2,$3,$4) RETURNING *`;
+  const data = [post_id, comment_id, content||null, image||null];
+
+  pool
+    .query(query, data)
+    .then((result) => {
+      res.status(201).json({
+        success: true,
+        message: "Comment created successfully",
+        result: result.rows[0],
+      });
+    })
+    .catch((err) => {
+      res.status(404).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
 const getCommentsByPostId = (req, res) => {
   const post_id = req.params.id;
 
-  const query = `SELECT comments.content, comments.image, comments.video, users.firstname, users.lastname 
-    FROM comments 
-    INNER JOIN users ON comments.user_id = users.user_id
-    WHERE comments.is_deleted=0 AND comments.post_id = $1
-    `;
+  const query = `SELECT *
+  FROM comments 
+  INNER JOIN users ON comments.user_id = users.user_id
+  WHERE comments.is_deleted=0 AND comments.post_id =$1 
+ORDER BY comments.created_at DESC`;
 
   const data = [post_id];
   pool
@@ -65,7 +90,7 @@ const UpdateCommentById = (req, res) => {
   SET content = COALESCE($1,content), 
   image = COALESCE($2, image), 
   video = COALESCE($3, video), updated_at=NOW()
-  WHERE comment_id=$4, user_id=$5 AND is_deleted = 0  RETURNING *;`;
+  WHERE comment_id=$4 AND user_id=$5 AND is_deleted = 0  RETURNING *;`;
   const data = [content, image, video, comment_id, user_id];
 
   pool
@@ -85,6 +110,7 @@ const UpdateCommentById = (req, res) => {
       }
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).json({
         success: false,
         message: "Server error",
@@ -96,8 +122,6 @@ const UpdateCommentById = (req, res) => {
 const deleteCommentById = (req, res) => {
   const comment_id = req.params.id;
   const user_id = req.token.userId;
-
-
 
   pool
     .query(
@@ -138,4 +162,5 @@ module.exports = {
   getCommentsByPostId,
   UpdateCommentById,
   deleteCommentById,
+  createNewNestedComment,
 };

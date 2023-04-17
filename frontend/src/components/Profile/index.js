@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import axios from "axios";
 import {
@@ -15,14 +15,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setPosts,
-  addpost,
-  updatePost,
-  removePost,
-  setComments,
-  addComment,
-} from "../redux/reducers/posts/index";
+import { setPosts } from "../redux/reducers/posts/index";
 import AddPost from "../AddPost";
 
 import { MDBFile } from "mdb-react-ui-kit";
@@ -31,33 +24,30 @@ import { useNavigate, useParams } from "react-router-dom";
 import FriendRequests from "./FriendRequests";
 import AllFriends from "./AllFriends";
 
-
 const Profile = () => {
   const params = useParams();
   const id = params.id;
-
-
+  const [user, setUser] = useState({});
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const getAllPostsByUserId = () => {
-      axios
-        .get(`http://localhost:5000/posts/search_1`, {
-          headers: { Authorization: `Bearer ${token}` },
+  const getuserdata = () => {
+    axios
+      .get(`http://localhost:5000/users/others/info/${id}`)
+      .then((Response) => {
+        console.log(Response.data.result);
+        setUser((firstname)=>{
+          return {...firstname,firstname:Response.data.result.firstname}
         })
-        .then((Response) => {
-          console.log(Response.data.posts);
-          dispatch(setPosts(Response.data.posts));
-          //setAppointments(Response.data.appointment);
+        setUser((lastname)=>{
+          return {...lastname,lastname:Response.data.result.lastname}
         })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    getAllPostsByUserId();
-  }, []);
-
-
+        //setUser(())
+        //dispatch(setPosts(Response.data.posts));
+        //setAppointments(Response.data.appointment);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   //redux states
   const { posts, userinfo, token, userId, friends } = useSelector((state) => {
@@ -69,32 +59,28 @@ const Profile = () => {
       friends: state.friends.friends,
     };
   });
-
-
+  const getAllPostsByUserId = () => {
+    axios
+      .get(`http://localhost:5000/posts/search_1/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((Response) => {
+        dispatch(setPosts(Response.data.posts));
+        //setAppointments(Response.data.appointment);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
-    const getAllPostsByUserId = () => {
-      axios
-        .get(`http://localhost:5000/posts/search_1`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((Response) => {
-          console.log(Response.data.posts);
-          dispatch(setPosts(Response.data.posts));
-          //setAppointments(Response.data.appointment);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    getuserdata();
     getAllPostsByUserId();
   }, []);
 
-
- 
   return (
     <div>
       <FriendRequests id={id} />
-      <AllFriends id={id}/>
+      <AllFriends id={id} />
       <div className="gradient-custom-2" style={{ backgroundColor: "#9de2ff" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
@@ -118,22 +104,19 @@ const Profile = () => {
                       className="mt-4 mb-2 img-thumbnail"
                       fluid
                       style={{ width: "150px", zIndex: "1" }}
-
                     ></MDBCardImage>
-                  
+
 
                     <MDBBtn
                       outline
                       color="dark"
                       style={{ height: "36px", overflow: "visible" }}
                     >
-
-                      Change photo
-                      Edit profile
+                      Change photo Edit profile
                     </MDBBtn>
                   </div>
                   <div className="ms-3" style={{ marginTop: "130px" }}>
-                    <MDBTypography tag="h5">Andy Horwitz</MDBTypography>
+                    <MDBTypography tag="h5">{user.firstname}{"  "}{user.lastname}</MDBTypography>
                     <MDBCardText>New York</MDBCardText>
                   </div>
                 </div>
@@ -189,7 +172,7 @@ const Profile = () => {
                   </div>
                   <MDBRow className="g-2">
                     <MDBCol className="mb-2">
-                      <AddPost />
+                      {id===userId &&<AddPost />}
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -197,7 +180,7 @@ const Profile = () => {
                       {/* dispaly the posts */}
                       {posts &&
                         posts.map((elem) => {
-                          return <Posts post={elem} />;
+                          return <Posts post={elem} firstname={user.firstname} lastname={user.lastname} />;
                         })}
                     </MDBCol>
                   </MDBRow>

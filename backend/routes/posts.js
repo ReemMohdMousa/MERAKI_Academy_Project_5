@@ -21,14 +21,14 @@ postsRouter.post(
 );
 postsRouter.get("/", authentication, getAllPosts);
 
-postsRouter.get("/search_1",authentication, getPostsByUser);
+postsRouter.get("/search_1/:id",authentication, getPostsByUser);
 postsRouter.get("/search_2/:id", getPostById);
 postsRouter.put("/:id",  authentication,
 authorization("UPDATE_POST"), updatePostById);
 postsRouter.delete("/:id", authentication,
 authorization("DELETE_POST"), deletePostById);
-postsRouter.delete("/", authentication,
-authorization("DELETE_POST"), deletePostsByuserId);
+// postsRouter.delete("/", authentication,
+// authorization("DELETE_POST"), deletePostsByuserId);
 module.exports = postsRouter;
 
 

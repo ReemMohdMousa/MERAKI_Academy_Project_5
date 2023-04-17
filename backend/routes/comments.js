@@ -4,7 +4,7 @@ const {
   createNewComment,
   getCommentsByPostId,
   UpdateCommentById,
-  deleteCommentById,
+  deleteCommentById,createNewNestedComment
 } = require("../controllers/comments");
 const authentication = require("../middlewares/authentication");
 
@@ -12,6 +12,7 @@ const authorization = require("../middlewares/authorization");
 
 const commentsRouter = express.Router();
 
+commentsRouter.post("/nested", authentication, createNewNestedComment);
 
 commentsRouter.post("/:id", authentication, createNewComment);
 commentsRouter.get("/:id", getCommentsByPostId);

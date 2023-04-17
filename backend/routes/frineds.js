@@ -9,27 +9,42 @@ const {
   getAllSentRequestByUserId,
   getAllReceivedRequestByUserId,
   getAllFriendsByUserId,
-  acceptRequestOnce
+  acceptRequestOnce,
+  addRequestOnce,
 } = require("../controllers/friends");
 
 const authentication = require("../middlewares/authentication");
 
 const friendsRouter = express.Router();
 
-friendsRouter.post("/add", authentication, AddFriendRequest);
-friendsRouter.post("/accept", authentication, acceptRequestOnce, acceptFriendRequest);
+friendsRouter.post("/add", authentication, addRequestOnce, AddFriendRequest);
+friendsRouter.post(
+  "/accept",
+  authentication,
+  acceptRequestOnce,
+  acceptFriendRequest
+);
 
-
-friendsRouter.delete("/cancel/:request_id", authentication, CancelFriendRequest);
-friendsRouter.delete("/decline/:request_id", authentication, declineTheFriendReq);
+friendsRouter.delete(
+  "/cancel/:id",
+  authentication,
+  CancelFriendRequest
+);
+friendsRouter.delete(
+  "/decline/:id",
+  authentication,
+  declineTheFriendReq
+);
 friendsRouter.delete("/remove/:user2_id", authentication, RemoveFriend);
-
 
 friendsRouter.get("/sent/requests", authentication, getAllSentRequestByUserId);
 
-friendsRouter.get("/received/requests", authentication, getAllReceivedRequestByUserId);
+friendsRouter.get(
+  "/received/requests",
+  authentication,
+  getAllReceivedRequestByUserId
+);
 
 friendsRouter.get("/get/all/:id", authentication, getAllFriendsByUserId);
-
 
 module.exports = friendsRouter;
