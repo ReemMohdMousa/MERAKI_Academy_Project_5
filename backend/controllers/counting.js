@@ -58,10 +58,27 @@ const addedPostPerDay = (req, res) => {
       res.json(err);
     });
 };
+
+const registeredUserDetailWithin24h = (req,res) => {
+  pool
+    .query(
+      `SELECT user_id, firstname, lastname, email
+      FROM public.users AS "users"
+      WHERE "users"."created_at" BETWEEN NOW() - INTERVAL '24 HOURS' AND NOW()
+      ORDER BY "users"."created_at" DESC`
+    )
+    .then((result) => {
+      res.status(200).json(result.rows);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+};
 module.exports = {
   userCount,
   postCount,
   likeCount,
   registeredUserPerDay,
   addedPostPerDay,
+  registeredUserDetailWithin24h,
 };
