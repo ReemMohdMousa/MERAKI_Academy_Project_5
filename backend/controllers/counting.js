@@ -2,7 +2,7 @@ const { pool } = require("../models/db");
 
 const userCount = (req, res) => {
   pool
-    .query(`SELECT COUNT(user_id) FROM users WHERE is_deleted=0`)
+    .query(`SELECT COUNT(*) FROM users`)
     .then((result) => {
       res.status(200).json(result.rows);
     })
@@ -13,7 +13,7 @@ const userCount = (req, res) => {
 
 const postCount = (req, res) => {
   pool
-    .query(`SELECT COUNT(post_id) FROM posts WHERE is_deleted=0`)
+    .query(`SELECT COUNT(*) FROM posts`)
     .then((result) => {
       res.status(200).json(result.rows);
     })
@@ -24,7 +24,7 @@ const postCount = (req, res) => {
 
 const likeCount = (req, res) => {
   pool
-    .query(`SELECT COUNT(likes_id) FROM likes WHERE is_deleted=0`)
+    .query(`SELECT COUNT(*) FROM likes`)
     .then((result) => {
       res.status(200).json(result.rows);
     })
@@ -32,4 +32,36 @@ const likeCount = (req, res) => {
       res.json(err);
     });
 };
-module.exports = { userCount, postCount, likeCount };
+
+const registeredUserPerDay = (req, res) => {
+  pool
+    .query(
+      `SELECT extract(DAY FROM created_at) AS "Date of day", COUNT(*) FROM users GROUP BY extract(DAY FROM created_at)`
+    )
+    .then((result) => {
+      res.status(200).json(result.rows);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+};
+
+const addedPostPerDay = (req, res) => {
+  pool
+    .query(
+      `SELECT extract(DAY FROM created_at) AS "Date of day", COUNT(*) FROM posts GROUP BY extract(DAY FROM created_at)`
+    )
+    .then((result) => {
+      res.status(200).json(result.rows);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+};
+module.exports = {
+  userCount,
+  postCount,
+  likeCount,
+  registeredUserPerDay,
+  addedPostPerDay,
+};
