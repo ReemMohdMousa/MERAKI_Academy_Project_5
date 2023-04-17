@@ -6,14 +6,8 @@ import "./style.css";
 
 import {
   getAlluserFriends,
-  addFriend,
-  acceptFriendRequest,
-  cancelFriendReq,
-  declineFriendReq,
   removeFriend,
   isTheUserIsFriend,
-  setIsFriend,
-  setIsRemoved,
 } from "../redux/reducers/friends/index";
 
 const AllFriends = ({ id }) => {
@@ -26,19 +20,17 @@ const AllFriends = ({ id }) => {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, userId, isLoggedIn, friends, isFriend, isRemoved } =
+  const { token, userId, friends, isFriend } =
     useSelector((state) => {
       return {
         friends: state.friends.friends,
         userId: state.auth.userId,
         token: state.auth.token,
-        isLoggedIn: state.auth.isLoggedIn,
         isFriend: state.friends.isFriend,
-        isRemoved: state.friends.isRemoved,
       };
     });
 
-  //!get all friends of any person depending on the user id
+  //get all friends of any person depending on the user id
   const getAllFriends = () => {
     axios
       .get(`http://localhost:5000/friends/get/all/${id}`, {
@@ -86,7 +78,7 @@ const AllFriends = ({ id }) => {
           <Modal.Title>Friends</Modal.Title>
         </Modal.Header>
         <Modal.Body className="friend-list-body">
-          {friends.length == 0
+          {friends && friends.length == 0
             ? "No Friends"
             : friends &&
               friends.map((element, i) => {
