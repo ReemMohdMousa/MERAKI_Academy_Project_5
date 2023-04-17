@@ -91,7 +91,36 @@ export const posts = createSlice({
     
       state.homePosts = action.payload;
     },
+    setNestedComments:(state,action)=>{
+      let found = state.posts.find((elem) => {
+        return elem.post_id === action.payload.post_id;
+         });
+      found.comments.map((elem, i) => {
+        if (elem.comment_id === action.payload.comment_id) {
+          return  elem.nestedcomments = action.payload.nestedcomments;
+        }
+        
+      });
+    },
+    addNested:(state,action)=>{
+console.log(action.payload);
+      
+      let found = state.posts.find((elem) => {
+        return elem.post_id === action.payload.post_id;
+         });
+       console.log(found)
+         let found2=[found].find((elem)=>{
+          return elem.comment_id===action.payload.comment_id
+         })
+       //  console.log(found2)
+        // console.log(state.posts.comments.nestedcomments)
+       let result= [found2].nestedcomments?[found2].nestedcomments.push(action.payload.nestedcomment):[found2].nestedcomments= action.payload.nestedcomment
+       console.log (result)
+       return result
+    
+    }
   },
+
 });
 export const {
   setPosts,
@@ -102,11 +131,11 @@ export const {
   addComment,
   addLike,
   setLike,
-
+setNestedComments,
   updateComment,
   removeComment,
   removeLike,
-  setHomePosts,
+  setHomePosts,addNested
 } = posts.actions;
 
 export default posts.reducer;

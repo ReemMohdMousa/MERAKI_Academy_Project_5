@@ -56,11 +56,11 @@ console.log(comment_id,post_id,user_id)
 const getAllNestedCommentsByCommentId=(req,res)=>{
   const post_id = req.query.post_id;
   const comment_id=req.query.comment_id
-  const query = `SELECT *
+  const query = `SELECT nestedcomments.*, users.firstname ,users.lastname
   FROM nestedcomments 
   INNER JOIN users ON nestedcomments.user_id = users.user_id
   WHERE nestedcomments.is_deleted=0 AND nestedcomments.post_id =$1
-  AND nestedcomments.comment_id=$2 
+  AND nestedcomments.comment_id=$2
 ORDER BY nestedcomments.created_at DESC`;
 
   const data = [post_id,comment_id];
@@ -84,7 +84,7 @@ ORDER BY nestedcomments.created_at DESC`;
 const getCommentsByPostId = (req, res) => {
   const post_id = req.params.id;
 
-  const query = `SELECT *
+  const query = `SELECT comments.*, users.firstname,users.lastname
   FROM comments 
   INNER JOIN users ON comments.user_id = users.user_id
   WHERE comments.is_deleted=0 AND comments.post_id =$1 

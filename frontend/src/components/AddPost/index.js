@@ -21,6 +21,7 @@ import {
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
+import { format } from "timeago.js";
 import { setPosts, addpost } from "../redux/reducers/posts";
 
 const AddPost = () => {
@@ -129,11 +130,11 @@ const AddPost = () => {
                     {userinfo.firstname} {userinfo.lastname}
                   </span>
                 </Link>
-                <span className="date">{Date()}</span>
+                <span className="date">{format(Date())}</span>
               </div>
             </div>
           </div>
-          <div className="contant1" style={{ marginTop: "-10px" }}>
+          <div className="contant1" style={{  }}>
             <section>
               <MDBContainer>
                 <MDBRow className="justify-content-center align-items-center">
