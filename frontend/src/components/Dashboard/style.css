@@ -102,14 +102,6 @@
   align-items: center;
   font-size: 14px;
 }
-.widget .left .percentage.positive,
-.widget .right .percentage.positive {
-  color: green;
-}
-.widget .left .percentage.negative,
-.widget .right .percentage.negative {
-  color: red;
-}
 
 .featured {
   flex: 2;
@@ -123,7 +115,7 @@
   justify-content: space-between;
   color: gray;
 }
-.featured .f-top .title {
+.featured .f-top .f-title {
   font-size: 16px;
   font-weight: 500;
 }
@@ -139,41 +131,24 @@
   width: 100px;
   height: 100px;
 }
-.featured .f-bottom .title {
+.featured .f-bottom .f-title {
   font-weight: 500;
   color: gray;
 }
-.featured .f-bottom .amount {
+.f-amount {
   font-size: 30px;
 }
-.featured .f-bottom .desc {
-  font-weight: 300;
-  font-size: 12px;
-  color: gray;
-  text-align: center;
-}
-.featured .f-bottom .summary {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.featured .f-bottom .summary .item {
-  text-align: center;
-}
-.featured .f-bottom .summary .item .itemTitle {
-  font-size: 14px;
+
+.chart {
+  flex: 4;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  padding: 10px;
   color: gray;
 }
-.featured .f-bottom .summary .item .itemResult {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  font-size: 14px;
+.chart .c-title {
+  margin-bottom: 20px;
 }
-.featured .f-bottom .summary .item .itemResult.positive {
-  color: rgb(46, 159, 46);
-}
-.featured .f-bottom .summary .item .itemResult.negative {
-  color: red;
+.chart .chartGrid {
+  stroke: #e4e1e1;
 }

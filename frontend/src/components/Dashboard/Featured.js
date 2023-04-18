@@ -29,13 +29,13 @@ const Featured = () => {
     }, 0);
   };
 
-  if (detail.length > 0) {
+  if (detail && detail.length>0) {
     avg(detail);
   }
   return (
     <div className="featured">
       <div className="f-top">
-        <h1 className="title">Post Precentege</h1>
+        <h1 className="f-title">Post Precentege</h1>
         <MoreVertIcon fontSize="small" />
       </div>
       <div className="f-bottom">
@@ -46,8 +46,8 @@ const Featured = () => {
             strokeWidth={5}
           />
         </div>
-        <p className="title">Average posts per day</p>
-        <p className="amount">{val}</p>
+        <p className="f-title">Average posts per day</p>
+        <p className="f-amount">{val}</p>
       </div>
     </div>
   );
