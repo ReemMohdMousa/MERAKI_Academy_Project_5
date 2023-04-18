@@ -14,7 +14,6 @@ const Widget = ({ type }) => {
 
   let data;
 
-  const diff = 20;
   switch (type) {
     case "user":
       axios
@@ -23,7 +22,7 @@ const Widget = ({ type }) => {
           setUserNo(result.data[0].count);
         })
         .catch((error) => {
-          console.log(error);
+        //   console.log(error);
         });
 
       data = {
@@ -47,7 +46,7 @@ const Widget = ({ type }) => {
           setPostNo(result.data[0].count);
         })
         .catch((error) => {
-          console.log(error);
+        //   console.log(error);
         });
       data = {
         title: "Posts",
@@ -70,7 +69,7 @@ const Widget = ({ type }) => {
           setLikeNo(result.data[0].count);
         })
         .catch((error) => {
-          console.log(error);
+        //   console.log(error);
         });
       data = {
         title: "Likes",
@@ -94,18 +93,17 @@ const Widget = ({ type }) => {
           setNewUserNo(result.data.count);
         })
         .catch((error) => {
-          console.log(error);
+        //   console.log(error);
         });
       data = {
         title: "New Registered Users",
         amount: newuserNo,
-        link: "View all new users",
         icon: (
           <GroupAddIcon
             className="icon"
             style={{
               color: "white",
-              backgroundColor: "blue",
+              backgroundColor: "rgb(92, 186, 92)",
             }}
           />
         ),

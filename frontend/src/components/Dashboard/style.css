@@ -61,7 +61,6 @@
   display: flex;
   align-items: center;
   margin: 1rem;
-
 }
 
 .widget {
@@ -111,7 +110,6 @@
 .widget .right .percentage.negative {
   color: red;
 }
-
 
 .featured {
   flex: 2;
@@ -174,10 +172,8 @@
   font-size: 14px;
 }
 .featured .f-bottom .summary .item .itemResult.positive {
-  color: rgb(58, 170, 58);
+  color: rgb(46, 159, 46);
 }
 .featured .f-bottom .summary .item .itemResult.negative {
   color: red;
 }
-
- 

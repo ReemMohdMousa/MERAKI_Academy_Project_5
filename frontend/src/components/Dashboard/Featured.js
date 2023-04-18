@@ -1,49 +1,53 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import "./style.css";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
+
 const Featured = () => {
+  const [detail, setdetail] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/count/newpost`)
+      .then((result) => {
+        console.log(result.data);
+        setdetail(result.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  let val;
+  const avg = (arr) => {
+    val = arr.reduce((acc, elem) => {
+      return (acc + elem.count) / arr.length;
+    }, 0);
+  };
+
+  if (detail.length > 0) {
+    avg(detail);
+  }
   return (
     <div className="featured">
       <div className="f-top">
-        <h1 className="title">Total Revenue</h1>
+        <h1 className="title">Post Precentege</h1>
         <MoreVertIcon fontSize="small" />
       </div>
       <div className="f-bottom">
         <div className="featuredChart">
-          <CircularProgressbar value={70} text={"70%"} strokeWidth={5} />
+          <CircularProgressbar
+            value={val * 100}
+            text={val * 100}
+            strokeWidth={5}
+          />
         </div>
-        <p className="title">Total sales made today</p>
-        <p className="amount">$420</p>
-        <p className="desc">
-          Previous transactions processing. Last payments may not be included.
-        </p>
-        <div className="summary">
-          <div className="item">
-            <div className="itemTitle">Target</div>
-            <div className="itemResult negative">
-              <KeyboardArrowDownIcon fontSize="small" />
-              <div className="resultAmount">$12.4k</div>
-            </div>
-          </div>
-          <div className="item">
-            <div className="itemTitle">Last Week</div>
-            <div className="itemResult positive">
-              <KeyboardArrowUpOutlinedIcon fontSize="small" />
-              <div className="resultAmount">$12.4k</div>
-            </div>
-          </div>
-          <div className="item">
-            <div className="itemTitle">Last Month</div>
-            <div className="itemResult positive">
-              <KeyboardArrowUpOutlinedIcon fontSize="small" />
-              <div className="resultAmount">$12.4k</div>
-            </div>
-          </div>
-        </div>
+        <p className="title">Average posts per day</p>
+        <p className="amount">{val}</p>
       </div>
     </div>
   );
