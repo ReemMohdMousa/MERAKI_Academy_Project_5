@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Home from "./components/Home/Home";
 import Search from "./components/Search";
 import NavFriendReq from "./components/NavBar/NavFriendReq";
+import Dashboard from "./components/Dashboard";
 
 const clientId =
   "780019151998-ei1sl1vhch8egbkuff1ibrshuo1h68nd.apps.googleusercontent.com";
@@ -38,7 +39,10 @@ function App() {
           <Route path={"/register"} element={<Register />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/home/:user" element={<Search />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+
         </Routes>
+
       </div>
     </GoogleOAuthProvider>
   );

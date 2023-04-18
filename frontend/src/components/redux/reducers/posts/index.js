@@ -36,7 +36,6 @@ export const posts = createSlice({
           state.posts.splice(idx, 1);
         }
       });
-      
     },
     setComments: (state, action) => {
       // state.articles = action.payload.comments;
@@ -57,28 +56,22 @@ export const posts = createSlice({
       });
     },
 
-
     removeComment: (state, action) => {
       console.log(action.payload);
       state.posts.forEach((elem, idx) => {
         console.log(elem);
         let found = state.posts.find((elem) => {
-       return elem.post_id === action.payload.post_id;
+          return elem.post_id === action.payload.post_id;
         });
-        console.log("found",found)
+        console.log("found", found);
         if (elem.comment_id === action.payload) {
           state.posts.comments.splice(idx, 1);
         }
       });
     },
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> ddc7af66d88ab6b9ba05a8e6385df0ee549daa7e
     setLike: (state, action) => {
       state.likes = [action.payload];
-
     },
 
     addLike: (state, action) => {

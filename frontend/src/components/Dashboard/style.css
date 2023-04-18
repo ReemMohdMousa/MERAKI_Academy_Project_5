@@ -1,0 +1,70 @@
+.dashboard {
+  display: flex;
+}
+.dashboard .homeContainer {
+  flex: 6;
+}
+.dashboard .homeContainer .widgets,
+.dashboard .homeContainer .charts {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+}
+.dashboard .homeContainer .charts {
+  padding: 5px 20px;
+}
+.dashboard .homeContainer .listContainer {
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  padding: 20px;
+  margin: 20px;
+}
+.hodashboardme .homeContainer .listContainer .listTitle {
+  font-weight: 500;
+  color: gray;
+  margin-bottom: 15px;
+}
+
+.sidebar {
+  flex: 1;
+  border-right: 0.5px solid #e6e3e3;
+  min-height: 100vh;
+  background-color: white;
+}
+.sidebar .top {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar .top .logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #6439ff;
+}
+.sidebar hr {
+  height: 0;
+  border: 0.5px solid #e6e3e3;
+}
+ 
+.center {
+  margin: 3rem;
+  cursor: pointer;
+  align-items: center;
+}
+.bottom:hover {
+  background-color: gray;
+  color: white;
+
+}
+ 
+.sidebar .center  {
+  justify-content: center;
+
+}
+.sidebar .bottom {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+ 

@@ -86,7 +86,7 @@ const AllFriends = ({ id }) => {
           <Modal.Title>Friends</Modal.Title>
         </Modal.Header>
         <Modal.Body className="friend-list-body">
-          {friends.length == 0
+          {friends && friends.length == 0
             ? "No Friends"
             : friends &&
               friends.map((element, i) => {
