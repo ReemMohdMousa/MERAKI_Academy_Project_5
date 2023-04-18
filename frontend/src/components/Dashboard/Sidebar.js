@@ -17,31 +17,35 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="top">
-        <span className="logo">Admin Panel</span>
+        <span className="logo">Menu</span>
       </div>
 
       <div className="center">
-        <img
-          src={
-            userinfo.avatar
-              ? userinfo.avatar
-              : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-          }
-          alt=""
-          style={{ width: "100px", height: "100px", borderRadius: "50%" }}
-          onClick={() => {
-            navigate(`/profile/${userId}`);
-          }}
-        ></img>
-        <h5
-          onClick={() => {
-            navigate(`/profile/${userId}`);
-          }}
-        >
-          {userinfo.firstname}
-          {"  "}
-          {userinfo.lastname}
-        </h5>
+        <div className="widget">
+          <img
+            src={
+              userinfo.avatar
+                ? userinfo.avatar
+                : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+            }
+            alt=""
+            style={{ width: "80px", height: "80px", borderRadius: "50%" }}
+            onClick={() => {
+              navigate(`/profile/${userId}`);
+            }}
+          ></img>
+
+          <span
+            onClick={() => {
+              navigate(`/profile/${userId}`);
+            }}
+            style={{marginTop:"1.8rem",marginRight:".5rem" }}
+          >
+            {userinfo.firstname}
+            {"  "}
+            {userinfo.lastname}
+          </span>
+        </div>
       </div>
 
       <div className="bottom">hgjk</div>
