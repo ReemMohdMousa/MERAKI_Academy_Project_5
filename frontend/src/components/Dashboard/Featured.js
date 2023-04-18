@@ -8,18 +8,16 @@ import "react-circular-progressbar/dist/styles.css";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 let val;
 const Featured = () => {
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/count/newpost`)
-      .then((result) => {
-        return (val = result.data.reduce((acc, elem) => {
-          return (acc + elem.count) / result.data.length;
-        }, 0));
-      })
-      .catch((error) => {
-        // console.log(error);
-      });
-  }, []);
+  axios
+    .get(`http://localhost:5000/count/newpost`)
+    .then((result) => {
+      return (val = result.data.reduce((acc, elem) => {
+        return (acc + elem.count) / result.data.length;
+      }, 0));
+    })
+    .catch((error) => {
+      // console.log(error);
+    });
 
   return (
     <div className="featured">

@@ -12,7 +12,7 @@ import {
 } from "recharts";
 var data;
 const Chart = ({ aspect, title }) => {
-    useEffect(() => {
+   
         axios
           .get(`http://localhost:5000/count/num`)
           .then((result) => {
@@ -23,7 +23,7 @@ const Chart = ({ aspect, title }) => {
           .catch((error) => {
             console.log(error);
           });
-      }, []);
+ 
      
        
   return (
@@ -33,7 +33,7 @@ const Chart = ({ aspect, title }) => {
         <AreaChart
           width={730}
           height={250}
-          data={data}
+          data={data && data.length>0 && data}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
           <defs>
