@@ -32,7 +32,6 @@ pool.connect((err, pool) => {
 });
 
 
-
 //strictQuery
 mongoose.set("strictQuery", false);
 
