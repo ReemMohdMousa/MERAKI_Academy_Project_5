@@ -18,6 +18,8 @@ const friendsRouter = require("./routes/frineds");
 const likesRouter = require("./routes/likes");
 const searchRouter = require("./routes/search");
 const homeRouter = require("./routes/home");
+const conversationRouter = require("./routes/conversation");
+const messageRouter = require("./routes/message");
 
 app.use(cors());
 app.use(express.json());
@@ -32,6 +34,8 @@ app.use("/friends", friendsRouter);
 app.use("/likes", likesRouter);
 app.use("/search", searchRouter);
 app.use("/home", homeRouter);
+app.use("/conversation", conversationRouter);
+app.user("/message", messageRouter);
 
 // Handles any other endpoints [unassigned - endpoints]
 app.use("*", (req, res) => res.status(404).json("NO content at this path"));
