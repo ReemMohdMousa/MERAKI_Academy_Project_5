@@ -3,11 +3,14 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import FeedIcon from "@mui/icons-material/Feed";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 const Widget = ({ type }) => {
   const [userNo, setUserNo] = useState();
   const [postNo, setPostNo] = useState();
   const [likeNo, setLikeNo] = useState();
+  const [newuserNo, setNewUserNo] = useState();
+  const [newuser, setNewuser] = useState();
 
   let data;
 
@@ -84,21 +87,21 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-      case "likes":
+    case "newUser":
       axios
-        .get(`http://localhost:5000/count/like`)
+        .get(`http://localhost:5000/count/newuser/details`)
         .then((result) => {
-          setLikeNo(result.data[0].count);
+          setNewUserNo(result.data.count);
         })
         .catch((error) => {
           console.log(error);
         });
       data = {
-        title: "Likes",
-        amount: likeNo,
-
+        title: "New Registered Users",
+        amount: newuserNo,
+        link: "View all new users",
         icon: (
-          <ThumbUpAltIcon
+          <GroupAddIcon
             className="icon"
             style={{
               color: "white",
@@ -114,7 +117,16 @@ const Widget = ({ type }) => {
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">{data.amount}</span>
-        <span className="link">{data.link}</span>
+        <span
+          className="link1"
+          style={{
+            textDecoration: "none",
+            fontSize: "12px",
+            marginLeft: "1rem",
+          }}
+        >
+          {data.link}
+        </span>
       </div>
       <div className="right">{data.icon}</div>
     </div>

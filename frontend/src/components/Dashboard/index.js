@@ -2,6 +2,7 @@ import React from "react";
 import Sidebar from "./Sidebar";
 import "./style.css";
 import Widget from "./Widget";
+import Featured from "./Featured";
 
 const Dashboard = () => {
   return (
@@ -12,7 +13,11 @@ const Dashboard = () => {
           <Widget type="user" />
            <Widget type="posts" />
          <Widget type="likes" />
-           {/*<Widget type="balance" /> */}
+           <Widget type="newUser" /> 
+        </div>
+        <div className="charts">
+          <Featured />
+          {/* <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} /> */}
         </div>
       </div>
     </div>
