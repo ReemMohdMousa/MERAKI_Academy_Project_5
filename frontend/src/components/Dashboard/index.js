@@ -10,9 +10,9 @@ const Dashboard = () => {
       <div className="homeContainer">
         <div className="widgets">
           <Widget type="user" />
-          <Widget type="order" />
-          <Widget type="earning" />
-          <Widget type="balance" />
+           <Widget type="posts" />
+         <Widget type="likes" />
+           {/*<Widget type="balance" /> */}
         </div>
       </div>
     </div>
