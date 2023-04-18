@@ -10,14 +10,14 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+var data;
 const Chart = ({ aspect, title }) => {
-      const [data, setdata] = useState([])
     useEffect(() => {
         axios
           .get(`http://localhost:5000/count/num`)
           .then((result) => {
            
-             setdata(result.data)
+            data= result.data;
             
           })
           .catch((error) => {
