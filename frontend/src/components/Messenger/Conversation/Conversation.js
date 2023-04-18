@@ -44,7 +44,7 @@ const Conversation = ({ Oneconversation }) => {
     getFriendInfo();
   }, [theFriendId]);
 
-  console.log(friendInfo);
+  // console.log(friendInfo);
   return (
     <div>
       {friendInfo ? (

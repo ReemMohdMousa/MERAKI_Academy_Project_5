@@ -8,6 +8,8 @@ import axios from "axios";
 const Messenger = () => {
   //componant states
   const [conversations, setConversations] = useState([]);
+  const [theOpenedConversation, setTheOpenedConversation] = useState(null);
+  const [messages, setMessages] = useState([]);
 
   const { userinfo, token, userId } = useSelector((state) => {
     return {
@@ -32,9 +34,28 @@ const Messenger = () => {
       });
   };
 
+  //get the conversation messages
+  const getAllConversationMessages = () => {
+    theOpenedConversation &&
+      axios
+        .get(`http://localhost:5000/messages/${theOpenedConversation._id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(function (response) {
+          console.log(response.data);
+          setMessages(response.data);
+        })
+        .catch(function (error) {
+          throw error;
+        });
+  };
+
   useEffect(() => {
     getAllUserConversations();
-  }, []);
+    getAllConversationMessages();
+  }, [theOpenedConversation]);
+
+  console.log(theOpenedConversation);
 
   return (
     <>
@@ -44,7 +65,13 @@ const Messenger = () => {
             {/* <input placeholder="Search for friends" className="chatMenuInput" /> */}
             {conversations.map((element) => {
               return (
-                <div>
+                <div
+                  key={element._id}
+                  onClick={() => {
+                    // console.log(element);
+                    setTheOpenedConversation(element);
+                  }}
+                >
                   <Conversation Oneconversation={element} />
                 </div>
               );
@@ -54,25 +81,31 @@ const Messenger = () => {
         <div className="chatBox">
           <div className="chatBoxWrapper">
             <>
-              <div className="chatBoxTop">
-                <Messages />
-                <Messages own={true} />
-                <Messages />
-              </div>
-              <div className="chatBoxBottom">
-                <textarea
-                  className="chatMessageInput"
-                  placeholder="write something..."
-                  // onChange={(e) => setNewMessage(e.target.value)}
-                  // value={newMessage}
-                ></textarea>
-                <button
-                  className="chatSubmitButton"
-                  // onClick={handleSubmit}
-                >
-                  Send
-                </button>
-              </div>
+              {theOpenedConversation ? (
+                <div>
+                  <div className="chatBoxTop">
+                    <Messages />
+                    <Messages own={true} />
+                    <Messages />
+                  </div>
+                  <div className="chatBoxBottom">
+                    <textarea
+                      className="chatMessageInput"
+                      placeholder="write something..."
+                      // onChange={(e) => setNewMessage(e.target.value)}
+                      // value={newMessage}
+                    ></textarea>
+                    <button
+                      className="chatSubmitButton"
+                      // onClick={handleSubmit}
+                    >
+                      Send
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                "no conversations open"
+              )}
             </>
           </div>
         </div>
