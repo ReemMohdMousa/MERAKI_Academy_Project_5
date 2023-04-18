@@ -6,19 +6,27 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
-let val;
-const Featured = () => {
-  axios
-    .get(`http://localhost:5000/count/newpost`)
-    .then((result) => {
-      return (val = result.data.reduce((acc, elem) => {
-        return (acc + elem.count) / result.data.length;
-      }, 0));
-    })
-    .catch((error) => {
-      // console.log(error);
-    });
 
+const Featured = () => {
+  const [val, setval] = useState(0);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/count/newpost`)
+      .then((result) => {
+        const value = result.data.reduce((acc, elem) => {
+          return (acc + elem.count) / result.data.length;
+        }, 0);
+        setval(value);
+      })
+      .catch((error) => {
+         console.log(error);
+      });
+  }, []);
+  if (!val) {
+    return <h1><div class="spinner-grow" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div></h1>;
+  }
   return (
     <div className="featured">
       <div className="f-top">

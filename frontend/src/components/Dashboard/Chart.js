@@ -10,30 +10,32 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-var data;
 const Chart = ({ aspect, title }) => {
-   
-        axios
-          .get(`http://localhost:5000/count/num`)
-          .then((result) => {
-           
-            data= result.data;
-            
-          })
-          .catch((error) => {
-            console.log(error);
-          });
- 
-     
-       
+  const [data, setdata] = useState(null);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/count/num`)
+      .then((result) => {
+        setdata(result.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  if (!data) {
+    return <div class="spinner-grow" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  }
+
   return (
     <div className="chart">
-        <div className="c-title">{title}</div>
+      <div className="c-title">{title}</div>
       <ResponsiveContainer width="100%" aspect={aspect}>
         <AreaChart
           width={730}
           height={250}
-          data={data && data.length>0 && data}
+          data={data}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
           <defs>
@@ -53,7 +55,7 @@ const Chart = ({ aspect, title }) => {
             fill="url(#total)"
           />
         </AreaChart>
-      </ResponsiveContainer> 
+      </ResponsiveContainer>
     </div>
   );
 };
