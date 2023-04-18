@@ -3,31 +3,63 @@ import React, { useEffect, useState } from "react";
 import "./conversation.css";
 import { useDispatch, useSelector } from "react-redux";
 
-const Conversation = () => {
-  //redux states
-  const { friends } = useSelector((state) => {
+const Conversation = ({ Oneconversation }) => {
+  const [theFriendId, setTheFriendId] = useState("");
+  const [friendInfo, setFriendInfo] = useState({});
+
+  const { userinfo, token, userId } = useSelector((state) => {
     return {
-      friends: state.friends.friends,
+      userinfo: state.auth.userinfo,
+      token: state.auth.token,
+      userId: state.auth.userId,
     };
   });
 
+  //render the friend name and picture
+  const getFriendId = () => {
+    let userFriendId = Oneconversation.members.find((element) => {
+      // console.log("*************", element);
+      return element != userId;
+    });
+    setTheFriendId(userFriendId);
+  };
+
+  const getFriendInfo = () => {
+    theFriendId &&
+      axios
+        .get(`http://localhost:5000/users/others/info/${theFriendId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(function (response) {
+          // console.log(response.data);
+          setFriendInfo(response.data.result);
+        })
+        .catch(function (error) {
+          throw error;
+        });
+  };
+
+  useEffect(() => {
+    getFriendId();
+    getFriendInfo();
+  }, []);
+
+  // console.log(friendInfo);
   return (
     <div>
-      {friends.map((element) => {
-        return (
-          <div className="conversation">
-            <img
-              className="conversationImg"
-              src={
-                element.avatar ||
-                "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-              }
-              alt=""
-            />
-            <span className="conversationName">{`${element.firstname} ${element.lastname}`}</span>
-          </div>
-        );
-      })}
+      <div className="conversation">
+        <img
+          className="conversationImg"
+          src={
+            (friendInfo && friendInfo.avatar) ||
+            "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+          }
+          alt=""
+        />
+        <span className="conversationName">{`${
+          friendInfo && friendInfo.firstname
+        } ${friendInfo.lastname}`}</span>
+      </div>
     </div>
   );
 };
