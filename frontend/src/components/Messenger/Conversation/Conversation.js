@@ -42,24 +42,28 @@ const Conversation = ({ Oneconversation }) => {
   useEffect(() => {
     getFriendId();
     getFriendInfo();
-  }, []);
+  }, [theFriendId]);
 
-  // console.log(friendInfo);
+  console.log(friendInfo);
   return (
     <div>
-      <div className="conversation">
-        <img
-          className="conversationImg"
-          src={
-            (friendInfo && friendInfo.avatar) ||
-            "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-          }
-          alt=""
-        />
-        <span className="conversationName">{`${
-          friendInfo && friendInfo.firstname
-        } ${friendInfo.lastname}`}</span>
-      </div>
+      {friendInfo ? (
+        <div className="conversation">
+          <img
+            className="conversationImg"
+            src={
+              (friendInfo && friendInfo.avatar) ||
+              "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+            }
+            alt=""
+          />
+          <span className="conversationName">{`${
+            friendInfo && friendInfo.firstname
+          } ${friendInfo.lastname}`}</span>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
