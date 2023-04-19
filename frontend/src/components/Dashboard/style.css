@@ -47,13 +47,12 @@
   border: 0.5px solid #e6e3e3;
 }
 
-
 .center {
   margin: 10px;
   cursor: pointer;
   align-items: center;
 }
-.bottom>p:hover {
+.bottom > p:hover {
   background-color: #555;
   color: white;
 }
@@ -161,10 +160,19 @@
   display: flex;
   align-items: center;
 }
-.table .cellWrapper  {
-
- 
-  margin-right: 3px;
+.table .cellWrapper {
+  margin-right: 10px;
   object-fit: cover;
 }
- 
+.table .status {
+  padding: 5px;
+  border-radius: 5px;
+}
+.table .status.active {
+  color: green;
+  background-color: rgba(0, 128, 0, 0.151);
+}
+.table .status.not{
+  color: rgba(236, 16, 16, 0.988);
+  background-color: rgba(189, 189, 3, 0.103);
+}

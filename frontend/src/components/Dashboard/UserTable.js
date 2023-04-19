@@ -18,6 +18,7 @@ const UserTable = () => {
     axios
       .get(`http://localhost:5000/count/alluser`)
       .then((result) => {
+        console.log(result.data)
         setRows(result.data);
       })
       .catch((error) => {
@@ -34,6 +35,7 @@ const UserTable = () => {
             <TableCell className="tableCell">User Name</TableCell>
             <TableCell className="tableCell">Age</TableCell>
             <TableCell className="tableCell">Email</TableCell>
+            <TableCell className="tableCell">Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -65,6 +67,12 @@ const UserTable = () => {
                 </TableCell>
                 <TableCell className="tableCell">{row.age}</TableCell>
                 <TableCell className="tableCell">{row.email}</TableCell>
+
+                
+                <TableCell className="tableCell">
+                
+                <span className={`status ${row.case}`}>{row.case=="not" ?"not active user":"active user"}</span>
+              </TableCell>
               </TableRow>
             ))}
         </TableBody>
