@@ -28,6 +28,7 @@ const Posts = ({ post,firstname,lastname }) => {
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
+     
     };
   });
 

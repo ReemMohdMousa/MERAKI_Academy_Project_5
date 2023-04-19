@@ -1,34 +1,33 @@
 const { pool } = require("../models/db");
 
 const createNewComment = async (req, res) => {
- const post_id = req.params.id;
+  const post_id = req.params.id;
   const user_id = req.token.userId;
   let firstname = "";
   let lastname = "";
-  let avatar=""
-  let receiver 
+  let avatar = "";
+  let receiver;
 
   //console.log(firstname,lastname)
   const querytofindname = `
   SELECT users.firstname,users.lastname ,users.avatar from users 
  where users.user_id =$1`;
- const result1= await pool.query(querytofindname, [user_id])
-    firstname = result1.rows[0].firstname;
-    lastname = result1.rows[0].lastname;
-    avatar= result1.rows[0].avatar;
-   
- 
+  const result1 = await pool.query(querytofindname, [user_id]);
+  firstname = result1.rows[0].firstname;
+  lastname = result1.rows[0].lastname;
+  avatar = result1.rows[0].avatar;
+
   let messagecontent = `${firstname}  ${lastname} comment in your post`;
   const queryuser = `SELECT user_id from posts where post_id=$1`;
-const result2=await  pool.query(queryuser, [post_id])
-    receiver = result2.rows[0].user_id;
-  
+  const result2 = await pool.query(queryuser, [post_id]);
+  receiver = result2.rows[0].user_id;
+
   const { content, image, video } = req.body;
 
   const query = `INSERT INTO comments (post_id, user_id, content, image, video) VALUES ($1,$2,$3,$4,$5) RETURNING *`;
   const data = [post_id, user_id, content, image, video];
   const notiquery = `INSERT INTO notifications(user_id,sender_id,content,avatar) VALUES($1,$2,$3,$4)RETURNING*`;
-  await pool.query(notiquery, [ receiver, user_id,messagecontent,avatar]);
+  await pool.query(notiquery, [receiver, user_id, messagecontent, avatar]);
   pool
     .query(query, data)
     .then((result) => {
@@ -36,9 +35,13 @@ const result2=await  pool.query(queryuser, [post_id])
         success: true,
         message: "Comment created successfully",
         result: result.rows[0],
+        firstname: firstname,
+        lastname: lastname,
+        avatar: avatar,
+        receiver: receiver,
       });
     })
-  
+
     .catch((err) => {
       res.status(404).json({
         success: false,

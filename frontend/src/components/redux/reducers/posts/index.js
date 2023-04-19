@@ -8,8 +8,12 @@ export const posts = createSlice({
     likes: [],
     homePosts: [],
     notifications:[],
+    Socket:[]
   },
   reducers: {
+    setSocket:(state,action)=>{
+      state.Socket=action.payload
+    },
     setPosts: (state, action) => {
       state.posts = action.payload;
       //   state.articles.map((elem)=>{
@@ -139,7 +143,7 @@ setNestedComments,
   updateComment,
   removeComment,
   removeLike,
-  setHomePosts,addNested,setNotifications
+  setHomePosts,addNested,setNotifications,setSocket
 } = posts.actions;
 
 export default posts.reducer;

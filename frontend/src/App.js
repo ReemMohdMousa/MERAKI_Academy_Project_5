@@ -1,4 +1,5 @@
 import "./App.css";
+import react, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Profile from "./components/Profile/index";
 
@@ -10,18 +11,27 @@ import { useDispatch, useSelector } from "react-redux";
 import Home from "./components/Home/Home";
 import Search from "./components/Search";
 import NavFriendReq from "./components/NavBar/NavFriendReq";
-
-const clientId =
-  "780019151998-ei1sl1vhch8egbkuff1ibrshuo1h68nd.apps.googleusercontent.com";
-
+import { io } from "socket.io-client";
+import { setSocket } from "../src/components/redux/reducers/posts";
+const ENDPOINT = "http://localhost:5000";
 function App() {
+  const dispatch = useDispatch();
+
   //redux states
-  const { token, userId, isLoggedIn } = useSelector((state) => {
+  const { token, userId, isLoggedIn, Socket } = useSelector((state) => {
     //return object contains the redux states
     return {
       userId: state.auth.userId,
+      Socket: state.posts.Socket,
     };
   });
+
+  useEffect(() => {
+    dispatch(setSocket(io.connect(ENDPOINT)));
+    Socket && Socket.emit("NEW_USER",userId)
+  }, []);
+  const clientId =
+    "780019151998-ei1sl1vhch8egbkuff1ibrshuo1h68nd.apps.googleusercontent.com";
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
