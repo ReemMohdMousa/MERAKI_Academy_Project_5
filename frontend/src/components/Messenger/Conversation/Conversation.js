@@ -38,7 +38,7 @@ const Conversation = ({ Oneconversation }) => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(function (response) {
-          // console.log(response.data);
+          // console.log("***********************************", response.data);
           dispatch(setConversationFriendInfo(response.data.result));
           setFriendInfo(response.data.result);
         })
@@ -52,7 +52,9 @@ const Conversation = ({ Oneconversation }) => {
     getFriendInfo();
   }, [theFriendId]);
 
-  console.log(conversationFriendInfo);
+  // console.log(conversationFriendInfo);
+  console.log(theFriendId);
+
   return (
     <div>
       {friendInfo ? (

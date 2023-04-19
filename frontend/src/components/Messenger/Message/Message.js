@@ -18,7 +18,6 @@ const Messages = ({ mine, message }) => {
     };
   });
 
-  console.log(friendInfo);
 
   return (
     <div>

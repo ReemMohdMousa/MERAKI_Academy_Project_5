@@ -11,6 +11,7 @@ const Messenger = () => {
   const [conversations, setConversations] = useState([]);
   const [theOpenedConversation, setTheOpenedConversation] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [newWrittenMessage, setNewWrittenMessage] = useState("");
 
   const { userinfo, token, userId, conversationFriendInfo } = useSelector(
     (state) => {
@@ -72,6 +73,30 @@ const Messenger = () => {
   //   }
   // };
 
+  const SendNewMsg = () => {
+    axios
+      .post(
+        `http://localhost:5000/messages`,
+        {
+          text: newWrittenMessage,
+          sender: userId,
+          conversationId: theOpenedConversation._id,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then(function (response) {
+        console.log(response.data);
+        messages.push(response.data);
+        setMessages(messages);
+        setNewWrittenMessage("");
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  };
+
   useEffect(() => {
     getAllUserConversations();
     getAllConversationMessages();
@@ -102,14 +127,14 @@ const Messenger = () => {
         </div>
         <div className="chatBox">
           <div className="chatBoxWrapper">
-            <div>
+            {/* <div>
               <h5>
                 {theOpenedConversation &&
                   conversationFriendInfo.firstname +
                     " " +
                     conversationFriendInfo.lastname}
               </h5>
-            </div>
+            </div> */}
             <>
               {theOpenedConversation ? (
                 <div>
@@ -126,16 +151,17 @@ const Messenger = () => {
                     })}
                   </div>
                   <div className="chatBoxBottom">
-                    <textarea
+                    <input
                       className="chatMessageInput"
                       placeholder="write something..."
-                      // onChange={(e) => setNewMessage(e.target.value)}
+                      onChange={(e) => {
+                        // console.log(e.target.value);
+                        setNewWrittenMessage(e.target.value);
+                      }}
+
                       // value={newMessage}
-                    ></textarea>
-                    <button
-                      className="chatSubmitButton"
-                      // onClick={handleSubmit}
-                    >
+                    ></input>
+                    <button className="chatSubmitButton" onClick={SendNewMsg}>
                       Send
                     </button>
                   </div>
