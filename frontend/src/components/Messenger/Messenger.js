@@ -5,6 +5,11 @@ import Message from "./Message/Message";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setFriendInfo } from "../redux/reducers/Messenger/index";
+import { io } from "socket.io-client";
+const ENDPOINT = "http://localhost:5000";
+
+//connect to the backend server
+// const socket = io.connect(ENDPOINT);
 
 const Messenger = () => {
   //componant states
@@ -12,6 +17,7 @@ const Messenger = () => {
   const [theOpenedConversation, setTheOpenedConversation] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newWrittenMessage, setNewWrittenMessage] = useState("");
+  const [socket, setSocket] = useState(null);
 
   const { userinfo, token, userId, conversationFriendInfo } = useSelector(
     (state) => {
@@ -102,7 +108,17 @@ const Messenger = () => {
     getAllConversationMessages();
   }, [theOpenedConversation]);
 
-  console.log(theOpenedConversation);
+  // console.log(theOpenedConversation);
+
+  useEffect(() => {
+    setSocket(io(ENDPOINT));
+  }, []);
+
+  useEffect(() => {
+    socket?.on("welcome", (msg) => {
+      console.log(msg);
+    });
+  }, [socket]);
 
   return (
     <>

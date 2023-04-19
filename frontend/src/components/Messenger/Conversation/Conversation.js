@@ -53,7 +53,7 @@ const Conversation = ({ Oneconversation }) => {
   }, [theFriendId]);
 
   // console.log(conversationFriendInfo);
-  console.log(theFriendId);
+  // console.log(theFriendId);
 
   return (
     <div>
