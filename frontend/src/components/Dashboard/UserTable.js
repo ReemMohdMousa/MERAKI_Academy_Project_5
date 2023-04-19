@@ -9,6 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
+import Sidebar from "./Sidebar";
 
 const UserTable = () => {
   const navigate = useNavigate();
@@ -27,6 +28,9 @@ const UserTable = () => {
   }, []);
 
   return (
+    <div className="dashboard">
+          <Sidebar />
+     
     <TableContainer component={Paper} className="table">
       <Table style={{ width: "70%" }} aria-label="simple table">
         <TableHead>
@@ -78,6 +82,7 @@ const UserTable = () => {
         </TableBody>
       </Table>
     </TableContainer>
+    </div>
   );
 };
 
