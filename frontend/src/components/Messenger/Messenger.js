@@ -30,6 +30,11 @@ const Messenger = () => {
     }
   );
 
+  //connect to the backend server
+  useEffect(() => {
+    setSocket(io(ENDPOINT));
+  }, []);
+
   //get all user's conversations
   const getAllUserConversations = () => {
     axios
@@ -53,7 +58,7 @@ const Messenger = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(function (response) {
-          console.log(response.data);
+          // console.log(response.data);
           setMessages(response.data);
         })
         .catch(function (error) {
@@ -108,17 +113,22 @@ const Messenger = () => {
     getAllConversationMessages();
   }, [theOpenedConversation]);
 
+  useEffect(() => {
+    socket?.emit("ADD_USER", userId);
+    socket?.on("GET_USERS", (users) => {
+      console.log(users);
+    });
+  }, [userId]);
+
   // console.log(theOpenedConversation);
 
-  useEffect(() => {
-    setSocket(io(ENDPOINT));
-  }, []);
+  // useEffect(() => {
+  //   socket?.on("welcome", (msg) => {
+  //     console.log(msg);
+  //   });
+  // }, [socket]);
 
-  useEffect(() => {
-    socket?.on("welcome", (msg) => {
-      console.log(msg);
-    });
-  }, [socket]);
+  // // console.log(socket);
 
   return (
     <>
