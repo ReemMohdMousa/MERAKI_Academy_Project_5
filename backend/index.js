@@ -94,6 +94,13 @@ io.on("connection", (socket) => {
     console.log(users);
   });
 
+  //send messages
+  socket.on("SEND_MESSAGE", ({ sender_id, receiver_id, text }) => {
+    
+
+
+  });
+
   socket.on("DISCONNECT", () => {
     console.log("user left");
     removeUser(socket.id);
