@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./messenger.css";
 import Conversation from "./Conversation/Conversation";
-import Messages from "./Messages/Messages";
+import Message from "./Message/Message";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
@@ -84,9 +84,16 @@ const Messenger = () => {
               {theOpenedConversation ? (
                 <div>
                   <div className="chatBoxTop">
-                    <Messages />
-                    <Messages own={true} />
-                    <Messages />
+                    {messages.map((element) => {
+                      return (
+                        <div>
+                          <Message
+                            message={element}
+                            mine={element.sender == userId ? true : false}
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                   <div className="chatBoxBottom">
                     <textarea
