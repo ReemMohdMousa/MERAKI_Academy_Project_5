@@ -12,6 +12,7 @@ const Conversation = ({ Oneconversation }) => {
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
+      friendInfo: state.messenger.friendInfo,
     };
   });
 
@@ -32,6 +33,7 @@ const Conversation = ({ Oneconversation }) => {
         })
         .then(function (response) {
           // console.log(response.data);
+          // dispatch(setFriendInfo(response.data.result));
           setFriendInfo(response.data.result);
         })
         .catch(function (error) {

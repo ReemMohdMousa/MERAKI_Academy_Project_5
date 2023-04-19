@@ -2,16 +2,21 @@ import React, { useState, useEffect } from "react";
 import "./message.css";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { setFriendInfo } from "../../redux/reducers/Messenger/index";
 
 const Messages = ({ mine, message }) => {
   // console.log("************", message);
-  const [friendInfo, setFriendInfo] = useState(null);
+  // const [friendInfo, setFriendInfo] = useState(null);
 
-  const { userinfo, token, userId } = useSelector((state) => {
+  //dispatch
+  const dispatch = useDispatch();
+
+  const { userinfo, token, userId, friendInfo } = useSelector((state) => {
     return {
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
+      friendInfo: state.messenger.friendInfo,
     };
   });
 
@@ -23,7 +28,9 @@ const Messages = ({ mine, message }) => {
         })
         .then(function (response) {
           console.log(response.data);
-          setFriendInfo(response.data.result);
+          dispatch(setFriendInfo(response.data.result));
+
+          // setFriendInfo(response.data.result);
         })
         .catch(function (error) {
           throw error;
@@ -39,16 +46,13 @@ const Messages = ({ mine, message }) => {
 
   return (
     <div>
-      {/* <div>
-        <h5>{friendInfo && friendInfo.firstname + " " +friendInfo.lastname}</h5>
-      </div> */}
       <div className={mine ? "my message" : "message"}>
         <div className="messageTop">
           <img
             className="messageImg"
             src={
               mine
-                ? userinfo.avatar
+                ? userinfo
                   ? userinfo.avatar
                   : friendInfo
                   ? friendInfo.avatar

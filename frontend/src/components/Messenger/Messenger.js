@@ -11,11 +11,12 @@ const Messenger = () => {
   const [theOpenedConversation, setTheOpenedConversation] = useState(null);
   const [messages, setMessages] = useState([]);
 
-  const { userinfo, token, userId } = useSelector((state) => {
+  const { userinfo, token, userId, friendInfo } = useSelector((state) => {
     return {
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
+      friendInfo: state.messenger.friendInfo,
     };
   });
 
@@ -80,6 +81,11 @@ const Messenger = () => {
         </div>
         <div className="chatBox">
           <div className="chatBoxWrapper">
+            <div>
+              <h5>
+                {/* {friendInfo && friendInfo.firstname + " " + friendInfo.lastname} */}
+              </h5>
+            </div>
             <>
               {theOpenedConversation ? (
                 <div>
