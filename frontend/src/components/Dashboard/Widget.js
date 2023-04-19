@@ -96,7 +96,7 @@ const Widget = ({ type }) => {
         //   console.log(error);
         });
       data = {
-        title: "New Registered Users",
+        title: "New registered users",
         amount: newuserNo,
         icon: (
           <GroupAddIcon

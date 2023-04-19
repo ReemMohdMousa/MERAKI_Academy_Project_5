@@ -12,13 +12,13 @@ const Dashboard = () => {
       <div className="homeContainer">
         <div className="widgets">
           <Widget type="user" />
-           <Widget type="posts" />
-         <Widget type="likes" />
-           <Widget type="newUser" /> 
+          <Widget type="posts" />
+          <Widget type="likes" />
+          <Widget type="newUser" />
         </div>
         <div className="charts">
           <Featured />
-          <Chart title="Posts per hour" aspect={2 / 1} />  
+          <Chart title="Posts per hour" aspect={2 / 1} />
         </div>
       </div>
     </div>

@@ -19,7 +19,7 @@ const Featured = () => {
         setval(value);
       })
       .catch((error) => {
-         console.log(error);
+        //  console.log(error);
       });
   }, []);
   if (!val) {

@@ -11,32 +11,40 @@ import {
   ResponsiveContainer,
 } from "recharts";
 const Chart = ({ aspect, title }) => {
-  const [data, setdata] = useState(null);
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/count/num`)
-      .then((result) => {
-        setdata(result.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const [data, setdata] = useState([]);
+ 
+    const get = async () => {
+      try {
+        const result = await axios.get(`http://localhost:5000/count/num`);
+        if (result.data) {
+          console.log(result.data)
+          setdata(result.data);
+        } else throw Error;
+      } catch (error) {
+      console.log(error)
+      }
+    };
+    useEffect(() => {
+    get()
   }, []);
-  if (!data) {
-    return <div class="spinner-grow" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
+  if (!data && Array.isArray(data)) {
+    return (
+      <div class="spinner-grow" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    );
   }
 
   return (
     <div className="chart">
       <div className="c-title">{title}</div>
-      <ResponsiveContainer width="100%" aspect={aspect}>
+      <ResponsiveContainer width="90%" aspect={aspect}>
         <AreaChart
-          width={730}
+          width={500}
           height={250}
-          data={data}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          data={data.length > 0 && data.slice && data}
+          style={{ padding: "15px" }}
+          margin={{ top: 10, right: 10, left: 50, bottom: 0 }}
         >
           <defs>
             <linearGradient id="total" x1="0" y1="0" x2="0" y2="1">

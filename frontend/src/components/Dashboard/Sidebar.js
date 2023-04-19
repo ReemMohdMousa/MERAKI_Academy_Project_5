@@ -48,7 +48,12 @@ const Sidebar = () => {
         </div>
       </div>
 
-      <div className="bottom">hgjk</div>
+      <div className="bottom">
+
+
+
+        
+      </div>
     </div>
   );
 };
