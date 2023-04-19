@@ -3,18 +3,24 @@ import React, { useEffect, useState } from "react";
 import "./conversation.css";
 import { useDispatch, useSelector } from "react-redux";
 
+import { setConversationFriendInfo } from "../../redux/reducers/Messenger/index";
+
 const Conversation = ({ Oneconversation }) => {
   const [theFriendId, setTheFriendId] = useState("");
   const [friendInfo, setFriendInfo] = useState({});
 
-  const { userinfo, token, userId } = useSelector((state) => {
-    return {
-      userinfo: state.auth.userinfo,
-      token: state.auth.token,
-      userId: state.auth.userId,
-      friendInfo: state.messenger.friendInfo,
-    };
-  });
+  const { userinfo, token, userId, conversationFriendInfo } = useSelector(
+    (state) => {
+      return {
+        userinfo: state.auth.userinfo,
+        token: state.auth.token,
+        userId: state.auth.userId,
+        conversationFriendInfo: state.messenger.conversationFriendInfo,
+      };
+    }
+  );
+
+  const dispatch = useDispatch();
 
   //render the friend name and picture
   const getFriendId = () => {
@@ -33,7 +39,7 @@ const Conversation = ({ Oneconversation }) => {
         })
         .then(function (response) {
           // console.log(response.data);
-          // dispatch(setFriendInfo(response.data.result));
+          dispatch(setConversationFriendInfo(response.data.result));
           setFriendInfo(response.data.result);
         })
         .catch(function (error) {
@@ -46,7 +52,7 @@ const Conversation = ({ Oneconversation }) => {
     getFriendInfo();
   }, [theFriendId]);
 
-  // console.log(friendInfo);
+  console.log(conversationFriendInfo);
   return (
     <div>
       {friendInfo ? (

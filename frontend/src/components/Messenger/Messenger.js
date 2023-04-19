@@ -4,6 +4,7 @@ import Conversation from "./Conversation/Conversation";
 import Message from "./Message/Message";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { setFriendInfo } from "../redux/reducers/Messenger/index";
 
 const Messenger = () => {
   //componant states
@@ -11,14 +12,16 @@ const Messenger = () => {
   const [theOpenedConversation, setTheOpenedConversation] = useState(null);
   const [messages, setMessages] = useState([]);
 
-  const { userinfo, token, userId, friendInfo } = useSelector((state) => {
-    return {
-      userinfo: state.auth.userinfo,
-      token: state.auth.token,
-      userId: state.auth.userId,
-      friendInfo: state.messenger.friendInfo,
-    };
-  });
+  const { userinfo, token, userId, conversationFriendInfo } = useSelector(
+    (state) => {
+      return {
+        userinfo: state.auth.userinfo,
+        token: state.auth.token,
+        userId: state.auth.userId,
+        conversationFriendInfo: state.messenger.conversationFriendInfo,
+      };
+    }
+  );
 
   //get all user's conversations
   const getAllUserConversations = () => {
@@ -50,6 +53,24 @@ const Messenger = () => {
           throw error;
         });
   };
+
+  // const getFriendInfo = () => {
+  //   if (message.sender != userId) {
+  //     axios
+  //       .get(`http://localhost:5000/users/others/info/${message.sender}`, {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       })
+  //       .then(function (response) {
+  //         console.log(response.data);
+  //         // dispatch(setFriendInfo(response.data.result));
+
+  //         setFriendInfo(response.data.result);
+  //       })
+  //       .catch(function (error) {
+  //         throw error;
+  //       });
+  //   }
+  // };
 
   useEffect(() => {
     getAllUserConversations();
@@ -83,7 +104,10 @@ const Messenger = () => {
           <div className="chatBoxWrapper">
             <div>
               <h5>
-                {/* {friendInfo && friendInfo.firstname + " " + friendInfo.lastname} */}
+                {theOpenedConversation &&
+                  conversationFriendInfo.firstname +
+                    " " +
+                    conversationFriendInfo.lastname}
               </h5>
             </div>
             <>

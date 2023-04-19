@@ -4,14 +4,14 @@ export const messenger = createSlice({
   name: "messenger",
 
   initialState: {
-    friendInfo: null,
+    conversationFriendInfo: null,
   },
   reducers: {
-    setFriendInfo: (state, action) => {
-      state.friendInfo = action.payload;
+    setConversationFriendInfo: (state, action) => {
+      state.conversationFriendInfo = action.payload;
     },
   },
 });
-export const { setFriendInfo } = messenger.actions;
+export const { setConversationFriendInfo } = messenger.actions;
 
 export default messenger.reducer;

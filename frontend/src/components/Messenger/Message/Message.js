@@ -2,45 +2,21 @@ import React, { useState, useEffect } from "react";
 import "./message.css";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { setFriendInfo } from "../../redux/reducers/Messenger/index";
 
 const Messages = ({ mine, message }) => {
   // console.log("************", message);
-  // const [friendInfo, setFriendInfo] = useState(null);
+  const [friendInfo, setFriendInfo] = useState(null);
 
   //dispatch
   const dispatch = useDispatch();
 
-  const { userinfo, token, userId, friendInfo } = useSelector((state) => {
+  const { userinfo, token, userId } = useSelector((state) => {
     return {
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
-      friendInfo: state.messenger.friendInfo,
     };
   });
-
-  const getFriendInfo = () => {
-    if (message.sender != userId) {
-      axios
-        .get(`http://localhost:5000/users/others/info/${message.sender}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then(function (response) {
-          console.log(response.data);
-          dispatch(setFriendInfo(response.data.result));
-
-          // setFriendInfo(response.data.result);
-        })
-        .catch(function (error) {
-          throw error;
-        });
-    }
-  };
-
-  useEffect(() => {
-    getFriendInfo();
-  }, [message]);
 
   console.log(friendInfo);
 
