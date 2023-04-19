@@ -10,21 +10,20 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 
-const UserTable = () => {
+const NewUsers = () => {
   const navigate = useNavigate();
 
   const [rows, setRows] = useState();
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/count/alluser`)
+      .get(`http://localhost:5000/count/newuser/details`)
       .then((result) => {
-        setRows(result.data);
+        setRows(result.data.detail);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-
   return (
     <TableContainer component={Paper} className="table">
       <Table style={{ width: "70%" }} aria-label="simple table">
@@ -73,4 +72,4 @@ const UserTable = () => {
   );
 };
 
-export default UserTable;
+export default NewUsers;

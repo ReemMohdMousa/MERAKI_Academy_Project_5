@@ -52,7 +52,7 @@ const Sidebar = () => {
 
       <p onClick={()=>{navigate(`/dashboard/users`)}}>Users</p>
       
-      <p onClick={()=>{navigate(`/user`)}}>New registered users</p>
+      <p onClick={()=>{navigate(`/dashboard/newusers`)}}>New registered users</p>
 
 
 

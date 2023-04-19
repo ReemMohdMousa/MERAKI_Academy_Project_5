@@ -156,3 +156,15 @@
 .chart .chartGrid {
   stroke: #e4e1e1;
 }
+
+.table .cellWrapper {
+  display: flex;
+  align-items: center;
+}
+.table .cellWrapper  {
+
+ 
+  margin-right: 3px;
+  object-fit: cover;
+}
+ 
