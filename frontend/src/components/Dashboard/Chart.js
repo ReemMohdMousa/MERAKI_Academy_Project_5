@@ -12,20 +12,20 @@ import {
 } from "recharts";
 const Chart = ({ aspect, title }) => {
   const [data, setdata] = useState([]);
- 
-    const get = async () => {
-      try {
-        const result = await axios.get(`http://localhost:5000/count/num`);
-        if (result.data) {
-          console.log(result.data)
-          setdata(result.data);
-        } else throw Error;
-      } catch (error) {
-      console.log(error)
-      }
-    };
-    useEffect(() => {
-    get()
+
+  const get = async () => {
+    try {
+      const result = await axios.get(`http://localhost:5000/count/num`);
+      if (result.data) {
+        console.log(result.data);
+        setdata(result.data);
+      } else throw Error;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    get();
   }, []);
   if (!data && Array.isArray(data)) {
     return (

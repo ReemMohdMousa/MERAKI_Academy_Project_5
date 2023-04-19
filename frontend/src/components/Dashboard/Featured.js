@@ -5,27 +5,37 @@ import "./style.css";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
-
+ 
 const Featured = () => {
   const [val, setval] = useState(0);
+  const [avg, setAvg] = useState(0);
   useEffect(() => {
     axios
       .get(`http://localhost:5000/count/newpost`)
       .then((result) => {
-        const value = result.data.reduce((acc, elem) => {
-          return (acc + elem.count) / result.data.length;
+        const value1 = result.data.reduce((acc, elem) => {
+          return Number(elem.count) - acc;
         }, 0);
-        setval(value);
+        const value = result.data.reduce((acc, elem) => {
+          return acc + Number(elem.count);
+        }, 0);
+        setval(() => {
+          return Math.abs(value1 / (value / result.data.length));
+        });
+        setAvg(value / result.data.length);
       })
       .catch((error) => {
         //  console.log(error);
       });
   }, []);
   if (!val) {
-    return <h1><div class="spinner-grow" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div></h1>;
+    return (
+      <h1>
+        <div class="spinner-grow" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </h1>
+    );
   }
   return (
     <div className="featured">
@@ -33,16 +43,19 @@ const Featured = () => {
         <h1 className="f-title">Post Precentege</h1>
         <MoreVertIcon fontSize="small" />
       </div>
+      <br/>
+
       <div className="f-bottom">
         <div className="featuredChart">
           <CircularProgressbar
             value={val * 100}
-            text={val * 100}
+            text={`${val * 100}%`}
             strokeWidth={5}
           />
         </div>
+        
         <p className="f-title">Average posts per day</p>
-        <p className="f-amount">{val}</p>
+        <p className="f-amount">{avg}</p>
       </div>
     </div>
   );
