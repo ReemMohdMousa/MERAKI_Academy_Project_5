@@ -1,11 +1,16 @@
 import React from "react";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
+import { setLogout } from "../redux/reducers/auth";
 import { useNavigate } from "react-router-dom";
-
+import RecentActorsIcon from '@mui/icons-material/RecentActors';
+import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import LogoutIcon from '@mui/icons-material/Logout';
 const Sidebar = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const { userinfo, token, userId } = useSelector((state) => {
     return {
       userinfo: state.auth.userinfo,
@@ -50,11 +55,19 @@ const Sidebar = () => {
 
       <div className="bottom">
 
-      <p onClick={()=>{navigate(`/dashboard/users`)}}>Users</p>
+      <p onClick={()=>{navigate(`/dashboard`)}}><DashboardIcon/> Dashboard</p>
+
+      <p onClick={()=>{navigate(`/dashboard/users`)}}><ViewListIcon/> Users</p>
       
-      <p onClick={()=>{navigate(`/dashboard/newusers`)}}>New registered users</p>
+      <p onClick={()=>{navigate(`/dashboard/newusers`)}}><RecentActorsIcon/> New users</p>
 
-
+      <p onClick={()=>{ dispatch(setLogout())
+      navigate(`/login`)}}><SwitchAccountIcon/> Switch account</p>
+ 
+      <p onClick={()=>{ dispatch(setLogout())
+      navigate(`/login`)
+      }}><LogoutIcon /> Logout</p>
+ 
 
         
       </div>
