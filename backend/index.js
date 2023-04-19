@@ -54,9 +54,50 @@ const io = socket(server, {
   },
 });
 
+let users = [];
+
+const addUser = (userId, socketId) => {
+  // const results = users.filter((user) => {
+  //   return user.userId === userId;
+  // });
+
+  // if (results.length !== 0) {
+  //   // if the user is not exsisted in the users array, add him
+  //   users.push({ userId, socketId });
+  // }
+
+  !users.some((user) => user.userId == userId) &&
+    users.push({ userId, socketId });
+};
+
+const removeUser = (socketId) => {
+  //filter the users array, if anyone is left
+  users = users.filter((user) => {
+    return user.socketId !== socketId;
+  });
+};
+
 //connection emits in the backsecene, i will receive it (connect to sockit io server)
 io.on("connection", (socket) => {
   // `socket.id` is the id assigned to the user that connected
   console.log(`${socket.id} is connected`);
-  io.emit("welcome", "hello this is socket server");
+  // io.emit("welcome", "hello this is socket server");
+
+  //take the socket id, and the user id, and save it in the users array after the connection
+  //*on => i will receive the user id from the frontend
+  socket.on("ADD_USER", (userId) => {
+    // if i push the user id and the socket id directly without checking if the user is already exsisted in the array, i will have a duplicate data
+    addUser(userId, socket.id);
+
+    //send the users array to the frontend
+    io.emit("GET_USERS", users);
+    console.log(users);
+  });
+
+  socket.on("DISCONNECT", () => {
+    console.log("user left");
+    removeUser(socket.id);
+    io.emit("GET_USERS", users);
+    console.log(users);
+  });
 });
