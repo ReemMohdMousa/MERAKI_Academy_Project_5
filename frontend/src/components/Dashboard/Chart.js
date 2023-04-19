@@ -17,7 +17,6 @@ const Chart = ({ aspect, title }) => {
     try {
       const result = await axios.get(`http://localhost:5000/count/num`);
       if (result.data) {
-        console.log(result.data);
         setdata(result.data);
       } else throw Error;
     } catch (error) {

@@ -53,15 +53,18 @@
   cursor: pointer;
   align-items: center;
 }
-.bottom:hover {
-  background-color: gray;
+.bottom>p:hover {
+  background-color: #555;
   color: white;
 }
-
+.bottom > p {
+  padding: 4px;
+}
 .sidebar .bottom {
-  display: flex;
+  padding-top: 5px;
+  margin: 10px;
+  cursor: pointer;
   align-items: center;
-  margin: 1rem;
 }
 
 .widget {
