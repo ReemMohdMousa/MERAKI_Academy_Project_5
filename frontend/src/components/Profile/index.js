@@ -17,10 +17,7 @@ import Posts from "../Posts";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../redux/reducers/posts/index";
 import AddPost from "../AddPost";
-
-import { MDBFile } from "mdb-react-ui-kit";
-
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import FriendRequests from "./FriendRequests";
 import AllFriends from "./AllFriends";
 
@@ -117,7 +114,7 @@ const Profile = () => {
                   </div>
                   <div className="ms-3" style={{ marginTop: "130px" }}>
                     <MDBTypography tag="h5">{user.firstname}{"  "}{user.lastname}</MDBTypography>
-                    <MDBCardText>New York</MDBCardText>
+                   
                   </div>
                 </div>
                 <div

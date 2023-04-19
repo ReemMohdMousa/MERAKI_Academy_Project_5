@@ -5,22 +5,20 @@ const createNewComment = async (req, res) => {
   const user_id = req.token.userId;
   let firstname = "";
   let lastname = "";
+  let avatar=""
   let receiver 
-  let postcontent = "";
-  let postimage = "";
-  let postvideo = "";
+
   //console.log(firstname,lastname)
   const querytofindname = `
-  SELECT users.firstname,users.lastname ,posts.content,posts.image,posts.video from users 
-  INNER JOIN posts ON posts.user_id =users.user_id where post_id =$1`;
- const result1= await pool.query(querytofindname, [post_id])
+  SELECT users.firstname,users.lastname ,users.avatar from users 
+ where users.user_id =$1`;
+ const result1= await pool.query(querytofindname, [user_id])
     firstname = result1.rows[0].firstname;
     lastname = result1.rows[0].lastname;
-    postcontent = result1.rows[0].content;
-    postimage = result1.rows[0].image;
-    postvideo = result1.rows[0].video;
+    avatar= result1.rows[0].avatar;
+   
  
-  let messagecontent = `${firstname}  ${lastname} comment in your post ${postcontent} ${postimage} ${postvideo}`;
+  let messagecontent = `${firstname}  ${lastname} comment in your post`;
   const queryuser = `SELECT user_id from posts where post_id=$1`;
 const result2=await  pool.query(queryuser, [post_id])
     receiver = result2.rows[0].user_id;
@@ -29,8 +27,8 @@ const result2=await  pool.query(queryuser, [post_id])
 
   const query = `INSERT INTO comments (post_id, user_id, content, image, video) VALUES ($1,$2,$3,$4,$5) RETURNING *`;
   const data = [post_id, user_id, content, image, video];
-  const notiquery = `INSERT INTO notifications(user_id,sender_id,content) VALUES($1,$2,$3)RETURNING*`;
-  await pool.query(notiquery, [user_id, receiver, messagecontent]);
+  const notiquery = `INSERT INTO notifications(user_id,sender_id,content,avatar) VALUES($1,$2,$3,$4)RETURNING*`;
+  await pool.query(notiquery, [ receiver, user_id,messagecontent,avatar]);
   pool
     .query(query, data)
     .then((result) => {

@@ -43,7 +43,7 @@ const getAllFriendsPosts = (req, res) => {
 };
 const getAllNotificationByUserId=(req,res)=>{
  let user_id=req.token.userId
- const query='SELECT content from notifications Where user_id=$1'
+ const query='SELECT content, avatar, read from notifications Where read=FALSE AND user_id=$1'
  pool
     .query(query, [user_id])
     .then((result) => {

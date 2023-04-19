@@ -200,11 +200,12 @@ let firstname=""
 let lastname=""
 let noticontent=""
   const querytofindname = `
-  SELECT users.firstname,users.lastname from users 
+  SELECT users.firstname,users.lastname ,users.avatar from users 
    where user_id =$1`;
 const result1= await pool.query(querytofindname, [user2_id])
     firstname = result1.rows[0].firstname;
     lastname = result1.rows[0].lastname;
+    avatar=result1.rows[0].avatar;
    noticontent = `${firstname} ${lastname} accept your friend requset`;
 
 
@@ -216,7 +217,7 @@ const result1= await pool.query(querytofindname, [user2_id])
   const deleteReqQuery = `DELETE FROM friend_requests 
   WHERE sender_id=$1 AND receiver_id=$2
   `;
-  const notiquery = `INSERT INTO notifications(user_id,sender_id,content) VALUES($1,$2,$3)RETURNING*`;
+  const notiquery = `INSERT INTO notifications(user_id,sender_id,content,avatar) VALUES($1,$2,$3,$4)RETURNING*`;
  
   
   const data = [user1_id, user2_id];
