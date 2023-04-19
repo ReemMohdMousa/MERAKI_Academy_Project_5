@@ -143,12 +143,15 @@ CREATE TABLE messages (
 CREATE TABLE notifications (
   notification_id SERIAL NOT NULL,
   user_id INT,
+  sender_id INT,
   content VARCHAR(255),
   is_deleted SMALLINT DEFAULT 0,
 	created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP,
     read BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (sender_id) REFERENCES users(user_id),
+
   PRIMARY KEY (notification_id)
 );
 

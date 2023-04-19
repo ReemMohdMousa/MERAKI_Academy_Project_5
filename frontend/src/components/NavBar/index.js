@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setLogout } from "../redux/reducers/auth";
 import NavFriendReq from "./NavFriendReq";
-
+import Notifications from "./Notifications"
 const NavBar = () => {
   const [showBasic, setShowBasic] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -123,6 +123,14 @@ const NavBar = () => {
                     <NavFriendReq/>
                   </MDBNavbarLink>
                 </MDBNavbarItem>
+
+
+                <MDBNavbarItem>
+                  <MDBNavbarLink>
+                    <Notifications/>
+                  </MDBNavbarLink>
+                </MDBNavbarItem>
+
 
                 <MDBNavbarItem
                   onClick={() => {

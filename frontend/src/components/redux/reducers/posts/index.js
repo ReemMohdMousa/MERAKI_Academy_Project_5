@@ -7,6 +7,7 @@ export const posts = createSlice({
     posts: [],
     likes: [],
     homePosts: [],
+    notifications:[],
   },
   reducers: {
     setPosts: (state, action) => {
@@ -117,6 +118,10 @@ console.log(action.payload);
       //  console.log (result)
       //  return result
     
+    },
+    setNotifications:(state,action)=>{
+      state.notifications = action.payload;
+
     }
   },
 
@@ -134,7 +139,7 @@ setNestedComments,
   updateComment,
   removeComment,
   removeLike,
-  setHomePosts,addNested
+  setHomePosts,addNested,setNotifications
 } = posts.actions;
 
 export default posts.reducer;

@@ -29,9 +29,11 @@ const register = async (req, res) => {
       .then((result) => {
         const payload = {
           userId: result.rows[0].user_id,
+          //country: result.rows[0].country,
           role: result.rows[0].role_id,
+          firstname:result.rows[0].firstName,
+          lastname:result.rows[0].lastName
         };
-
         const options = {
           expiresIn: "24h",
         };
@@ -75,6 +77,8 @@ const login = (req, res) => {
               userId: result.rows[0].user_id,
               //country: result.rows[0].country,
               role: result.rows[0].role_id,
+              firstname:result.rows[0].firstName,
+              lastname:result.rows[0].lastName
             };
 
             const options = {
@@ -88,6 +92,7 @@ const login = (req, res) => {
                 message: `Valid login credentials`,
                 token,
                 userId: result.rows[0].user_id,
+                
               });
             } else {
               throw Error;

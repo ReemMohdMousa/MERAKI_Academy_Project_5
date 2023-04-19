@@ -1,11 +1,40 @@
 const { pool } = require("../models/db");
 
-const addLike = (req, res) => {
+const addLike =async (req, res) => {
   const { post_id } = req.body;
   const user_id = req.token.userId;
 
+  let firstname=""
+  let lastname=""
+let receiver=""
+let postcontent=""
+let postimage=""
+let postvideo=""
+  //console.log(firstname,lastname)
+  const querytofindname=`
+  SELECT users.firstname,users.lastname ,posts.content,posts.image,posts.video from users 
+  INNER JOIN posts ON posts.user_id =users.user_id where post_id =$1`
+  const result1= await pool.query(querytofindname,[user_id])
+      firstname=result1.rows[0].firstname
+      lastname=result1.rows[0].lastname
+      postcontent=result1.rows[0].content
+      postimage=result1.rows[0].content
+      postvideo=result1.rows[0].video
+  
+    let messagecontent=`${firstname}  ${lastname} like  your post ${postcontent} ${postimage} ${postvideo}`
+    const queryuser=`SELECT user_id from posts where post_id=$1`
+    const result2=await pool.query(queryuser,[post_id]).then((result)=>{
+    receiver=result2.rows[0].user_id
+     })
+
+
+
+
+
   const query1 = `select exists(select 1 from likes where user_id=$1 AND post_id=$2)`;
   const data1 = [user_id, post_id];
+  await pool.query(notiquery,[receiver,user_id,messagecontent])
+
   pool
     .query(query1, data1)
     .then((result) => {
@@ -25,6 +54,7 @@ const addLike = (req, res) => {
           });
         });
       }
+    
     })
     .catch((err) => {
       res.status(500).json({

@@ -172,7 +172,7 @@ const Profile = () => {
                   </div>
                   <MDBRow className="g-2">
                     <MDBCol className="mb-2">
-                      {id===userId &&<AddPost />}
+                      {id==userId &&<AddPost/>}
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
