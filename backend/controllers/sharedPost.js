@@ -23,44 +23,34 @@ const createSharedPost = (req, res) => {
 };
 
 const getSharedPostsByUser = (req, res) => {
-    const sharedPost_user_id = req.token.userId;
-
-  const query = `SELECT * FROM sharedPost1 
-    WHERE sharedPost_user_id = $1 AND is_deleted=0
-    ORDER BY created_at DESC
+    const user_id = req.token.userId;
+    const query = `SELECT * FROM sharedPost1 INNER JOIN posts ON posts.post_id =sharedPost1.post_id
+    WHERE sharedPost_user_id = $1 AND sharedPost_is_deleted=0
+    ORDER BY sharedPost_created_at DESC
   `;
-  const data = [sharedPost_user_id];
-
-  pool
-    .query(query, data)
-    .then((result) => {
-      pool
-        .query(
-          `SELECT * FROM posts 
-          WHERE user_id = $1 AND is_deleted=0
-          ORDER BY created_at DESC
-        `,
-          data
-        )
-        .then((result1) => {
+    const data = [user_id];
+  
+    pool
+      .query(query, data)
+      .then((result) => {
+     
           res.status(200).json({
-            success: false,
-            message: `The user: ${sharedPost_user_id} has shared posts`,
-            posts: result1.rows,
-            shared:result.rows,
+            success: true,
+            message: `All shared posts for the user: ${user_id}`,
+            posts: result.rows,
           });
+        
+      })
+      .catch((err) => {
+        res.status(500).json({
+          success: false,
+          message: "Server error",
+          err: err,
         });
-    })
-    .catch((err) => {
-      res.status(500).json({
-        success: false,
-        message: "Server error",
-        err: err,
       });
-    });
-};
-
+  };
+  
 module.exports = {
   createSharedPost,
-  getSharedPostsByUser,
+  getSharedPostsByUser
 };
