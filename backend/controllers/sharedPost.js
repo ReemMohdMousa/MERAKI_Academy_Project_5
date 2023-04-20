@@ -22,6 +22,45 @@ const createSharedPost = (req, res) => {
     });
 };
 
+const getSharedPostsByUser = (req, res) => {
+    const sharedPost_user_id = req.token.userId;
+
+  const query = `SELECT * FROM sharedPost1 
+    WHERE sharedPost_user_id = $1 AND is_deleted=0
+    ORDER BY created_at DESC
+  `;
+  const data = [sharedPost_user_id];
+
+  pool
+    .query(query, data)
+    .then((result) => {
+      pool
+        .query(
+          `SELECT * FROM posts 
+          WHERE user_id = $1 AND is_deleted=0
+          ORDER BY created_at DESC
+        `,
+          data
+        )
+        .then((result1) => {
+          res.status(200).json({
+            success: false,
+            message: `The user: ${sharedPost_user_id} has shared posts`,
+            posts: result1.rows,
+            shared:result.rows,
+          });
+        });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
 module.exports = {
   createSharedPost,
+  getSharedPostsByUser,
 };
