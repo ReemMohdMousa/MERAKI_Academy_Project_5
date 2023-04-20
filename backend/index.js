@@ -120,7 +120,7 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("DISCONNECT", () => {
+  socket.on("disconnect", () => {
     console.log("user left");
     removeUser(socket.id);
     io.emit("GET_USERS", users);
