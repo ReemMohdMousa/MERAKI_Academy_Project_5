@@ -19,17 +19,20 @@ const clientId =
 
 function App() {
   //redux states
-  const { token, userId, isLoggedIn } = useSelector((state) => {
+  const { token, userId, isLoggedIn,roleId } = useSelector((state) => {
     //return object contains the redux states
     return {
       userId: state.auth.userId,
+      roleId: state.auth.roleId,
+      isLoggedIn:state.auth.isLoggedIn,
+
     };
   });
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
       <div className="App">
-        <NavBar />
+       {roleId!==1  ?<NavBar />:""}
 
         <header className="App-header">
           <h1>Project 5 </h1>
@@ -41,9 +44,11 @@ function App() {
           <Route path={"/register"} element={<Register />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/home/:user" element={<Search />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+
+          {roleId==1 ?<><Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/users" element={<UserTable />} />
-          <Route path="/dashboard/newusers" element={<NewUsers />} />
+          <Route path="/dashboard/newusers" element={<NewUsers />} /></>:""}
+           
 
 
         </Routes>

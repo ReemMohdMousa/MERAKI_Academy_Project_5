@@ -32,12 +32,14 @@ const NavBar = () => {
   const dispatch = useDispatch();
 
   //redux login states
-  const { token, userId, isLoggedIn } = useSelector((state) => {
+  const { token, userId, isLoggedIn,roleId } = useSelector((state) => {
     //return object contains the redux states
     return {
       token: state.auth.token,
       isLoggedIn: state.auth.isLoggedIn,
       userId: state.auth.userId,
+      roleId: state.auth.roleId,
+
     };
   });
 
@@ -83,6 +85,7 @@ const NavBar = () => {
   };
 
   return (
+    
     <div>
       {isLoggedIn ? (
         <MDBNavbar expand="lg" light bgColor="light">
