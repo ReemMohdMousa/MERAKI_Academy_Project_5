@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./messenger.css";
 import Conversation from "./Conversation/Conversation";
 import Message from "./Message/Message";
@@ -17,7 +17,10 @@ const Messenger = () => {
   const [theOpenedConversation, setTheOpenedConversation] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newWrittenMessage, setNewWrittenMessage] = useState("");
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState(io(ENDPOINT, { autoConnect: false }));
+  const [arrivedMessage, setArrivedMessage] = useState(null);
+  const scrollRef = useRef();
+  const [currentUserId, setCurrentUserId] = useState("");
 
   const { userinfo, token, userId, conversationFriendInfo } = useSelector(
     (state) => {
@@ -32,8 +35,29 @@ const Messenger = () => {
 
   //connect to the backend server
   useEffect(() => {
-    setSocket(io(ENDPOINT));
+    socket.connect();
+    socket.emit("ADD_USER", userId);
   }, []);
+
+  useEffect(() => {
+    socket?.on("GET_MESSAGE", (data) => {
+      console.log(data);
+      setMessages([
+        ...messages,
+        {
+          sender: data.sender_id,
+          text: data.text,
+          createdAt: Date.now(),
+        },
+      ]);
+    });
+  }, [messages]);
+
+  // useEffect(() => {
+  //   arrivedMessage &&
+  //     theOpenedConversation?.members.includes(arrivedMessage.sender) &&
+  //     setMessages((prev) => [...prev, arrivedMessage]);
+  // }, [arrivedMessage, theOpenedConversation]);
 
   //get all user's conversations
   const getAllUserConversations = () => {
@@ -85,6 +109,7 @@ const Messenger = () => {
   // };
 
   const SendNewMsg = () => {
+    // setCurrentUserId(userId);
     axios
       .post(
         `http://localhost:5000/messages`,
@@ -98,10 +123,19 @@ const Messenger = () => {
         }
       )
       .then(function (response) {
-        console.log(response.data);
-        messages.push(response.data);
-        setMessages(messages);
+        // console.log(response.data);
+        const receiver_id = theOpenedConversation.members.find(
+          (member) => member != userId
+        );
+        // console.log(theOpenedConversation);
+        // console.log(receiver_id);
+        socket.emit("SEND_MESSAGE", {
+          sender_id: userId,
+          receiver_id: receiver_id,
+          text: newWrittenMessage,
+        });
         setNewWrittenMessage("");
+        setMessages([...messages, response.data]);
       })
       .catch(function (error) {
         throw error;
@@ -114,11 +148,10 @@ const Messenger = () => {
   }, [theOpenedConversation]);
 
   useEffect(() => {
-    socket?.emit("ADD_USER", userId);
     socket?.on("GET_USERS", (users) => {
       console.log(users);
     });
-  }, [userId]);
+  }, [currentUserId]);
 
   // console.log(theOpenedConversation);
 
@@ -129,6 +162,10 @@ const Messenger = () => {
   // }, [socket]);
 
   // // console.log(socket);
+
+  // useEffect(() => {
+  //   scrollRef?.scrollIntoView({ behavior: "smooth" });
+  // }, [messages]);
 
   return (
     <>
