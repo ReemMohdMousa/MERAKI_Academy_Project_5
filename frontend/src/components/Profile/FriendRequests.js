@@ -4,16 +4,6 @@ import axios from "axios";
 
 //import reducer's functions
 import {
-  getAlluserFriends,
-  addFriend,
-  acceptFriendRequest,
-  cancelFriendReq,
-  declineFriendReq,
-  removeFriend,
-  isTheUserIsFriend,
-  addToSentReq,
-  setSentReq,
-  setReceivedReq,
   setIsAdded,
   setIsReceived,
   setIsFriend,

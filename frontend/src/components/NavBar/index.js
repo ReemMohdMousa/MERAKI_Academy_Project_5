@@ -82,6 +82,11 @@ const NavBar = () => {
     setShowBasic(false);
   };
 
+  const goToMessenger = () => {
+    navigate(`/messenger`);
+    setShowBasic(false);
+  };
+
   return (
     <div>
       {isLoggedIn ? (
@@ -118,9 +123,17 @@ const NavBar = () => {
                   <MDBNavbarLink href="#">Profile</MDBNavbarLink>
                 </MDBNavbarItem>
 
+                <MDBNavbarItem
+                  onClick={() => {
+                    goToMessenger();
+                  }}
+                >
+                  <MDBNavbarLink href="#">Messenger</MDBNavbarLink>
+                </MDBNavbarItem>
+
                 <MDBNavbarItem>
                   <MDBNavbarLink href="#">
-                    <NavFriendReq/>
+                    <NavFriendReq />
                   </MDBNavbarLink>
                 </MDBNavbarItem>
 
