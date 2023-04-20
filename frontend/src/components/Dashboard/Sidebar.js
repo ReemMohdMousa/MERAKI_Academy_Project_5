@@ -28,7 +28,7 @@ const Sidebar = () => {
       <div className="center">
         <div className="widget">
           <img
-            src={
+            src={userinfo.avatar &&
               userinfo.avatar
                 ? userinfo.avatar
                 : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"

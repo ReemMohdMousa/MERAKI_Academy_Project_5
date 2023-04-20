@@ -87,7 +87,7 @@ const NavBar = () => {
   return (
     
     <div>
-      {isLoggedIn ? (
+      {roleId==1 ?"": isLoggedIn ? (
         <MDBNavbar expand="lg" light bgColor="light">
           <MDBContainer fluid>
             <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
