@@ -13,6 +13,7 @@ import NavFriendReq from "./components/NavBar/NavFriendReq";
 import Dashboard from "./components/Dashboard";
 import UserTable from "./components/Dashboard/UserTable";
 import NewUsers from "./components/Dashboard/NewUsers";
+import Messenger from "./components/Messenger/Messenger";
 
 const clientId =
   "780019151998-ei1sl1vhch8egbkuff1ibrshuo1h68nd.apps.googleusercontent.com";
@@ -53,6 +54,9 @@ function App() {
           ) : (
             ""
           )}
+
+          <Route path="/messenger" element={<Messenger />} />
+
         </Routes>
       </div>
     </GoogleOAuthProvider>
