@@ -7,6 +7,7 @@ export const posts = createSlice({
     posts: [],
     likes: [],
     homePosts: [],
+    sharedPosts: [],
   },
   reducers: {
     setPosts: (state, action) => {
@@ -88,6 +89,14 @@ export const posts = createSlice({
       console.log(action.payload);
       state.homePosts = action.payload;
     },
+
+    setSharedPosts: (state, action) => {
+      state.sharedPosts = action.payload;
+    },
+    sharepost: (state, action) => {
+      state.sharedPosts.push(action.payload);
+      
+    },
   },
 });
 export const {
@@ -99,11 +108,12 @@ export const {
   addComment,
   addLike,
   setLike,
-
   updateComment,
   removeComment,
   removeLike,
   setHomePosts,
+  setSharedPosts,
+  sharepost,
 } = posts.actions;
 
 export default posts.reducer;
