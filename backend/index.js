@@ -50,7 +50,7 @@ const server = app.listen(PORT, () => {
 // origin => * (everywhere)
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
   },
 });
 
@@ -77,6 +77,15 @@ const removeUser = (socketId) => {
   });
 };
 
+const getUser = (userId) => {
+  // console.log(userId);
+  const receiver = users.find((user) => {
+    // console.log(user);
+    return user.userId == userId;
+  });
+  return receiver;
+};
+
 //connection emits in the backsecene, i will receive it (connect to sockit io server)
 io.on("connection", (socket) => {
   // `socket.id` is the id assigned to the user that connected
@@ -96,9 +105,14 @@ io.on("connection", (socket) => {
 
   //send messages
   socket.on("SEND_MESSAGE", ({ sender_id, receiver_id, text }) => {
-    
-
-
+    console.log(sender_id, receiver_id, text);
+    const user = getUser(receiver_id);
+    console.log(user);
+    io.to(user.socketId).emit("GET_MESSAGE", {
+      sender_id,
+      receiver_id,
+      text,
+    });
   });
 
   socket.on("DISCONNECT", () => {
