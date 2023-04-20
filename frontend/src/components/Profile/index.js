@@ -15,7 +15,7 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "../redux/reducers/posts/index";
+import { setPosts, setSharedPosts } from "../redux/reducers/posts/index";
 import AddPost from "../AddPost";
 
 import { MDBFile } from "mdb-react-ui-kit";
@@ -34,12 +34,12 @@ const Profile = () => {
       .get(`http://localhost:5000/users/others/info/${id}`)
       .then((Response) => {
         console.log(Response.data.result);
-        setUser((firstname)=>{
-          return {...firstname,firstname:Response.data.result.firstname}
-        })
-        setUser((lastname)=>{
-          return {...lastname,lastname:Response.data.result.lastname}
-        })
+        setUser((firstname) => {
+          return { ...firstname, firstname: Response.data.result.firstname };
+        });
+        setUser((lastname) => {
+          return { ...lastname, lastname: Response.data.result.lastname };
+        });
         //setUser(())
         //dispatch(setPosts(Response.data.posts));
         //setAppointments(Response.data.appointment);
@@ -50,13 +50,15 @@ const Profile = () => {
   };
 
   //redux states
-  const { posts, userinfo, token, userId, friends } = useSelector((state) => {
+  const { posts, userinfo, token, userId, friends,sharedPosts } = useSelector((state) => {
     return {
       posts: state.posts.posts,
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
       friends: state.friends.friends,
+      sharedPosts: state.posts.sharedPosts,
+
     };
   });
   const getAllPostsByUserId = () => {
@@ -72,9 +74,24 @@ const Profile = () => {
         console.log(err);
       });
   };
+
+  const getSharedPostsByUserId = () => {
+    axios
+      .get(`http://localhost:5000/share`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((Response) => {
+        dispatch(setSharedPosts(Response.data.posts));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     getuserdata();
     getAllPostsByUserId();
+    getSharedPostsByUserId();
   }, []);
 
   return (
@@ -115,7 +132,11 @@ const Profile = () => {
                     </MDBBtn>
                   </div>
                   <div className="ms-3" style={{ marginTop: "130px" }}>
-                    <MDBTypography tag="h5">{user.firstname}{"  "}{user.lastname}</MDBTypography>
+                    <MDBTypography tag="h5">
+                      {user.firstname}
+                      {"  "}
+                      {user.lastname}
+                    </MDBTypography>
                     <MDBCardText>New York</MDBCardText>
                   </div>
                 </div>
@@ -171,7 +192,7 @@ const Profile = () => {
                   </div>
                   <MDBRow className="g-2">
                     <MDBCol className="mb-2">
-                      {id===userId &&<AddPost />}
+                      {id === userId && <AddPost />}
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -179,7 +200,13 @@ const Profile = () => {
                       {/* dispaly the posts */}
                       {posts &&
                         posts.map((elem) => {
-                          return <Posts post={elem} firstname={user.firstname} lastname={user.lastname} />;
+                          return (
+                            <Posts
+                              post={elem}
+                              firstname={user.firstname}
+                              lastname={user.lastname}
+                            />
+                          );
                         })}
                     </MDBCol>
                   </MDBRow>

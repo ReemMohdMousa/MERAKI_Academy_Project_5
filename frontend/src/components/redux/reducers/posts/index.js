@@ -7,6 +7,7 @@ export const posts = createSlice({
     posts: [],
     likes: [],
     homePosts: [],
+    sharedPosts: [],
   },
   reducers: {
     setPosts: (state, action) => {
@@ -36,7 +37,6 @@ export const posts = createSlice({
           state.posts.splice(idx, 1);
         }
       });
-      
     },
     setComments: (state, action) => {
       // state.articles = action.payload.comments;
@@ -57,15 +57,14 @@ export const posts = createSlice({
       });
     },
 
-
     removeComment: (state, action) => {
       console.log(action.payload);
       state.posts.forEach((elem, idx) => {
         console.log(elem);
         let found = state.posts.find((elem) => {
-       return elem.post_id === action.payload.post_id;
+          return elem.post_id === action.payload.post_id;
         });
-        console.log("found",found)
+        console.log("found", found);
         if (elem.comment_id === action.payload) {
           state.posts.comments.splice(idx, 1);
         }
@@ -74,7 +73,6 @@ export const posts = createSlice({
 
     setLike: (state, action) => {
       state.likes = [action.payload];
-
     },
 
     addLike: (state, action) => {
@@ -91,6 +89,14 @@ export const posts = createSlice({
       console.log(action.payload);
       state.homePosts = action.payload;
     },
+
+    setSharedPosts: (state, action) => {
+      state.sharedPosts = action.payload;
+    },
+    sharepost: (state, action) => {
+      state.sharedPosts.push(action.payload);
+      
+    },
   },
 });
 export const {
@@ -102,11 +108,12 @@ export const {
   addComment,
   addLike,
   setLike,
-
   updateComment,
   removeComment,
   removeLike,
   setHomePosts,
+  setSharedPosts,
+  sharepost,
 } = posts.actions;
 
 export default posts.reducer;

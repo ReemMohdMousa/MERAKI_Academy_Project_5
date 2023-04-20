@@ -6,10 +6,13 @@ import NavBar from "./components/NavBar";
 import Register from "./components/Register";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Login from "./components/Login";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Home from "./components/Home/Home";
 import Search from "./components/Search";
 import NavFriendReq from "./components/NavBar/NavFriendReq";
+import Dashboard from "./components/Dashboard";
+import UserTable from "./components/Dashboard/UserTable";
+import NewUsers from "./components/Dashboard/NewUsers";
 import Messenger from "./components/Messenger/Messenger";
 
 const clientId =
@@ -17,10 +20,12 @@ const clientId =
 
 function App() {
   //redux states
-  const { token, userId, isLoggedIn } = useSelector((state) => {
+  const {  roleId } = useSelector((state) => {
     //return object contains the redux states
     return {
       userId: state.auth.userId,
+      roleId: state.auth.roleId,
+      isLoggedIn: state.auth.isLoggedIn,
     };
   });
 
@@ -39,7 +44,19 @@ function App() {
           <Route path={"/register"} element={<Register />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/home/:user" element={<Search />} />
+
+          {roleId == 1 ? (
+            <>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/users" element={<UserTable />} />
+              <Route path="/dashboard/newusers" element={<NewUsers />} />
+            </>
+          ) : (
+            ""
+          )}
+
           <Route path="/messenger" element={<Messenger />} />
+
         </Routes>
       </div>
     </GoogleOAuthProvider>

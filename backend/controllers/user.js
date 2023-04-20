@@ -41,6 +41,7 @@ const register = async (req, res) => {
           success: true,
           token: token,
           userId: result.rows[0].user_id,
+          roleId: result.rows[0].role_id,
           message: "Account created successfully",
         });
         verfiyResjsterByEmail(email, firstName, lastName);
@@ -73,7 +74,6 @@ const login = (req, res) => {
           if (response) {
             const payload = {
               userId: result.rows[0].user_id,
-              //country: result.rows[0].country,
               role: result.rows[0].role_id,
             };
 
@@ -88,6 +88,7 @@ const login = (req, res) => {
                 message: `Valid login credentials`,
                 token,
                 userId: result.rows[0].user_id,
+                roleId: result.rows[0].role_id,
               });
             } else {
               throw Error;

@@ -1,4 +1,3 @@
-
 CREATE TABLE roles (
   role_id SERIAL NOT NULL,
   role VARCHAR(255) NOT NULL,
@@ -14,6 +13,7 @@ CREATE TABLE permissions (
   updated_at TIMESTAMP,
   PRIMARY KEY (permission_id)
 );
+
 CREATE TABLE users(
   user_id SERIAL NOT NULL,
   firstName VARCHAR(255) REQ,
@@ -32,9 +32,6 @@ CREATE TABLE users(
   PRIMARY KEY (user_id)
 );
 
-
-
-
 CREATE TABLE role_permission (
   role_permission_id SERIAL NOT NULL,
   role_id INT,
@@ -45,7 +42,6 @@ CREATE TABLE role_permission (
   FOREIGN KEY (permission_id) REFERENCES permissions(permission_id),
   PRIMARY KEY (role_permission_id)
 );
-
 
 CREATE TABLE posts (
   post_id SERIAL NOT NULL,
@@ -77,23 +73,23 @@ CREATE TABLE comments (
 );
 
 CREATE TABLE followers (
-   id SERIAL NOT NULL,
-   user_id INT,
-   follower_id INT,
+  id SERIAL NOT NULL,
+  user_id INT,
+  follower_id INT,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP,
-   FOREIGN KEY (user_id) REFERENCES users(user_id),
-   FOREIGN KEY (follower_id) REFERENCES users(user_id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (follower_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE followings (
-   id SERIAL NOT NULL,
-   user_id INT,
-   following_id INT,
+  id SERIAL NOT NULL,
+  user_id INT,
+  following_id INT,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP,
-   FOREIGN KEY (user_id) REFERENCES users(user_id),
-   FOREIGN KEY (following_id) REFERENCES users(user_id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (following_id) REFERENCES users(user_id)
 );
 
 -- CREATE TABLE friends (
@@ -103,9 +99,7 @@ CREATE TABLE followings (
 --   created_at TIMESTAMP DEFAULT NOW(),
 --   FOREIGN KEY (user_id) REFERENCES users(user_id),
 --   FOREIGN KEY (friend_id) REFERENCES users(user_id)
-
 -- );
-
 CREATE TABLE friend_requests (
   request_id SERIAL NOT NULL,
   sender_id INT,
@@ -123,7 +117,6 @@ CREATE TABLE friends (
   accepted_at TIMESTAMP,
   FOREIGN KEY (user1_id) REFERENCES users(user_id),
   FOREIGN KEY (user2_id) REFERENCES users(user_id)
-
 );
 
 CREATE TABLE messages (
@@ -134,7 +127,7 @@ CREATE TABLE messages (
   image TEXT,
   video TEXT,
   is_deleted SMALLINT DEFAULT 0,
-	created_at TIMESTAMP DEFAULT NOW(),
+  created_at TIMESTAMP DEFAULT NOW(),
   FOREIGN KEY (sender_id) REFERENCES users(user_id),
   FOREIGN KEY (receiver_id) REFERENCES users(user_id),
   PRIMARY KEY (message_id)
@@ -145,9 +138,9 @@ CREATE TABLE notifications (
   user_id INT,
   content VARCHAR(255),
   is_deleted SMALLINT DEFAULT 0,
-	created_at TIMESTAMP DEFAULT NOW(),
+  created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP,
-    read BOOLEAN DEFAULT FALSE,
+  read BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
   PRIMARY KEY (notification_id)
 );
@@ -162,6 +155,7 @@ CREATE TABLE likes (
   FOREIGN KEY (post_id) REFERENCES posts(post_id),
   PRIMARY KEY (likes_id)
 );
+
 CREATE TABLE nestedComments (
   nestedComments_id SERIAL NOT NULL,
   post_id INT,
@@ -174,3 +168,23 @@ CREATE TABLE nestedComments (
   FOREIGN KEY (comment_id) REFERENCES comments(comment_id),
   PRIMARY KEY (nestedComments_id)
 );
+
+CREATE TABLE sharedPost1 (
+  sharedPost_id SERIAL NOT NULL,
+  sharedPost_content TEXT,
+  sharedPost_user_id INT,
+  post_id INT,
+  sharedPost_is_deleted SMALLINT DEFAULT 0,
+  sharedPost_created_at TIMESTAMP DEFAULT NOW(),
+  sharedPost_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (sharedPost_user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+  PRIMARY KEY (sharedPost_id)
+);
+
+
+
+/* 
+INSERT INTO sharedPost1 (sharedPost_content,sharedPost_user_id,post_id) VALUES ('true', 39,1) RETURNING *
+SELECT * FROM sharedPost1 INNER JOIN posts ON posts.post_id =sharedPost1.post_id 
+ */
