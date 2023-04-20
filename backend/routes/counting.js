@@ -1,11 +1,12 @@
 const express = require("express");
-const { userCount, postCount, likeCount, registeredUserPerDay, addedPostPerDay, registeredUserDetailWithin24h, postsEveryHour, activeUserOrNot } = require("../controllers/counting");
+const { userCount, postCount, likeCount, registeredUserPerDay, addedPostPerDay, registeredUserDetailWithinWeek, postsEveryHour, mostReactedPost, getUsers } = require("../controllers/counting");
 
 const countingRouter = express.Router();
 countingRouter.get("/user", userCount)
 countingRouter.get("/newuser", registeredUserPerDay)
-countingRouter.get("/newuser/details", registeredUserDetailWithin24h)
-countingRouter.get("/active", activeUserOrNot)
+countingRouter.get("/newuser/details", registeredUserDetailWithinWeek)
+countingRouter.get("/reacted", mostReactedPost)
+countingRouter.get("/alluser", getUsers)
 
 
 countingRouter.get("/post", postCount)

@@ -11,6 +11,23 @@ const userCount = (req, res) => {
     });
 };
 
+const getUsers = (req, res) => {
+  pool
+    .query(
+      `SELECT users.user_id, CASE WHEN count( posts.user_id )=0 THEN 'not'
+    WHEN count( posts.user_id )>0 THEN 'active'
+    ELSE 'other'
+END,   avatar,concat(firstname,'  ',lastname) as userName,age,email  FROM users LEFT JOIN posts ON users.user_id=posts.user_id
+GROUP BY users.user_id`
+    )
+    .then((result) => {
+      res.status(200).json(result.rows);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+};
+
 const postCount = (req, res) => {
   pool
     .query(`SELECT COUNT(*) FROM posts`)
@@ -59,12 +76,12 @@ const addedPostPerDay = (req, res) => {
     });
 };
 
-const registeredUserDetailWithin24h = (req, res) => {
+const registeredUserDetailWithinWeek = (req, res) => {
   pool
     .query(
-      `SELECT user_id, firstname, lastname, email
+      `SELECT user_id,concat(firstname,'  ',lastname) as userName,age, email
       FROM public.users AS "users"
-      WHERE "users"."created_at" BETWEEN NOW() - INTERVAL '24 HOURS' AND NOW()
+      WHERE "users"."created_at" BETWEEN NOW() - INTERVAL '1 week' AND NOW()
       ORDER BY "users"."created_at" DESC`
     )
     .then((result) => {
@@ -81,7 +98,8 @@ const registeredUserDetailWithin24h = (req, res) => {
 const postsEveryHour = (req, res) => {
   pool
     .query(
-      ` Select  extract (hour FROM date_trunc('hour', created_at)) AS time, count(*) from posts group by 1`
+      ` Select  extract (hour FROM date_trunc('hour', created_at)) AS time, count(*) from posts group by 1 ORDER BY
+      time ASC`
     )
     .then((result) => {
       res.status(200).json(result.rows);
@@ -91,8 +109,9 @@ const postsEveryHour = (req, res) => {
     });
 };
 
-const activeUserOrNot = (req, res) => {
-  const query = `SELECT users.user_id, count( posts.user_id ) FROM users LEFT JOIN posts ON users.user_id=posts.user_id GROUP BY users.user_id
+const mostReactedPost = (req, res) => {
+  const query = ` SELECT likes.post_id, COUNT(likes.post_id)  
+  FROM likes GROUP BY likes.post_id
 `;
   pool
     .query(query)
@@ -113,7 +132,8 @@ module.exports = {
   likeCount,
   registeredUserPerDay,
   addedPostPerDay,
-  registeredUserDetailWithin24h,
+  registeredUserDetailWithinWeek,
   postsEveryHour,
-  activeUserOrNot,
+  mostReactedPost,
+  getUsers,
 };
