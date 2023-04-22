@@ -24,7 +24,6 @@ const shareRouter = require("./routes/sharedPost");
 const conversationRouter = require("./routes/conversation");
 const messagesRouter = require("./routes/message");
 
-
 app.use(cors());
 app.use(express.json());
 
@@ -113,11 +112,14 @@ io.on("connection", (socket) => {
     console.log(sender_id, receiver_id, text);
     const user = getUser(receiver_id);
     console.log(user);
-    io.to(user.socketId).emit("GET_MESSAGE", {
-      sender_id,
-      receiver_id,
-      text,
-    });
+
+    if (user) {
+      io.to(user.socketId).emit("GET_MESSAGE", {
+        sender_id,
+        receiver_id,
+        text,
+      });
+    }
   });
 
   socket.on("disconnect", () => {
