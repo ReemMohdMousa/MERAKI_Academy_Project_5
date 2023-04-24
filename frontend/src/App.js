@@ -34,10 +34,7 @@ function App() {
       <div className="App">
         <NavBar />
 
-        <header className="App-header">
-          <h1>Project 5 </h1>
-        </header>
-
+      
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />

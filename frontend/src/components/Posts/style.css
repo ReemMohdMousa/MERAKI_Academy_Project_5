@@ -48,14 +48,12 @@
 }
 .infomation {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 3rem;
   border-top: 1px solid rgb(206, 201, 201);
 }
 .item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   cursor: pointer;
   font-size: 14px;
 }

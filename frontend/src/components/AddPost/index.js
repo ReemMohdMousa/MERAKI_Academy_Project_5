@@ -32,7 +32,6 @@ const AddPost = () => {
   const handleShowVideo = () => setShowVideo(true);
   const [disabled, setDisabled] = useState(false);
 
-
   const [post, setpost] = useState({});
   const dispatch = useDispatch();
   const [selectedvideo, setSelectedVideo] = useState("");
@@ -163,22 +162,18 @@ const AddPost = () => {
                         )}
 
                         {post.image && (
-                          <img
-                            variant="success"
-                           
-                            src={post.image}
-                          />
+                          <img variant="success" src={post.image} />
                         )}
                         {disabled && (
                           <div>
                             <p variant="warning">
-                              Please wait untile file uploaded
+                              Please wait until file uploaded
                             </p>
                             <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
                           </div>
                         )}
                         <hr className="my-4" />
-                        <div className="d-flex justify-content-start align-items-center">
+                        <div className="d-flex justify-content-center align-items-center">
                           <MDBCardText className="text-uppercase mb-0">
                             <MDBIcon fas icon="cog me-2" />
 
@@ -231,19 +226,18 @@ const AddPost = () => {
                               <path d="M9 6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM7 3a2 2 0 1 1 4 0 2 2 0 0 1-4 0z" />
                             </svg>
                           </button>
+                          <MDBCardText className="text-uppercase mb-0">
+                            <span className="ms-3 me-4"> | </span>&nbsp; &nbsp; 
+                          </MDBCardText>
+                          <MDBIcon fas icon="plus" />
                           <MDBBtn
-                            outline
-                            color="dark"
-                            floating
-                            size="sm"
-                            style={{ width: "25%", marginLeft: "50px" }}
+                            
                             onClick={() => {
                               console.log("totalpost", post);
                               AddingPost();
                             }}
                           >
                             post
-                            <MDBIcon fas icon="plus" />
                           </MDBBtn>
                         </div>
                       </MDBCardBody>
