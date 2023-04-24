@@ -2,18 +2,17 @@ const { Pool, Client } = require("pg");
 //require mongoose
 const mongoose = require("mongoose");
 
+const pool = new Pool({
+  connectionString: process.env.CONNECTION_STRING,
+});
 
- const pool = new Pool({
-   connectionString: process.env.CONNECTION_STRING,
- });
-
- pool.connect((err, pool) => {
-   if (err) {
+pool.connect((err, pool) => {
+  if (err) {
     console.log("ERROR", err.message);
     return;
   }
   console.log("connected to", pool.user);
- });
+});
 
 // const pool = new Client({
 //   user: "postgres",
@@ -30,7 +29,6 @@ const mongoose = require("mongoose");
 //   }
 //   console.log("connected to", pool.user);
 // });
-
 
 //strictQuery
 mongoose.set("strictQuery", false);

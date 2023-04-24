@@ -7,8 +7,6 @@ const AddFriendRequest = (req, res) => {
   const status = "pending";
   const user_id = req.token.userId;
 
-  console.log(user2_id);
-
   //user 1 sent a friend request to user 2
   // sender_id: user 1 : user_id
   // receiver_id: user 2: friend_id
@@ -127,7 +125,6 @@ const addRequestOnce = (req, res, next) => {
   pool
     .query(query, data)
     .then((result) => {
-      console.log(result.rows);
       //if the request not accepted yet
       if (result.rows.length === 0) {
         next();
@@ -139,7 +136,6 @@ const addRequestOnce = (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         success: false,
         message: "Server error",
@@ -165,7 +161,6 @@ const acceptRequestOnce = (req, res, next) => {
   pool
     .query(query, data)
     .then((result) => {
-      console.log(result.rows);
       //if the request not accepted yet
       if (result.rows.length === 0) {
         next();
@@ -177,7 +172,6 @@ const acceptRequestOnce = (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         success: false,
         message: "Server error",
@@ -225,7 +219,6 @@ const acceptFriendRequest = async (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         success: false,
         message: "Server error",
@@ -258,7 +251,6 @@ const CancelFriendRequest = (req, res) => {
           message: `The request is not found`,
         });
       } else {
-        console.log("enterd");
         res.status(200).json({
           success: true,
           message: "Friend request canceled successfully",
@@ -287,8 +279,6 @@ const declineTheFriendReq = (req, res) => {
   WHERE sender_id=$2 AND receiver_id=$1 
   RETURNING *
 `;
-  console.log(user1_id);
-  console.log(user2_id);
   const data = [user1_id, user2_id];
 
   pool
@@ -368,7 +358,7 @@ const getAllFriendsByUserId = (req, res) => {
     .then((result) => {
       if (result.rows.length === 0) {
         res.status(200).json({
-          success: false,
+          success: true,
           message: `No Friends Found`,
         });
       } else {

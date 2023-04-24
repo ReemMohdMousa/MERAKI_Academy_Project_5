@@ -182,9 +182,7 @@ CREATE TABLE sharedPost1 (
   PRIMARY KEY (sharedPost_id)
 );
 
-
-
 /* 
-INSERT INTO sharedPost1 (sharedPost_content,sharedPost_user_id,post_id) VALUES ('true', 39,1) RETURNING *
-SELECT * FROM sharedPost1 INNER JOIN posts ON posts.post_id =sharedPost1.post_id 
+ INSERT INTO sharedPost1 (sharedPost_content,sharedPost_user_id,post_id) VALUES ('true', 39,1) RETURNING *
+ SELECT * FROM sharedPost1 INNER JOIN posts ON posts.post_id =sharedPost1.post_id 
  */

@@ -4,7 +4,8 @@ const {
   createNewComment,
   getCommentsByPostId,
   UpdateCommentById,
-  deleteCommentById,createNewNestedComment
+  deleteCommentById,
+  createNewNestedComment,
 } = require("../controllers/comments");
 const authentication = require("../middlewares/authentication");
 
@@ -16,8 +17,18 @@ commentsRouter.post("/nested", authentication, createNewNestedComment);
 
 commentsRouter.post("/:id", authentication, createNewComment);
 commentsRouter.get("/:id", getCommentsByPostId);
-commentsRouter.put("/comment/:id",authentication,authorization("UPDATE_COMMENT"), UpdateCommentById);
-commentsRouter.delete("/comment/:id", authentication,authorization("DELETE_COMMENT"),deleteCommentById);
+commentsRouter.put(
+  "/comment/:id",
+  authentication,
+  authorization("UPDATE_COMMENT"),
+  UpdateCommentById
+);
+commentsRouter.delete(
+  "/comment/:id",
+  authentication,
+  authorization("DELETE_COMMENT"),
+  deleteCommentById
+);
 
 commentsRouter.post("/:id", authentication, createNewComment);
 commentsRouter.get("/:id", authentication, getCommentsByPostId);
