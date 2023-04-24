@@ -74,8 +74,30 @@ const ProfileSendMsgBtn = () => {
     });
 };
 
+const checkIfThereAreNewMsgs = (req, res) => {
+  const conversationId = req.params.conversationId;
+  const receiverId = req.params.receiverId;
+
+  console.log("receiverId", receiverId);
+
+  messageModel
+    .find({ conversationId, sender: receiverId, seen: false })
+    .then((results) => {
+      console.log("*****************", results);
+      if (results.length === 0) {
+        res.json(false);
+      } else {
+        res.json(true);
+      }
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+};
+
 module.exports = {
   createNewConversation,
   getAllConversationsByUserId,
   getAConversationOfTheUserAndHisFriend,
+  checkIfThereAreNewMsgs,
 };

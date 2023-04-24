@@ -24,7 +24,7 @@ const getAllMessagesByConversationId = (req, res) => {
   const userId = req.token.userId;
   const conversationId = req.params.conversationId;
   const receiverId = req.params.receiverId;
-  console.log(receiverId);
+
   messageModel
     .find({ conversationId })
     .then(async (results) => {
