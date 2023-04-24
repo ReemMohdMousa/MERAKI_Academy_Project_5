@@ -6,7 +6,7 @@ import { useNavigate, useParams, Outlet } from "react-router-dom";
 
 import { setConversationFriendInfo } from "../../redux/reducers/Messenger/index";
 
-const Conversation = ({ Oneconversation }) => {
+const Conversation = ({ Oneconversation, theOpenedConversation }) => {
   const [theFriendId, setTheFriendId] = useState("");
   const [friendInfo, setFriendInfo] = useState({});
   const [isNew, setIsNew] = useState(false);
@@ -70,11 +70,18 @@ const Conversation = ({ Oneconversation }) => {
         });
   };
 
+  const readMessages = () => {
+    if (theOpenedConversation?._id === Oneconversation._id) {
+      setIsNew(false);
+    }
+  };
+
   useEffect(() => {
     getFriendId();
     getFriendInfo();
     checkIfThereAreNewMsgs();
-  }, [theFriendId]);
+    readMessages();
+  }, [theFriendId, theOpenedConversation, isNew]);
 
   // console.log(conversationFriendInfo);
   // console.log(theFriendId);

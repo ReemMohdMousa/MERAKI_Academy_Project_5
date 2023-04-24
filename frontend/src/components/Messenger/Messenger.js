@@ -177,6 +177,8 @@ const Messenger = () => {
   // }, [messages]);
 
   console.log(messages);
+  console.log(theOpenedConversation);
+
   return (
     <>
       <div className="messenger">
@@ -192,7 +194,10 @@ const Messenger = () => {
                     setTheOpenedConversation(element);
                   }}
                 >
-                  <Conversation Oneconversation={element} />
+                  <Conversation
+                    Oneconversation={element}
+                    theOpenedConversation={theOpenedConversation}
+                  />
                 </div>
               );
             })}
