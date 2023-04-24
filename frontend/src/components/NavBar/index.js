@@ -32,14 +32,14 @@ const NavBar = () => {
   const dispatch = useDispatch();
 
   //redux login states
-  const { token, userId, isLoggedIn,roleId } = useSelector((state) => {
+  const { token, userId, isLoggedIn, roleId, newMsg } = useSelector((state) => {
     //return object contains the redux states
     return {
       token: state.auth.token,
       isLoggedIn: state.auth.isLoggedIn,
       userId: state.auth.userId,
       roleId: state.auth.roleId,
-
+      newMsg: state.messenger.newMsg,
     };
   });
 
@@ -90,9 +90,10 @@ const NavBar = () => {
   };
 
   return (
-    
     <div>
-      {roleId==1 ?"": isLoggedIn ? (
+      {roleId == 1 ? (
+        ""
+      ) : isLoggedIn ? (
         <MDBNavbar expand="lg" light bgColor="light">
           <MDBContainer fluid>
             <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
@@ -131,7 +132,9 @@ const NavBar = () => {
                     goToMessenger();
                   }}
                 >
-                  <MDBNavbarLink href="#">Messenger</MDBNavbarLink>
+                  <MDBNavbarLink href="#" className={newMsg ? "newMsg" : ""}>
+                    Messenger
+                  </MDBNavbarLink>
                 </MDBNavbarItem>
 
                 <MDBNavbarItem>

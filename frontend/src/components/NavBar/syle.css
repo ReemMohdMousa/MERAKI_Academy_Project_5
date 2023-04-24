@@ -37,3 +37,7 @@
   display: flex;
   gap: 0.2rem;
 }
+
+.newMsg {
+  background-color: red;
+}

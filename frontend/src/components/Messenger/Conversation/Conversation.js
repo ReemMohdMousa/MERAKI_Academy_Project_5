@@ -4,23 +4,26 @@ import "./conversation.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, Outlet } from "react-router-dom";
 
-import { setConversationFriendInfo } from "../../redux/reducers/Messenger/index";
+import {
+  setConversationFriendInfo,
+  setNewMsg,
+} from "../../redux/reducers/Messenger/index";
 
 const Conversation = ({ Oneconversation, theOpenedConversation }) => {
   const [theFriendId, setTheFriendId] = useState("");
   const [friendInfo, setFriendInfo] = useState({});
   const [isNew, setIsNew] = useState(false);
 
-  const { userinfo, token, userId, conversationFriendInfo } = useSelector(
-    (state) => {
+  const { userinfo, token, userId, newMsg, conversationFriendInfo } =
+    useSelector((state) => {
       return {
         userinfo: state.auth.userinfo,
         token: state.auth.token,
         userId: state.auth.userId,
         conversationFriendInfo: state.messenger.conversationFriendInfo,
+        newMsg: state.messenger.newMsg,
       };
-    }
-  );
+    });
 
   const dispatch = useDispatch();
 
@@ -63,6 +66,7 @@ const Conversation = ({ Oneconversation, theOpenedConversation }) => {
           console.log(response.data);
           if (response.data === true) {
             setIsNew(true);
+            dispatch(setNewMsg(true));
           }
         })
         .catch(function (error) {
@@ -73,6 +77,7 @@ const Conversation = ({ Oneconversation, theOpenedConversation }) => {
   const readMessages = () => {
     if (theOpenedConversation?._id === Oneconversation._id) {
       setIsNew(false);
+      dispatch(setNewMsg(true));
     }
   };
 
