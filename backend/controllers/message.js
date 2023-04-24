@@ -1,4 +1,5 @@
 const messageModel = require("../models/messageSchema");
+const conversationModel = require("../models/conversationSchema");
 
 const SendNewMessage = (req, res) => {
   const { text, sender, conversationId } = req.body;
@@ -20,11 +21,18 @@ const SendNewMessage = (req, res) => {
 };
 
 const getAllMessagesByConversationId = (req, res) => {
+  const userId = req.token.userId;
   const conversationId = req.params.conversationId;
+  const receiverId = req.params.receiverId;
+  console.log(receiverId);
   messageModel
     .find({ conversationId })
-    .then((results) => {
+    .then(async (results) => {
       res.json(results);
+      await messageModel.updateMany(
+        { conversationId, sender: receiverId },
+        { seen: true }
+      );
     })
     .catch((err) => {
       res.json(err);

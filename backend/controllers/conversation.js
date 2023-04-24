@@ -1,4 +1,5 @@
 const conversationModel = require("../models/conversationSchema");
+const messageModel = require("../models/messageSchema");
 
 //create a new conversation
 const createNewConversation = (req, res) => {
@@ -35,7 +36,7 @@ const getAllConversationsByUserId = (req, res) => {
 // get all user a specific conversation between the user and his friend
 const getAConversationOfTheUserAndHisFriend = (req, res) => {
   const user_id = req.token.userId;
-  const friend_id = req.params.friend_id; 
+  const friend_id = req.params.friend_id;
 
   conversationModel
     .find({
@@ -43,6 +44,30 @@ const getAConversationOfTheUserAndHisFriend = (req, res) => {
     })
     .then((results) => {
       res.json(results);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+
+  // messageModel.updateMany({conversationId:})
+};
+
+const ProfileSendMsgBtn = () => {
+  const user_id = req.token.userId;
+  const friend_id = req.params.friend_id;
+
+  conversationModel
+    .find({
+      members: { $all: [user_id, friend_id] },
+    })
+    .then(async (results) => {
+      if (results.length !== 0) {
+        res.json(results);
+      } else {
+        const newConversation = await new conversationModel({
+          members: [user_id, friend_id],
+        });
+      }
     })
     .catch((err) => {
       res.json(err);

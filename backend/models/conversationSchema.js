@@ -4,7 +4,7 @@ const ConversationSchema = new mongoose.Schema(
   {
     members: [],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Conversation", ConversationSchema);
