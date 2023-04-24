@@ -20,15 +20,14 @@ const AllFriends = ({ id }) => {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, userId, friends, isFriend } =
-    useSelector((state) => {
-      return {
-        friends: state.friends.friends,
-        userId: state.auth.userId,
-        token: state.auth.token,
-        isFriend: state.friends.isFriend,
-      };
-    });
+  const { token, userId, friends, isFriend } = useSelector((state) => {
+    return {
+      friends: state.friends.friends,
+      userId: state.auth.userId,
+      token: state.auth.token,
+      isFriend: state.friends.isFriend,
+    };
+  });
 
   //get all friends of any person depending on the user id
   const getAllFriends = () => {
@@ -78,9 +77,8 @@ const AllFriends = ({ id }) => {
           <Modal.Title>Friends</Modal.Title>
         </Modal.Header>
         <Modal.Body className="friend-list-body">
-          {friends && friends.length == 0
-            ? "No Friends"
-            : friends &&
+          {friends && friends.length !== 0
+            ? friends &&
               friends.map((element, i) => {
                 return (
                   <div className="friend-list" key={element.id}>
@@ -110,7 +108,8 @@ const AllFriends = ({ id }) => {
                     )}
                   </div>
                 );
-              })}
+              })
+            : "No Friends"}
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>

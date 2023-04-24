@@ -14,13 +14,15 @@ import Dashboard from "./components/Dashboard";
 import UserTable from "./components/Dashboard/UserTable";
 import NewUsers from "./components/Dashboard/NewUsers";
 import Messenger from "./components/Messenger/Messenger";
+import Conversation from "./components/Messenger/Conversation/Conversation";
+import { Message } from "@mui/icons-material";
 
 const clientId =
   "780019151998-ei1sl1vhch8egbkuff1ibrshuo1h68nd.apps.googleusercontent.com";
 
 function App() {
   //redux states
-  const {  roleId } = useSelector((state) => {
+  const { roleId } = useSelector((state) => {
     //return object contains the redux states
     return {
       userId: state.auth.userId,
@@ -55,8 +57,14 @@ function App() {
             ""
           )}
 
-          <Route path="/messenger" element={<Messenger />} />
+          {/* <Route path="/messenger" element={<Messenger />}>
+            <Route
+              path="conversation/:conversationId"
+              element={<Message />}
+            />
+          </Route> */}
 
+          <Route path="/messenger" element={<Messenger />} />
         </Routes>
       </div>
     </GoogleOAuthProvider>

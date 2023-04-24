@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 const Messages = ({ mine, message }) => {
+
+ 
   // console.log("************", message);
   const [friendInfo, setFriendInfo] = useState(null);
 
@@ -17,7 +19,6 @@ const Messages = ({ mine, message }) => {
       userId: state.auth.userId,
     };
   });
-
 
   return (
     <div>

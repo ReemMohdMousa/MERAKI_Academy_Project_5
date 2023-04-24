@@ -6,12 +6,21 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setFriendInfo } from "../redux/reducers/Messenger/index";
 import { io } from "socket.io-client";
+import { useNavigate, useParams, Outlet } from "react-router-dom";
+
 const ENDPOINT = "http://localhost:5000";
 
 //connect to the backend server
 // const socket = io.connect(ENDPOINT);
 
 const Messenger = () => {
+  // <Outlet />;
+
+  // params
+  const params = useParams();
+  const id = params.conversationId;
+  console.log(id);
+
   //componant states
   const [conversations, setConversations] = useState([]);
   const [theOpenedConversation, setTheOpenedConversation] = useState(null);
@@ -167,6 +176,8 @@ const Messenger = () => {
   //   scrollRef?.scrollIntoView({ behavior: "smooth" });
   // }, [messages]);
 
+  console.log(socket);
+
   return (
     <>
       <div className="messenger">
@@ -203,6 +214,7 @@ const Messenger = () => {
                 <div>
                   <div className="chatBoxTop">
                     {messages.map((element) => {
+                      console.log(element);
                       return (
                         <div>
                           <Message
