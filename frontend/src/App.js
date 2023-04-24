@@ -15,7 +15,7 @@ import UserTable from "./components/Dashboard/UserTable";
 import NewUsers from "./components/Dashboard/NewUsers";
 import Messenger from "./components/Messenger/Messenger";
 import Conversation from "./components/Messenger/Conversation/Conversation";
-import { Message } from "@mui/icons-material";
+import Message from "./components/Messenger/Message/Message";
 
 const clientId =
   "780019151998-ei1sl1vhch8egbkuff1ibrshuo1h68nd.apps.googleusercontent.com";
@@ -57,14 +57,15 @@ function App() {
             ""
           )}
 
-          {/* <Route path="/messenger" element={<Messenger />}>
+          <Route path="/messenger" element={<Messenger />}>
             <Route
               path="conversation/:conversationId"
               element={<Message />}
             />
-          </Route> */}
+          </Route>
 
-          <Route path="/messenger" element={<Messenger />} />
+          {/* <Route path="/messenger" element={<Messenger />} />
+          <Route path="/msgs" element={<Message />} /> */}
         </Routes>
       </div>
     </GoogleOAuthProvider>

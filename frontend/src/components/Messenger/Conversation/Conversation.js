@@ -9,6 +9,7 @@ import { setConversationFriendInfo } from "../../redux/reducers/Messenger/index"
 const Conversation = ({ Oneconversation }) => {
   const [theFriendId, setTheFriendId] = useState("");
   const [friendInfo, setFriendInfo] = useState({});
+  const [isNew, setIsNew] = useState(false);
 
   const { userinfo, token, userId, conversationFriendInfo } = useSelector(
     (state) => {
@@ -48,13 +49,36 @@ const Conversation = ({ Oneconversation }) => {
         });
   };
 
+  const checkIfThereAreNewMsgs = () => {
+    console.log("enterrrrrrrrrrrrr");
+    theFriendId &&
+      axios
+        .get(
+          `http://localhost:5000/conversation/new/messages/${Oneconversation._id}/${theFriendId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        .then(function (response) {
+          console.log(response.data);
+          if (response.data === true) {
+            setIsNew(true);
+          }
+        })
+        .catch(function (error) {
+          throw error;
+        });
+  };
+
   useEffect(() => {
     getFriendId();
     getFriendInfo();
+    checkIfThereAreNewMsgs();
   }, [theFriendId]);
 
   // console.log(conversationFriendInfo);
   // console.log(theFriendId);
+  console.log(Oneconversation);
 
   return (
     <div>
@@ -68,14 +92,13 @@ const Conversation = ({ Oneconversation }) => {
             }
             alt=""
           />
-          <span className="conversationName">{`${
+          <span className={isNew ? "newConvsName" : "conversationName"}>{`${
             friendInfo && friendInfo.firstname
           } ${friendInfo.lastname}`}</span>
         </div>
       ) : (
         ""
       )}
-
     </div>
   );
 };

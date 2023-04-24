@@ -27,6 +27,7 @@ import AllFriends from "./AllFriends";
 const Profile = () => {
   const params = useParams();
   const id = params.id;
+  
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
   const getuserdata = () => {

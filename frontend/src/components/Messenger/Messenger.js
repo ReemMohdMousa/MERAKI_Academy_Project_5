@@ -14,13 +14,6 @@ const ENDPOINT = "http://localhost:5000";
 // const socket = io.connect(ENDPOINT);
 
 const Messenger = () => {
-  // <Outlet />;
-
-  // params
-  const params = useParams();
-  const id = params.conversationId;
-  console.log(id);
-
   //componant states
   const [conversations, setConversations] = useState([]);
   const [theOpenedConversation, setTheOpenedConversation] = useState(null);
@@ -85,11 +78,18 @@ const Messenger = () => {
 
   //get the conversation messages
   const getAllConversationMessages = () => {
+    const receiver_id = theOpenedConversation?.members.find(
+      (member) => member != userId
+    );
+
     theOpenedConversation &&
       axios
-        .get(`http://localhost:5000/messages/${theOpenedConversation._id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .get(
+          `http://localhost:5000/messages/${theOpenedConversation._id}/${receiver_id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
         .then(function (response) {
           // console.log(response.data);
           setMessages(response.data);
@@ -176,8 +176,7 @@ const Messenger = () => {
   //   scrollRef?.scrollIntoView({ behavior: "smooth" });
   // }, [messages]);
 
-  console.log(socket);
-
+  console.log(messages);
   return (
     <>
       <div className="messenger">
@@ -214,7 +213,7 @@ const Messenger = () => {
                 <div>
                   <div className="chatBoxTop">
                     {messages.map((element) => {
-                      console.log(element);
+                      // console.log(element);
                       return (
                         <div>
                           <Message

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./message.css";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { useNavigate, useParams, Outlet } from "react-router-dom";
 
 const Messages = ({ mine, message }) => {
 
- 
   // console.log("************", message);
   const [friendInfo, setFriendInfo] = useState(null);
 
