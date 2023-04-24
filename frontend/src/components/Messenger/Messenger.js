@@ -135,7 +135,7 @@ const Messenger = () => {
           text: newWrittenMessage,
         });
         setNewWrittenMessage("");
-        setMessages([...messages, response.data]);
+        // setMessages([...messages, response.data]);
       })
       .catch(function (error) {
         throw error;

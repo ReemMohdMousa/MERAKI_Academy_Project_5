@@ -86,7 +86,6 @@ export const posts = createSlice({
     },
 
     setHomePosts: (state, action) => {
-      console.log(action.payload);
       state.homePosts = action.payload;
     },
 
@@ -95,7 +94,6 @@ export const posts = createSlice({
     },
     sharepost: (state, action) => {
       state.sharedPosts.push(action.payload);
-      
     },
   },
 });

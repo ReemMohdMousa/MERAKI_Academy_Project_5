@@ -78,9 +78,8 @@ const Posts = ({ post,firstname,lastname }) => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-three-dots"
+                  className="bi bi-three-dots"
                   viewBox="0 0 16 16"
-                  on
                   onClick={() => {}}
                 >
                   <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
@@ -121,7 +120,7 @@ const Posts = ({ post,firstname,lastname }) => {
                 width="16"
                 height="16"
                 fill="currentColor"
-                class="bi bi-chat-left"
+                className="bi bi-chat-left"
                 viewBox="0 0 16 16"
               >
                 <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
@@ -134,7 +133,7 @@ const Posts = ({ post,firstname,lastname }) => {
                 width="16"
                 height="16"
                 fill="currentColor"
-                class="bi bi-send"
+                className="bi bi-send"
                 viewBox="0 0 16 16"
               >
                 <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />

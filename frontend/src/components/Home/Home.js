@@ -76,7 +76,7 @@ const Home = () => {
                       {/* dispaly the posts */}
                       {homePosts &&
                         homePosts.map((elem) => {
-                          return <HomePosts post={elem} />;
+                          return <HomePosts key={elem.post_id} post={elem} />;
                         })}
                     </MDBCol>
                   </MDBRow>

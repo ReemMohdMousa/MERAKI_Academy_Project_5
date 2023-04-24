@@ -27,6 +27,7 @@ import AllFriends from "./AllFriends";
 const Profile = () => {
   const params = useParams();
   const id = params.id;
+  console.log(">>>>>>>",id)
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
   const getuserdata = () => {
@@ -45,7 +46,7 @@ const Profile = () => {
         //setAppointments(Response.data.appointment);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -71,27 +72,15 @@ const Profile = () => {
         //setAppointments(Response.data.appointment);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
-  const getSharedPostsByUserId = () => {
-    axios
-      .get(`http://localhost:5000/share`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((Response) => {
-        dispatch(setSharedPosts(Response.data.posts));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
 
   useEffect(() => {
     getuserdata();
     getAllPostsByUserId();
-    getSharedPostsByUserId();
   }, []);
 
   return (

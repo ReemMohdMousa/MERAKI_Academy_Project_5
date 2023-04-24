@@ -105,7 +105,7 @@ const Likes = ({ post_id, post }) => {
           width="16"
           height="16"
           fill="currentColor"
-          class="bi bi-hand-thumbs-up"
+
           className={clicked}
           id={post_id}
           viewBox="0 0 16 16"
@@ -147,7 +147,7 @@ const Likes = ({ post_id, post }) => {
                         }
                       />
 
-                      <p>{element.firstname + " " + element.lastname}</p>
+                      <h6>{element.firstname + " " + element.lastname}</h6>
                     </div>
                   </div>
                 );

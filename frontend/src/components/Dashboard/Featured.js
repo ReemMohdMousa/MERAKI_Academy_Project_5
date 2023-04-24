@@ -31,8 +31,8 @@ const Featured = () => {
   if (!val) {
     return (
       <h1>
-        <div class="spinner-grow" role="status">
-          <span class="visually-hidden">Loading...</span>
+        <div className="spinner-grow" role="status">
+          <span className="visually-hidden">Loading...</span>
         </div>
       </h1>
     );
