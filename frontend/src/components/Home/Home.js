@@ -83,7 +83,7 @@ const Home = () => {
                         homePosts.map((elem) => {
 
 
-                          return <HomePosts post={elem} socket={socket}/>;
+                          return <HomePosts post={elem} socket={socket} key={elem.post_id }/>;
 
 
                         })}

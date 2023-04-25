@@ -15,7 +15,10 @@ import Dashboard from "./components/Dashboard";
 import UserTable from "./components/Dashboard/UserTable";
 import NewUsers from "./components/Dashboard/NewUsers";
 import Messenger from "./components/Messenger/Messenger";
+import Conversation from "./components/Messenger/Conversation/Conversation";
+import Message from "./components/Messenger/Message/Message";
 import SocketNotifications from "./components/NavBar/SocketNotifications";
+
 
 
 const ENDPOINT = "http://localhost:5000";
@@ -50,7 +53,7 @@ function App() {
 
   //const [socket, setSocket] = useState(io(ENDPOINT, { autoConnect: false }));
   //redux states
-  const {  roleId } = useSelector((state) => {
+  const { roleId } = useSelector((state) => {
     //return object contains the redux states
     return {
       userId: state.auth.userId,
@@ -101,8 +104,15 @@ function App() {
             ""
           )}
 
-          <Route path="/messenger" element={<Messenger />} />
+          <Route path="/messenger" element={<Messenger />}>
+            <Route
+              path="conversation/:conversationId"
+              element={<Message />}
+            />
+          </Route>
 
+          {/* <Route path="/messenger" element={<Messenger />} />
+          <Route path="/msgs" element={<Message />} /> */}
         </Routes>
       </div>
     </GoogleOAuthProvider>

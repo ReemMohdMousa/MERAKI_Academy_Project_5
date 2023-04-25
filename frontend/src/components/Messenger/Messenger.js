@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setFriendInfo } from "../redux/reducers/Messenger/index";
 import { io } from "socket.io-client";
+import { useNavigate, useParams, Outlet } from "react-router-dom";
+
 const ENDPOINT = "http://localhost:5000";
 
 //connect to the backend server
@@ -18,9 +20,10 @@ const Messenger = () => {
   const [messages, setMessages] = useState([]);
   const [newWrittenMessage, setNewWrittenMessage] = useState("");
   const [socket, setSocket] = useState(io(ENDPOINT, { autoConnect: false }));
-  const [arrivedMessage, setArrivedMessage] = useState(null);
+  const [sending, setSending] = useState(false);
+  const [receiving, setReceiving] = useState(false);
+
   const scrollRef = useRef();
-  const [currentUserId, setCurrentUserId] = useState("");
 
   const { userinfo, token, userId, conversationFriendInfo } = useSelector(
     (state) => {
@@ -51,6 +54,7 @@ const Messenger = () => {
         },
       ]);
     });
+    setReceiving(true);
   }, [messages]);
 
   // useEffect(() => {
@@ -76,14 +80,22 @@ const Messenger = () => {
 
   //get the conversation messages
   const getAllConversationMessages = () => {
+    const receiver_id = theOpenedConversation?.members.find(
+      (member) => member != userId
+    );
+
     theOpenedConversation &&
       axios
-        .get(`http://localhost:5000/messages/${theOpenedConversation._id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .get(
+          `http://localhost:5000/messages/${theOpenedConversation._id}/${receiver_id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
         .then(function (response) {
           // console.log(response.data);
           setMessages(response.data);
+          setSending(true);
         })
         .catch(function (error) {
           throw error;
@@ -145,13 +157,13 @@ const Messenger = () => {
   useEffect(() => {
     getAllUserConversations();
     getAllConversationMessages();
-  }, [theOpenedConversation]);
+  }, [theOpenedConversation, sending, receiving]);
 
   useEffect(() => {
     socket?.on("GET_USERS", (users) => {
       console.log(users);
     });
-  }, [currentUserId]);
+  }, [userId]);
 
   // console.log(theOpenedConversation);
 
@@ -166,6 +178,9 @@ const Messenger = () => {
   // useEffect(() => {
   //   scrollRef?.scrollIntoView({ behavior: "smooth" });
   // }, [messages]);
+
+  // console.log(messages);
+  // console.log(theOpenedConversation);
 
   return (
     <>
@@ -182,7 +197,10 @@ const Messenger = () => {
                     setTheOpenedConversation(element);
                   }}
                 >
-                  <Conversation Oneconversation={element} />
+                  <Conversation
+                    Oneconversation={element}
+                    theOpenedConversation={theOpenedConversation}
+                  />
                 </div>
               );
             })}
@@ -203,6 +221,7 @@ const Messenger = () => {
                 <div>
                   <div className="chatBoxTop">
                     {messages.map((element) => {
+                      // console.log(element);
                       return (
                         <div>
                           <Message

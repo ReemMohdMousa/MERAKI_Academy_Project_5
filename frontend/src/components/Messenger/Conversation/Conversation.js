@@ -2,23 +2,28 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./conversation.css";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams, Outlet } from "react-router-dom";
 
-import { setConversationFriendInfo } from "../../redux/reducers/Messenger/index";
+import {
+  setConversationFriendInfo,
+  setNewMsg,
+} from "../../redux/reducers/Messenger/index";
 
-const Conversation = ({ Oneconversation }) => {
+const Conversation = ({ Oneconversation, theOpenedConversation }) => {
   const [theFriendId, setTheFriendId] = useState("");
   const [friendInfo, setFriendInfo] = useState({});
+  const [isNew, setIsNew] = useState(false);
 
-  const { userinfo, token, userId, conversationFriendInfo } = useSelector(
-    (state) => {
+  const { userinfo, token, userId, newMsg, conversationFriendInfo } =
+    useSelector((state) => {
       return {
         userinfo: state.auth.userinfo,
         token: state.auth.token,
         userId: state.auth.userId,
         conversationFriendInfo: state.messenger.conversationFriendInfo,
+        newMsg: state.messenger.newMsg,
       };
-    }
-  );
+    });
 
   const dispatch = useDispatch();
 
@@ -47,13 +52,45 @@ const Conversation = ({ Oneconversation }) => {
         });
   };
 
+  const checkIfThereAreNewMsgs = () => {
+    // console.log("enterrrrrrrrrrrrr");
+    theFriendId &&
+      axios
+        .get(
+          `http://localhost:5000/conversation/new/messages/${Oneconversation._id}/${theFriendId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        .then(function (response) {
+          // console.log(response.data);
+          if (response.data === true) {
+            setIsNew(true);
+            dispatch(setNewMsg(true));
+          }
+        })
+        .catch(function (error) {
+          throw error;
+        });
+  };
+
+  const readMessages = () => {
+    if (theOpenedConversation?._id === Oneconversation._id) {
+      setIsNew(false);
+      dispatch(setNewMsg(true));
+    }
+  };
+
   useEffect(() => {
     getFriendId();
     getFriendInfo();
-  }, [theFriendId]);
+    checkIfThereAreNewMsgs();
+    readMessages();
+  }, [theFriendId, theOpenedConversation, isNew]);
 
   // console.log(conversationFriendInfo);
   // console.log(theFriendId);
+  console.log(Oneconversation);
 
   return (
     <div>
@@ -67,7 +104,7 @@ const Conversation = ({ Oneconversation }) => {
             }
             alt=""
           />
-          <span className="conversationName">{`${
+          <span className={isNew ? "newConvsName" : "conversationName"}>{`${
             friendInfo && friendInfo.firstname
           } ${friendInfo.lastname}`}</span>
         </div>

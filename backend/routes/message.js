@@ -9,7 +9,7 @@ const messagesRouter = express.Router();
 
 messagesRouter.post("/", authentication, SendNewMessage);
 messagesRouter.get(
-  "/:conversationId",
+  "/:conversationId/:receiverId",
   authentication,
   getAllMessagesByConversationId
 );

@@ -20,11 +20,11 @@ import AddPost from "../AddPost";
 import {  useParams } from "react-router-dom";
 import FriendRequests from "./FriendRequests";
 import AllFriends from "./AllFriends";
+import SendMessage from "./SendMessage";
 
 const Profile = () => {
   const params = useParams();
   const id = params.id;
-  console.log(">>>>>>>", id);
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
   const getuserdata = () => {
@@ -83,6 +83,8 @@ const Profile = () => {
 
   return (
     <div>
+
+      <SendMessage id={id} />
       {/* <FriendRequests id={id} />
       <AllFriends id={id} /> */}
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>

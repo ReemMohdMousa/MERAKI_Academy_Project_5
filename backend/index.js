@@ -110,12 +110,17 @@ io.on("connection", (socket) => {
   //send messages
   socket.on("SEND_MESSAGE", ({ sender_id, receiver_id, text }) => {
     const user = getUser(receiver_id);
-    io.to([user.socketId, socket.id]).emit("GET_MESSAGE", {
-      sender_id,
-      receiver_id,
-      text,
-    });
+    console.log(user);
+
+    if (user) {
+      io.to(user.socketId).emit("GET_MESSAGE", {
+        sender_id,
+        receiver_id,
+        text,
+      });
+    }
   });
+
 socket.join(socket)
   socket.on("NEW_USER", (userId) => {
  console.log(userId,"rrrrrrrrrr")
