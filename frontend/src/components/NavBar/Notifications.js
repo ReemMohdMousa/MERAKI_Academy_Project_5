@@ -6,6 +6,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setNotifications } from "../redux/reducers/posts";
@@ -21,12 +22,13 @@ export default function AccountMenu() {
   const dispatch = useDispatch();
 
   //redux login states
-  const { token, userId, isLoggedIn } = useSelector((state) => {
+  const { token, userId, isLoggedIn,Socket } = useSelector((state) => {
     //return object contains the redux states
     return {
       token: state.auth.token,
       isLoggedIn: state.auth.isLoggedIn,
       userId: state.auth.userId,
+      Socket:state.posts.Socket
     };
   });
   const handleClose = () => {
@@ -34,6 +36,9 @@ export default function AccountMenu() {
   };
 
   useEffect(() => {
+  
+
+    
     axios
       .get(`http://localhost:5000/home/notification`, {
         headers: { Authorization: `Bearer ${token}` },

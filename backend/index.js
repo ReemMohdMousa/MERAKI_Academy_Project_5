@@ -42,7 +42,7 @@ const server = app.listen(PORT, () => {
 
 let onlineUsers = [];
 const addNewUser = (userId, socketId) => {
-  !onlineUsers.some((user) => user.userId === userId) &&
+  !onlineUsers.some((user) => user.userId == userId) &&
     onlineUsers.push({ userId, socketId });
 };
 const removeUser = (soketId) => {
@@ -57,19 +57,28 @@ const io = socket(server, {
     methods: ["GET", "POST"],
   },
 });
-io.on("CONNECTION", (socket) => {
-  console.log(socket);
-
+io.on("connection", (socket) => {
+  console.log(socket.id);
+socket.join(socket)
   socket.on("NEW_USER", (userId) => {
- 
+ console.log(userId,"rrrrrrrrrr")
     addNewUser(userId,socket.id)
+    console.log("online",onlineUsers)
+
+
      
   });
-  socket.on("SEND_NOTIFICATIOn", (data) => {
-    console.log(data);
-    socket.to(data.room).emit("RECIVE_NOTIFICATION", data.content);
+ socket.on("SEND_NOTIFICATION", ({firstname,lastname,avatar,receiver,messagecontent}) => {
+   // console.log(data);
+    const Recevier=getUser(receiver)
+    console.log("hi all how are you",firstname,lastname,avatar,receiver,messagecontent)
+    console.log(Recevier)
+
+    socket.to(Recevier).emit("RECEIVE_NOTIFICATION",({firstname,lastname,avatar,messagecontent}));
   });
-  socket.on("DISCONNECT", () => {
+  socket.on("disconnect", () => {
+    console.log("some one leave");
    removeUser(socket.id)
+   io.emit("NEW_USER", onlineUsers);
   });
 });

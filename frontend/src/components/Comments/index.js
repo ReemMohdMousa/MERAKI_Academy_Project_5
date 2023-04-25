@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import InputEmoji from "react-input-emoji";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+
 import Dropdown from "react-bootstrap/Dropdown";
 import posts, {
   setComments,
@@ -25,8 +26,9 @@ import posts, {
   removeComment,
   setNestedComments,addNested,
 } from "../redux/reducers/posts/index";
+
 import UpdateComment from "./UpdateComment";
-const Comments = ({ id, firstname, lastname }) => {
+const Comments = ({ id, firstname, lastname,socket }) => {
   const dispatch = useDispatch();
   const [image, setImage] = useState("");
   const [disabled, setDisabled] = useState(false);
@@ -45,12 +47,14 @@ const Comments = ({ id, firstname, lastname }) => {
   const[newnrested,setNewNested]=useState({})
   function handleOnEnter(text) {}
   const [nemcomment, setNewComment] = useState({});
-  const { userinfo, token, userId, posts } = useSelector((state) => {
+
+  const { userinfo, token, userId, posts,Socket } = useSelector((state) => {
     return {
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
       posts: state.posts.posts,
+      Socket:state.posts.Socket
     };
   });
 
@@ -140,8 +144,16 @@ const Comments = ({ id, firstname, lastname }) => {
         { headers: { Authorization: token } }
       )
       .then((Response) => {
+        console.log(Response.data)
         let newComment = Response.data.result;
 
+        socket && socket.emit("SEND_NOTIFICATION",{
+          firstname:Response.data.firstname,
+          lastname: Response.data.lastname,
+          avatar: Response.data.avatar,
+          receiver: Response.data.receiver,
+          messagecontent:Response.data.messagecontent,
+        })
         dispatch(addComment({ id, newComment }));
         getAllCommentsByPostId(id);
       })

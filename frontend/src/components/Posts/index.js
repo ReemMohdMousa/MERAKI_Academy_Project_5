@@ -14,11 +14,13 @@ import {
 } from "../redux/reducers/posts/index";
 import Likes from "./Likes";
 import { setComments, addComment } from "../redux/reducers/posts/index";
+import { io } from "socket.io-client";
+import { useSocket } from "../../App";
 
 const Posts = ({ post,firstname,lastname }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
-
+  const socket=useSocket(io)
   const [openComments, setopenComments] = useState(false);
   const dispatch = useDispatch();
 
@@ -112,7 +114,7 @@ const Posts = ({ post,firstname,lastname }) => {
           <br></br>
           <div className="infomation">
 
-          {post.post_id && <Likes post_id={post.post_id} post={post} />}
+          {post.post_id && <Likes post_id={post.post_id} post={post} socket={socket} />}
           
 
             <div
@@ -149,7 +151,7 @@ const Posts = ({ post,firstname,lastname }) => {
           </div>
           {/*condition comments  */}
 
-          {openComments &&post.post_id && <Comments id={post.post_id} firstname={firstname} lastname={lastname} />}
+          {openComments &&post.post_id && <Comments id={post.post_id} firstname={firstname} lastname={lastname} socket={socket}/>}
           {show ? <UpdatePost showModal={show} post={post}
            setShowModal={setShow} />:""}
           

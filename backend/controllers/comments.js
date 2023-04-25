@@ -39,6 +39,7 @@ const createNewComment = async (req, res) => {
         lastname: lastname,
         avatar: avatar,
         receiver: receiver,
+        messagecontent:messagecontent,
       });
     })
 
