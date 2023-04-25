@@ -23,6 +23,7 @@ import { MDBFile } from "mdb-react-ui-kit";
 import { useNavigate, useParams } from "react-router-dom";
 import FriendRequests from "./FriendRequests";
 import AllFriends from "./AllFriends";
+import SendMessage from "./SendMessage";
 
 const Profile = () => {
   const params = useParams();
@@ -99,6 +100,7 @@ const Profile = () => {
     <div>
       <FriendRequests id={id} />
       <AllFriends id={id} />
+      <SendMessage id={id} />
       <div className="gradient-custom-2" style={{ backgroundColor: "white" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">

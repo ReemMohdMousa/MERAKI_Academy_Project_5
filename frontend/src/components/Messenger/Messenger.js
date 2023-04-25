@@ -20,9 +20,10 @@ const Messenger = () => {
   const [messages, setMessages] = useState([]);
   const [newWrittenMessage, setNewWrittenMessage] = useState("");
   const [socket, setSocket] = useState(io(ENDPOINT, { autoConnect: false }));
-  const [arrivedMessage, setArrivedMessage] = useState(null);
+  const [sending, setSending] = useState(false);
+  const [receiving, setReceiving] = useState(false);
+
   const scrollRef = useRef();
-  const [currentUserId, setCurrentUserId] = useState("");
 
   const { userinfo, token, userId, conversationFriendInfo } = useSelector(
     (state) => {
@@ -53,6 +54,7 @@ const Messenger = () => {
         },
       ]);
     });
+    setReceiving(true);
   }, [messages]);
 
   // useEffect(() => {
@@ -93,6 +95,7 @@ const Messenger = () => {
         .then(function (response) {
           // console.log(response.data);
           setMessages(response.data);
+          setSending(true);
         })
         .catch(function (error) {
           throw error;
@@ -154,13 +157,13 @@ const Messenger = () => {
   useEffect(() => {
     getAllUserConversations();
     getAllConversationMessages();
-  }, [theOpenedConversation]);
+  }, [theOpenedConversation, sending, receiving]);
 
   useEffect(() => {
     socket?.on("GET_USERS", (users) => {
       console.log(users);
     });
-  }, [currentUserId]);
+  }, [userId]);
 
   // console.log(theOpenedConversation);
 
@@ -176,8 +179,8 @@ const Messenger = () => {
   //   scrollRef?.scrollIntoView({ behavior: "smooth" });
   // }, [messages]);
 
-  console.log(messages);
-  console.log(theOpenedConversation);
+  // console.log(messages);
+  // console.log(theOpenedConversation);
 
   return (
     <>

@@ -53,7 +53,7 @@ const Conversation = ({ Oneconversation, theOpenedConversation }) => {
   };
 
   const checkIfThereAreNewMsgs = () => {
-    console.log("enterrrrrrrrrrrrr");
+    // console.log("enterrrrrrrrrrrrr");
     theFriendId &&
       axios
         .get(
@@ -63,7 +63,7 @@ const Conversation = ({ Oneconversation, theOpenedConversation }) => {
           }
         )
         .then(function (response) {
-          console.log(response.data);
+          // console.log(response.data);
           if (response.data === true) {
             setIsNew(true);
             dispatch(setNewMsg(true));
