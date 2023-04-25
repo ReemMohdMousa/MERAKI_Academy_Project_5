@@ -6,8 +6,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { format } from "timeago.js";
 import UpdatePost from "../AddPost/UpdatePost";
 import Likes from "../Posts/Likes";
-
-const HomePosts = ({ post }) => {
+const HomePosts = ({ post ,socket}) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const [openComments, setopenComments] = useState(false);
@@ -117,7 +116,9 @@ const HomePosts = ({ post }) => {
             </div>
           </div>
           {/*condition comments  */}
-          {openComments && <Comments id={post.post_id} />}
+
+          {openComments && <Comments id={post.post_id} socket={socket}/>}
+
           {show ? (
             <UpdatePost showModal={show} post={post} setShowModal={setShow} />
           ) : (

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setLogin, setUserId, setRoleId } from "../redux/reducers/auth";
 import { GoogleLogin } from "@react-oauth/google";
+import {  setUserInfo } from "../redux/reducers/auth";
 
 import {
   MDBBtn,
@@ -21,9 +22,12 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const state = useSelector((state) => {
+  const { isLoggedIn, token, userinfo, userId } = useSelector((state) => {
     return {
-      auth: state.auth,
+      isLoggedIn: state.auth.isLoggedIn,
+      userinfo: state.auth.userinfo,
+      token: state.auth.token,
+      userId: state.auth.userId,
     };
   });
 
@@ -62,6 +66,7 @@ const Register = () => {
 
               dispatch(setLogin(result.data.token));
               dispatch(setUserId(result.data.userId));
+
             })
             .catch((error) => {
               setShow(true);
@@ -130,10 +135,22 @@ const Register = () => {
           });
       });
   };
-
+  const getAllUserInfo = () => {
+    axios
+      .get(`http://localhost:5000/users/info`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((Response) => {
+        dispatch(setUserInfo(Response.data.info));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
-    if (state.auth.isLoggedIn) {
+    if (isLoggedIn) {
       navigate("/home");
+      getAllUserInfo()
     }
   });
 

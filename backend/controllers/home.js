@@ -41,5 +41,25 @@ const getAllFriendsPosts = (req, res) => {
       });
     });
 };
+const getAllNotificationByUserId=(req,res)=>{
+ let user_id=req.token.userId
+ const query='SELECT content, avatar, read from notifications Where read=FALSE AND user_id=$1'
+ pool
+    .query(query, [user_id])
+    .then((result) => {
+      res.status(201).json({
+        success: true,
+        message: "your notifications",
+        result: result.rows,
+      });
+    })
+    .catch((err) => {
+      res.status(404).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+}
 
-module.exports = { getAllFriendsPosts };
+module.exports = { getAllFriendsPosts,getAllNotificationByUserId };

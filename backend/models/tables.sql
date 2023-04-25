@@ -136,12 +136,16 @@ CREATE TABLE messages (
 CREATE TABLE notifications (
   notification_id SERIAL NOT NULL,
   user_id INT,
-  content VARCHAR(255),
+  sender_id INT,
+  avatar TEXT,
+  content VARCHAR(255),4
   is_deleted SMALLINT DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP,
   read BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (sender_id) REFERENCES users(user_id),
+
   PRIMARY KEY (notification_id)
 );
 
@@ -155,12 +159,20 @@ CREATE TABLE likes (
   FOREIGN KEY (post_id) REFERENCES posts(post_id),
   PRIMARY KEY (likes_id)
 );
-
 CREATE TABLE nestedComments (
   nestedComments_id SERIAL NOT NULL,
   post_id INT,
   comment_id INT,
   content VARCHAR(255),
+  user_id INT,
+  image TEXT,
+  is_deleted SMALLINT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT NOW(),
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (post_id) REFERENCES posts(post_id),
+  FOREIGN KEY (comment_id) REFERENCES comments(comment_id)ON DELETE CASCADE,
+  PRIMARY KEY (nestedComments_id)
+);
   image TEXT,
   is_deleted SMALLINT DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW(),
@@ -182,7 +194,4 @@ CREATE TABLE sharedPost1 (
   PRIMARY KEY (sharedPost_id)
 );
 
-/* 
- INSERT INTO sharedPost1 (sharedPost_content,sharedPost_user_id,post_id) VALUES ('true', 39,1) RETURNING *
- SELECT * FROM sharedPost1 INNER JOIN posts ON posts.post_id =sharedPost1.post_id 
- */
+
