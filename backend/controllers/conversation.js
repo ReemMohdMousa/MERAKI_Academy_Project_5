@@ -26,6 +26,7 @@ const getAllConversationsByUserId = (req, res) => {
   conversationModel
     .find({ members: { $in: [user_id] } })
     .then((results) => {
+      console.log(results);
       res.json(results);
     })
     .catch((err) => {
@@ -54,9 +55,9 @@ const getAConversationOfTheUserAndHisFriend = (req, res) => {
 
 const ProfileSendMsgBtn = (req, res) => {
   const user_id = req.token.userId;
-  const friend_id = req.params.friendId;
-  console.log(user_id);
-  
+  const friend_id = Number(req.params.friendId);
+  // console.log(user_id);
+
   conversationModel
     .find({
       members: { $all: [user_id, friend_id] },
