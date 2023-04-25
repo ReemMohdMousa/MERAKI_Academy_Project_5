@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setUserInfo } from "../redux/reducers/auth/index";
 import Dropdown from "react-bootstrap/Dropdown";
-import { format } from "timeago.js";
+import * as timeago from 'timeago.js';
 import Iframe from "react-iframe";
 import UpdatePost from "../AddPost/UpdatePost";
 import {
@@ -15,9 +15,15 @@ import {
 import Likes from "./Likes";
 import { setComments, addComment } from "../redux/reducers/posts/index";
 
+import { io } from "socket.io-client";
+import { useSocket } from "../../App";
+
+
 const Posts = ({ post,firstname,lastname }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
+
+  const socket=useSocket(io)
 
   const [openComments, setopenComments] = useState(false);
   const dispatch = useDispatch();
@@ -28,6 +34,7 @@ const Posts = ({ post,firstname,lastname }) => {
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
+     
     };
   });
 
@@ -48,7 +55,7 @@ const Posts = ({ post,firstname,lastname }) => {
   return (
     userinfo && (
       <div className="posts">
-        <div className="container">
+        <div className="containers">
           <div className="user">
             <div className="userInfo">
               <img
@@ -68,10 +75,12 @@ const Posts = ({ post,firstname,lastname }) => {
                     {firstname} {lastname}
                   </span>
                 </Link>
-                <span className="date">{format(post.created_at)}</span>
+                <span className="date">{timeago.format(post.created_at)}</span>
               </div>
             </div>
-            <Dropdown>
+
+
+  <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -93,22 +102,27 @@ const Posts = ({ post,firstname,lastname }) => {
                     setShow(true);
                   }}
                 >
-                  Edit Post
+
+                  Edit 
                 </Dropdown.Item>
-                <Dropdown.Item onClick={()=>{deletePost(post.post_id)}}>Delete Post</Dropdown.Item>
+              
+                <Dropdown.Item  onClick={()=>{deletePost(post.post_id)}} >Delete </Dropdown.Item>
+
               </Dropdown.Menu>
             </Dropdown>
+            
           </div>
           <div className="contant">
-            <p>{post.content}</p>
-            <img src={post.image} alt="" />
-            <embed className="embed" type="video/webm" src={post.video} />
-          </div>
 
+          {post.content && <p>{post.content}</p>}  
+            {post.image && <img src={post.image} alt="" />}   
+            {post.video && <embed width="100%" height="300px" className="embed" type="video/webm" src={post.video} /> }  
+          </div>
+          <br></br>
           <div className="infomation">
 
-          {post.post_id && <Likes post_id={post.post_id} post={post} />}
-
+          {post.post_id && <Likes post_id={post.post_id} post={post} socket={socket} />}
+          
 
             <div
               onClick={() => {
@@ -144,7 +158,10 @@ const Posts = ({ post,firstname,lastname }) => {
           </div>
           {/*condition comments  */}
 
-          {openComments &&post.post_id && <Comments id={post.post_id} firstname={firstname} lastname={lastname} />}
+
+          {openComments &&post.post_id && <Comments id={post.post_id} firstname={firstname} lastname={lastname} socket={socket}/>}
+
+
           {show ? <UpdatePost showModal={show} post={post}
            setShowModal={setShow} />:""}
           

@@ -1,13 +1,84 @@
 const { pool } = require("../models/db");
 
-const createNewComment = (req, res) => {
+const createNewComment = async (req, res) => {
   const post_id = req.params.id;
   const user_id = req.token.userId;
+  let firstname = "";
+  let lastname = "";
+  let avatar = "";
+  let receiver;
+
+  //console.log(firstname,lastname)
+  const querytofindname = `
+  SELECT users.firstname,users.lastname ,users.avatar from users 
+ where users.user_id =$1`;
+  const result1 = await pool.query(querytofindname, [user_id]);
+  firstname = result1.rows[0].firstname;
+  lastname = result1.rows[0].lastname;
+  avatar = result1.rows[0].avatar;
+
+  let messagecontent = `${firstname}  ${lastname} comment in your post`;
+  const queryuser = `SELECT user_id from posts where post_id=$1`;
+  const result2 = await pool.query(queryuser, [post_id]);
+  receiver = result2.rows[0].user_id;
 
   const { content, image, video } = req.body;
 
   const query = `INSERT INTO comments (post_id, user_id, content, image, video) VALUES ($1,$2,$3,$4,$5) RETURNING *`;
   const data = [post_id, user_id, content, image, video];
+  const notiquery = `INSERT INTO notifications(user_id,sender_id,content,avatar) VALUES($1,$2,$3,$4)RETURNING*`;
+  await pool.query(notiquery, [receiver, user_id, messagecontent, avatar]);
+  pool
+    .query(query, data)
+    .then((result) => {
+      res.status(201).json({
+        success: true,
+        message: "Comment created successfully",
+        result: result.rows[0],
+        firstname: firstname,
+        lastname: lastname,
+        avatar: avatar,
+        receiver: receiver,
+        messagecontent:messagecontent,
+      });
+    })
+
+    .catch((err) => {
+      res.status(404).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+const createNewNestedComment = async (req, res) => {
+  const comment_id = req.query.comment_id;
+  const post_id = req.query.post_id;
+  const user_id = req.token.userId;
+  console.log(comment_id, post_id, user_id);
+  let firstname = "";
+  let lastname = "";
+  let receiver = "";
+  let postcontent = "";
+  let postimage = "";
+  const { content, image } = req.body;
+  const querytofindname = `
+  SELECT users.firstname,users.lastname  from users 
+   where user_id =$1`;
+  pool.query(querytofindname, [user_id]).then((result) => {
+    firstname = result.rows[0].firstname;
+    lastname = result.rows[0].lastname;
+    postcontent = result.rows[0].content;
+    postimage = result.rows[0].image;
+  });
+  let messagecontent = `${firstname}  ${lastname} comment in your comment ${postcontent} ${postimage} ${postvideo}`;
+  const queryuser = `SELECT user_id from comments where comment_id=$1`;
+  pool.query(queryuser, [comment_id]).then((result) => {
+    receiver = result.rows[0].user_id;
+  });
+  const query = `INSERT INTO nestedComments (post_id, comment_id, content, image,user_id) VALUES ($1,$2,$3,$4,$5) RETURNING *`;
+  const data = [post_id, comment_id, content || null, image || null, user_id];
+  await pool.query(notiquery, [receiver, user_id, messagecontent]);
 
   pool
     .query(query, data)
@@ -26,26 +97,28 @@ const createNewComment = (req, res) => {
       });
     });
 };
-const createNewNestedComment = (req, res) => {
-  const comment_id = req.query.comment_id;
+const getAllNestedCommentsByCommentId = (req, res) => {
   const post_id = req.query.post_id;
-console.log(comment_id,post_id)
-  const { content, image } = req.body;
+  const comment_id = req.query.comment_id;
+  const query = `SELECT nestedcomments.*, users.firstname ,users.lastname
+  FROM nestedcomments 
+  INNER JOIN users ON nestedcomments.user_id = users.user_id
+  WHERE nestedcomments.is_deleted=0 AND nestedcomments.post_id =$1
+  AND nestedcomments.comment_id=$2
+ORDER BY nestedcomments.created_at DESC`;
 
-  const query = `INSERT INTO nestedComments (post_id, comment_id, content, image) VALUES ($1,$2,$3,$4) RETURNING *`;
-  const data = [post_id, comment_id, content||null, image||null];
-
+  const data = [post_id, comment_id];
   pool
     .query(query, data)
     .then((result) => {
-      res.status(201).json({
+      res.status(200).json({
         success: true,
-        message: "Comment created successfully",
-        result: result.rows[0],
+        message: `All comments for post: ${post_id}`,
+        result: result.rows,
       });
     })
     .catch((err) => {
-      res.status(404).json({
+      res.status(500).json({
         success: false,
         message: "Server error",
         err: err,
@@ -55,7 +128,7 @@ console.log(comment_id,post_id)
 const getCommentsByPostId = (req, res) => {
   const post_id = req.params.id;
 
-  const query = `SELECT *
+  const query = `SELECT comments.*, users.firstname,users.lastname
   FROM comments 
   INNER JOIN users ON comments.user_id = users.user_id
   WHERE comments.is_deleted=0 AND comments.post_id =$1 
@@ -163,4 +236,5 @@ module.exports = {
   UpdateCommentById,
   deleteCommentById,
   createNewNestedComment,
+  getAllNestedCommentsByCommentId,
 };

@@ -15,18 +15,24 @@ import { format } from "timeago.js";
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
-import InputEmoji from 'react-input-emoji'
+import InputEmoji from "react-input-emoji";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-import Dropdown from "react-bootstrap/Dropdown";
-import posts, { setComments, addComment,removeComment } from "../redux/reducers/posts/index";
-import UpdateComment from "./UpdateComment";
-const Comments = ({ id,firstname,lastname }) => {
 
+import Dropdown from "react-bootstrap/Dropdown";
+import posts, {
+  setComments,
+  addComment,
+  removeComment,
+  setNestedComments,addNested,
+} from "../redux/reducers/posts/index";
+
+import UpdateComment from "./UpdateComment";
+const Comments = ({ id, firstname, lastname,socket }) => {
   const dispatch = useDispatch();
   const [image, setImage] = useState("");
-  const [disabled,setDisabled]=useState(false)
-  const [selectedimage,setSelectedImage]=useState("")
+  const [disabled, setDisabled] = useState(false);
+  const [selectedimage, setSelectedImage] = useState("");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -34,23 +40,24 @@ const Comments = ({ id,firstname,lastname }) => {
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = () => setShowEdit(true);
   const [comments, setcomments] = useState(null);
-  const [emoji,setEmoji]=useState(false)
-  const [ text, setText ] = useState('')
-  const [currentEmoji,setCurrentEmoji]=useState("")
+  const [emoji, setEmoji] = useState(false);
+  const [text, setText] = useState("");
+  const [currentEmoji, setCurrentEmoji] = useState("");
+  const [allnested, setAllNested] = useState(null);
+  const[newnrested,setNewNested]=useState({})
+  function handleOnEnter(text) {}
+  const [nemcomment, setNewComment] = useState({});
 
-  function handleOnEnter (text) {
-  
-  }
-  const[nemcomment,setNewComment]=useState({})
-  const { userinfo, token, userId,posts } = useSelector((state) => {
+  const { userinfo, token, userId, posts,Socket } = useSelector((state) => {
     return {
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
-      posts:state.posts.posts
+      posts: state.posts.posts,
+      Socket:state.posts.Socket
     };
   });
- 
+
   const uploadImage = () => {
     const data = new FormData();
     data.append("file", image);
@@ -63,25 +70,61 @@ const Comments = ({ id,firstname,lastname }) => {
       .then((resp) => resp.json())
       .then((data) => {
         //setpost()
-     
-        setNewComment((image) => {
-          setDisabled(false)
 
-         return { ...image, image: data.url };
+        setNewComment((image) => {
+          setDisabled(false);
+
+          return { ...image, image: data.url };
         });
-        
       })
       .catch((err) => console.log(err));
   };
+  const getAllNestedCommentsBycommentId = (post_id, comment_id) => {
+    axios
+      .get(
+        `http://localhost:5000/comments/getnested?comment_id=${comment_id}&post_id=${post_id}`
+      )
+
+      .then((Response) => {
+        let nestedcomments = Response.data.result;
+        //this is for local use state
+        console.log(Response.data.result);
+        setAllNested(Response.data.result);
+        //this is for redux
+        dispatch(setNestedComments({ post_id, comment_id, nestedcomments}));
+       
+        //console.log(allnested);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const createNestedComment=(post_id,comment_id)=>{
+   axios
+    .post(
+      `http://localhost:5000/comments/nested?comment_id=${comment_id}&post_id=${post_id}`,
+      {...newnrested},
+      { headers:{ Authorization: token }}
+    )
+    .then((Response) => {
+      let nestedcomment=Response.data.result
+      console.log(Response.data.result);
+      dispatch(addNested({post_id,comment_id,nestedcomment}));
+      getAllNestedCommentsBycommentId(post_id,comment_id)  
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
   const getAllCommentsByPostId = (id) => {
     axios
       .get(`http://localhost:5000/comments/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((Response) => {
-        
         let comments = Response.data.result;
         //this is for local use state
+        console.log(Response.data.result);
         setcomments(comments);
         //this is for redux
         dispatch(setComments({ id, comments }));
@@ -90,30 +133,45 @@ const Comments = ({ id,firstname,lastname }) => {
         console.log(err);
       });
   };
-  const addNewComment=()=>{
-    axios.post(`http://localhost:5000/comments/${id}`, {
-       ...nemcomment }, { headers: { Authorization: token } }
-      ).then((Response) => {
-     
-      let newComment = Response.data.result;
-     
-      dispatch(addComment({ id, newComment }));
-      getAllCommentsByPostId(id)
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
 
-  const deleteComment = async (post_id,comment_id) => {
-    try {
-      await axios.delete(`http://localhost:5000/comments/comment/${comment_id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      }).then((result)=>{
-        
-        dispatch(removeComment({post_id,comment_id}))
+  const addNewComment = () => {
+    axios
+      .post(
+        `http://localhost:5000/comments/${id}`,
+        {
+          ...nemcomment,
+        },
+        { headers: { Authorization: token } }
+      )
+      .then((Response) => {
+        console.log(Response.data)
+        let newComment = Response.data.result;
+
+        socket && socket.emit("SEND_NOTIFICATION",{
+          firstname:Response.data.firstname,
+          lastname: Response.data.lastname,
+          avatar: Response.data.avatar,
+          receiver: Response.data.receiver,
+          messagecontent:Response.data.messagecontent,
+        })
+        dispatch(addComment({ id, newComment }));
+        getAllCommentsByPostId(id);
       })
-      getAllCommentsByPostId(id)
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const deleteComment = async (post_id, comment_id) => {
+    try {
+      await axios
+        .delete(`http://localhost:5000/comments/comment/${comment_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((result) => {
+          dispatch(removeComment({ post_id, comment_id }));
+        });
+      getAllCommentsByPostId(id);
     } catch (error) {
       console.log(error);
     }
@@ -161,41 +219,41 @@ const Comments = ({ id,firstname,lastname }) => {
                               placeholder="write a comment..."
                               id="mytextarea"
                               type="text"
-                              onChange={(e)=>{
+                              onChange={(e) => {
                                 setNewComment((content) => {
-                                  setDisabled(false)
-                                  
-                                 return { ...content, content:e.target.value
-                                 };
+                                  setDisabled(false);
+
+                                  return {
+                                    ...content,
+                                    content: e.target.value +text,
+                                  };
                                 });
-                                
                               }}
                             />
-                             <div className="d-flex justify-content-between align-items-center">
-                             {nemcomment.image && (
-                          <img style={{width:"100px",marginLeft:"20%"}}
-                            variant="success"
-                           
-                            src={nemcomment.image}
-                          />
-                        )}
-                        {disabled && (
-                          <div>
-                            <p variant="warning">
-                              Please wait untile file uploaded
-                            </p>
-                            <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
-                          </div>
-                        )}
-                        {text &&text}
+                            <div className="d-flex justify-content-between align-items-center">
+                              {nemcomment.image && (
+                                <img
+                                  style={{ width: "100px", marginLeft: "20%" }}
+                                  variant="success"
+                                  src={nemcomment.image}
+                                />
+                              )}
+                              {disabled && (
+                                <div>
+                                  <p variant="warning">
+                                    Please wait untile file uploaded
+                                  </p>
+                                  <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
+                                </div>
+                              )}
+                              {text && text}
                             </div>
-                          
+
                             <div className="commentbtn">
                               <div style={{ margin: "3px" }}>
                                 <button
                                   onClick={(e) => {
                                     handleShow();
-                                    
                                   }}
                                   style={{
                                     border: "none",
@@ -220,27 +278,36 @@ const Comments = ({ id,firstname,lastname }) => {
                                   {/* <MDBIcon fas icon="reply fa-xs" />
                                   <span onClick={()=>{setEmoji(true)}}> 😃</span> */}
                                 </a>
-                              
                               </div>
-                             
-                              <button onClick={()=>{addNewComment()}}>comment</button>
+
+                              <button
+                                onClick={() => {
+                                  addNewComment();
+                                }}
+                              >
+                                comment
+                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
-                      {emoji &&    <InputEmoji
-          value={text}
-          onChange={setText}
-          cleanOnEnter
-          onEnter={handleOnEnter}
-          selector="#mytextarea"
-          placeholder="Type a message"
-        />}
+                      {emoji && (
+                        <InputEmoji
+                          value={text}
+                          onChange={setText}
+                          cleanOnEnter
+                          onEnter={handleOnEnter}
+                          selector="#mytextarea"
+                          placeholder="Type a message"
+                        />
+                      )}
                       {comments?.length > 0 &&
                         comments.map((element) => {
-                          
                           return (
-                            <div className="d-flex flex-start mt-4">
+                            <div
+                              className="d-flex flex-start mt-4"
+                              key={element.comment_id}
+                            >
                               <MDBCardImage
                                 className="rounded-circle shadow-1-strong me-3"
                                 src={
@@ -252,7 +319,7 @@ const Comments = ({ id,firstname,lastname }) => {
                                 width="65"
                                 height="65"
                               />
- 
+
                               <div className="flex-grow-1 flex-shrink-1">
                                 <div>
                                   <div className="d-flex justify-content-between align-items-center">
@@ -262,122 +329,164 @@ const Comments = ({ id,firstname,lastname }) => {
                                         - {format(element.created_at)}
                                       </span>
                                     </p>
-                                   <Dropdown>
-              <Dropdown.Toggle id="dropdown-basic">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-three-dots"
-                  viewBox="0 0 16 16"
-                  on
-                  onClick={() => {}}
-                >
-                  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                </svg>
-              </Dropdown.Toggle>
+                                    <Dropdown>
+                                      <Dropdown.Toggle id="dropdown-basic">
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          width="16"
+                                          height="16"
+                                          fill="currentColor"
+                                          class="bi bi-three-dots"
+                                          viewBox="0 0 16 16"
+                                          on
+                                          onClick={() => {}}
+                                        >
+                                          <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                                        </svg>
+                                      </Dropdown.Toggle>
 
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  onClick={() => {
-                    setShowEdit(true);
-                  }}
-                >
-                  Edit 
-                </Dropdown.Item>
-              
-                <Dropdown.Item onClick={()=>
-                 {deleteComment(id,element.comment_id)
-                  { }}}>Delete </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                                      <Dropdown.Menu>
+                                        <Dropdown.Item
+                                          onClick={() => {
+                                            setShowEdit(true);
+                                          }}
+                                        >
+                                          Edit
+                                        </Dropdown.Item>
+
+                                        <Dropdown.Item
+                                          onClick={() => {
+                                            deleteComment(
+                                              id,
+                                              element.comment_id
+                                            );
+                                          }}
+                                        >
+                                          Delete{" "}
+                                        </Dropdown.Item>
+                                      </Dropdown.Menu>
+                                    </Dropdown>
                                   </div>
-                                  {element.content &&( <p className="small mb-0">
-                                    {element.content}
-                                  </p>)}
+                                  {element.content && (
+                                    <p className="small mb-0">
+                                      {element.content}
+                                    </p>
+                                  )}
                                   <div className="d-flex justify-content-between align-items-center">
-                             {element.image && (
-                          <img style={{width:"100px",marginLeft:"20%"}}
-                            variant="success"
-                           
-                            src={element.image}
-                          />
-                        )}
-                        {disabled && (
-                          <div>
-                            <p variant="warning">
-                              Please wait untile file uploaded
-                            </p>
-                            <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
-                          </div>
-                        )}
-                            </div>
-                                    
+                                    {element.image && (
+                                      <img
+                                        style={{
+                                          width: "100px",
+                                          marginLeft: "20%",
+                                        }}
+                                        variant="success"
+                                        src={element.image}
+                                      />
+                                    )}
+                                    {disabled && (
+                                      <div>
+                                        <p variant="warning">
+                                          Please wait untile file uploaded
+                                        </p>
+                                        <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
+                                      </div>
+                                    )}
+                                    <button
+                                      onClick={() => {
+                                        getAllNestedCommentsBycommentId(element.post_id, element.comment_id)
+                                      }}
+                                    >
+                                      all replies
+                                    </button>
+                                  </div>
                                 </div>
 
-                                {/* <div className="d-flex flex-start mt-4">
-                          <a className="me-3" href="#">
-                            <MDBCardImage
-                              className="rounded-circle shadow-1-strong me-3"
-                              src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(31).webp"
-                              alt="avatar"
-                              width="65"
-                              height="65"
+                                <div className="d-flex flex-start mt-4">
+                                  <a className="me-3" href="#">
+                                    <MDBCardImage
+                                      className="rounded-circle shadow-1-strong me-3"
+                                      src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(31).webp"
+                                      alt="avatar"
+                                      width="65"
+                                      height="65"
+                                    />
+                                  </a>
+
+                                  <div className="flex-grow-1 flex-shrink-1">
+                                    <div>
+                                      <div className="d-flex justify-content-between align-items-center">
+                                        <p className="mb-1">
+                                          {userinfo.firstname}{" "}{userinfo.lastname}
+              <br></br>                            <span className="small">
+                                            {format(Date())}
+                                          </span>
+                                        </p>
+                                      </div>
+                                      <MDBInput
+                              style={{ height: "40px" }}
+                              wrapperClass="mb-4"
+                              placeholder="replay the comment..."
+                              id="mytextarea"
+                              type="text"
+                              onChange={(e) => {
+                                setNewNested((content)=>{return{...content,content:e.target.value}}) 
+                                
+                              }}
                             />
-                          </a>
+                            <button onClick={()=>{createNestedComment(element.post_id,element.comment_id)}}>reply</button>
+                                    </div>
+                                  </div>
+                                </div>
 
-                          <div className="flex-grow-1 flex-shrink-1">
-                            <div>
-                              <div className="d-flex justify-content-between align-items-center">
-                                <p className="mb-1">
-                                  Lisa Cudrow{" "}
-                                  <span className="small">- 4 hours ago</span>
-                                </p>
-                              </div>
-                              <p className="small mb-0">
-                                Cras sit amet nibh libero, in gravida nulla.
-                                Nulla vel metus scelerisque ante sollicitudin
-                                commodo. Cras purus odio, vestibulum in
-                                vulputate at, tempus viverra turpis.
-                              </p>
-                            </div>
-                          </div>
-                        </div> */}
+                                {allnested?.length > 0 &&
+                                  allnested.map((elementnested) => {
+                                    return (
+                                      <div
+                                        className="d-flex flex-start mt-4"
+                                        key={elementnested.comment_id}
+                                      >
+                                        <a className="me-3" href="#">
+                                          <MDBCardImage
+                                            className="rounded-circle shadow-1-strong me-3"
+                                            src={elementnested.avatar?elementnested.avatar : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"}
+                                            alt="avatar"
+                                            width="65"
+                                            height="65"
+                                          />
+                                        </a>
 
-                                {/* <div className="d-flex flex-start mt-4">
-                          <a className="me-3" href="#">
-                            <MDBCardImage
-                              className="rounded-circle shadow-1-strong me-3"
-                              src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(32).webp"
-                              alt="avatar"
-                              width="65"
-                              height="65"
-                            />
-                          </a>
+                                        <div className="flex-grow-1 flex-shrink-1">
+                                          <div>
+                                            <div className="d-flex justify-content-between align-items-center">
+                                              <p className="mb-1">
+                                                {elementnested.firstname}{" "}
+                                                {elementnested.lastname}
+                <br></br>                                <span className="small">
+                                                  {format(elementnested.created_at)}
+                                                </span>
+                                              </p>
+                                            </div>
+{elementnested.content && <p>{elementnested.content}</p>}
+                                            {elementnested.image && (
+                                              <img src={elementnested.image} style={{width:"200px"}}/>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
 
-                          <div className="flex-grow-1 flex-shrink-1">
-                            <div>
-                              <div className="d-flex justify-content-between align-items-center">
-                                <p className="mb-1">
-                                  John Smith{" "}
-                                  <span className="small">- 6 hours ago</span>
-                                </p>
-                              </div>
-                              <p className="small mb-0">
-                                Autem, totam debitis suscipit saepe sapiente
-                                magnam officiis quaerat necessitatibus odio
-                                assumenda, perferendis quae iusto labore
-                                laboriosam minima numquam impedit quam dolorem!
-                              </p>
-                            </div>
-                          </div> 
-                        </div>*/}
-                         {showEdit ? <UpdateComment showModal={showEdit} comment={element}
-                               setShowModal={setShowEdit} />:""}
+                                {showEdit ? (
+                                  <UpdateComment
+                                    showModal={showEdit}
+                                    comment={element}
+                                    setShowModal={setShowEdit}
+                                  />
+                                ) : (
+                                  ""
+                                )}
                               </div>
                             </div>
-                              
                           );
                         })}
                     </MDBCol>
@@ -388,7 +497,7 @@ const Comments = ({ id,firstname,lastname }) => {
           </MDBRow>
         </MDBContainer>
       </section>
-   
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header></Modal.Header>
         <Modal.Body>
@@ -438,10 +547,8 @@ const Comments = ({ id,firstname,lastname }) => {
           </Button>
         </Modal.Footer>
       </Modal>
-     
     </>
-    
-     );
+  );
 };
 
 export default Comments;

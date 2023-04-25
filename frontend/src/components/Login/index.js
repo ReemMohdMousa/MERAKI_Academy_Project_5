@@ -26,7 +26,6 @@ import {
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const { isLoggedIn, token, userinfo, userId, roleId } = useSelector(
     (state) => {
       return {
@@ -123,7 +122,6 @@ const Login = () => {
         console.log(err);
       });
   };
-
   return (
     <div className="cont">
       <MDBContainer fluid>

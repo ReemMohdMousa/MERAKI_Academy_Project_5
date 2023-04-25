@@ -1,8 +1,6 @@
 const { Pool, Client } = require("pg");
 //require mongoose
 const mongoose = require("mongoose");
-
-
  const pool = new Pool({
    connectionString: process.env.CONNECTION_STRING,
  });
@@ -30,6 +28,7 @@ const mongoose = require("mongoose");
 //   }
 //   console.log("connected to", pool.user);
 // });
+
 
 
 //strictQuery
