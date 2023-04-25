@@ -52,10 +52,11 @@ const getAConversationOfTheUserAndHisFriend = (req, res) => {
   // messageModel.updateMany({conversationId:})
 };
 
-const ProfileSendMsgBtn = () => {
+const ProfileSendMsgBtn = (req, res) => {
   const user_id = req.token.userId;
-  const friend_id = req.params.friend_id;
-
+  const friend_id = req.params.friendId;
+  console.log(user_id);
+  
   conversationModel
     .find({
       members: { $all: [user_id, friend_id] },
@@ -67,6 +68,15 @@ const ProfileSendMsgBtn = () => {
         const newConversation = await new conversationModel({
           members: [user_id, friend_id],
         });
+
+        newConversation
+          .save()
+          .then((results) => {
+            res.json(results);
+          })
+          .catch((err) => {
+            res.json(err);
+          });
       }
     })
     .catch((err) => {
@@ -100,4 +110,5 @@ module.exports = {
   getAllConversationsByUserId,
   getAConversationOfTheUserAndHisFriend,
   checkIfThereAreNewMsgs,
+  ProfileSendMsgBtn,
 };

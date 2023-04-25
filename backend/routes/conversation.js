@@ -4,6 +4,7 @@ const {
   getAllConversationsByUserId,
   getAConversationOfTheUserAndHisFriend,
   checkIfThereAreNewMsgs,
+  ProfileSendMsgBtn,
 } = require("../controllers/conversation");
 
 const authentication = require("../middlewares/authentication");
@@ -19,5 +20,7 @@ conversationRouter.get(
   "/new/messages/:conversationId/:receiverId",
   checkIfThereAreNewMsgs
 );
+
+conversationRouter.get("/new/:friendId", authentication, ProfileSendMsgBtn);
 
 module.exports = conversationRouter;
