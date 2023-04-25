@@ -30,8 +30,9 @@ const register = async (req, res) => {
         const payload = {
           userId: result.rows[0].user_id,
           role: result.rows[0].role_id,
+          firstname:result.rows[0].firstName,
+          lastname:result.rows[0].lastName
         };
-
         const options = {
           expiresIn: "24h",
         };
@@ -75,6 +76,8 @@ const login = (req, res) => {
             const payload = {
               userId: result.rows[0].user_id,
               role: result.rows[0].role_id,
+              firstname:result.rows[0].firstName,
+              lastname:result.rows[0].lastName
             };
 
             const options = {
@@ -87,7 +90,7 @@ const login = (req, res) => {
                 success: true,
                 message: `Valid login credentials`,
                 token,
-                userId: result.rows[0].user_id,
+                userId: result.rows[0].user_id,                
                 roleId: result.rows[0].role_id,
               });
             } else {
@@ -147,8 +150,8 @@ const profileInfo = (req, res) => {
     .query(query, [user_id])
     .then((result) => {
       if (result.rows.length === 0) {
-        res.status(404).json({
-          success: false,
+        res.status(200).json({
+          success: true,
           message: `The user: ${user_id} has no info`,
         });
       } else {

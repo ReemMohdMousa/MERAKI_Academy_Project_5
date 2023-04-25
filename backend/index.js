@@ -59,17 +59,19 @@ const io = socket(server, {
 });
 
 let users = [];
+let onlineUsers = [];
+const addNewUser = (userId, socketId) => {
+  !onlineUsers.some((user) => user.userId == userId) &&
+    onlineUsers.push({ userId, socketId });
+};
+const removeUserNoti = (soketId) => {
+  onlineUsers = onlineUsers.filter((user) => user.socketId !== soketId);
+};
+const getUserNoti=(userId)=>{
+  return onlineUsers.find((user)=>user.userId ==userId)
+}
 
 const addUser = (userId, socketId) => {
-  // const results = users.filter((user) => {
-  //   return user.userId === userId;
-  // });
-
-  // if (results.length !== 0) {
-  //   // if the user is not exsisted in the users array, add him
-  //   users.push({ userId, socketId });
-  // }
-
   !users.some((user) => user.userId == userId) &&
     users.push({ userId, socketId });
 };
@@ -82,9 +84,7 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
-  // console.log(userId);
   const receiver = users.find((user) => {
-    // console.log(user);
     return user.userId == userId;
   });
   return receiver;
@@ -104,12 +104,11 @@ io.on("connection", (socket) => {
 
     //send the users array to the frontend
     io.emit("GET_USERS", users);
-    console.log(users);
+
   });
 
   //send messages
   socket.on("SEND_MESSAGE", ({ sender_id, receiver_id, text }) => {
-    console.log(sender_id, receiver_id, text);
     const user = getUser(receiver_id);
     console.log(user);
 
@@ -122,10 +121,32 @@ io.on("connection", (socket) => {
     }
   });
 
+socket.join(socket)
+  socket.on("NEW_USER", (userId) => {
+ console.log(userId,"rrrrrrrrrr")
+    addNewUser(userId,socket.id)
+    console.log("online",onlineUsers)
+  });
+    socket.on("SEND_NOTIFICATION", ({firstname,lastname,avatar,receiver,messagecontent}) => {
+      // console.log(data);
+       const Recevier=getUserNoti(receiver)
+       console.log("hi all how are you",firstname,lastname,avatar,receiver,messagecontent)
+       console.log(Recevier)
+   
+       socket.to(Recevier).emit("RECEIVE_NOTIFICATION",({firstname,lastname,avatar,messagecontent}));
+     });
+
   socket.on("disconnect", () => {
     console.log("user left");
-    removeUser(socket.id);
+    removeUserNoti(socket.id);
+    removeUser(soket.id)
     io.emit("GET_USERS", users);
+    io.emit("NEW_USER", onlineUsers);
     console.log(users);
+
+
+
+
+
   });
 });

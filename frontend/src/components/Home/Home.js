@@ -11,6 +11,7 @@ import {
   MDBBtn,
   MDBTypography,
 } from "mdb-react-ui-kit";
+import Comments from "../Comments";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts/index";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,9 +23,13 @@ import { MDBFile } from "mdb-react-ui-kit";
 import { useNavigate, useParams } from "react-router-dom";
 import HomePosts from "./HomePosts";
 
+import { io } from "socket.io-client";
+import { useSocket } from "../../App";
+
+
 const Home = () => {
   const dispatch = useDispatch();
-
+  const socket=useSocket(io)
   //redux states
   const { posts, userinfo, token, userId, friends, homePosts } = useSelector(
     (state) => {
@@ -60,7 +65,7 @@ const Home = () => {
 
   return (
     <div>
-      <div className="gradient-custom-2" style={{ backgroundColor: "#9de2ff" }}>
+      <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
             <MDBCol lg="9" xl="7">
@@ -76,7 +81,11 @@ const Home = () => {
                       {/* dispaly the posts */}
                       {homePosts &&
                         homePosts.map((elem) => {
-                          return <HomePosts post={elem} key={elem.post_id } />;
+
+
+                          return <HomePosts post={elem} socket={socket} key={elem.post_id }/>;
+
+
                         })}
                     </MDBCol>
                   </MDBRow>

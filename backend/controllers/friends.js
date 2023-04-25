@@ -2,12 +2,10 @@ const { pool } = require("../models/db");
 
 //* add status key to the friend table (pending, accepted, declined)
 
-const AddFriendRequest = (req, res) => {
+const AddFriendRequest = async (req, res) => {
   const { user2_id } = req.body;
   const status = "pending";
   const user_id = req.token.userId;
-
-  console.log(user2_id);
 
   //user 1 sent a friend request to user 2
   // sender_id: user 1 : user_id
@@ -17,6 +15,7 @@ const AddFriendRequest = (req, res) => {
   const data = [user_id, user2_id, status];
 
   if (user_id !== user2_id) {
+
     pool
       .query(query, data)
       .then((result) => {
@@ -127,7 +126,6 @@ const addRequestOnce = (req, res, next) => {
   pool
     .query(query, data)
     .then((result) => {
-      console.log(result.rows);
       //if the request not accepted yet
       if (result.rows.length === 0) {
         next();
@@ -139,7 +137,6 @@ const addRequestOnce = (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         success: false,
         message: "Server error",
@@ -165,7 +162,6 @@ const acceptRequestOnce = (req, res, next) => {
   pool
     .query(query, data)
     .then((result) => {
-      console.log(result.rows);
       //if the request not accepted yet
       if (result.rows.length === 0) {
         next();
@@ -177,7 +173,6 @@ const acceptRequestOnce = (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         success: false,
         message: "Server error",
@@ -195,6 +190,20 @@ const acceptFriendRequest = async (req, res) => {
   //the friend ID form body:
   const { user2_id } = req.body;
 
+let firstname=""
+let lastname=""
+let noticontent=""
+  const querytofindname = `
+  SELECT users.firstname,users.lastname ,users.avatar from users 
+   where user_id =$1`;
+const result1= await pool.query(querytofindname, [user2_id])
+    firstname = result1.rows[0].firstname;
+    lastname = result1.rows[0].lastname;
+    avatar=result1.rows[0].avatar;
+   noticontent = `${firstname} ${lastname} accept your friend requset`;
+
+
+
   const query = `INSERT INTO friends (user1_id, user2_id, accepted_at)
   VALUES ($1,$2, NOW())
   RETURNING *`;
@@ -202,10 +211,13 @@ const acceptFriendRequest = async (req, res) => {
   const deleteReqQuery = `DELETE FROM friend_requests 
   WHERE sender_id=$1 AND receiver_id=$2
   `;
-
+  const notiquery = `INSERT INTO notifications(user_id,sender_id,content,avatar) VALUES($1,$2,$3,$4)RETURNING*`;
+ 
+  
   const data = [user1_id, user2_id];
   const data2 = [user2_id, user1_id];
   await pool.query(deleteReqQuery, data2);
+  await pool.query(notiquery, [user2_id, user1_id, noticontent])
 
   pool
     .query(query, data)
@@ -223,9 +235,9 @@ const acceptFriendRequest = async (req, res) => {
           result: result.rows,
         });
       }
+     
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         success: false,
         message: "Server error",
@@ -258,7 +270,6 @@ const CancelFriendRequest = (req, res) => {
           message: `The request is not found`,
         });
       } else {
-        console.log("enterd");
         res.status(200).json({
           success: true,
           message: "Friend request canceled successfully",
@@ -283,12 +294,11 @@ const declineTheFriendReq = (req, res) => {
   //the friend ID form body:
   const user2_id = req.params.id;
 
+
   const query = `DELETE FROM friend_requests 
   WHERE sender_id=$2 AND receiver_id=$1 
   RETURNING *
 `;
-  console.log(user1_id);
-  console.log(user2_id);
   const data = [user1_id, user2_id];
 
   pool
@@ -306,6 +316,7 @@ const declineTheFriendReq = (req, res) => {
           result: result.rows,
         });
       }
+     
     })
     .catch((err) => {
       res.status(500).json({
@@ -368,7 +379,7 @@ const getAllFriendsByUserId = (req, res) => {
     .then((result) => {
       if (result.rows.length === 0) {
         res.status(200).json({
-          success: false,
+          success: true,
           message: `No Friends Found`,
         });
       } else {

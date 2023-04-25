@@ -20,7 +20,7 @@ export const friends = createSlice({
     },
 
     isTheUserIsFriend: (state, action) => {
-      state.friends &&
+    state.friends &&
         state.friends.map((element) => {
           if (element.user_id == action.payload) {
             state.isFriend = true;

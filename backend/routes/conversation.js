@@ -16,11 +16,13 @@ conversationRouter.get(
   "/chat/:friend_id",
   getAConversationOfTheUserAndHisFriend
 );
+
 conversationRouter.get(
   "/new/messages/:conversationId/:receiverId",
   checkIfThereAreNewMsgs
 );
 
 conversationRouter.get("/new/:friendId", authentication, ProfileSendMsgBtn);
+
 
 module.exports = conversationRouter;

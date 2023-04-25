@@ -9,10 +9,7 @@ import {
   MDBNavbarItem,
   MDBNavbarLink,
   MDBBtn,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem,
+ 
   MDBCollapse,
 } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setLogout } from "../redux/reducers/auth";
 import NavFriendReq from "./NavFriendReq";
-
+import SocketNotifications from "./SocketNotifications"
+import Notifications from "./Notifications"
 const NavBar = () => {
   const [showBasic, setShowBasic] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -82,6 +80,7 @@ const NavBar = () => {
   const searchNow = () => {
     navigate(`/home/${searchValue}`);
     setShowBasic(false);
+
   };
 
   const goToMessenger = () => {
@@ -107,7 +106,7 @@ const NavBar = () => {
             >
               <MDBIcon icon="bars" fas />
             </MDBNavbarToggler>
-
+           
             <MDBCollapse navbar show={showBasic}>
               <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
                 <MDBNavbarItem
@@ -139,10 +138,17 @@ const NavBar = () => {
 
                 <MDBNavbarItem>
                   <MDBNavbarLink href="#">
-                    <NavFriendReq />
+                    <NavFriendReq/>
                   </MDBNavbarLink>
                 </MDBNavbarItem>
 
+
+                <MDBNavbarItem>
+                  <MDBNavbarLink>
+                    <Notifications/>
+                  
+                  </MDBNavbarLink>
+                </MDBNavbarItem>
                 <MDBNavbarItem
                   onClick={() => {
                     dispatch(setLogout());

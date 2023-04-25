@@ -42,7 +42,7 @@ const AllFriends = ({ id }) => {
         dispatch(isTheUserIsFriend(userId));
       })
       .catch(function (error) {
-        // console.log(error);
+        console.log(error);
       });
   };
 
@@ -62,7 +62,7 @@ const AllFriends = ({ id }) => {
         getAllFriends();
       })
       .catch(function (error) {
-        // throw error;
+        throw error;
       });
   };
 

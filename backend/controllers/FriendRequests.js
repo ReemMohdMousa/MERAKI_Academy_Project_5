@@ -78,7 +78,7 @@ const FriendRequests = ({ id }) => {
           });
       })
       .catch(function (error) {
-        // throw error;
+        throw error;
       });
   };
 
@@ -98,7 +98,7 @@ const FriendRequests = ({ id }) => {
           });
       })
       .catch(function (error) {
-        // throw error;
+        throw error;
       });
   };
 
@@ -132,7 +132,7 @@ const FriendRequests = ({ id }) => {
         });
       })
       .catch(function (error) {
-        // throw error;
+        throw error;
       });
   };
 
@@ -171,7 +171,7 @@ const FriendRequests = ({ id }) => {
         //   });
       })
       .catch(function (error) {
-        // throw error;
+        throw error;
       });
   };
 
@@ -190,7 +190,7 @@ const FriendRequests = ({ id }) => {
         });
       })
       .catch(function (error) {
-        // throw error;
+        throw error;
       });
   };
 
@@ -211,7 +211,7 @@ const FriendRequests = ({ id }) => {
         });
       })
       .catch(function (error) {
-        // throw error;
+        throw error;
       });
   };
 

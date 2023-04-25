@@ -26,7 +26,6 @@ import {
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const { isLoggedIn, token, userinfo, userId, roleId } = useSelector(
     (state) => {
       return {
@@ -123,7 +122,6 @@ const Login = () => {
         console.log(err);
       });
   };
-
   return (
     <div className="cont">
       <MDBContainer fluid>
@@ -175,7 +173,7 @@ const Login = () => {
                 <div>
                   <p className="mb-0">
                     Don't have an account?{" "}
-                    <a href="#!" class="text-white-50 fw-bold">
+                    <a href="#!" className="text-white-50 fw-bold">
                       Sign Up
                     </a>
                   </p>

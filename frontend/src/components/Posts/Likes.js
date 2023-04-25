@@ -8,7 +8,8 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 const Likes = ({ post_id, post }) => {
   const [clicked, setClicked] = useState("no");
-
+  const [likesNo, setLikesNo] = useState();
+  const [likedUser, setLikedUser] = useState();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const dispatch = useDispatch();
@@ -99,13 +100,12 @@ const Likes = ({ post_id, post }) => {
           }, 0)}
       </p>
 
-      <div className="item information" onClick={handleLike} id={post_id}>
+      <div className="item" onClick={handleLike} id={post_id}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
           fill="currentColor"
-          class="bi bi-hand-thumbs-up"
           className={clicked}
           id={post_id}
           viewBox="0 0 16 16"
@@ -138,7 +138,10 @@ const Likes = ({ post_id, post }) => {
                     key={id}
                     style={{ marginBottom: ".5rem" }}
                   >
-                    <div className="friend-img-name">
+                    <div
+                      className="friend-img-name"
+                      style={{ cursor: "pointer" }}
+                    >
                       <img
                         className="friend-img"
                         src={
@@ -147,7 +150,7 @@ const Likes = ({ post_id, post }) => {
                         }
                       />
 
-                      <p>{element.firstname + " " + element.lastname}</p>
+                      <h6>{element.firstname + " " + element.lastname}</h6>
                     </div>
                   </div>
                 );
