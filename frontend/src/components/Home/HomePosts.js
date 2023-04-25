@@ -10,7 +10,6 @@ import Iframe from "react-iframe";
 import UpdatePost from "../AddPost/UpdatePost";
 import { setComments, addComment } from "../redux/reducers/posts/index";
 import Likes from "../Posts/Likes";
-
 const HomePosts = ({ post ,socket}) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -135,7 +134,9 @@ const HomePosts = ({ post ,socket}) => {
             </div>
           </div>
           {/*condition comments  */}
+
           {openComments && <Comments id={post.post_id} socket={socket}/>}
+
           {show ? (
             <UpdatePost showModal={show} post={post} setShowModal={setShow} />
           ) : (

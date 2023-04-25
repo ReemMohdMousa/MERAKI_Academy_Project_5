@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLogin, setUserId } from "../redux/reducers/auth";
+import { setLogin, setUserId, setRoleId } from "../redux/reducers/auth";
 import { GoogleLogin } from "@react-oauth/google";
 import {  setUserInfo } from "../redux/reducers/auth";
 
@@ -61,6 +61,9 @@ const Register = () => {
               localStorage.setItem("token", result.data.token);
               localStorage.setItem("userId", result.data.userId);
               localStorage.setItem("isLoggedIn", true);
+              localStorage.setItem("roleId", result.data.roleId);
+              dispatch(setRoleId(result.data.roleId));
+
               dispatch(setLogin(result.data.token));
               dispatch(setUserId(result.data.userId));
 
@@ -102,6 +105,8 @@ const Register = () => {
             localStorage.setItem("token", result.data.token);
             localStorage.setItem("userId", result.data.userId);
             localStorage.setItem("isLoggedIn", true);
+            localStorage.setItem("roleId", 2);
+            dispatch(setRoleId(2));
             dispatch(setLogin(result.data.token));
             dispatch(setUserId(result.data.userId));
           })
@@ -255,7 +260,4 @@ const Register = () => {
   );
 };
 
-
 export default Register;
-
-

@@ -29,7 +29,6 @@ const register = async (req, res) => {
       .then((result) => {
         const payload = {
           userId: result.rows[0].user_id,
-          //country: result.rows[0].country,
           role: result.rows[0].role_id,
           firstname:result.rows[0].firstName,
           lastname:result.rows[0].lastName
@@ -43,6 +42,7 @@ const register = async (req, res) => {
           success: true,
           token: token,
           userId: result.rows[0].user_id,
+          roleId: result.rows[0].role_id,
           message: "Account created successfully",
         });
         verfiyResjsterByEmail(email, firstName, lastName);
@@ -75,7 +75,6 @@ const login = (req, res) => {
           if (response) {
             const payload = {
               userId: result.rows[0].user_id,
-              //country: result.rows[0].country,
               role: result.rows[0].role_id,
               firstname:result.rows[0].firstName,
               lastname:result.rows[0].lastName
@@ -91,8 +90,8 @@ const login = (req, res) => {
                 success: true,
                 message: `Valid login credentials`,
                 token,
-                userId: result.rows[0].user_id,
-                
+                userId: result.rows[0].user_id,                
+                roleId: result.rows[0].role_id,
               });
             } else {
               throw Error;

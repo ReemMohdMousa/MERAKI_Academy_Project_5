@@ -14,13 +14,17 @@ import {
 } from "../redux/reducers/posts/index";
 import Likes from "./Likes";
 import { setComments, addComment } from "../redux/reducers/posts/index";
+
 import { io } from "socket.io-client";
 import { useSocket } from "../../App";
+
 
 const Posts = ({ post,firstname,lastname }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
+
   const socket=useSocket(io)
+
   const [openComments, setopenComments] = useState(false);
   const dispatch = useDispatch();
 
@@ -98,15 +102,18 @@ const Posts = ({ post,firstname,lastname }) => {
                     setShow(true);
                   }}
                 >
+
                   Edit 
                 </Dropdown.Item>
               
                 <Dropdown.Item  onClick={()=>{deletePost(post.post_id)}} >Delete </Dropdown.Item>
+
               </Dropdown.Menu>
             </Dropdown>
             
           </div>
           <div className="contant">
+
           {post.content && <p>{post.content}</p>}  
             {post.image && <img src={post.image} alt="" />}   
             {post.video && <embed width="100%" height="300px" className="embed" type="video/webm" src={post.video} /> }  
@@ -151,7 +158,10 @@ const Posts = ({ post,firstname,lastname }) => {
           </div>
           {/*condition comments  */}
 
+
           {openComments &&post.post_id && <Comments id={post.post_id} firstname={firstname} lastname={lastname} socket={socket}/>}
+
+
           {show ? <UpdatePost showModal={show} post={post}
            setShowModal={setShow} />:""}
           

@@ -10,6 +10,8 @@ export const posts = createSlice({
     likes: [],
     homePosts: [],
     notifications: [],
+    sharedPosts: [],
+
   },
   reducers: {
   
@@ -43,7 +45,6 @@ export const posts = createSlice({
     },
     setComments: (state, action) => {
       // state.articles = action.payload.comments;
-
       state.posts.map((elem, i) => {
         if (elem.post_id === action.payload.id) {
           elem.comments = action.payload.comments;
@@ -57,7 +58,6 @@ export const posts = createSlice({
         }
       });
     },
-
     removeComment: (state, action) => {
       console.log(action.payload);
       state.posts.forEach((elem, idx) => {
@@ -71,7 +71,6 @@ export const posts = createSlice({
         }
       });
     },
-
     setLike: (state, action) => {
       state.likes = [action.payload];
     },
@@ -80,6 +79,7 @@ export const posts = createSlice({
       state.likes.push(action.payload);
     },
 
+
     removeLike: (state, action) => {
       state.likes = state.likes.filter((elem) => {
         return elem.post_id !== action.payload;
@@ -87,6 +87,7 @@ export const posts = createSlice({
     },
 
     setHomePosts: (state, action) => {
+
       state.homePosts = action.payload;
     },
     setNestedComments: (state, action) => {
@@ -116,6 +117,16 @@ export const posts = createSlice({
     },
     setNotifications: (state, action) => {
       state.notifications = action.payload;
+      console.log(action.payload);
+      state.homePosts = action.payload;
+    },
+
+    setSharedPosts: (state, action) => {
+      state.sharedPosts = action.payload;
+    },
+    sharepost: (state, action) => {
+      state.sharedPosts.push(action.payload);
+      
     },
   },
 });
@@ -135,6 +146,8 @@ export const {
   setHomePosts,
   addNested,
   setNotifications,
+  setSharedPosts,
+  sharepost,
 } = posts.actions;
 
 export default posts.reducer;

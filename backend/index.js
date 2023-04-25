@@ -1,5 +1,6 @@
 const express = require("express");
 require("dotenv").config();
+const socket = require("socket.io");
 const cors = require("cors");
 require("dotenv").config();
 require("./models/db");
@@ -18,7 +19,12 @@ const friendsRouter = require("./routes/frineds");
 const likesRouter = require("./routes/likes");
 const searchRouter = require("./routes/search");
 const homeRouter = require("./routes/home");
-const socket = require("socket.io");
+const countingRouter = require("./routes/counting");
+const shareRouter = require("./routes/sharedPost");
+const conversationRouter = require("./routes/conversation");
+const messagesRouter = require("./routes/message");
+
+
 app.use(cors());
 app.use(express.json());
 
@@ -32,6 +38,10 @@ app.use("/friends", friendsRouter);
 app.use("/likes", likesRouter);
 app.use("/search", searchRouter);
 app.use("/home", homeRouter);
+app.use("/count", countingRouter);
+app.use("/share", shareRouter);
+app.use("/conversation", conversationRouter);
+app.use("/messages", messagesRouter);
 
 // Handles any other endpoints [unassigned - endpoints]
 app.use("*", (req, res) => res.status(404).json("NO content at this path"));
@@ -40,45 +50,113 @@ const server = app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);
 });
 
+//declare the socket.io, whick will work on my server
+//instance the server
+// origin => * (everywhere)
+const io = socket(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+let users = [];
 let onlineUsers = [];
 const addNewUser = (userId, socketId) => {
   !onlineUsers.some((user) => user.userId == userId) &&
     onlineUsers.push({ userId, socketId });
 };
-const removeUser = (soketId) => {
+const removeUserNoti = (soketId) => {
   onlineUsers = onlineUsers.filter((user) => user.socketId !== soketId);
 };
-const getUser=(userId)=>{
+const getUserNoti=(userId)=>{
   return onlineUsers.find((user)=>user.userId ==userId)
 }
-const io = socket(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
-});
+
+const addUser = (userId, socketId) => {
+  // const results = users.filter((user) => {
+  //   return user.userId === userId;
+  // });
+
+  // if (results.length !== 0) {
+  //   // if the user is not exsisted in the users array, add him
+  //   users.push({ userId, socketId });
+  // }
+
+  !users.some((user) => user.userId == userId) &&
+    users.push({ userId, socketId });
+};
+
+const removeUser = (socketId) => {
+  //filter the users array, if anyone is left
+  users = users.filter((user) => {
+    return user.socketId !== socketId;
+  });
+};
+
+const getUser = (userId) => {
+  // console.log(userId);
+  const receiver = users.find((user) => {
+    // console.log(user);
+    return user.userId == userId;
+  });
+  return receiver;
+};
+
+//connection emits in the backsecene, i will receive it (connect to sockit io server)
 io.on("connection", (socket) => {
-  console.log(socket.id);
+  // `socket.id` is the id assigned to the user that connected
+  console.log(`${socket.id} is connected`);
+  // io.emit("welcome", "hello this is socket server");
+
+  //take the socket id, and the user id, and save it in the users array after the connection
+  //*on => i will receive the user id from the frontend
+  socket.on("ADD_USER", (userId) => {
+    // if i push the user id and the socket id directly without checking if the user is already exsisted in the array, i will have a duplicate data
+    addUser(userId, socket.id);
+
+    //send the users array to the frontend
+    io.emit("GET_USERS", users);
+    console.log(users);
+
+
+  });
+
+  //send messages
+  socket.on("SEND_MESSAGE", ({ sender_id, receiver_id, text }) => {
+    console.log(sender_id, receiver_id, text);
+    const user = getUser(receiver_id);
+    console.log(user);
+    io.to(user.socketId).emit("GET_MESSAGE", {
+      sender_id,
+      receiver_id,
+      text,
+    });
+  });
 socket.join(socket)
   socket.on("NEW_USER", (userId) => {
  console.log(userId,"rrrrrrrrrr")
     addNewUser(userId,socket.id)
     console.log("online",onlineUsers)
-
-
-     
   });
- socket.on("SEND_NOTIFICATION", ({firstname,lastname,avatar,receiver,messagecontent}) => {
-   // console.log(data);
-    const Recevier=getUser(receiver)
-    console.log("hi all how are you",firstname,lastname,avatar,receiver,messagecontent)
-    console.log(Recevier)
+    socket.on("SEND_NOTIFICATION", ({firstname,lastname,avatar,receiver,messagecontent}) => {
+      // console.log(data);
+       const Recevier=getUserNoti(receiver)
+       console.log("hi all how are you",firstname,lastname,avatar,receiver,messagecontent)
+       console.log(Recevier)
+   
+       socket.to(Recevier).emit("RECEIVE_NOTIFICATION",({firstname,lastname,avatar,messagecontent}));
+     });
 
-    socket.to(Recevier).emit("RECEIVE_NOTIFICATION",({firstname,lastname,avatar,messagecontent}));
-  });
-  socket.on("disconnect", () => {
-    console.log("some one leave");
-   removeUser(socket.id)
-   io.emit("NEW_USER", onlineUsers);
+  socket.on("DISCONNECT", () => {
+    console.log("user left");
+    removeUserNoti(socket.id);
+    removeUser(soket.id)
+    io.emit("GET_USERS", users);
+    io.emit("NEW_USER", onlineUsers);
+    console.log(users);
+
+
+
+
   });
 });

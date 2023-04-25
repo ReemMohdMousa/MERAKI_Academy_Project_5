@@ -5,7 +5,12 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLogin, setUserId,setUserInfo } from "../redux/reducers/auth";
+import {
+  setLogin,
+  setUserId,
+  setUserInfo,
+  setRoleId,
+} from "../redux/reducers/auth";
 import { GoogleLogin } from "@react-oauth/google";
 
 import {
@@ -18,19 +23,20 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 
-
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const { isLoggedIn, token, userinfo, userId } = useSelector((state) => {
-    return {
-      isLoggedIn: state.auth.isLoggedIn,
-      userinfo: state.auth.userinfo,
-      token: state.auth.token,
-      userId: state.auth.userId,
-    };
-  });
+  const { isLoggedIn, token, userinfo, userId, roleId } = useSelector(
+    (state) => {
+      return {
+        isLoggedIn: state.auth.isLoggedIn,
+        userinfo: state.auth.userinfo,
+        token: state.auth.token,
+        userId: state.auth.userId,
+        roleId: state.auth.roleId,
+      };
+    }
+  );
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,10 +52,12 @@ const Login = () => {
         password,
       })
       .then((result) => {
+         
         localStorage.setItem("token", result.data.token);
         localStorage.setItem("userId", result.data.userId);
         localStorage.setItem("isLoggedIn", true);
-        
+        localStorage.setItem("roleId", result.data.roleId);
+        dispatch(setRoleId(result.data.roleId));
 
         dispatch(setLogin(result.data.token));
         dispatch(setUserId(result.data.userId));
@@ -61,9 +69,11 @@ const Login = () => {
   };
 
   useEffect(() => {
-
-    if (isLoggedIn) {
-
+    if (isLoggedIn && roleId == 1) {
+      navigate("/dashboard");
+      getAllUserInfo();
+    }
+    if (isLoggedIn && roleId == 2) {
       navigate("/home");
       getAllUserInfo();
     }
@@ -89,8 +99,10 @@ const Login = () => {
             localStorage.setItem("token", result.data.token);
             localStorage.setItem("userId", result.data.userId);
             localStorage.setItem("isLoggedIn", true);
+            localStorage.setItem("roleId", 2);
             dispatch(setLogin(result.data.token));
             dispatch(setUserId(result.data.userId));
+            dispatch(setRoleId(2));
           })
           .catch((err) => {
             setShow(true);
@@ -110,8 +122,6 @@ const Login = () => {
         console.log(err);
       });
   };
-   
-     
   return (
     <div className="cont">
       <MDBContainer fluid>

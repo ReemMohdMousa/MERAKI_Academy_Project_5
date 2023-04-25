@@ -12,7 +12,6 @@ import {
   MDBTypography,
 } from "mdb-react-ui-kit";
 import Comments from "../Comments";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts/index";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +22,7 @@ import { MDBFile } from "mdb-react-ui-kit";
 
 import { useNavigate, useParams } from "react-router-dom";
 import HomePosts from "./HomePosts";
+
 import { io } from "socket.io-client";
 import { useSocket } from "../../App";
 
@@ -81,7 +81,9 @@ const Home = () => {
                       {/* dispaly the posts */}
                       {homePosts &&
                         homePosts.map((elem) => {
+
                           return <HomePosts post={elem} socket={socket}/>;
+
                         })}
                     </MDBCol>
                   </MDBRow>

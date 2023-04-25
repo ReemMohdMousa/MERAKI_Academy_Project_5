@@ -130,11 +130,13 @@ const AddPost = () => {
                     {userinfo.firstname} {userinfo.lastname}
                   </span>
                 </Link>
+
                 <span className="date">{format(Date())}</span>
               </div>
             </div>
           </div>
           <div className="contant1" style={{  }}>
+
             <section>
               <MDBContainer>
                 <MDBRow className="justify-content-center align-items-center">

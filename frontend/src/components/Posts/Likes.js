@@ -10,7 +10,6 @@ const Likes = ({ post_id, post }) => {
   const [clicked, setClicked] = useState("no");
   const [likesNo, setLikesNo] = useState();
   const [likedUser, setLikedUser] = useState();
-
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const dispatch = useDispatch();

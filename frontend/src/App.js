@@ -7,10 +7,14 @@ import NavBar from "./components/NavBar";
 import Register from "./components/Register";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Login from "./components/Login";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Home from "./components/Home/Home";
 import Search from "./components/Search";
 import NavFriendReq from "./components/NavBar/NavFriendReq";
+import Dashboard from "./components/Dashboard";
+import UserTable from "./components/Dashboard/UserTable";
+import NewUsers from "./components/Dashboard/NewUsers";
+import Messenger from "./components/Messenger/Messenger";
 import SocketNotifications from "./components/NavBar/SocketNotifications";
 
 
@@ -38,11 +42,6 @@ export const useSocket = (io) => {
 
   return socket;
 }
-
-
-
-
-
 function App() {
 
   //const ENDPOINT = "http://localhost:5000";
@@ -51,11 +50,15 @@ function App() {
 
   //const [socket, setSocket] = useState(io(ENDPOINT, { autoConnect: false }));
   //redux states
-  const { token, userId, isLoggedIn } = useSelector((state) => {
+  const {  roleId } = useSelector((state) => {
     //return object contains the redux states
     return {
       userId: state.auth.userId,
+
       //Socket: state.posts.Socket,
+
+      roleId: state.auth.roleId,
+      isLoggedIn: state.auth.isLoggedIn,
     };
   });
 
@@ -82,6 +85,20 @@ function App() {
           <Route path={"/register"} element={<Register />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/home/:user" element={<Search />} />
+
+
+          {roleId == 1 ? (
+            <>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/users" element={<UserTable />} />
+              <Route path="/dashboard/newusers" element={<NewUsers />} />
+            </>
+          ) : (
+            ""
+          )}
+
+          <Route path="/messenger" element={<Messenger />} />
+
         </Routes>
       </div>
     </GoogleOAuthProvider>

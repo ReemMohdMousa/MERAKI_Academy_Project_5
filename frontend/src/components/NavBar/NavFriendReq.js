@@ -7,7 +7,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import axios from "axios";
-
 import "./syle.css";
 import {
   setSentReq,
@@ -153,7 +152,6 @@ export default function BasicMenu() {
       >
         Friend Requests
       </Button>
-     
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
