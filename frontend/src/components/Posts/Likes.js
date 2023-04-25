@@ -99,13 +99,12 @@ const Likes = ({ post_id, post }) => {
           }, 0)}
       </p>
 
-      <div className="item information" onClick={handleLike} id={post_id}>
+      <div className="item" onClick={handleLike} id={post_id}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
           fill="currentColor"
-
           className={clicked}
           id={post_id}
           viewBox="0 0 16 16"
@@ -138,7 +137,10 @@ const Likes = ({ post_id, post }) => {
                     key={id}
                     style={{ marginBottom: ".5rem" }}
                   >
-                    <div className="friend-img-name">
+                    <div
+                      className="friend-img-name"
+                      style={{ cursor: "pointer" }}
+                    >
                       <img
                         className="friend-img"
                         src={
