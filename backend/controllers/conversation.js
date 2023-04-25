@@ -35,7 +35,7 @@ const getAllConversationsByUserId = (req, res) => {
 // get all user a specific conversation between the user and his friend
 const getAConversationOfTheUserAndHisFriend = (req, res) => {
   const user_id = req.token.userId;
-  const friend_id = req.params.friend_id; 
+  const friend_id = req.params.friend_id;
 
   conversationModel
     .find({

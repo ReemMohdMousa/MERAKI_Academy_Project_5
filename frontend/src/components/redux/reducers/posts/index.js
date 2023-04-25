@@ -87,7 +87,6 @@ export const posts = createSlice({
     },
 
     setHomePosts: (state, action) => {
-
       state.homePosts = action.payload;
     },
     setNestedComments: (state, action) => {
@@ -118,6 +117,7 @@ export const posts = createSlice({
     setNotifications: (state, action) => {
       state.notifications = action.payload;
       console.log(action.payload);
+
       state.homePosts = action.payload;
     },
 
@@ -126,7 +126,6 @@ export const posts = createSlice({
     },
     sharepost: (state, action) => {
       state.sharedPosts.push(action.payload);
-      
     },
   },
 });

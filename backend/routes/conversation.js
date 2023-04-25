@@ -10,7 +10,9 @@ const conversationRouter = express.Router();
 
 conversationRouter.post("/", authentication, createNewConversation);
 conversationRouter.get("/", authentication, getAllConversationsByUserId);
-conversationRouter.get("/chat/:friend_id", getAConversationOfTheUserAndHisFriend);
-
+conversationRouter.get(
+  "/chat/:friend_id",
+  getAConversationOfTheUserAndHisFriend
+);
 
 module.exports = conversationRouter;

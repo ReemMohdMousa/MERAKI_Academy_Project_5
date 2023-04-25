@@ -56,7 +56,7 @@ const Share = ({ post, firstname, lastname }) => {
         width="16"
         height="16"
         fill="currentColor"
-        class="bi bi-send"
+        className="bi bi-send"
         viewBox="0 0 16 16"
         id={post.post_id}
       >

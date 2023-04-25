@@ -80,6 +80,7 @@ const createNewNestedComment = async (req, res) => {
   const data = [post_id, comment_id, content || null, image || null, user_id];
   await pool.query(notiquery, [receiver, user_id, messagecontent]);
 
+
   pool
     .query(query, data)
     .then((result) => {
@@ -183,7 +184,6 @@ const UpdateCommentById = (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         success: false,
         message: "Server error",
@@ -221,7 +221,6 @@ const deleteCommentById = (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(500).json({
         success: false,
         message: "Server error",

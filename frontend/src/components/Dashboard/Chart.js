@@ -28,8 +28,8 @@ const Chart = ({ aspect, title }) => {
   }, []);
   if (!data && Array.isArray(data)) {
     return (
-      <div class="spinner-grow" role="status">
-        <span class="visually-hidden">Loading...</span>
+      <div className="spinner-grow" role="status">
+        <span className="visually-hidden">Loading...</span>
       </div>
     );
   }

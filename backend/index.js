@@ -24,7 +24,6 @@ const shareRouter = require("./routes/sharedPost");
 const conversationRouter = require("./routes/conversation");
 const messagesRouter = require("./routes/message");
 
-
 app.use(cors());
 app.use(express.json());
 
@@ -73,15 +72,6 @@ const getUserNoti=(userId)=>{
 }
 
 const addUser = (userId, socketId) => {
-  // const results = users.filter((user) => {
-  //   return user.userId === userId;
-  // });
-
-  // if (results.length !== 0) {
-  //   // if the user is not exsisted in the users array, add him
-  //   users.push({ userId, socketId });
-  // }
-
   !users.some((user) => user.userId == userId) &&
     users.push({ userId, socketId });
 };
@@ -94,9 +84,7 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
-  // console.log(userId);
   const receiver = users.find((user) => {
-    // console.log(user);
     return user.userId == userId;
   });
   return receiver;
@@ -116,17 +104,13 @@ io.on("connection", (socket) => {
 
     //send the users array to the frontend
     io.emit("GET_USERS", users);
-    console.log(users);
-
 
   });
 
   //send messages
   socket.on("SEND_MESSAGE", ({ sender_id, receiver_id, text }) => {
-    console.log(sender_id, receiver_id, text);
     const user = getUser(receiver_id);
-    console.log(user);
-    io.to(user.socketId).emit("GET_MESSAGE", {
+    io.to([user.socketId, socket.id]).emit("GET_MESSAGE", {
       sender_id,
       receiver_id,
       text,
@@ -147,13 +131,14 @@ socket.join(socket)
        socket.to(Recevier).emit("RECEIVE_NOTIFICATION",({firstname,lastname,avatar,messagecontent}));
      });
 
-  socket.on("DISCONNECT", () => {
+  socket.on("disconnect", () => {
     console.log("user left");
     removeUserNoti(socket.id);
     removeUser(soket.id)
     io.emit("GET_USERS", users);
     io.emit("NEW_USER", onlineUsers);
     console.log(users);
+
 
 
 

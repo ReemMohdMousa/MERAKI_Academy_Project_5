@@ -50,14 +50,14 @@
 }
 .infomation {
   display: flex;
-  align-items: center;
-  gap: 20px;
+  flex-direction: row;
   border-top: 1px solid rgb(206, 201, 201);
+  flex-wrap: wrap;
+ 
 }
+ 
 .item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+ 
   cursor: pointer;
   font-size: 14px;
 }
@@ -65,12 +65,16 @@
 .yes {
   color: blue;
 }
-
+.dropdown-toggle::after {
+  display: none !important; 
+ 
+}
 #post-info {
   position: relative;
-  left: 35px;
+   margin-left: 0px;
   top: -30px;
 }
+ 
 
 /* .infomation {
   display: flex;
@@ -112,9 +116,10 @@
   color: blue;
 }
 
+ media query
 #post-info {
   position: relative;
-  left: -3rem;
+ left:-8rem;
   bottom: 2rem;
 } */
 /* ////////////////////////////////////////////////////////

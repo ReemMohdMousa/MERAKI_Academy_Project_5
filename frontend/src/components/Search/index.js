@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import Card from "react-bootstrap/Card";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Search = () => {
   const [searchResult, setSearchResult] = useState("");
+  const navigate = useNavigate();
 
   const { user } = useParams();
   useEffect(() => {
@@ -19,7 +21,7 @@ const Search = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ height: "20rem" }}>
       {searchResult &&
         searchResult.map((element, i) => {
           return (
@@ -27,7 +29,13 @@ const Search = () => {
               style={{ width: "40rem", marginLeft: "4rem", marginTop: "2rem" }}
             >
               <div className="friend-list">
-                <div className="friend-img-name">
+                <div
+                  className="friend-img-name"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    navigate(`/profile/${element.user_id}`);
+                  }}
+                >
                   <img
                     className="friend-img"
                     src={

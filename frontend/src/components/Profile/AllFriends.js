@@ -42,7 +42,7 @@ const AllFriends = ({ id }) => {
         dispatch(isTheUserIsFriend(userId));
       })
       .catch(function (error) {
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -62,7 +62,7 @@ const AllFriends = ({ id }) => {
         getAllFriends();
       })
       .catch(function (error) {
-        throw error;
+        // throw error;
       });
   };
 
@@ -77,8 +77,10 @@ const AllFriends = ({ id }) => {
           <Modal.Title>Friends</Modal.Title>
         </Modal.Header>
         <Modal.Body className="friend-list-body">
+
           {friends && friends.length !== 0
             ? friends &&
+
               friends.map((element, i) => {
                 return (
                   <div className="friend-list" key={element.id}>
@@ -108,8 +110,10 @@ const AllFriends = ({ id }) => {
                     )}
                   </div>
                 );
+
               })
             : "No Friends"}
+
         </Modal.Body>
         <Modal.Footer></Modal.Footer>
       </Modal>

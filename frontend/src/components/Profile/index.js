@@ -24,6 +24,7 @@ import AllFriends from "./AllFriends";
 const Profile = () => {
   const params = useParams();
   const id = params.id;
+  console.log(">>>>>>>", id);
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
   const getuserdata = () => {
@@ -31,31 +32,35 @@ const Profile = () => {
       .get(`http://localhost:5000/users/others/info/${id}`)
       .then((Response) => {
         console.log(Response.data.result);
-        setUser((firstname)=>{
-          return {...firstname,firstname:Response.data.result.firstname}
-        })
-        setUser((lastname)=>{
-          return {...lastname,lastname:Response.data.result.lastname}
-        })
-        //setUser(())
-        //dispatch(setPosts(Response.data.posts));
-        //setAppointments(Response.data.appointment);
+
+        setUser((firstname) => {
+          return { ...firstname, firstname: Response.data.result.firstname };
+        });
+        setUser((lastname) => {
+          return { ...lastname, lastname: Response.data.result.lastname };
+        });
+
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
   //redux states
-  const { posts, userinfo, token, userId, friends } = useSelector((state) => {
-    return {
-      posts: state.posts.posts,
-      userinfo: state.auth.userinfo,
-      token: state.auth.token,
-      userId: state.auth.userId,
-      friends: state.friends.friends,
-    };
-  });
+
+  const { posts, userinfo, token, userId, friends, sharedPosts } = useSelector(
+    (state) => {
+      return {
+        posts: state.posts.posts,
+        userinfo: state.auth.userinfo,
+        token: state.auth.token,
+        userId: state.auth.userId,
+        friends: state.friends.friends,
+        sharedPosts: state.posts.sharedPosts,
+      };
+    }
+  );
+
   const getAllPostsByUserId = () => {
     axios
       .get(`http://localhost:5000/posts/search_1/${id}`, {
@@ -63,12 +68,14 @@ const Profile = () => {
       })
       .then((Response) => {
         dispatch(setPosts(Response.data.posts));
-        //setAppointments(Response.data.appointment);
+
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
+
+
   useEffect(() => {
     getuserdata();
     getAllPostsByUserId();
@@ -76,9 +83,9 @@ const Profile = () => {
 
   return (
     <div>
-      <FriendRequests id={id} />
-      <AllFriends id={id} />
-      <div className="gradient-custom-2" style={{ backgroundColor: "#9de2ff" }}>
+      {/* <FriendRequests id={id} />
+      <AllFriends id={id} /> */}
+      <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
             <MDBCol lg="9" xl="7">
@@ -113,60 +120,53 @@ const Profile = () => {
                     </MDBBtn>
                   </div>
                   <div className="ms-3" style={{ marginTop: "130px" }}>
-                    <MDBTypography tag="h5">{user.firstname}{"  "}{user.lastname}</MDBTypography>
-                   
+
+                    <MDBTypography tag="h5">
+                      {user.firstname}
+                      {"  "}
+                      {user.lastname}
+                    </MDBTypography>
+
                   </div>
                 </div>
+
                 <div
                   className="p-4 text-black"
                   style={{ backgroundColor: "#f8f9fa" }}
                 >
                   <div className="d-flex justify-content-end text-center py-1">
                     <div>
-                      <MDBCardText className="mb-1 h5">253</MDBCardText>
+                      <br />
                       <MDBCardText className="small text-muted mb-0">
-                        Photos
+                        <FriendRequests id={id} />
                       </MDBCardText>
                     </div>
                     <div className="px-3">
-                      <MDBCardText className="mb-1 h5">1026</MDBCardText>
-                      <MDBCardText className="small text-muted mb-0">
-                        Followers
+                      <MDBCardText className="mb-1 h6">
+                        "Number of friends"
                       </MDBCardText>
-                    </div>
-                    <div>
-                      <MDBCardText className="mb-1 h5">478</MDBCardText>
                       <MDBCardText className="small text-muted mb-0">
-                        Following
+                        <AllFriends id={id} />
                       </MDBCardText>
                     </div>
                   </div>
                 </div>
+
                 <MDBCardBody className="text-black p-4">
-                  <div className="mb-5">
-                    <p className="lead fw-normal mb-1">About</p>
-                    <div className="p-4" style={{ backgroundColor: "#f8f9fa" }}>
-                      <MDBCardText className="font-italic mb-1">
-                        Web Developer
-                      </MDBCardText>
-                      <MDBCardText className="font-italic mb-1">
-                        Lives in New York
-                      </MDBCardText>
-                      <MDBCardText className="font-italic mb-0">
-                        Photographer
-                      </MDBCardText>
+                  {userinfo.bio && (
+                    <div className="mb-5">
+                      <p className="lead fw-normal mb-1">About</p>
+                      <div
+                        className="p-4"
+                        style={{ backgroundColor: "#f8f9fa" }}
+                      >
+                        <MDBCardText className="font-italic mb-1">
+                          {userinfo.bio}
+                        </MDBCardText>
+                      </div>
                     </div>
-                  </div>
-                  <div className="d-flex justify-content-between align-items-center mb-4">
-                    <MDBCardText className="lead fw-normal mb-0">
-                      Recent photos
-                    </MDBCardText>
-                    <MDBCardText className="mb-0">
-                      <a href="#!" className="text-muted">
-                        Show all
-                      </a>
-                    </MDBCardText>
-                  </div>
+                  )}
+
                   <MDBRow className="g-2">
                     <MDBCol className="mb-2">
                       {id==userId &&<AddPost/>}

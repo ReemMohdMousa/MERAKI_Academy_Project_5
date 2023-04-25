@@ -77,8 +77,12 @@ function App() {
       <div className="App">
         <NavBar />
 
+
+      
+
         <header className="App-header"></header>
          <SocketNotifications />
+
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
