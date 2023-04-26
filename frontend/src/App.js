@@ -98,7 +98,7 @@ function App() {
             ""
           )}
           <Route path="/messenger" element={<Messenger />}>
-            <Route path=":userId/:FriendId" element={<CurrentConversation />} />
+            {/* <Route path=":userId/:FriendId" element={<CurrentConversation />} /> */}
           </Route>
 
           {/* <Route path="/messenger/" element={<Messenger />} /> */}

@@ -41,7 +41,7 @@ const SendMessage = ({ id }) => {
     getAllUserConversations();
   }, []);
 
-  console.log(conversations);
+  // console.log(conversations);
 
   const sendMessageFunc = () => {
     // dispatch(setOpenConversation(true));
@@ -52,16 +52,31 @@ const SendMessage = ({ id }) => {
       }
     });
 
-    dispatch(setTheOpenedConversation(conversation[0]));
+    // console.log(conversation);
 
-    navigate(`/messenger`);
-
-    // axios
-    //   .get(`http://localhost:5000/conversation/new/${id}`, {
-    //     headers: { Authorization: `Bearer ${token}` },
-    //   })
-    //   .then(function (response) {})
-    //   .catch(function (error) {});
+    if (conversation.length !== 0) {
+      navigate(`/messenger`);
+      dispatch(setTheOpenedConversation(conversation[0]));
+    } else {
+      console.log("enteeer");
+      axios
+        .post(
+          `http://localhost:5000/conversation/`,
+          { sender_id: userId, receiver_id: id },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        .then(function (response) {
+          console.log(response.data);
+          dispatch(setTheOpenedConversation(response.data));
+          dispatch(setConversations([...conversations, response.data]));
+          navigate(`/messenger`);
+        })
+        .catch(function (error) {
+          throw error;
+        });
+    }
   };
 
   return (

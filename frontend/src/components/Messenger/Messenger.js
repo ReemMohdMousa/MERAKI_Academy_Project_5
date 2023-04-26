@@ -163,7 +163,7 @@ const Messenger = () => {
           text: newWrittenMessage,
         });
         setNewWrittenMessage("");
-        // setMessages([...messages, response.data]);
+        setMessages([...messages, response.data]);
       })
       .catch(function (error) {
         throw error;
@@ -173,7 +173,7 @@ const Messenger = () => {
   useEffect(() => {
     getAllUserConversations();
     getAllConversationMessages();
-  }, [theOpenedConversation, openConversation]);
+  }, [theOpenedConversation]);
 
   useEffect(() => {
     socket?.on("GET_USERS", (users) => {
@@ -195,8 +195,8 @@ const Messenger = () => {
   //   scrollRef?.scrollIntoView({ behavior: "smooth" });
   // }, [messages]);
 
-  // console.log(messages);
-  // console.log(conversations);
+  console.log(messages);
+  console.log(conversations);
 
   // console.log(openConversation);
   // console.log(theOpenedConversation);
@@ -221,7 +221,7 @@ const Messenger = () => {
                     );
 
                     //navigate to current conversation
-                    navigate(`/messenger/${userId}/${receiver_id}`);
+                    // navigate(`/messenger/${userId}/${receiver_id}`);
                   }}
                 >
                   <Conversation
@@ -247,24 +247,17 @@ const Messenger = () => {
               {theOpenedConversation ? (
                 <div>
                   <div className="chatBoxTop">
-                    {theOpenedConversation
-                      ? messages.map((element) => {
-                          // console.log(element);
-                          return (
-                            <div>
-                              <Message
-                                message={element}
-                                mine={element.sender == userId ? true : false}
-                              />
-                            </div>
-                          );
-                        })
-                      : // <CurrentConversation
-                        //   conversations={conversations}
-                        //   messages={messages}
-                        //   setMessages={setMessages}
-                        // />
-                        ""}
+                    {messages.map((element) => {
+                      // console.log(element);
+                      return (
+                        <div>
+                          <Message
+                            message={element}
+                            mine={element.sender == userId ? true : false}
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                   <div className="chatBoxBottom">
                     <input
