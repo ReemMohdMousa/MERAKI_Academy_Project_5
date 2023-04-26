@@ -214,7 +214,7 @@ const [isdeleted,setIsDeleted]=useState(false)
                                 height="30"
                                 color="gray"
                                 fill="currentColor"
-                                class="bi bi-file-image"
+                                className="bi bi-file-image"
                                 viewBox="0 0 16 16"
                               >
                                 <path d="M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
@@ -239,7 +239,7 @@ const [isdeleted,setIsDeleted]=useState(false)
                               height="30"
                               color="gray"
                               fill="currentColor"
-                              class="bi bi-camera-reels"
+                              className="bi bi-camera-reels"
                               viewBox="0 0 16 16"
                             >
                               <path d="M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM1 3a2 2 0 1 0 4 0 2 2 0 0 0-4 0z" />

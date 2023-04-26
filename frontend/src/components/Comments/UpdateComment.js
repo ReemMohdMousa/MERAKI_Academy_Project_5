@@ -182,7 +182,7 @@ const [isdeleted,setIsDeleted]=useState(false)
                                 height="30"
                                 color="gray"
                                 fill="currentColor"
-                                class="bi bi-file-image"
+                                className="bi bi-file-image"
                                 viewBox="0 0 16 16"
                               >
                                 <path d="M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />

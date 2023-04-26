@@ -1,4 +1,5 @@
 const conversationModel = require("../models/conversationSchema");
+const messageModel = require("../models/messageSchema");
 
 //create a new conversation
 const createNewConversation = (req, res) => {
@@ -25,6 +26,7 @@ const getAllConversationsByUserId = (req, res) => {
   conversationModel
     .find({ members: { $in: [user_id] } })
     .then((results) => {
+      console.log(results);
       res.json(results);
     })
     .catch((err) => {
@@ -35,7 +37,7 @@ const getAllConversationsByUserId = (req, res) => {
 // get all user a specific conversation between the user and his friend
 const getAConversationOfTheUserAndHisFriend = (req, res) => {
   const user_id = req.token.userId;
-  const friend_id = req.params.friend_id; 
+  const friend_id = req.params.friend_id;
 
   conversationModel
     .find({
@@ -47,10 +49,67 @@ const getAConversationOfTheUserAndHisFriend = (req, res) => {
     .catch((err) => {
       res.json(err);
     });
+
+  // messageModel.updateMany({conversationId:})
+};
+
+const ProfileSendMsgBtn = (req, res) => {
+  const user_id = req.token.userId;
+  const friend_id = Number(req.params.friendId);
+  // console.log(user_id);
+
+  conversationModel
+    .find({
+      members: { $all: [user_id, friend_id] },
+    })
+    .then(async (results) => {
+      if (results.length !== 0) {
+        res.json(results);
+      } else {
+        const newConversation = await new conversationModel({
+          members: [user_id, friend_id],
+        });
+
+        newConversation
+          .save()
+          .then((results) => {
+            res.json(results);
+          })
+          .catch((err) => {
+            res.json(err);
+          });
+      }
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+};
+
+const checkIfThereAreNewMsgs = (req, res) => {
+  const conversationId = req.params.conversationId;
+  const receiverId = req.params.receiverId;
+
+  console.log("receiverId", receiverId);
+
+  messageModel
+    .find({ conversationId, sender: receiverId, seen: false })
+    .then((results) => {
+      console.log("*****************", results);
+      if (results.length === 0) {
+        res.json(false);
+      } else {
+        res.json(true);
+      }
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 };
 
 module.exports = {
   createNewConversation,
   getAllConversationsByUserId,
   getAConversationOfTheUserAndHisFriend,
+  checkIfThereAreNewMsgs,
+  ProfileSendMsgBtn,
 };

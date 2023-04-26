@@ -15,7 +15,13 @@ import UserTable from "./components/Dashboard/UserTable";
 import NewUsers from "./components/Dashboard/NewUsers";
 import Messenger from "./components/Messenger/Messenger";
 import { io } from "socket.io-client";
+import Conversation from "./components/Messenger/Conversation/Conversation";
+import Message from "./components/Messenger/Message/Message";
 import SocketNotifications from "./components/NavBar/SocketNotifications";
+
+
+
+
 const ENDPOINT = "http://localhost:5000";
 //custom hook to use socket because socket io conflict with redux roles
 export const useSocket = (io) => {
@@ -73,6 +79,7 @@ function App() {
         <NavBar />
         <header className="App-header"></header>
 
+
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -89,8 +96,8 @@ function App() {
           ) : (
             ""
           )}
-
           <Route path="/messenger" element={<Messenger />} />
+
         </Routes>
       </div>
     </GoogleOAuthProvider>

@@ -25,16 +25,8 @@ friendsRouter.post(
   acceptFriendRequest
 );
 
-friendsRouter.delete(
-  "/cancel/:id",
-  authentication,
-  CancelFriendRequest
-);
-friendsRouter.delete(
-  "/decline/:id",
-  authentication,
-  declineTheFriendReq
-);
+friendsRouter.delete("/cancel/:id", authentication, CancelFriendRequest);
+friendsRouter.delete("/decline/:id", authentication, declineTheFriendReq);
 friendsRouter.delete("/remove/:user2_id", authentication, RemoveFriend);
 
 friendsRouter.get("/sent/requests", authentication, getAllSentRequestByUserId);
