@@ -18,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 import InputEmoji from "react-input-emoji";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-
 import Dropdown from "react-bootstrap/Dropdown";
 import posts, {
   setComments,
@@ -27,7 +26,6 @@ import posts, {
   setNestedComments,
   addNested,
 } from "../redux/reducers/posts/index";
-
 import UpdateComment from "./UpdateComment";
 const Comments = ({ id, firstname, lastname, socket }) => {
   const dispatch = useDispatch();
@@ -49,13 +47,13 @@ const Comments = ({ id, firstname, lastname, socket }) => {
   function handleOnEnter(text) {}
   const [nemcomment, setNewComment] = useState({});
 
-  const { userinfo, token, userId, posts, Socket } = useSelector((state) => {
+
+  const { userinfo, token, userId, posts } = useSelector((state) => {
     return {
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
       posts: state.posts.posts,
-      Socket: state.posts.Socket,
     };
   });
 
@@ -148,6 +146,9 @@ const Comments = ({ id, firstname, lastname, socket }) => {
         console.log(Response.data);
         let newComment = Response.data.result;
 
+        socket.emit("aaa", {
+          A:11
+        })
         socket &&
           socket.emit("SEND_NOTIFICATION", {
             firstname: Response.data.firstname,
