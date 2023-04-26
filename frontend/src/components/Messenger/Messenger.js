@@ -14,6 +14,8 @@ const ENDPOINT = "http://localhost:5000";
 // const socket = io.connect(ENDPOINT);
 
 const Messenger = () => {
+  const navigate = useNavigate();
+
   //componant states
   const [conversations, setConversations] = useState([]);
   const [theOpenedConversation, setTheOpenedConversation] = useState(null);
@@ -22,7 +24,6 @@ const Messenger = () => {
   const [socket, setSocket] = useState(io(ENDPOINT, { autoConnect: false }));
   const [sending, setSending] = useState(false);
   const [receiving, setReceiving] = useState(false);
-
   const scrollRef = useRef();
 
   const { userinfo, token, userId, conversationFriendInfo } = useSelector(
@@ -195,6 +196,7 @@ const Messenger = () => {
                   onClick={() => {
                     // console.log(element);
                     setTheOpenedConversation(element);
+                    navigate(`/messenger/${element._id}`);
                   }}
                 >
                   <Conversation
@@ -219,7 +221,7 @@ const Messenger = () => {
             <>
               {theOpenedConversation ? (
                 <div>
-                  <div className="chatBoxTop">
+                  <div className="chatBoxTop"> 
                     {messages.map((element) => {
                       // console.log(element);
                       return (
