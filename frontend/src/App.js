@@ -7,7 +7,7 @@ import NavBar from "./components/NavBar";
 import Register from "./components/Register";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Login from "./components/Login";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import Home from "./components/Home/Home";
 import Search from "./components/Search";
 import NavFriendReq from "./components/NavBar/NavFriendReq";

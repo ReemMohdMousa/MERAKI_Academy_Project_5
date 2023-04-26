@@ -139,7 +139,7 @@ socket.join(socket)
   socket.on("disconnect", () => {
     console.log("user left");
     removeUserNoti(socket.id);
-    removeUser(soket.id)
+    removeUser(socket.id)
     io.emit("GET_USERS", users);
     io.emit("NEW_USER", onlineUsers);
     console.log(users);

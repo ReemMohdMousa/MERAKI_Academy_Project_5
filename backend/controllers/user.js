@@ -178,7 +178,7 @@ const otherUsersInfo = (req, res) => {
     .query(query, [user_id])
     .then((result) => {
       if (result.rows.length === 0) {
-        res.status(404).json({
+        res.status(200).json({
           success: false,
           message: `The user: ${user_id} has no info`,
         });
