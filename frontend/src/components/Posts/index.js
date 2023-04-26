@@ -14,27 +14,20 @@ import {
 } from "../redux/reducers/posts/index";
 import Likes from "./Likes";
 import { setComments, addComment } from "../redux/reducers/posts/index";
-
 import { io } from "socket.io-client";
 import { useSocket } from "../../App";
-
-
 const Posts = ({ post,firstname,lastname }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
-
   const socket=useSocket(io)
-
   const [openComments, setopenComments] = useState(false);
   const dispatch = useDispatch();
-
   const { userinfo, token, userId,posts } = useSelector((state) => {
     return {
       posts:state.posts.posts,
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
-     
     };
   });
 

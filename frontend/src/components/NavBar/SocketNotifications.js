@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { io } from "socket.io-client";
-import { useSocket } from "../../App";
+// import { io } from "socket.io-client";
+// import { useSocket } from "../../App";
 
-const SocketNotifications = () => {
-  const socket = useSocket(io);
+const SocketNotifications = (socket) => {
+  ///const socket = useSocket(io);
+  console.log("hi")
   const { token, userId, isLoggedIn } = useSelector((state) => {
     //return object contains the redux states
     return {
@@ -17,24 +18,21 @@ const SocketNotifications = () => {
   });
   const [notification, setNotification] = useState(null);
   useEffect(() => {
+    console.log(socket.id)
     socket &&
       socket.on(
         "RECEIVE_NOTIFICATION",
-        ({ firstname, lastname, avatar, messagecontent }) => {
-          console.log(firstname, lastname, avatar, messagecontent );
-          setNotification([
-            ...notification,
-            {
-              firstname: firstname,
-              lastname: lastname,
-              avatar: avatar,
-              messagecontent: messagecontent,
-            },
-          ]);
+        (data) => {
+          console.log(data );
+        //   setNotification((pre)=>
+        //   {[
+        //     ...pre,
+        //    data
+        // }]);
         }
       );
-  }, [notification]);
-
+  }, [socket,notification]);
+console.log(notification)
   const notify = () =>
     toast(`${notification.avatar} ${notification.messagecontent}`, {
       position: "top-right",

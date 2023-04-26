@@ -12,6 +12,7 @@ import {
   MDBTypography,
 } from "mdb-react-ui-kit";
 import Comments from "../Comments";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts/index";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +23,6 @@ import { MDBFile } from "mdb-react-ui-kit";
 
 import { useNavigate, useParams } from "react-router-dom";
 import HomePosts from "./HomePosts";
-
 import { io } from "socket.io-client";
 import { useSocket } from "../../App";
 
@@ -58,9 +58,33 @@ const Home = () => {
         console.log(err);
       });
   };
+useEffect(() => {
+  getAllHomePosts();
+
+  socket.connect();
+  socket.emit("NEW_USER", userId);
+  return () => {
+        socket.close();
+      };
+ 
+}, [])
 
   useEffect(() => {
-    getAllHomePosts();
+   console.log(socket);
+   socket.on("eee",(data)=>{
+    console.log(data)
+   })
+    socket.on(
+      "RECEIVE_NOTIFICATION",
+      (data) => {
+        console.log("HI",data );
+      //   setNotification((pre)=>
+      //   {[
+      //     ...pre,
+      //    data
+      // }]);
+      }
+    );
   }, []);
 
   return (
@@ -81,9 +105,7 @@ const Home = () => {
                       {/* dispaly the posts */}
                       {homePosts &&
                         homePosts.map((elem) => {
-
                           return <HomePosts post={elem} socket={socket}/>;
-
                         })}
                     </MDBCol>
                   </MDBRow>
