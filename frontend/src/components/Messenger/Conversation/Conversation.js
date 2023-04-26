@@ -10,10 +10,7 @@ import {
 } from "../../redux/reducers/Messenger/index";
 
 const Conversation = ({ Oneconversation, theOpenedConversation }) => {
-  // const params = useParams();
-  // const id = params.id;
-  // const Fid = params.Fid;
-  <Outlet/>
+
 
   const [theFriendId, setTheFriendId] = useState("");
   const [friendInfo, setFriendInfo] = useState({});
@@ -95,7 +92,7 @@ const Conversation = ({ Oneconversation, theOpenedConversation }) => {
 
   // console.log(conversationFriendInfo);
   // console.log(theFriendId);
-  console.log(Oneconversation);
+  // console.log(Oneconversation);
 
   return (
     <div>

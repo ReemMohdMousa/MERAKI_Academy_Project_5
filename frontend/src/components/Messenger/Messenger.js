@@ -7,7 +7,7 @@ import axios from "axios";
 import { setFriendInfo } from "../redux/reducers/Messenger/index";
 import { io } from "socket.io-client";
 import { useNavigate, useParams, Outlet } from "react-router-dom";
-
+import CurrentConversation from "./CurrentConversation";
 const ENDPOINT = "http://localhost:5000";
 
 //connect to the backend server
@@ -181,7 +181,7 @@ const Messenger = () => {
   // }, [messages]);
 
   // console.log(messages);
-  // console.log(theOpenedConversation);
+  console.log(conversations);
 
   return (
     <>
@@ -189,14 +189,22 @@ const Messenger = () => {
         <div className="chatMenu">
           <div className="chatMenuWrapper">
             {/* <input placeholder="Search for friends" className="chatMenuInput" /> */}
+            <h4>your conversations</h4>
             {conversations.map((element) => {
               return (
                 <div
                   key={element._id}
                   onClick={() => {
-                    // console.log(element);
                     setTheOpenedConversation(element);
-                    navigate(`/messenger/${element._id}`);
+
+                    //determine the receiver_id
+                    const receiver_id = theOpenedConversation?.members.find(
+                      (member) => member != userId
+                    );
+
+                    //navigate to current conversation
+                    receiver_id &&
+                      navigate(`/messenger/${userId}/${receiver_id}`);
                   }}
                 >
                   <Conversation
@@ -221,18 +229,26 @@ const Messenger = () => {
             <>
               {theOpenedConversation ? (
                 <div>
-                  <div className="chatBoxTop"> 
-                    {messages.map((element) => {
-                      // console.log(element);
-                      return (
-                        <div>
-                          <Message
-                            message={element}
-                            mine={element.sender == userId ? true : false}
-                          />
-                        </div>
-                      );
-                    })}
+                  <div className="chatBoxTop">
+                    {theOpenedConversation ? (
+                      messages.map((element) => {
+                        // console.log(element);
+                        return (
+                          <div>
+                            <Message
+                              message={element}
+                              mine={element.sender == userId ? true : false}
+                            />
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <CurrentConversation
+                        conversations={conversations}
+                        messages={messages}
+                        setMessages={setMessages}
+                      />
+                    )}
                   </div>
                   <div className="chatBoxBottom">
                     <input

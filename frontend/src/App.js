@@ -17,6 +17,7 @@ import Messenger from "./components/Messenger/Messenger";
 import Conversation from "./components/Messenger/Conversation/Conversation";
 import Message from "./components/Messenger/Message/Message";
 import SocketNotifications from "./components/NavBar/SocketNotifications";
+import CurrentConversation from "./components/Messenger/CurrentConversation";
 
 const ENDPOINT = "http://localhost:5000";
 //custom hook to use socket because its not works with redux
@@ -98,11 +99,11 @@ function App() {
           )}
 
           <Route path="/messenger" element={<Messenger />}>
-            <Route path=":id" element={<Message />} />
+            <Route path=":userId/:FriendId" element={<CurrentConversation />} />
           </Route>
 
-          {/* <Route path="/messenger/" element={<Messenger />} />
-          <Route path="/cons" element={<Conversation />} /> */}
+          {/* <Route path="/messenger/" element={<Messenger />} /> */}
+          {/* <Route path="/cons" element={<Conversation />} />  */}
         </Routes>
       </div>
     </GoogleOAuthProvider>

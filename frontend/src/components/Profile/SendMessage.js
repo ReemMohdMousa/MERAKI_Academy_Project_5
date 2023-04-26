@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const SendMessage = ({ id }) => {
   const navigate = useNavigate();
-  let idd = "643ee8560af7340f6224eb59";
+
   //redux states
   const { posts, userinfo, token, userId, friends, sharedPosts } = useSelector(
     (state) => {
@@ -18,7 +18,7 @@ const SendMessage = ({ id }) => {
   );
 
   const sendMessageFunc = () => {
-    navigate(`/messenger/${idd}`);
+    navigate(`/messenger/${userId}/${id}`);
 
     // axios
     //   .get(`http://localhost:5000/conversation/new/${id}`, {
@@ -30,7 +30,7 @@ const SendMessage = ({ id }) => {
 
   return (
     <div>
-      <Button onClick={sendMessageFunc}>Message</Button>
+      {userId == id ? "" : <Button onClick={sendMessageFunc}>Message</Button>}
     </div>
   );
 };
