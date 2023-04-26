@@ -103,7 +103,6 @@ export default function BasicMenu() {
     ReceivedRequests();
   }, [isAdded, isReceived]);
 
-
   //cancel friend request
   const cancelFriendReqFun = (receiver_id) => {
     axios
@@ -140,6 +139,7 @@ export default function BasicMenu() {
         throw error;
       });
   };
+
 
   return (
     <div>

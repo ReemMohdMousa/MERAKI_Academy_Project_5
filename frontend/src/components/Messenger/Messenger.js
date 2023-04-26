@@ -12,6 +12,7 @@ import {
   setTheOpenedConversation,
   setConversations,
 } from "../redux/reducers/Messenger/index";
+import OnlineFriends from "./OnlineFriends/OnlineFriends";
 
 const ENDPOINT = "http://localhost:5000";
 //connect to the backend server
@@ -29,6 +30,7 @@ const Messenger = () => {
   const [sending, setSending] = useState(false);
   const [receiving, setReceiving] = useState(false);
   const scrollRef = useRef();
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -177,7 +179,8 @@ const Messenger = () => {
 
   useEffect(() => {
     socket?.on("GET_USERS", (users) => {
-      // console.log(users);
+      console.log(users);
+      setOnlineUsers(users);
     });
   }, [userId]);
 
@@ -195,8 +198,8 @@ const Messenger = () => {
   //   scrollRef?.scrollIntoView({ behavior: "smooth" });
   // }, [messages]);
 
-  console.log(messages);
-  console.log(conversations);
+  // console.log(messages);
+  // console.log(conversations);
 
   // console.log(openConversation);
   // console.log(theOpenedConversation);
@@ -282,7 +285,9 @@ const Messenger = () => {
           </div>
         </div>
         <div className="chatOnline">
-          <div className="chatOnlineWrapper"></div>
+          <div className="chatOnlineWrapper">
+            <OnlineFriends onlineUsers={onlineUsers} />
+          </div>
         </div>
       </div>
     </>
