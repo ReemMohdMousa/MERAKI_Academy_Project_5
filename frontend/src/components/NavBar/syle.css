@@ -10,7 +10,9 @@
   justify-content: space-between;
   align-items: center;
 }
-
+li {
+  list-style-type: none;
+}
 .friend-img-name {
   display: flex;
   justify-content: center;

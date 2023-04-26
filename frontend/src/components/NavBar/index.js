@@ -11,20 +11,22 @@ import {
   MDBBtn,
   MDBCollapse,
 } from "mdb-react-ui-kit";
-import { FaBars } from "react-icons/fa";
+import { BiDownArrow } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setLogout } from "../redux/reducers/auth";
 import NavFriendReq from "./NavFriendReq";
-import SocketNotifications from "./SocketNotifications"
-import Notifications from "./Notifications"
+import SocketNotifications from "./SocketNotifications";
+import Notifications from "./Notifications";
 import { io } from "socket.io-client";
 import { useSocket } from "../../App";
+import { FcSearch } from "react-icons/fc";
+import { TiMessages } from "react-icons/ti";
 const NavBar = () => {
   const [showBasic, setShowBasic] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const socket=useSocket(io)
+  const socket = useSocket(io);
   //useNavigate
   const navigate = useNavigate();
 
@@ -46,7 +48,6 @@ const NavBar = () => {
   //get user info, so i could use user info, such as name and pic
   //! to be used in advance
   useEffect(() => {
-  
     axios
       .get(`http://localhost:5000/users/info`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -83,7 +84,6 @@ const NavBar = () => {
   const searchNow = () => {
     navigate(`/home/${searchValue}`);
     setShowBasic(false);
-
   };
 
   const goToMessenger = () => {
@@ -100,16 +100,44 @@ const NavBar = () => {
           <MDBContainer fluid>
             <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
 
+            <form className="d-flex input-group w-auto">
+              <input
+                type="search"
+                className="form-control"
+                placeholder="Search"
+                aria-label="Search"
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                }}
+              />
+              <MDBBtn
+                color="dark"
+                className="btn btn-dark btn-sm"
+                onClick={searchNow}
+              >
+                <FcSearch size={20} />
+              </MDBBtn>
+            </form>
+
+            <MDBNavbarItem  
+              onClick={() => {
+                goToMessenger();
+              }}
+            >
+              <MDBNavbarLink href="#" className={newMsg ? "newMsg" : ""}>
+                <TiMessages size={20} />
+              </MDBNavbarLink>
+            </MDBNavbarItem>
+
             <MDBNavbarToggler
               aria-controls="navbarSupportedContent"
               aria-expanded="false"
               aria-label="Toggle navigation"
-              style={{ border: " 1px solid black" }}
               onClick={() => setShowBasic(!showBasic)}
             >
-              <MDBIcon icon="bars" fas />
+              <BiDownArrow />
             </MDBNavbarToggler>
-           
+
             <MDBCollapse navbar show={showBasic}>
               <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
                 <MDBNavbarItem
@@ -129,26 +157,17 @@ const NavBar = () => {
                   <MDBNavbarLink href="#">Profile</MDBNavbarLink>
                 </MDBNavbarItem>
 
-                <MDBNavbarItem
-                  onClick={() => {
-                    goToMessenger();
-                  }}
-                >
-                  <MDBNavbarLink href="#" className={newMsg ? "newMsg" : ""}>
-                    Messenger
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
+               
 
                 <MDBNavbarItem>
                   <MDBNavbarLink href="#">
-                    <NavFriendReq/>
+                    <NavFriendReq />
                   </MDBNavbarLink>
                 </MDBNavbarItem>
 
-
                 <MDBNavbarItem>
                   <MDBNavbarLink>
-                    <Notifications/>
+                    <Notifications />
                   </MDBNavbarLink>
                 </MDBNavbarItem>
                 <MDBNavbarItem
@@ -161,21 +180,6 @@ const NavBar = () => {
                   <MDBNavbarLink href="#">Logout</MDBNavbarLink>
                 </MDBNavbarItem>
               </MDBNavbarNav>
-
-              <form className="d-flex input-group w-auto">
-                <input
-                  type="search"
-                  className="form-control"
-                  placeholder="Search"
-                  aria-label="Search"
-                  onChange={(e) => {
-                    setSearchValue(e.target.value);
-                  }}
-                />
-                <MDBBtn color="primary" onClick={searchNow}>
-                  Search
-                </MDBBtn>
-              </form>
             </MDBCollapse>
           </MDBContainer>
         </MDBNavbar>
@@ -214,7 +218,7 @@ const NavBar = () => {
                   <MDBNavbarLink active>Register</MDBNavbarLink>
                 </MDBNavbarItem>
                 <MDBNavbarItem>
-                   <SocketNotifications socket={socket}/>
+                  <SocketNotifications socket={socket} />
                 </MDBNavbarItem>
               </MDBNavbarNav>
             </MDBCollapse>
