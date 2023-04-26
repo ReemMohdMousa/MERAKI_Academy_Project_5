@@ -9,7 +9,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <Sidebar />
-   
+
       <div className="homeContainer">
         <div className="widgets">
           <Widget type="user" />

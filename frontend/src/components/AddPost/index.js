@@ -118,7 +118,7 @@ const AddPost = () => {
                 src={
                   userinfo.avatar
                     ? userinfo.avatar
-                    : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6679.jpg"
+                    : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                 }
                 alt=""
               />
@@ -136,8 +136,7 @@ const AddPost = () => {
               </div>
             </div>
           </div>
-          <div className="contant1" style={{  }}>
-
+          <div className="contant1" style={{}}>
             <section>
               <MDBContainer>
                 <MDBRow className="justify-content-center align-items-center">
@@ -230,11 +229,10 @@ const AddPost = () => {
                             </svg>
                           </button>
                           <MDBCardText className="text-uppercase mb-0">
-                            <span className="ms-3 me-4"> | </span>&nbsp; &nbsp; 
+                            <span className="ms-3 me-4"> | </span>&nbsp; &nbsp;
                           </MDBCardText>
                           <MDBIcon fas icon="plus" />
                           <MDBBtn
-                            
                             onClick={() => {
                               console.log("totalpost", post);
                               AddingPost();

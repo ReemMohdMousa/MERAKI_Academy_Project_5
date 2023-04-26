@@ -9,9 +9,9 @@ import {
   MDBNavbarItem,
   MDBNavbarLink,
   MDBBtn,
- 
   MDBCollapse,
 } from "mdb-react-ui-kit";
+import { FaBars } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";

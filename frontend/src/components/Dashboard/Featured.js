@@ -37,6 +37,7 @@ const Featured = () => {
       </h1>
     );
   }
+
   return (
     <div className="featured">
       <div className="f-top">
@@ -48,8 +49,8 @@ const Featured = () => {
       <div className="f-bottom">
         <div className="featuredChart">
           <CircularProgressbar
-            value={val * 100}
-            text={`${val * 100}%`}
+            value={val.toFixed(2)}
+            text={`${val.toFixed(2) * 10}%`}
             strokeWidth={5}
           />
         </div>

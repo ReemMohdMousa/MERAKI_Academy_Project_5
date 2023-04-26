@@ -19,6 +19,7 @@ import Conversation from "./components/Messenger/Conversation/Conversation";
 import Message from "./components/Messenger/Message/Message";
 import SocketNotifications from "./components/NavBar/SocketNotifications";
 import CurrentConversation from "./components/Messenger/CurrentConversation";
+import NavBar1 from "./components/NavBar/new";
 
 
 const ENDPOINT = "http://localhost:5000";
@@ -78,6 +79,7 @@ function App() {
     <GoogleOAuthProvider clientId={clientId}>
       <div className="App">
         <NavBar />
+        <NavBar1/>
         <header className="App-header"></header>
 
 
