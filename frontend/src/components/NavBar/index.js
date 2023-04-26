@@ -11,7 +11,7 @@ import {
   MDBBtn,
   MDBCollapse,
 } from "mdb-react-ui-kit";
-import { BiDownArrow } from "react-icons/bi";
+import { BiDownArrow, BiHome } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -23,6 +23,10 @@ import { io } from "socket.io-client";
 import { useSocket } from "../../App";
 import { FcSearch } from "react-icons/fc";
 import { TiMessages } from "react-icons/ti";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { CgProfile } from "react-icons/cg";
+import { MdOutlineLogout } from "react-icons/md";
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 const NavBar = () => {
   const [showBasic, setShowBasic] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -34,16 +38,19 @@ const NavBar = () => {
   const dispatch = useDispatch();
 
   //redux login states
-  const { token, userId, isLoggedIn, roleId, newMsg } = useSelector((state) => {
-    //return object contains the redux states
-    return {
-      token: state.auth.token,
-      isLoggedIn: state.auth.isLoggedIn,
-      userId: state.auth.userId,
-      roleId: state.auth.roleId,
-      newMsg: state.messenger.newMsg,
-    };
-  });
+  const { token, userId, isLoggedIn, roleId, newMsg, userinfo } = useSelector(
+    (state) => {
+      //return object contains the redux states
+      return {
+        token: state.auth.token,
+        isLoggedIn: state.auth.isLoggedIn,
+        userId: state.auth.userId,
+        roleId: state.auth.roleId,
+        newMsg: state.messenger.newMsg,
+        userinfo: state.auth.userinfo,
+      };
+    }
+  );
 
   //get user info, so i could use user info, such as name and pic
   //! to be used in advance
@@ -118,8 +125,12 @@ const NavBar = () => {
                 <FcSearch size={20} />
               </MDBBtn>
             </form>
-
-            <MDBNavbarItem  
+            <MDBNavbarItem>
+              <MDBNavbarLink href="#">
+                <NavFriendReq />
+              </MDBNavbarLink>
+            </MDBNavbarItem>
+            <MDBNavbarItem
               onClick={() => {
                 goToMessenger();
               }}
@@ -129,13 +140,32 @@ const NavBar = () => {
               </MDBNavbarLink>
             </MDBNavbarItem>
 
+            <MDBNavbarItem>
+                  <MDBNavbarLink>
+                    <Notifications />
+                  </MDBNavbarLink>
+                </MDBNavbarItem>
+                
             <MDBNavbarToggler
               aria-controls="navbarSupportedContent"
               aria-expanded="false"
               aria-label="Toggle navigation"
               onClick={() => setShowBasic(!showBasic)}
             >
-              <BiDownArrow />
+              <div className="userInfo">
+                <span>
+                  {" "}
+                  <img
+                    src={
+                      userinfo.avatar
+                        ? userinfo.avatar
+                        : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                    }
+                    alt=""
+                  />
+                  <BiDownArrow size={12} />
+                </span>
+              </div>
             </MDBNavbarToggler>
 
             <MDBCollapse navbar show={showBasic}>
@@ -146,7 +176,7 @@ const NavBar = () => {
                   }}
                 >
                   <MDBNavbarLink active aria-current="page" href="#">
-                    Home
+                    <BiHome /> Home
                   </MDBNavbarLink>
                 </MDBNavbarItem>
                 <MDBNavbarItem
@@ -154,22 +184,13 @@ const NavBar = () => {
                     goToMyProfile();
                   }}
                 >
-                  <MDBNavbarLink href="#">Profile</MDBNavbarLink>
-                </MDBNavbarItem>
-
-               
-
-                <MDBNavbarItem>
-                  <MDBNavbarLink href="#">
-                    <NavFriendReq />
+                  <MDBNavbarLink active href="#">
+                    {" "}
+                    <CgProfile /> Profile
                   </MDBNavbarLink>
                 </MDBNavbarItem>
 
-                <MDBNavbarItem>
-                  <MDBNavbarLink>
-                    <Notifications />
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
+                 
                 <MDBNavbarItem
                   onClick={() => {
                     dispatch(setLogout());
@@ -177,7 +198,9 @@ const NavBar = () => {
                     navigate("/login");
                   }}
                 >
-                  <MDBNavbarLink href="#">Logout</MDBNavbarLink>
+                  <MDBNavbarLink active href="#">
+                    <MdOutlineLogout /> Logout
+                  </MDBNavbarLink>
                 </MDBNavbarItem>
               </MDBNavbarNav>
             </MDBCollapse>
@@ -194,9 +217,7 @@ const NavBar = () => {
               aria-label="Toggle navigation"
               style={{ border: " 1px solid black" }}
               onClick={() => setShowBasic(!showBasic)}
-            >
-              <MDBIcon icon="bars" fas />
-            </MDBNavbarToggler>
+            ></MDBNavbarToggler>
 
             <MDBCollapse navbar show={showBasic}>
               <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">

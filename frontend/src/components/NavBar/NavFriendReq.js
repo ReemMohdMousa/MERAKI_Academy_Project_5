@@ -18,7 +18,7 @@ import {
   setIsFriend,
 } from "../redux/reducers/friends/index";
 import { isPending } from "@reduxjs/toolkit";
-
+import { SlPeople } from "react-icons/sl";
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -150,7 +150,7 @@ export default function BasicMenu() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        Friend Requests
+         <SlPeople size={20}/>
       </Button>
       <Menu
         id="basic-menu"
