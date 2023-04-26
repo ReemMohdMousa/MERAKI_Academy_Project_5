@@ -118,8 +118,13 @@ const Home = () => {
                       {/* dispaly the posts */}
                       {homePosts &&
                         homePosts.map((elem) => {
-                          return <HomePosts post={elem} socket={socket} key={elem.post_id }/>;
-
+                          return (
+                            <HomePosts
+                              post={elem}
+                              socket={socket}
+                              key={elem.post_id}
+                            />
+                          );
                         })}
                     </MDBCol>
                   </MDBRow>

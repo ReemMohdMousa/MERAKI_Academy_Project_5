@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setUserInfo } from "../redux/reducers/auth/index";
 import Dropdown from "react-bootstrap/Dropdown";
-import * as timeago from 'timeago.js';
+import * as timeago from "timeago.js";
 import Iframe from "react-iframe";
 import UpdatePost from "../AddPost/UpdatePost";
 import { removePost } from "../redux/reducers/posts/index";
@@ -14,15 +14,14 @@ import Likes from "./Likes";
 import { setComments, addComment } from "../redux/reducers/posts/index";
 import { io } from "socket.io-client";
 import { useSocket } from "../../App";
-const Posts = ({ post,firstname,lastname }) => {
+const Posts = ({ post, firstname, lastname }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
-  const socket=useSocket(io)
+  const socket = useSocket(io);
   const [openComments, setopenComments] = useState(false);
   const dispatch = useDispatch();
 
   const { userinfo, token, userId, posts } = useSelector((state) => {
-
     return {
       posts: state.posts.posts,
       userinfo: state.auth.userinfo,
@@ -95,8 +94,7 @@ const Posts = ({ post,firstname,lastname }) => {
                     setShow(true);
                   }}
                 >
-
-                  Edit 
+                  Edit
                 </Dropdown.Item>
 
                 <Dropdown.Item
@@ -106,25 +104,27 @@ const Posts = ({ post,firstname,lastname }) => {
                 >
                   Delete Post
                 </Dropdown.Item>
-
               </Dropdown.Menu>
             </Dropdown>
-            
           </div>
           <div className="contant">
-
-          {post.content && <p>{post.content}</p>}  
-            {post.image && <img src={post.image} alt="" />}   
-            {post.video && <embed width="100%" height="300px" className="embed" type="video/webm" src={post.video} /> }  
+            {post.content && <p>{post.content}</p>}
+            {post.image && <img src={post.image} alt="" />}
+            {post.video && (
+              <embed
+                width="100%"
+                height="300px"
+                className="embed"
+                type="video/webm"
+                src={post.video}
+              />
+            )}
           </div>
           <br></br>
           <div className="infomation">
-
-
-
-          {post.post_id && <Likes post_id={post.post_id} post={post} socket={socket} />}
-          
-
+            {post.post_id && (
+              <Likes post_id={post.post_id} post={post} socket={socket} />
+            )}
 
             <div
               onClick={() => {
@@ -144,7 +144,7 @@ const Posts = ({ post,firstname,lastname }) => {
               </svg>{" "}
               comments
             </div>
-          {/*   <div className="item">
+            {/*   <div className="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -160,15 +160,20 @@ const Posts = ({ post,firstname,lastname }) => {
           </div>
           {/*condition comments  */}
 
-          {openComments &&post.post_id && <Comments id={post.post_id} firstname={firstname} lastname={lastname} socket={socket}/>}
+          {openComments && post.post_id && (
+            <Comments
+              id={post.post_id}
+              firstname={firstname}
+              lastname={lastname}
+              socket={socket}
+            />
+          )}
 
-
-          {show ? <UpdatePost showModal={show} post={post}
-           setShowModal={setShow} />:""}
-          
-
-
-
+          {show ? (
+            <UpdatePost showModal={show} post={post} setShowModal={setShow} />
+          ) : (
+            ""
+          )}
         </div>
       </div>
     )

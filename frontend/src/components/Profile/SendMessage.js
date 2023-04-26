@@ -3,22 +3,58 @@ import { Modal, Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {
+  setTheOpenedConversation,
+  setConversations,
+} from "../redux/reducers/Messenger/index";
 
 const SendMessage = ({ id }) => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   //redux states
-  const { posts, userinfo, token, userId, friends, sharedPosts } = useSelector(
+  const { posts, userinfo, token, userId, conversations } = useSelector(
     (state) => {
       return {
         token: state.auth.token,
         userId: state.auth.userId,
+        conversations: state.messenger.conversations,
       };
     }
   );
 
+  //get all user's conversations
+  const getAllUserConversations = () => {
+    axios
+      .get(`http://localhost:5000/conversation/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        // console.log(response.data);
+        dispatch(setConversations(response.data));
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  };
+
+  useEffect(() => {
+    getAllUserConversations();
+  }, []);
+
+  console.log(conversations);
+
   const sendMessageFunc = () => {
-    navigate(`/messenger/${userId}/${id}`);
+    // dispatch(setOpenConversation(true));
+
+    const conversation = conversations?.filter((element) => {
+      if (element.members.includes(Number(id))) {
+        return element;
+      }
+    });
+
+    dispatch(setTheOpenedConversation(conversation[0]));
+
+    navigate(`/messenger`);
 
     // axios
     //   .get(`http://localhost:5000/conversation/new/${id}`, {

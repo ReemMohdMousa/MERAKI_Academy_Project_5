@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import { io } from "socket.io-client";
 // import { useSocket } from "../../App";
 
-const SocketNotifications = (socket) => {
+const SocketNotifications = ({socket}) => {
   ///const socket = useSocket(io);
   console.log("hi")
   const { token, userId, isLoggedIn } = useSelector((state) => {

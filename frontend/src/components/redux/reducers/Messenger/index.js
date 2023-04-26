@@ -6,6 +6,9 @@ export const messenger = createSlice({
   initialState: {
     conversationFriendInfo: null,
     newMsg: false,
+    openConversation: false,
+    theOpenedConversation: null,
+    conversations: [],
   },
   reducers: {
     setConversationFriendInfo: (state, action) => {
@@ -15,8 +18,26 @@ export const messenger = createSlice({
     setNewMsg: (state, action) => {
       state.newMsg = action.payload;
     },
+
+    setOpenConversation: (state, action) => {
+      state.openConversation = action.payload;
+    },
+
+    setTheOpenedConversation: (state, action) => {
+      state.theOpenedConversation = action.payload;
+    },
+
+    setConversations: (state, action) => {
+      state.conversations = action.payload;
+    },
   },
 });
-export const { setConversationFriendInfo, setNewMsg } = messenger.actions;
+export const {
+  setConversationFriendInfo,
+  setNewMsg,
+  setOpenConversation,
+  setTheOpenedConversation,
+  setConversations,
+} = messenger.actions;
 
 export default messenger.reducer;
