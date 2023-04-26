@@ -43,7 +43,7 @@ app.use("/conversation", conversationRouter);
 app.use("/messages", messagesRouter);
 
 // Handles any other endpoints [unassigned - endpoints]
-app.use("*", (req, res) => res.status(404).json("NO content at this path"));
+app.use("*", (req, res) => res.status().json("NO content at this path"));
 
 const server = app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);
@@ -67,9 +67,9 @@ const addNewUser = (userId, socketId) => {
 const removeUserNoti = (soketId) => {
   onlineUsers = onlineUsers.filter((user) => user.socketId !== soketId);
 };
-const getUserNoti=(userId)=>{
-  return onlineUsers.find((user)=>user.userId ==userId)
-}
+const getUserNoti = (userId) => {
+  return onlineUsers.find((user) => user.userId == userId);
+};
 
 const addUser = (userId, socketId) => {
   !users.some((user) => user.userId == userId) &&
@@ -104,7 +104,6 @@ io.on("connection", (socket) => {
 
     //send the users array to the frontend
     io.emit("GET_USERS", users);
-
   });
 
   //send messages
@@ -121,32 +120,37 @@ io.on("connection", (socket) => {
     }
   });
 
-socket.join(socket)
+
   socket.on("NEW_USER", (userId) => {
- console.log(userId,"rrrrrrrrrr")
-    addNewUser(userId,socket.id)
-    console.log("online",onlineUsers)
+    console.log(userId, "rrrrrrrrrr");
+    addNewUser(userId, socket.id);
+    console.log("online", onlineUsers);
+
   });
-    socket.on("SEND_NOTIFICATION", ({firstname,lastname,avatar,receiver,messagecontent}) => {
-      // console.log(data);
-       const Recevier=getUserNoti(receiver)
-       console.log("hi all how are you",firstname,lastname,avatar,receiver,messagecontent)
-       console.log(Recevier)
-   
-       socket.to(Recevier).emit("RECEIVE_NOTIFICATION",({firstname,lastname,avatar,messagecontent}));
-     });
+  socket.on("aaa", (data) => {
+    io.emit("eee", data);
+  });
+
+
+  socket.on(
+    "SEND_NOTIFICATION",
+    ({ firstname, lastname, avatar, receiver, messagecontent }) => {
+      const Recevier = getUserNoti("18");
+      console.log(Recevier.socketId);
+      let data = { firstname, lastname, avatar, receiver, messagecontent };
+      socket.to([Recevier.socketId]).emit("RECEIVE_NOTIFICATION", data);
+    }
+  );
+
+
 
   socket.on("disconnect", () => {
     console.log("user left");
     removeUserNoti(socket.id);
-    removeUser(socket.id)
+    removeUser(socket.id);
     io.emit("GET_USERS", users);
     io.emit("NEW_USER", onlineUsers);
     console.log(users);
-
-
-
-
 
   });
 });

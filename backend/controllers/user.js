@@ -151,7 +151,7 @@ const profileInfo = (req, res) => {
     .then((result) => {
       if (result.rows.length === 0) {
         res.status(200).json({
-          success: true,
+          success: false,
           message: `The user: ${user_id} has no info`,
         });
       } else {

@@ -42,7 +42,6 @@ const createNewComment = async (req, res) => {
         messagecontent:messagecontent,
       });
     })
-
     .catch((err) => {
       res.status(500).json({
         success: false,
