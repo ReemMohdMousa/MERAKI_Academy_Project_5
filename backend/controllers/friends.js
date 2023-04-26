@@ -230,7 +230,7 @@ const result1= await pool.query(querytofindname, [user2_id])
     .then((result) => {
       //delete the request after inserting the friend in the friends table
       if (result.rows.length === 0) {
-        res.status(404).json({
+        res.status(200).json({
           success: false,
           message: "Request is not found",
         });
@@ -272,7 +272,7 @@ const CancelFriendRequest = (req, res) => {
     .query(query, data)
     .then((result) => {
       if (result.rowCount === 0) {
-        res.status(404).json({
+        res.status(200).json({
           success: false,
           message: `The request is not found`,
         });
@@ -315,7 +315,7 @@ const declineTheFriendReq = (req, res) => {
     .query(query, data)
     .then((result) => {
       if (result.rowCount === 0) {
-        res.status(404).json({
+        res.status(200).json({
           success: false,
           message: `The request is not found`,
         });
@@ -351,7 +351,7 @@ WHERE user1_id=$1 OR user1_id=$2 AND user2_id=$1 OR user2_id=$2
     .query(query, data)
     .then((result) => {
       if (result.rowCount === 0) {
-        res.status(404).json({
+        res.status(200).json({
           success: false,
           message: `Friend not found`,
         });

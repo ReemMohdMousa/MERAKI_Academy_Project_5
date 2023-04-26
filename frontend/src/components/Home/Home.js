@@ -1,4 +1,7 @@
 import React, { useEffect } from "react";
+import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import {
   MDBCol,
@@ -12,24 +15,20 @@ import {
   MDBTypography,
 } from "mdb-react-ui-kit";
 import Comments from "../Comments";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts/index";
 import { useDispatch, useSelector } from "react-redux";
 import { setHomePosts } from "../redux/reducers/posts/index";
 import AddPost from "../AddPost";
-
 import { MDBFile } from "mdb-react-ui-kit";
-
 import { useNavigate, useParams } from "react-router-dom";
 import HomePosts from "./HomePosts";
 import { io } from "socket.io-client";
 import { useSocket } from "../../App";
 
-
 const Home = () => {
   const dispatch = useDispatch();
-  const socket=useSocket(io)
+  const socket = useSocket(io);
   //redux states
   const { posts, userinfo, token, userId, friends, homePosts } = useSelector(
     (state) => {
@@ -58,34 +57,48 @@ const Home = () => {
         console.log(err);
       });
   };
-useEffect(() => {
-  getAllHomePosts();
-
-  socket.connect();
-  socket.emit("NEW_USER", userId);
-  return () => {
-        socket.close();
-      };
- 
-}, [])
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
-   console.log(socket);
-   socket.on("eee",(data)=>{
-    console.log(data)
-   })
-    socket.on(
-      "RECEIVE_NOTIFICATION",
-      (data) => {
-        console.log("HI",data );
-      //   setNotification((pre)=>
-      //   {[
-      //     ...pre,
-      //    data
-      // }]);
-      }
-    );
+    getAllHomePosts();
+
+    socket.connect();
+    socket.emit("NEW_USER", userId);
+    return () => {
+      socket.close();
+    };
   }, []);
+
+  useEffect(() => {
+    console.log(socket);
+    socket.on("RECEIVE_NOTIFICATION", (data) => {
+      console.log("HI", data);
+      setNotification((current) => {
+        return { ...current, data };
+      });
+      socket.on("eee", (data) => {
+        console.log(data);
+      });
+
+      // setNotification((pre)=>
+      // {return [
+      //   ...pre,
+      //  data
+      // ]});
+    });
+  }, []);
+  const notify = () =>
+    toast(`${notification.avatar} ${notification.messagecontent}`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  notification !== null && notify();
 
   return (
     <div>
@@ -105,7 +118,7 @@ useEffect(() => {
                       {/* dispaly the posts */}
                       {homePosts &&
                         homePosts.map((elem) => {
-                          return <HomePosts post={elem} socket={socket}/>;
+                          return <HomePosts post={elem} socket={socket} />;
                         })}
                     </MDBCol>
                   </MDBRow>
@@ -114,6 +127,21 @@ useEffect(() => {
             </MDBCol>
           </MDBRow>
         </MDBContainer>
+      </div>
+      <div>
+        {" "}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </div>
     </div>
   );
