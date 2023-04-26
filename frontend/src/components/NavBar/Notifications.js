@@ -22,36 +22,33 @@ export default function AccountMenu() {
   const dispatch = useDispatch();
 
   //redux login states
-  const { token, userId, isLoggedIn,Socket } = useSelector((state) => {
+  const { token, userId, isLoggedIn, Socket } = useSelector((state) => {
     //return object contains the redux states
     return {
       token: state.auth.token,
       isLoggedIn: state.auth.isLoggedIn,
       userId: state.auth.userId,
-      Socket:state.posts.Socket
+      Socket: state.posts.Socket,
     };
   });
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-  
-
-    
-    axios
-      .get(`http://localhost:5000/home/notification`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        console.log(response.data.result);
-        setNotification(response.data.result);
-        dispatch(setNotifications(response.data.result));
-      })
-      .catch(function (error) {
-        throw error;
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:5000/home/notification`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     })
+  //     .then((response) => {
+  //       console.log(response.data.result);
+  //       setNotification(response.data.result);
+  //       dispatch(setNotifications(response.data.result));
+  //     })
+  //     .catch(function (error) {
+  //       throw error;
+  //     });
+  // }, []);
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -114,7 +111,7 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        { !notification ? (
+        {!notification ? (
           <MenuItem onClick={handleClose}>You dont have notifications</MenuItem>
         ) : (
           notification.map((elem, i) => {

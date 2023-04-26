@@ -47,6 +47,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
   function handleOnEnter(text) {}
   const [nemcomment, setNewComment] = useState({});
 
+
   const { userinfo, token, userId, posts } = useSelector((state) => {
     return {
       userinfo: state.auth.userinfo,
@@ -144,6 +145,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
       .then((Response) => {
         console.log(Response.data);
         let newComment = Response.data.result;
+
         socket.emit("aaa", {
           A:11
         })
@@ -331,22 +333,21 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                       </span>
                                     </p>
 
-                                   <Dropdown>
-              <Dropdown.Toggle id="dropdown-basic">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-three-dots"
-                  viewBox="0 0 16 16"
-                  onClick={() => {}}
-                >
-                  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                </svg>
-              </Dropdown.Toggle>
+                                    <Dropdown>
+                                      <Dropdown.Toggle id="dropdown-basic">
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          width="16"
+                                          height="16"
+                                          fill="currentColor"
+                                          className="bi bi-three-dots"
+                                          viewBox="0 0 16 16"
+                                          onClick={() => {}}
+                                        >
+                                          <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                                        </svg>
+                                      </Dropdown.Toggle>
 
-                                 
                                       <Dropdown.Menu>
                                         <Dropdown.Item
                                           onClick={() => {
@@ -355,7 +356,6 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                         >
                                           Edit
                                         </Dropdown.Item>
-
 
                                         <Dropdown.Item
                                           onClick={() => {
@@ -472,7 +472,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                             src={
                                               elementnested.avatar
                                                 ? elementnested.avatar
-                                                : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6679.jpg"
+                                                : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                                             }
                                             alt="avatar"
                                             width="65"

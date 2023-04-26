@@ -120,10 +120,12 @@ io.on("connection", (socket) => {
     }
   });
 
+
   socket.on("NEW_USER", (userId) => {
     console.log(userId, "rrrrrrrrrr");
     addNewUser(userId, socket.id);
     console.log("online", onlineUsers);
+
   });
   socket.on("aaa", (data) => {
     io.emit("eee", data);
@@ -139,6 +141,7 @@ io.on("connection", (socket) => {
       socket.to([Recevier.socketId]).emit("RECEIVE_NOTIFICATION", data);
     }
   );
+
 
 
   socket.on("disconnect", () => {

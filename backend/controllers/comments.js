@@ -42,7 +42,6 @@ const createNewComment = async (req, res) => {
         messagecontent:messagecontent,
       });
     })
-
     .catch((err) => {
       res.status(500).json({
         success: false,
@@ -91,7 +90,7 @@ const createNewNestedComment = async (req, res) => {
       });
     })
     .catch((err) => {
-      res.status(404).json({
+      res.status(500).json({
         success: false,
         message: "Server error",
         err: err,
@@ -204,7 +203,7 @@ const deleteCommentById = (req, res) => {
     )
     .then((result) => {
       if (result.rowCount === 0) {
-        return res.status(404).json({
+        return res.status(200).json({
           success: false,
           message: `The comment with id: ${comment_id} is not found`,
         });

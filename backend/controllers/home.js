@@ -41,10 +41,11 @@ const getAllFriendsPosts = (req, res) => {
       });
     });
 };
-const getAllNotificationByUserId=(req,res)=>{
- let user_id=req.token.userId
- const query='SELECT content, avatar, read from notifications Where read=FALSE AND user_id=$1'
- pool
+const getAllNotificationByUserId = (req, res) => {
+  let user_id = req.token.userId;
+  const query =
+    "SELECT content, avatar, read from notifications Where read=FALSE AND user_id=$1";
+  pool
     .query(query, [user_id])
     .then((result) => {
       if (result.rowCount === 0) {
@@ -67,6 +68,6 @@ const getAllNotificationByUserId=(req,res)=>{
         err: err,
       });
     });
-}
+};
 
-module.exports = { getAllFriendsPosts,getAllNotificationByUserId };
+module.exports = { getAllFriendsPosts, getAllNotificationByUserId };

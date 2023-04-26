@@ -128,7 +128,7 @@ const updatePostById = (req, res) => {
     .query(query, data)
     .then((result) => {
       if (result.rows.length === 0) {
-        return res.status().json({
+        return res.status(200).json({
           success: false,
           message: `The post with id: ${post_id} is not found`,
         });

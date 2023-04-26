@@ -17,7 +17,7 @@ import Posts from "../Posts";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../redux/reducers/posts/index";
 import AddPost from "../AddPost";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import FriendRequests from "./FriendRequests";
 import AllFriends from "./AllFriends";
 import SendMessage from "./SendMessage";
@@ -39,7 +39,6 @@ const Profile = () => {
         setUser((lastname) => {
           return { ...lastname, lastname: Response.data.result.lastname };
         });
-
       })
       .catch((err) => {
         // console.log(err);
@@ -68,13 +67,11 @@ const Profile = () => {
       })
       .then((Response) => {
         dispatch(setPosts(Response.data.posts));
-
       })
       .catch((err) => {
         // console.log(err);
       });
   };
-
 
   useEffect(() => {
     getuserdata();
@@ -83,7 +80,6 @@ const Profile = () => {
 
   return (
     <div>
-
       <SendMessage id={id} />
       {/* <FriendRequests id={id} />
       <AllFriends id={id} /> */}
@@ -112,7 +108,6 @@ const Profile = () => {
                       style={{ width: "150px", zIndex: "1" }}
                     ></MDBCardImage>
 
-
                     <MDBBtn
                       outline
                       color="dark"
@@ -122,13 +117,11 @@ const Profile = () => {
                     </MDBBtn>
                   </div>
                   <div className="ms-3" style={{ marginTop: "130px" }}>
-
                     <MDBTypography tag="h5">
                       {user.firstname}
                       {"  "}
                       {user.lastname}
                     </MDBTypography>
-
                   </div>
                 </div>
 
@@ -145,7 +138,7 @@ const Profile = () => {
                     </div>
                     <div className="px-3">
                       <MDBCardText className="mb-1 h6">
-                        "Number of friends"
+                        {friends ? friends.length : 0}
                       </MDBCardText>
                       <MDBCardText className="small text-muted mb-0">
                         <AllFriends id={id} />
@@ -171,7 +164,7 @@ const Profile = () => {
 
                   <MDBRow className="g-2">
                     <MDBCol className="mb-2">
-                      {id==userId &&<AddPost/>}
+                      {id == userId && <AddPost />}
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -179,7 +172,14 @@ const Profile = () => {
                       {/* dispaly the posts */}
                       {posts &&
                         posts.map((elem) => {
-                          return <Posts post={elem} firstname={user.firstname} lastname={user.lastname} key={elem.post_id}/>;
+                          return (
+                            <Posts
+                              post={elem}
+                              firstname={user.firstname}
+                              lastname={user.lastname}
+                              key={elem.post_id}
+                            />
+                          );
                         })}
                     </MDBCol>
                   </MDBRow>

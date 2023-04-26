@@ -18,11 +18,11 @@ import { io } from "socket.io-client";
 import Conversation from "./components/Messenger/Conversation/Conversation";
 import Message from "./components/Messenger/Message/Message";
 import SocketNotifications from "./components/NavBar/SocketNotifications";
-
-
+import CurrentConversation from "./components/Messenger/CurrentConversation";
 
 
 const ENDPOINT = "http://localhost:5000";
+
 //custom hook to use socket because socket io conflict with redux roles
 export const useSocket = (io) => {
   const { token, userId, isLoggedIn } = useSelector((state) => {
@@ -35,6 +35,7 @@ export const useSocket = (io) => {
   const [socket, setSocket] = React.useState(
     io(ENDPOINT, { autoConnect: false })
   );
+
 
   // React.useEffect(() => {
   //   socket.connect();
@@ -96,7 +97,12 @@ function App() {
           ) : (
             ""
           )}
-          <Route path="/messenger" element={<Messenger />} />
+          <Route path="/messenger" element={<Messenger />}>
+            <Route path=":userId/:FriendId" element={<CurrentConversation />} />
+          </Route>
+
+          {/* <Route path="/messenger/" element={<Messenger />} /> */}
+          {/* <Route path="/cons" element={<Conversation />} />  */}
 
         </Routes>
       </div>
