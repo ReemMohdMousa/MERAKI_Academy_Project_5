@@ -94,7 +94,7 @@ const getPostById = (req, res) => {
     .query(query, data)
     .then((result) => {
       if (result.rows.length === 0) {
-        res.status(404).json({
+        res.status(200).json({
           success: false,
           message: `The post with id: ${id} is not found`,
           result: result.rows,
@@ -128,7 +128,7 @@ const updatePostById = (req, res) => {
     .query(query, data)
     .then((result) => {
       if (result.rows.length === 0) {
-        return res.status(404).json({
+        return res.status().json({
           success: false,
           message: `The post with id: ${post_id} is not found`,
         });
@@ -159,7 +159,7 @@ const deletePostById = (req, res) => {
     .query(query, data)
     .then((result) => {
       if (result.rowCount === 0) {
-        res.status(404).json({
+        res.status(200).json({
           success: false,
           message: `The post with id: ${post_id} is not found`,
           err: err,
@@ -189,7 +189,7 @@ const deletePostsByuserId = (req, res) => {
     .query(query, data)
     .then((result) => {
       if (result.rowCount === 0) {
-        res.status(404).json({
+        res.status(200).json({
           success: false,
           message: `The user: ${user_id} has no posts`,
         });

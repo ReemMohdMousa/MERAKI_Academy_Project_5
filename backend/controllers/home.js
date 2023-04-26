@@ -21,7 +21,7 @@ const getAllFriendsPosts = (req, res) => {
     .query(query, data)
     .then((result) => {
       if (result.rowCount === 0) {
-        res.status(404).json({
+        res.status(200).json({
           success: false,
           message: `Posts not found`,
         });
@@ -47,14 +47,21 @@ const getAllNotificationByUserId=(req,res)=>{
  pool
     .query(query, [user_id])
     .then((result) => {
-      res.status(201).json({
-        success: true,
-        message: "your notifications",
-        result: result.rows,
-      });
+      if (result.rowCount === 0) {
+        res.status(200).json({
+          success: false,
+          message: `notifications not found`,
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: "your notifications",
+          result: result.rows,
+        });
+      }
     })
     .catch((err) => {
-      res.status(404).json({
+      res.status(500).json({
         success: false,
         message: "Server error",
         err: err,

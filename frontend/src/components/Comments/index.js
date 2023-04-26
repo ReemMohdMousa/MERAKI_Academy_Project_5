@@ -18,17 +18,16 @@ import { useDispatch, useSelector } from "react-redux";
 import InputEmoji from "react-input-emoji";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-
 import Dropdown from "react-bootstrap/Dropdown";
 import posts, {
   setComments,
   addComment,
   removeComment,
-  setNestedComments,addNested,
+  setNestedComments,
+  addNested,
 } from "../redux/reducers/posts/index";
-
 import UpdateComment from "./UpdateComment";
-const Comments = ({ id, firstname, lastname,socket }) => {
+const Comments = ({ id, firstname, lastname, socket }) => {
   const dispatch = useDispatch();
   const [image, setImage] = useState("");
   const [disabled, setDisabled] = useState(false);
@@ -44,17 +43,16 @@ const Comments = ({ id, firstname, lastname,socket }) => {
   const [text, setText] = useState("");
   const [currentEmoji, setCurrentEmoji] = useState("");
   const [allnested, setAllNested] = useState(null);
-  const[newnrested,setNewNested]=useState({})
+  const [newnrested, setNewNested] = useState({});
   function handleOnEnter(text) {}
   const [nemcomment, setNewComment] = useState({});
 
-  const { userinfo, token, userId, posts,Socket } = useSelector((state) => {
+  const { userinfo, token, userId, posts } = useSelector((state) => {
     return {
       userinfo: state.auth.userinfo,
       token: state.auth.token,
       userId: state.auth.userId,
       posts: state.posts.posts,
-      Socket:state.posts.Socket
     };
   });
 
@@ -91,31 +89,31 @@ const Comments = ({ id, firstname, lastname,socket }) => {
         console.log(Response.data.result);
         setAllNested(Response.data.result);
         //this is for redux
-        dispatch(setNestedComments({ post_id, comment_id, nestedcomments}));
-       
+        dispatch(setNestedComments({ post_id, comment_id, nestedcomments }));
+
         //console.log(allnested);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  const createNestedComment=(post_id,comment_id)=>{
-   axios
-    .post(
-      `http://localhost:5000/comments/nested?comment_id=${comment_id}&post_id=${post_id}`,
-      {...newnrested},
-      { headers:{ Authorization: token }}
-    )
-    .then((Response) => {
-      let nestedcomment=Response.data.result
-      console.log(Response.data.result);
-      dispatch(addNested({post_id,comment_id,nestedcomment}));
-      getAllNestedCommentsBycommentId(post_id,comment_id)  
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+  const createNestedComment = (post_id, comment_id) => {
+    axios
+      .post(
+        `http://localhost:5000/comments/nested?comment_id=${comment_id}&post_id=${post_id}`,
+        { ...newnrested },
+        { headers: { Authorization: token } }
+      )
+      .then((Response) => {
+        let nestedcomment = Response.data.result;
+        console.log(Response.data.result);
+        dispatch(addNested({ post_id, comment_id, nestedcomment }));
+        getAllNestedCommentsBycommentId(post_id, comment_id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const getAllCommentsByPostId = (id) => {
     axios
       .get(`http://localhost:5000/comments/${id}`, {
@@ -144,16 +142,19 @@ const Comments = ({ id, firstname, lastname,socket }) => {
         { headers: { Authorization: token } }
       )
       .then((Response) => {
-        console.log(Response.data)
+        console.log(Response.data);
         let newComment = Response.data.result;
-
-        socket && socket.emit("SEND_NOTIFICATION",{
-          firstname:Response.data.firstname,
-          lastname: Response.data.lastname,
-          avatar: Response.data.avatar,
-          receiver: Response.data.receiver,
-          messagecontent:Response.data.messagecontent,
+        socket.emit("aaa", {
+          A:11
         })
+        socket &&
+          socket.emit("SEND_NOTIFICATION", {
+            firstname: Response.data.firstname,
+            lastname: Response.data.lastname,
+            avatar: Response.data.avatar,
+            receiver: Response.data.receiver,
+            messagecontent: Response.data.messagecontent,
+          });
         dispatch(addComment({ id, newComment }));
         getAllCommentsByPostId(id);
       })
@@ -225,7 +226,7 @@ const Comments = ({ id, firstname, lastname,socket }) => {
 
                                   return {
                                     ...content,
-                                    content: e.target.value +text,
+                                    content: e.target.value + text,
                                   };
                                 });
                               }}
@@ -395,7 +396,10 @@ const Comments = ({ id, firstname, lastname,socket }) => {
                                     )}
                                     <button
                                       onClick={() => {
-                                        getAllNestedCommentsBycommentId(element.post_id, element.comment_id)
+                                        getAllNestedCommentsBycommentId(
+                                          element.post_id,
+                                          element.comment_id
+                                        );
                                       }}
                                     >
                                       all replies
@@ -418,24 +422,39 @@ const Comments = ({ id, firstname, lastname,socket }) => {
                                     <div>
                                       <div className="d-flex justify-content-between align-items-center">
                                         <p className="mb-1">
-                                          {userinfo.firstname}{" "}{userinfo.lastname}
-              <br></br>                            <span className="small">
+                                          {userinfo.firstname}{" "}
+                                          {userinfo.lastname}
+                                          <br></br>{" "}
+                                          <span className="small">
                                             {format(Date())}
                                           </span>
                                         </p>
                                       </div>
                                       <MDBInput
-                              style={{ height: "40px" }}
-                              wrapperClass="mb-4"
-                              placeholder="replay the comment..."
-                              id="mytextarea"
-                              type="text"
-                              onChange={(e) => {
-                                setNewNested((content)=>{return{...content,content:e.target.value}}) 
-                                
-                              }}
-                            />
-                            <button onClick={()=>{createNestedComment(element.post_id,element.comment_id)}}>reply</button>
+                                        style={{ height: "40px" }}
+                                        wrapperClass="mb-4"
+                                        placeholder="replay the comment..."
+                                        id="mytextarea"
+                                        type="text"
+                                        onChange={(e) => {
+                                          setNewNested((content) => {
+                                            return {
+                                              ...content,
+                                              content: e.target.value,
+                                            };
+                                          });
+                                        }}
+                                      />
+                                      <button
+                                        onClick={() => {
+                                          createNestedComment(
+                                            element.post_id,
+                                            element.comment_id
+                                          );
+                                        }}
+                                      >
+                                        reply
+                                      </button>
                                     </div>
                                   </div>
                                 </div>
@@ -450,7 +469,11 @@ const Comments = ({ id, firstname, lastname,socket }) => {
                                         <a className="me-3" href="#">
                                           <MDBCardImage
                                             className="rounded-circle shadow-1-strong me-3"
-                                            src={elementnested.avatar?elementnested.avatar : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"}
+                                            src={
+                                              elementnested.avatar
+                                                ? elementnested.avatar
+                                                : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6679.jpg"
+                                            }
                                             alt="avatar"
                                             width="65"
                                             height="65"
@@ -463,14 +486,22 @@ const Comments = ({ id, firstname, lastname,socket }) => {
                                               <p className="mb-1">
                                                 {elementnested.firstname}{" "}
                                                 {elementnested.lastname}
-                <br></br>                                <span className="small">
-                                                  {format(elementnested.created_at)}
+                                                <br></br>{" "}
+                                                <span className="small">
+                                                  {format(
+                                                    elementnested.created_at
+                                                  )}
                                                 </span>
                                               </p>
                                             </div>
-{elementnested.content && <p>{elementnested.content}</p>}
+                                            {elementnested.content && (
+                                              <p>{elementnested.content}</p>
+                                            )}
                                             {elementnested.image && (
-                                              <img src={elementnested.image} style={{width:"200px"}}/>
+                                              <img
+                                                src={elementnested.image}
+                                                style={{ width: "200px" }}
+                                              />
                                             )}
                                           </div>
                                         </div>
