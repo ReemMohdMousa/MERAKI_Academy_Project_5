@@ -135,117 +135,121 @@ const NavBar = () => {
                 <FcSearch size={20} />
               </MDBBtn>
             </form>
-            <MDBNavbarItem
+<div className="nav-container">
+  
+            <Button
               onClick={() => {
                 goToHome();
               }}
             >
-              <MDBNavbarLink active aria-current="page" href="#">
-                <BiHome size={20} />
-              </MDBNavbarLink>
-            </MDBNavbarItem>
+              {" "}
+              <BiHome size={23} />
+            </Button>
+
             <MDBNavbarItem>
               <MDBNavbarLink href="#">
                 <NavFriendReq />
               </MDBNavbarLink>
             </MDBNavbarItem>
-            <MDBNavbarItem
+            <Button
               onClick={() => {
                 goToMessenger();
               }}
             >
               <MDBNavbarLink href="#" className={newMsg ? "newMsg" : ""}>
-                <TiMessages color="royalblue" size={20} />
+                <TiMessages color="royalblue" size={23} />
               </MDBNavbarLink>
-            </MDBNavbarItem>
+            </Button>
 
             <MDBNavbarItem>
               <MDBNavbarLink>
                 <Notifications />
               </MDBNavbarLink>
             </MDBNavbarItem>
-            <MDBNavbarItem>
-              <Button
-                id="demo-positioned-button"
-                aria-controls={open ? "demo-positioned-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-              >
-                <div className="userInfo">
-                  <span>
-                    {" "}
-                    <img
-                      src={
-                        userinfo.avatar
-                          ? userinfo.avatar
-                          : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                      }
-                      alt=""
-                    />
-                    <BiDownArrow size={12} />
-                  </span>
-                </div>
-              </Button>
-              <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        PaperProps={{
-          elevation: 2,
-          style: {  
-            width: 120,  
-          },  
-          sx: {
-            overflow: "visible",
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-            mt: .01,
-            "& .MuiAvatar-root": {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            "&:before": {
-              content: '""',
-              display: "block",
-              position: "absolute",
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
-              zIndex: 0,
-            },
-          },
-        }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-                <MenuItem
-                  onClick={() => {
-                    goToMyProfile();
-                    setAnchorEl(null);
-                  }}
-                >
-                  {" "}
-                  <CgProfile />&nbsp;Profile
-                </MenuItem>
+              </div>
 
-                <MenuItem
-                  onClick={() => {
-                    dispatch(setLogout());
-                    setAnchorEl(null);
-                    navigate("/login");
-                  }}
-                >
-                  <MdOutlineLogout />&nbsp;Logout
-                </MenuItem>
-              </Menu>
-            </MDBNavbarItem>
+            <Button
+              id="demo-positioned-button"
+              aria-controls={open ? "demo-positioned-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+            >
+              <div className="userInfo">
+                <span>
+                  {" "}
+                  <img
+                    src={
+                      userinfo.avatar
+                        ? userinfo.avatar
+                        : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                    }
+                    alt=""
+                  />
+                  <BiDownArrow className= "svg2" size={12} />
+                </span>
+              </div>
+            </Button>
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleClose}
+              onClick={handleClose}
+              PaperProps={{
+                elevation: 2,
+                style: {
+                  width: 120,
+                },
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  mt: 0.01,
+                  "& .MuiAvatar-root": {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  "&:before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "background.paper",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            >
+              <MenuItem
+                onClick={() => {
+                  goToMyProfile();
+                  setAnchorEl(null);
+                }}
+              >
+                {" "}
+                <CgProfile />
+                &nbsp;Profile
+              </MenuItem>
+
+              <MenuItem
+                onClick={() => {
+                  dispatch(setLogout());
+                  setAnchorEl(null);
+                  navigate("/login");
+                }}
+              >
+                <MdOutlineLogout />
+                &nbsp;Logout
+              </MenuItem>
+            </Menu>
           </MDBContainer>
         </MDBNavbar>
       ) : (

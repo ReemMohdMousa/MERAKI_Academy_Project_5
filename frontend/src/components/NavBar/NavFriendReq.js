@@ -150,7 +150,7 @@ export default function BasicMenu() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-         <SlPeople size={20}/>
+         <SlPeople  size={22}/>
       </Button>
       <Menu
         id="basic-menu"

@@ -4,7 +4,8 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
+
 import Tooltip from "@mui/material/Tooltip";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import axios from "axios";
@@ -53,14 +54,14 @@ export default function AccountMenu() {
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Notifications">
-          <IconButton
+          <Button
             onClick={handleClick}
             aria-controls={open ? "account-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <IoIosNotificationsOutline color='royalblue'/>
-          </IconButton>
+            <IoIosNotificationsOutline  className= "svg1" color='royalblue' size={25}/>
+          </Button>
         </Tooltip>
       </Box>
       <Menu
