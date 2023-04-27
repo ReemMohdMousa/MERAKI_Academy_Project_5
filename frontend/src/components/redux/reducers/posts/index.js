@@ -60,16 +60,16 @@ export const posts = createSlice({
     },
     removeComment: (state, action) => {
       console.log(action.payload);
-      state.posts.forEach((elem, idx) => {
-        console.log(elem);
+      // state.posts.forEach((elem, idx) => {
+      //   console.log(elem);
         let found = state.posts.find((elem) => {
-          return elem.post_id === action.payload.post_id;
+          return elem.post_id == action.payload.post_id;
         });
         console.log("found", found);
-        if (elem.comment_id === action.payload) {
-          state.posts.comments.splice(idx, 1);
-        }
-      });
+      //   if (elem.comment_id == action.payload) {
+         state.posts.comments.splice(found, 1);
+      //   }
+      // });
     },
     setLike: (state, action) => {
       state.likes = [action.payload];

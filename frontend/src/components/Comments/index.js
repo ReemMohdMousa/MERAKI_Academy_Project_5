@@ -11,7 +11,7 @@ import {
   MDBInput,
   MDBTypography,
 } from "mdb-react-ui-kit";
-import { format } from "timeago.js";
+import moment from "moment"
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,11 +39,10 @@ const Comments = ({ id, firstname, lastname, socket }) => {
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = () => setShowEdit(true);
   const [comments, setcomments] = useState(null);
-  const [emoji, setEmoji] = useState(false);
-  const [text, setText] = useState("");
   const [currentEmoji, setCurrentEmoji] = useState("");
   const [allnested, setAllNested] = useState(null);
   const [newnrested, setNewNested] = useState({});
+  const[text,setText]=useState()
   function handleOnEnter(text) {}
   const [nemcomment, setNewComment] = useState({});
 
@@ -133,13 +132,14 @@ const Comments = ({ id, firstname, lastname, socket }) => {
       });
   };
 
-  const addNewComment = () => {
+  const addNewComment = (text) => {
+    const NewObj={
+      content:text,image:image
+    }
     axios
       .post(
         `http://localhost:5000/comments/${id}`,
-        {
-          ...nemcomment,
-        },
+        NewObj,
         { headers: { Authorization: token } }
       )
       .then((Response) => {
@@ -190,15 +190,16 @@ const Comments = ({ id, firstname, lastname, socket }) => {
           <MDBRow className="justify-content-center">
             <MDBCol md="12" lg="10" xl="8">
               <MDBCard>
-                <MDBCardBody className="p-4">
+                <MDBCardBody  className="p-4">
                   <MDBRow>
                     <MDBCol>
+                      <div style={{padding:"12px",boxShadow:"5px 5px 		rgb(232,232,232)", marginTop:"-60px",width:"110%"}}>
                       <div
                         className="d-flex flex-start"
-                        style={{ border: "solid red", marginTop: "-40px" }}
+                        style={{}}
                       >
                         <MDBCardImage
-                          className="rounded-circle shadow-1-strong me-3"
+                          className="rounded-circle shadow-1-strong me-3"style={{}}
                           src={
                             userinfo.avatar
                               ? userinfo.avatar
@@ -209,15 +210,16 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                           height="65"
                         />
 
-                        <div className="flex-grow-1 flex-shrink-1">
+                        <div  className="flex-grow-1 flex-shrink-1">
                           <div>
                             <div className="d-flex justify-content-between align-items-center">
-                              <p className="mb-1">
+                              <p className="mb-1" style={{}}>
                                 {userinfo.firstname} {userinfo.lastname}
                               </p>
                             </div>
-                            <MDBInput
-                              style={{ height: "80px" }}
+                           
+                            {/* <MDBInput
+                              style={{height: "60px"}}
                               wrapperClass="mb-4"
                               placeholder="write a comment..."
                               id="mytextarea"
@@ -232,8 +234,74 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                   };
                                 });
                               }}
-                            />
-                            <div className="d-flex justify-content-between align-items-center">
+                            /> */}
+                        
+
+                            <div >
+                            
+
+                              {/* <button
+                                onClick={() => {
+                                  addNewComment();
+                                }}
+                              >
+                                comment
+                              </button> */}
+                          
+                            </div>
+                           
+                          </div>
+                        </div>
+                      </div>
+                      <div style={{width:"79%",marginLeft:"20%",marginTop:"-10%"}}>
+                        <InputEmoji 
+                          value={text}
+                          cleanOnEnter
+                         
+                          onEnter={handleOnEnter}
+                          selector="#mytextarea"
+                          placeholder="Write a Comment..."
+                          onChange={ 
+                            setText
+                          //   setNewComment((content) => {
+          
+                          //     return {
+                          //       ...content,
+                          //       content:e.target.value
+                          //     };
+                          //   });
+                            
+                          }
+                        />
+                        </div>
+                                <button
+                                  onClick={(e) => {
+                                    handleShow();
+                                  }}
+                                  style={{
+                                  padding:"5px",
+                                    marginLeft:"93%",
+                                   width:"20px",
+                                   marginTop:"-1760px",
+                                    border:"none",
+                                    backgroundColor: "white",
+                                  }}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="40"
+                                    height="30"
+                                    style={{marginTop:"-80px"}}
+                                    color="gray"
+                                    fill="currentColor"
+                                    className="bi bi-file-image"
+                                    viewBox="0 0 16 16"
+                                  >
+                                    <path d="M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                    <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8l-2.083-2.083a.5.5 0 0 0-.76.063L8 11 5.835 9.7a.5.5 0 0 0-.611.076L3 12V2z" />
+                                  </svg>
+                                </button>
+                                <div  className="d-flex justify-content-between align-items-center">
                               {nemcomment.image && (
                                 <img
                                   style={{ width: "100px", marginLeft: "20%" }}
@@ -249,61 +317,13 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                   <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
                                 </div>
                               )}
-                              {text && text}
+                              {/* {text && text} */}
                             </div>
-
-                            <div className="commentbtn">
-                              <div style={{ margin: "3px" }}>
-                                <button
-                                  onClick={(e) => {
-                                    handleShow();
-                                  }}
-                                  style={{
-                                    border: "none",
-                                    backgroundColor: "white",
-                                  }}
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="40"
-                                    height="19"
-                                    color="gray"
-                                    fill="currentColor"
-                                    className="bi bi-file-image"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path d="M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-                                    <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8l-2.083-2.083a.5.5 0 0 0-.76.063L8 11 5.835 9.7a.5.5 0 0 0-.611.076L3 12V2z" />
-                                  </svg>
-                                </button>
-
-                                <a href="#!">
-                                  {/* <MDBIcon fas icon="reply fa-xs" />
-                                  <span onClick={()=>{setEmoji(true)}}> 😃</span> */}
-                                </a>
-                              </div>
-
-                              <button
-                                onClick={() => {
-                                  addNewComment();
-                                }}
-                              >
-                                comment
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      {emoji && (
-                        <InputEmoji
-                          value={text}
-                          onChange={setText}
-                          cleanOnEnter
-                          onEnter={handleOnEnter}
-                          selector="#mytextarea"
-                          placeholder="Type a message"
-                        />
-                      )}
+                              
+                            
+                           <button className="commentbtn" onClick={()=>{ addNewComment(text);}} >
+                                Comment</button>
+                                </div>
                       {comments?.length > 0 &&
                         comments.map((element) => {
                           return (
@@ -328,12 +348,14 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                   <div className="d-flex justify-content-between align-items-center">
                                     <p className="mb-1">
                                       {`${element.firstname}   ${element.lastname}`}
-                                      <span className="small">
-                                        - {format(element.created_at)}
+                                     <br></br>
+                                      <span className="small" style={{color:"gray"}}>
+                                        {moment().endOf(element.created_at).fromNow()  }
+                                        {/* - {format(element.created_at)} */}
                                       </span>
                                     </p>
 
-                                    <Dropdown>
+                                    {/* <Dropdown>
                                       <Dropdown.Toggle id="dropdown-basic">
                                         <svg
                                           xmlns="http://www.w3.org/2000/svg"
@@ -368,7 +390,47 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                           Delete{" "}
                                         </Dropdown.Item>
                                       </Dropdown.Menu>
-                                    </Dropdown>
+                                    </Dropdown> */}
+                                     <Dropdown>
+              <Dropdown.Toggle
+                variant="light"
+                id="dropdown-basic"
+                style={{ backgroundColor: "inherit" }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  className="bi bi-three-dots"
+                  onClick={() => {}}
+                >
+                  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                </svg>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item
+                 onClick={() => {
+                  setShowEdit(true);
+                }}
+                >
+
+                  Edit 
+                </Dropdown.Item>
+
+                <Dropdown.Item
+                   onClick={() => {
+                    deleteComment(
+                      id,
+                      element.comment_id
+                    );
+                  }}
+                >
+                  Delete 
+                </Dropdown.Item>
+
+              </Dropdown.Menu>
+            </Dropdown>
                                   </div>
                                   {element.content && (
                                     <p className="small mb-0">
@@ -426,7 +488,8 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                           {userinfo.lastname}
                                           <br></br>{" "}
                                           <span className="small">
-                                            {format(Date())}
+                                            {moment().startOf('hour').fromNow()
+}
                                           </span>
                                         </p>
                                       </div>
@@ -488,9 +551,10 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                                 {elementnested.lastname}
                                                 <br></br>{" "}
                                                 <span className="small">
-                                                  {format(
+                                                  {/* {format(
                                                     elementnested.created_at
-                                                  )}
+                                                  )} */}
+
                                                 </span>
                                               </p>
                                             </div>

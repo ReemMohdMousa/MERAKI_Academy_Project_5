@@ -50,7 +50,7 @@ const Home = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        // console.log("*******", response.data.result);
+         console.log("*******", response.data.result);
         dispatch(setHomePosts(response.data.result));
       })
       .catch((err) => {
@@ -88,16 +88,21 @@ const Home = () => {
     });
   }, []);
   const notify = () =>
-    toast(`${notification.avatar} ${notification.messagecontent}`, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+  console.log(notification)
+  toast(({data}) =>`${data}`, {
+    data:`${notification?.data.messagecontent}`,
+    icon:<img style={{width:"30px",height:"30px"}} src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80"></img>
+  })
+    // toast.(<p>{notification?.messagecontent}</p>,{
+    //   position: "top-right",
+    //   autoClose: 5000,
+    //   hideProgressBar: true,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    //   theme: "light",
+    // });
   notification !== null && notify();
 
   return (
@@ -131,7 +136,7 @@ const Home = () => {
       </div>
       <div>
         {" "}
-        <ToastContainer
+      {notification &&  <ToastContainer
           position="top-right"
           autoClose={5000}
           hideProgressBar
@@ -143,6 +148,7 @@ const Home = () => {
           pauseOnHover
           theme="light"
         />
+      }
       </div>
     </div>
   );
