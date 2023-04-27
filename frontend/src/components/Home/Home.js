@@ -13,7 +13,12 @@ import {
   MDBCardImage,
   MDBBtn,
   MDBTypography,
+  MDBCardTitle,
+  MDBCardLink,
+  MDBListGroup,
+  MDBListGroupItem,
 } from "mdb-react-ui-kit";
+
 import Comments from "../Comments";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts/index";
@@ -107,6 +112,28 @@ const Home = () => {
 
   return (
     <div>
+    {/*  <MDBCard className="home-card">
+      <MDBCardImage position='top' alt='...'  src={ userinfo &&
+                      userinfo.avatar
+                        ? userinfo.avatar
+                        : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                    } />
+      <MDBCardBody>
+        <MDBCardTitle>Card title</MDBCardTitle>
+        <MDBCardText>
+          Some quick example text to build on the card title and make up the bulk of the card's content.
+        </MDBCardText>
+      </MDBCardBody>
+      <MDBListGroup flush>
+        <MDBListGroupItem>Cras justo odio</MDBListGroupItem>
+        <MDBListGroupItem>Dapibus ac facilisis in</MDBListGroupItem>
+        <MDBListGroupItem>Vestibulum at eros</MDBListGroupItem>
+      </MDBListGroup>
+      <MDBCardBody>
+        <MDBCardLink href='#'>Card link</MDBCardLink>
+        <MDBCardLink href='#'>Card link</MDBCardLink>
+      </MDBCardBody>
+    </MDBCard>  */}
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
@@ -123,8 +150,13 @@ const Home = () => {
                       {/* dispaly the posts */}
                       {homePosts &&
                         homePosts.map((elem) => {
-                          return <HomePosts post={elem} socket={socket} key={elem.post_id }/>;
-
+                          return (
+                            <HomePosts
+                              post={elem}
+                              socket={socket}
+                              key={elem.post_id}
+                            />
+                          );
                         })}
                     </MDBCol>
                   </MDBRow>

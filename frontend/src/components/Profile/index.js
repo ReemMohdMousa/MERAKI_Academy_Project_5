@@ -96,8 +96,7 @@ const fullName={
   return (
     <div>
       <SendMessage id={id} />
-      {/* <FriendRequests id={id} />
-      <AllFriends id={id} /> */}
+      
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
@@ -152,7 +151,7 @@ const fullName={
                       </MDBCardText>
                     </div>
                     <div className="px-3">
-                      <MDBCardText className="mb-1 h6">
+                      <MDBCardText className="  h6" style={{marginBottom:"0px"}}>
                         {friends ? friends.length : 0}
                       </MDBCardText>
                       <MDBCardText className="small text-muted mb-0">
