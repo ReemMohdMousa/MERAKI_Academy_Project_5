@@ -89,7 +89,7 @@ export const friends = createSlice({
         if (element.user_id == action.payload) {
           state.friends.splice(i, 1);
         }
-        return element;
+        return element; 
       });
     },
 

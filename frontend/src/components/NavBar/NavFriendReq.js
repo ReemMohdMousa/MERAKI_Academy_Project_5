@@ -17,6 +17,7 @@ import {
   setIsFriend,
   getAlluserFriends,
 } from "../redux/reducers/friends/index";
+import { SlPeople } from "react-icons/sl";
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);

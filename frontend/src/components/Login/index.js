@@ -52,7 +52,6 @@ const Login = () => {
         password,
       })
       .then((result) => {
-         
         localStorage.setItem("token", result.data.token);
         localStorage.setItem("userId", result.data.userId);
         localStorage.setItem("isLoggedIn", true);
@@ -67,17 +66,6 @@ const Login = () => {
         setMessage(error.response.data.message);
       });
   };
-
-  useEffect(() => {
-    if (isLoggedIn && roleId == 1) {
-      navigate("/dashboard");
-      getAllUserInfo();
-    }
-    if (isLoggedIn && roleId == 2) {
-      navigate("/home");
-      getAllUserInfo();
-    }
-  });
 
   const loginGoogle = (result) => {
     const { credential, clientId } = result;
@@ -122,6 +110,18 @@ const Login = () => {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    if (isLoggedIn && roleId == 1) {
+      navigate("/dashboard");
+      getAllUserInfo();
+    }
+    if (isLoggedIn && roleId == 2) {
+      navigate("/home");
+      getAllUserInfo();
+    }
+  });
+
   return (
     <div className="cont">
       <MDBContainer fluid>

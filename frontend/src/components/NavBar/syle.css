@@ -38,9 +38,9 @@ li {
 nav.navbar-light {
   border-bottom: 2px solid black;
 }
-.newMsg {
+/* .newMsg {
   background-color: red;
-}
+} */
 
 a.nav-link {
   padding: 0;
