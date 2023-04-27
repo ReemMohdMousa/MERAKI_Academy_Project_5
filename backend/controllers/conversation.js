@@ -55,7 +55,6 @@ const getAConversationOfTheUserAndHisFriend = (req, res) => {
 const ProfileSendMsgBtn = (req, res) => {
   const user_id = req.token.userId;
   const friend_id = Number(req.params.friendId);
-  // console.log(user_id);
 
   conversationModel
     .find({

@@ -189,17 +189,17 @@ const acceptFriendRequest = async (req, res) => {
   //the friend ID form body:
   const { user2_id } = req.body;
 
-  let firstname = "";
-  let lastname = "";
-  let noticontent = "";
-  const querytofindname = `
-  SELECT users.firstname,users.lastname ,users.avatar from users 
-   where user_id =$1`;
-  const result1 = await pool.query(querytofindname, [user2_id]);
-  firstname = result1.rows[0].firstname;
-  lastname = result1.rows[0].lastname;
-  avatar = result1.rows[0].avatar;
-  noticontent = `${firstname} ${lastname} accept your friend requset`;
+  // let firstname = "";
+  // let lastname = "";
+  // let noticontent = "";
+  // const querytofindname = `
+  // SELECT users.firstname,users.lastname ,users.avatar from users 
+  //  where user_id =$1`;
+  // const result1 = await pool.query(querytofindname, [user2_id]);
+  // firstname = result1.rows[0].firstname;
+  // lastname = result1.rows[0].lastname;
+  // avatar = result1.rows[0].avatar;
+  // noticontent = `${firstname} ${lastname} accept your friend requset`;
 
   const query = `INSERT INTO friends (user1_id, user2_id, accepted_at)
   VALUES ($1,$2, NOW())
@@ -208,12 +208,12 @@ const acceptFriendRequest = async (req, res) => {
   const deleteReqQuery = `DELETE FROM friend_requests 
   WHERE sender_id=$1 AND receiver_id=$2
   `;
-  const notiquery = `INSERT INTO notifications(user_id,sender_id,content,avatar) VALUES($1,$2,$3,$4)RETURNING*`;
+  // const notiquery = `INSERT INTO notifications(user_id,sender_id,content,avatar) VALUES($1,$2,$3,$4)RETURNING*`;
 
   const data = [user1_id, user2_id];
   const data2 = [user2_id, user1_id];
   await pool.query(deleteReqQuery, data2);
-  await pool.query(notiquery, [user2_id, user1_id, noticontent]);
+  // await pool.query(notiquery, [user2_id, user1_id, noticontent]);
 
   pool
     .query(query, data)

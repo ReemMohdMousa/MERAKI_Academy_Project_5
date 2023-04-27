@@ -10,8 +10,8 @@ let receiver=""
 let postcontent=""
 let postimage=""
 let postvideo=""
-  //console.log(firstname,lastname)
-  const querytofindname=`
+
+const querytofindname=`
   SELECT users.firstname,users.lastname ,users.avatar from users where user_id =$1`
   const result1= await pool.query(querytofindname,[user_id])
       firstname=result1.rows[0].firstname
