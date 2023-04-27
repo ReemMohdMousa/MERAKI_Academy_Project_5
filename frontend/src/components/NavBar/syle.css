@@ -36,7 +36,9 @@ li {
   justify-content: center;
 }
  
-
+nav.navbar-light {
+  border-bottom: 2px solid black;
+}
 .newMsg {
   background-color: red;
 }
@@ -50,7 +52,11 @@ a.nav-link{
   gap: 4rem;
    
 }
- 
+.nav2{
+  display:flex;
+  gap: 1rem;
+   
+}
 @media (width: 500px){
   .nav-container{
     gap: 2rem;

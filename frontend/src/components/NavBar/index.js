@@ -135,38 +135,37 @@ const NavBar = () => {
                 <FcSearch size={20} />
               </MDBBtn>
             </form>
-<div className="nav-container">
-  
-            <Button
-              onClick={() => {
-                goToHome();
-              }}
-            >
-              {" "}
-              <BiHome size={23} />
-            </Button>
+            <div className="nav-container">
+              <Button
+                onClick={() => {
+                  goToHome();
+                }}
+              >
+                {" "}
+                <BiHome size={23} />
+              </Button>
 
-            <MDBNavbarItem>
-              <MDBNavbarLink href="#">
-                <NavFriendReq />
-              </MDBNavbarLink>
-            </MDBNavbarItem>
-            <Button
-              onClick={() => {
-                goToMessenger();
-              }}
-            >
-              <MDBNavbarLink href="#" className={newMsg ? "newMsg" : ""}>
-                <TiMessages color="royalblue" size={23} />
-              </MDBNavbarLink>
-            </Button>
+              <MDBNavbarItem>
+                <MDBNavbarLink href="#">
+                  <NavFriendReq />
+                </MDBNavbarLink>
+              </MDBNavbarItem>
+              <Button
+                onClick={() => {
+                  goToMessenger();
+                }}
+              >
+                <MDBNavbarLink href="#" className={newMsg ? "newMsg" : ""}>
+                  <TiMessages color="royalblue" size={23} />
+                </MDBNavbarLink>
+              </Button>
 
-            <MDBNavbarItem>
-              <MDBNavbarLink>
-                <Notifications />
-              </MDBNavbarLink>
-            </MDBNavbarItem>
-              </div>
+              <MDBNavbarItem>
+                <MDBNavbarLink>
+                  <Notifications />
+                </MDBNavbarLink>
+              </MDBNavbarItem>
+            </div>
 
             <Button
               id="demo-positioned-button"
@@ -179,14 +178,14 @@ const NavBar = () => {
                 <span>
                   {" "}
                   <img
-                    src={
+                    src={ userinfo &&
                       userinfo.avatar
                         ? userinfo.avatar
                         : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                     }
                     alt=""
                   />
-                  <BiDownArrow className= "svg2" size={12} />
+                  <BiDownArrow className="svg2" size={12} />
                 </span>
               </div>
             </Button>
@@ -256,39 +255,26 @@ const NavBar = () => {
         <MDBNavbar expand="lg" light bgColor="light">
           <MDBContainer fluid>
             <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
+            <div className="nav2"> 
+            <MDBNavbarItem
+              onClick={() => {
+                login();
+              }}
+            >
+              <MDBNavbarLink style={{ "color": "black"}} active aria-current="page" href="#">
+                Login
+              </MDBNavbarLink>
+            </MDBNavbarItem>
 
-            <MDBNavbarToggler
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-              style={{ border: " 1px solid black" }}
-              onClick={() => setShowBasic(!showBasic)}
-            ></MDBNavbarToggler>
-
-            <MDBCollapse navbar show={showBasic}>
-              <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
-                <MDBNavbarItem
-                  onClick={() => {
-                    login();
-                  }}
-                >
-                  <MDBNavbarLink active aria-current="page" href="#">
-                    Login
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
-
-                <MDBNavbarItem
-                  onClick={() => {
-                    register();
-                  }}
-                >
-                  <MDBNavbarLink active>Register</MDBNavbarLink>
-                </MDBNavbarItem>
-                <MDBNavbarItem>
-                  <SocketNotifications socket={socket} />
-                </MDBNavbarItem>
-              </MDBNavbarNav>
-            </MDBCollapse>
+            <MDBNavbarItem
+              onClick={() => {
+                register();
+              }}
+            >
+              <MDBNavbarLink style={{ "color": "black"}} active aria-current="page" href="#">Register</MDBNavbarLink>
+              <SocketNotifications socket={socket} />
+            </MDBNavbarItem>
+            </div>
           </MDBContainer>
         </MDBNavbar>
       )}
