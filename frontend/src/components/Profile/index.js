@@ -73,14 +73,15 @@ const fullName={
   //     });
   // };
   const getAllPostsByUserId = () => {
-    console.log(id,token)
+    console.log(id, token);
     axios
       .get(`http://localhost:5000/posts/search_1/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((Response) => {
-        console.log(Response.data.posts)
-        Response.data.posts.length>0 && dispatch(setPosts(Response.data.posts));
+        console.log(Response.data.posts);
+        Response.data.posts.length > 0 &&
+          dispatch(setPosts(Response.data.posts));
       })
       .catch((err) => {
         // console.log(err);
@@ -115,9 +116,9 @@ const fullName={
                   >
                     <MDBCardImage
                       src={
-                        userinfo.avatar
-                          ? userinfo.avatar
-                          : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                        userinfo && userinfo.avatar?userinfo.avatar
+                         
+                         :"https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                       }
                       alt="image"
                       className="mt-4 mb-2 img-thumbnail"
@@ -187,7 +188,7 @@ const fullName={
                 </div>
 
                 <MDBCardBody className="text-black p-4">
-                  {userinfo.bio && (
+                  {userinfo && userinfo.bio && (
                     <div className="mb-5">
                       <p className="lead fw-normal mb-1">About</p>
                       <div
