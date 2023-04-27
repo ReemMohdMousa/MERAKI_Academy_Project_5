@@ -42,8 +42,9 @@ const createNewComment = async (req, res) => {
         messagecontent:messagecontent,
       });
     })
+
     .catch((err) => {
-      res.status(500).json({
+      res.status(404).json({
         success: false,
         message: "Server error",
         err: err,
@@ -57,27 +58,31 @@ const createNewNestedComment = async (req, res) => {
   console.log(comment_id, post_id, user_id);
   let firstname = "";
   let lastname = "";
-  let receiver = "";
+  let receiver ;
   let postcontent = "";
   let postimage = "";
+  let avatar=""
   const { content, image } = req.body;
   const querytofindname = `
-  SELECT users.firstname,users.lastname  from users 
-   where user_id =$1`;
+  SELECT users.firstname,users.lastname ,users.avatar from users 
+ where users.user_id =$1`;
   pool.query(querytofindname, [user_id]).then((result) => {
     firstname = result.rows[0].firstname;
     lastname = result.rows[0].lastname;
     postcontent = result.rows[0].content;
     postimage = result.rows[0].image;
+    avatar=result.rows[0].avatar
   });
-  let messagecontent = `${firstname}  ${lastname} comment in your comment ${postcontent} ${postimage} ${postvideo}`;
+  let messagecontent = `${firstname}  ${lastname} comment in your comment`;
   const queryuser = `SELECT user_id from comments where comment_id=$1`;
   pool.query(queryuser, [comment_id]).then((result) => {
     receiver = result.rows[0].user_id;
   });
   const query = `INSERT INTO nestedComments (post_id, comment_id, content, image,user_id) VALUES ($1,$2,$3,$4,$5) RETURNING *`;
   const data = [post_id, comment_id, content || null, image || null, user_id];
-  await pool.query(notiquery, [receiver, user_id, messagecontent]);
+  const notiquery = `INSERT INTO notifications(user_id,sender_id,content,avatar) VALUES($1,$2,$3,$4)RETURNING*`;
+  
+  await pool.query(notiquery, [receiver, user_id, messagecontent,avatar]);
 
 
   pool
@@ -157,14 +162,14 @@ const UpdateCommentById = (req, res) => {
   const comment_id = req.params.id;
   const user_id = req.token.userId;
 
-  let { content, image, video } = req.body;
+  let { content, image } = req.body;
 
   const query = `UPDATE comments 
   SET content = COALESCE($1,content), 
   image = COALESCE($2, image), 
-  video = COALESCE($3, video), updated_at=NOW()
+  updated_at=NOW()
   WHERE comment_id=$4 AND user_id=$5 AND is_deleted = 0  RETURNING *;`;
-  const data = [content, image, video, comment_id, user_id];
+  const data = [content, image, comment_id, user_id];
 
   pool
     .query(query, data)

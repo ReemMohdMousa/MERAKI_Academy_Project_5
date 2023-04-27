@@ -21,9 +21,8 @@ import {
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
-import { format } from "timeago.js";
+import moment from "moment";
 import { setPosts, addpost } from "../redux/reducers/posts";
-
 const AddPost = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -102,6 +101,7 @@ const AddPost = () => {
       .then((Response) => {
         console.log(Response.data.result);
         dispatch(addpost(Response.data.result));
+        
       })
       .catch((err) => {
         console.log(err);
@@ -132,7 +132,8 @@ const AddPost = () => {
                   </span>
                 </Link>
 
-                <span className="date">{format(Date())}</span>
+                {moment().endOf(post.created_at).fromNow()  }
+                <span className="date"></span>
               </div>
             </div>
           </div>
