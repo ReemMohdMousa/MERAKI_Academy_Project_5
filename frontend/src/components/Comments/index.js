@@ -11,7 +11,7 @@ import {
   MDBInput,
   MDBTypography,
 } from "mdb-react-ui-kit";
-import { format } from "timeago.js";
+// import { format } from "timeago.js";
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
@@ -329,7 +329,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                     <p className="mb-1">
                                       {`${element.firstname}   ${element.lastname}`}
                                       <span className="small">
-                                        - {format(element.created_at)}
+                                        {/* - {format(element.created_at)} */}
                                       </span>
                                     </p>
 
@@ -426,7 +426,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                           {userinfo.lastname}
                                           <br></br>{" "}
                                           <span className="small">
-                                            {format(Date())}
+                                            {/* {format(Date())} */}
                                           </span>
                                         </p>
                                       </div>
@@ -488,9 +488,9 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                                 {elementnested.lastname}
                                                 <br></br>{" "}
                                                 <span className="small">
-                                                  {format(
+                                                  {/* {format(
                                                     elementnested.created_at
-                                                  )}
+                                                  )} */}
                                                 </span>
                                               </p>
                                             </div>

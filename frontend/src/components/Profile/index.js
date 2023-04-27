@@ -12,6 +12,7 @@ import {
   MDBBtn,
   MDBTypography,
 } from "mdb-react-ui-kit";
+import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts";
 import { useDispatch, useSelector } from "react-redux";
@@ -108,13 +109,35 @@ const Profile = () => {
                       style={{ width: "150px", zIndex: "1" }}
                     ></MDBCardImage>
 
-                    <MDBBtn
+                    {/* <MDBBtn
                       outline
                       color="dark"
-                      style={{ height: "36px", overflow: "visible" }}
+                      style={{ height: "4rem", overflow: "visible" }}
                     >
-                      Change photo Edit profile
-                    </MDBBtn>
+                      Edit profile Info
+                    </MDBBtn> */}
+                    {userId == id ? (
+                      <Dropdown>
+                        <Dropdown.Toggle
+                          variant="light"
+                          id="dropdown-basic"
+                          style={{
+                            backgroundColor: "inherit",
+                            border: "2px solid black",
+                          }}
+                        >
+                          Edit Profile Info
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                          <Dropdown.Item>Upload profile picture</Dropdown.Item>
+                          <Dropdown.Item>Upload cover picture</Dropdown.Item>
+                          <Dropdown.Item>Edit about</Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="ms-3" style={{ marginTop: "130px" }}>
                     <MDBTypography tag="h5">

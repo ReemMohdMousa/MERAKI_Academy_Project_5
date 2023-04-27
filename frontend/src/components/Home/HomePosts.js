@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Comments from "../Comments";
 import { useDispatch, useSelector } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
-import { format } from "timeago.js";
+// import { format } from "timeago.js";
 import UpdatePost from "../AddPost/UpdatePost";
 import Likes from "../Posts/Likes";
 const HomePosts = ({ post ,socket}) => {
@@ -44,7 +44,7 @@ const HomePosts = ({ post ,socket}) => {
                     {post.firstname} {post.lastname}
                   </span>
                 </Link>
-                <span className="date">{format(post.created_at)}</span>
+                {/* <span className="date">{format(post.created_at)}</span> */}
               </div>
             </div>
             <Dropdown>

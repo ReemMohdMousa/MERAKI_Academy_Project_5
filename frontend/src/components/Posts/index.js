@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setUserInfo } from "../redux/reducers/auth/index";
 import Dropdown from "react-bootstrap/Dropdown";
-import * as timeago from "timeago.js";
+// import {format} from "timeago.js";
 import Iframe from "react-iframe";
 import UpdatePost from "../AddPost/UpdatePost";
 import { removePost } from "../redux/reducers/posts/index";
@@ -68,7 +68,7 @@ const Posts = ({ post, firstname, lastname }) => {
                     {firstname} {lastname}
                   </span>
                 </Link>
-                <span className="date">{timeago.format(post.created_at)}</span>
+                {/* <span className="date">{timeago.format(post.created_at)}</span> */}
               </div>
             </div>
             <Dropdown>

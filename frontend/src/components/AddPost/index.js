@@ -21,7 +21,7 @@ import {
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
-import { format } from "timeago.js";
+// import { format } from "timeago.js";
 import { setPosts, addpost } from "../redux/reducers/posts";
 
 const AddPost = () => {
@@ -132,7 +132,9 @@ const AddPost = () => {
                   </span>
                 </Link>
 
-                <span className="date">{format(Date())}</span>
+                <span className="date">
+                  {/* {format(Date())} */}
+                  </span>
               </div>
             </div>
           </div>

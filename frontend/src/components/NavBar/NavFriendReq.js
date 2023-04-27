@@ -16,8 +16,8 @@ import {
   setIsReceived,
   declineFriendReq,
   setIsFriend,
+  getAlluserFriends,
 } from "../redux/reducers/friends/index";
-import { isPending } from "@reduxjs/toolkit";
 
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -33,10 +33,11 @@ export default function BasicMenu() {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, sentReq, ReceivedReq, isAdded, isReceived, isFriend } =
+  const { userId, token, sentReq, ReceivedReq, isAdded, isReceived, isFriend } =
     useSelector((state) => {
       //return object contains the redux states
       return {
+        userId: state.auth.userId,
         token: state.auth.token,
         sentReq: state.friends.sentReq,
         ReceivedReq: state.friends.ReceivedReq,
@@ -45,6 +46,20 @@ export default function BasicMenu() {
         isFriend: state.friends.isFriend,
       };
     });
+
+  //get all friends of the logged in user
+  const getAllFriends = () => {
+    axios
+      .get(`http://localhost:5000/friends/get/all/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        dispatch(getAlluserFriends(response.data.result));
+      })
+      .catch(function (error) {
+        // throw error
+      });
+  };
 
   const ReceivedRequests = () => {
     //*ME => receiver_id
@@ -99,6 +114,7 @@ export default function BasicMenu() {
   };
 
   useEffect(() => {
+    getAllFriends();
     SentRequests();
     ReceivedRequests();
   }, [isAdded, isReceived]);
@@ -139,7 +155,6 @@ export default function BasicMenu() {
         throw error;
       });
   };
-
 
   return (
     <div>
