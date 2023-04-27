@@ -135,7 +135,7 @@ io.on("connection", (socket) => {
   socket.on(
     "SEND_NOTIFICATION",
     ({ firstname, lastname, avatar, receiver, messagecontent }) => {
-      const Recevier = getUserNoti("18");
+      const Recevier = getUserNoti(receiver);
       console.log(Recevier.socketId);
       let data = { firstname, lastname, avatar, receiver, messagecontent };
       socket.to([Recevier.socketId]).emit("RECEIVE_NOTIFICATION", data);

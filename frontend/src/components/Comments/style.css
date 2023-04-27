@@ -1,9 +1,28 @@
+.commentbtn {
+  border-radius: 8px;
+  border: none;
+  background-color: #4267b2;
+  color: white;
+  margin-left: 50%;
+  width: 50%;
+}
 
-.commentbtn{
-    display: flex;
- 
-    justify-content:space-between ;
-    border: solid red ;
- 
-    
+.react-input-emoji--input {
+  font-weight: 400;
+  max-height: 100px;
+  min-height: 20px;
+  outline: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  z-index: 1;
+  width: 100%;
+  user-select: text;
+  padding: 9px 12px 11px;
+  text-align: left;
+}
+.react-input-emoji--button svg {
+  fill: #858585;
 }

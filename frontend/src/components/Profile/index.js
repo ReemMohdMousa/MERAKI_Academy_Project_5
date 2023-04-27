@@ -32,13 +32,10 @@ const Profile = () => {
       .get(`http://localhost:5000/users/others/info/${id}`)
       .then((Response) => {
         console.log(Response.data.result);
-
-        setUser((firstname) => {
-          return { ...firstname, firstname: Response.data.result.firstname };
-        });
-        setUser((lastname) => {
-          return { ...lastname, lastname: Response.data.result.lastname };
-        });
+const fullName={
+  firstname:Response.data.result.firstname,lastname:Response.data.result.lastname
+}
+      setUser(fullName)
       })
       .catch((err) => {
         // console.log(err);
@@ -59,14 +56,30 @@ const Profile = () => {
       };
     }
   );
+  // const getAllFriends = () => {
+  //   axios
+  //     .get(`http://localhost:5000/friends/get/all/${id}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     })
+  //     .then(function (response) {
+  //       dispatch(getAlluserFriends(response.data.result));
 
+  //       //check if this profile is a friend of the loggedin user
+  //       dispatch(isTheUserIsFriend(userId));
+  //     })
+  //     .catch(function (error) {
+  //       // console.log(error);
+  //     });
+  // };
   const getAllPostsByUserId = () => {
+    console.log(id,token)
     axios
       .get(`http://localhost:5000/posts/search_1/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((Response) => {
-        dispatch(setPosts(Response.data.posts));
+        console.log(Response.data.posts)
+        Response.data.posts.length>0 && dispatch(setPosts(Response.data.posts));
       })
       .catch((err) => {
         // console.log(err);
@@ -74,8 +87,10 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    getuserdata();
     getAllPostsByUserId();
+    getuserdata();
+   // getAllFriends()
+    
   }, []);
 
   return (
