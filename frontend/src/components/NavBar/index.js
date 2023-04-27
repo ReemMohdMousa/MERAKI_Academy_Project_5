@@ -11,37 +11,51 @@ import {
   MDBBtn,
   MDBCollapse,
 } from "mdb-react-ui-kit";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { BiDownArrow, BiHome } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { setLogout } from "../redux/reducers/auth";
 import NavFriendReq from "./NavFriendReq";
-import Notifications from "./Notifications"
-import { io } from "socket.io-client";
-import { useSocket } from "../../App";
+import Notifications from "./Notifications";
+import { FcSearch } from "react-icons/fc";
+import { TiMessages } from "react-icons/ti";
+import { CgProfile } from "react-icons/cg";
+import { MdOutlineLogout } from "react-icons/md";
 
 const NavBar = () => {
   const [showBasic, setShowBasic] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const socket=useSocket(io)
+
   //useNavigate
   const navigate = useNavigate();
 
   //useDispatch
   const dispatch = useDispatch();
-
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   //redux login states
-  const { token, userId, isLoggedIn, roleId, newMsg } = useSelector((state) => {
-    //return object contains the redux states
-    return {
-      token: state.auth.token,
-      isLoggedIn: state.auth.isLoggedIn,
-      userId: state.auth.userId,
-      roleId: state.auth.roleId,
-      newMsg: state.messenger.newMsg,
-    };
-  });
-
+  const { token, userId, isLoggedIn, roleId, newMsg, userinfo } = useSelector(
+    (state) => {
+      //return object contains the redux states
+      return {
+        token: state.auth.token,
+        isLoggedIn: state.auth.isLoggedIn,
+        userId: state.auth.userId,
+        roleId: state.auth.roleId,
+        newMsg: state.messenger.newMsg,
+        userinfo: state.auth.userinfo,
+      };
+    }
+  );
 
   //navigations functions
   const goToMyProfile = () => {
@@ -67,7 +81,6 @@ const NavBar = () => {
   const searchNow = () => {
     navigate(`/home/${searchValue}`);
     setShowBasic(false);
-
   };
 
   const goToMessenger = () => {
@@ -84,121 +97,175 @@ const NavBar = () => {
           <MDBContainer fluid>
             <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
 
-            <MDBNavbarToggler
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-              style={{ border: " 1px solid black" }}
-              onClick={() => setShowBasic(!showBasic)}
+            <form className="d-flex input-group w-auto">
+              <input
+                type="search"
+                className="form-control"
+                placeholder="Search"
+                aria-label="Search"
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                }}
+              />
+              <MDBBtn
+                color="dark"
+                className="btn btn-dark btn-sm"
+                onClick={searchNow}
+              >
+                <FcSearch size={20} />
+              </MDBBtn>
+            </form>
+            <div className="nav-container">
+              <Button
+                onClick={() => {
+                  goToHome();
+                }}
+              >
+                {" "}
+                <BiHome size={23} />
+              </Button>
+
+              <MDBNavbarItem>
+                <MDBNavbarLink href="#">
+                  <NavFriendReq />
+                </MDBNavbarLink>
+              </MDBNavbarItem>
+              <Button
+                onClick={() => {
+                  goToMessenger();
+                }}
+              >
+                <MDBNavbarLink href="#" className={newMsg ? "newMsg" : ""}>
+                  <TiMessages color="royalblue" size={23} />
+                </MDBNavbarLink>
+              </Button>
+
+              <MDBNavbarItem>
+                <MDBNavbarLink>
+                  <Notifications />
+                </MDBNavbarLink>
+              </MDBNavbarItem>
+            </div>
+
+            <Button
+              id="demo-positioned-button"
+              aria-controls={open ? "demo-positioned-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
             >
-              <MDBIcon icon="bars" fas />
-            </MDBNavbarToggler>
-           
-            <MDBCollapse navbar show={showBasic}>
-              <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
-                <MDBNavbarItem
-                  onClick={() => {
-                    goToHome();
-                  }}
-                >
-                  <MDBNavbarLink active aria-current="page" href="#">
-                    Home
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
-                <MDBNavbarItem
-                  onClick={() => {
-                    goToMyProfile();
-                  }}
-                >
-                  <MDBNavbarLink href="#">Profile</MDBNavbarLink>
-                </MDBNavbarItem>
+              <div className="userInfo">
+                <span>
+                  {" "}
+                  <img
+                    src={
+                      userinfo && userinfo.avatar
+                        ? userinfo.avatar
+                        : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                    }
+                    alt=""
+                  />
+                  <BiDownArrow className="svg2" size={12} />
+                </span>
+              </div>
+            </Button>
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleClose}
+              onClick={handleClose}
+              PaperProps={{
+                elevation: 2,
+                style: {
+                  width: 120,
+                },
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  mt: 0.01,
+                  "& .MuiAvatar-root": {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  "&:before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "background.paper",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            >
+              <MenuItem
+                onClick={() => {
+                  goToMyProfile();
+                  setAnchorEl(null);
+                }}
+              >
+                {" "}
+                <CgProfile />
+                &nbsp;Profile
+              </MenuItem>
 
-                <MDBNavbarItem
-                  onClick={() => {
-                    goToMessenger();
-                  }}
-                >
-                  <MDBNavbarLink href="#" className={newMsg ? "newMsg" : ""}>
-                    Messenger
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
-
-                <MDBNavbarItem>
-                  <MDBNavbarLink href="#">
-                    <NavFriendReq/>
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
-
-
-                <MDBNavbarItem>
-                  <MDBNavbarLink>
-                    <Notifications/>
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
-                <MDBNavbarItem
-                  onClick={() => {
-                    dispatch(setLogout());
-                    setShowBasic(false);
-                    navigate("/login");
-                  }}
-                >
-                  <MDBNavbarLink href="#">Logout</MDBNavbarLink>
-                </MDBNavbarItem>
-              </MDBNavbarNav>
-
-              <form className="d-flex input-group w-auto">
-                <input
-                  type="search"
-                  className="form-control"
-                  placeholder="Search"
-                  aria-label="Search"
-                  onChange={(e) => {
-                    setSearchValue(e.target.value);
-                  }}
-                />
-                <MDBBtn color="primary" onClick={searchNow}>
-                  Search
-                </MDBBtn>
-              </form>
-            </MDBCollapse>
+              <MenuItem
+                onClick={() => {
+                  dispatch(setLogout());
+                  setAnchorEl(null);
+                  navigate("/login");
+                }}
+              >
+                <MdOutlineLogout />
+                &nbsp;Logout
+              </MenuItem>
+            </Menu>
           </MDBContainer>
         </MDBNavbar>
       ) : (
         <MDBNavbar expand="lg" light bgColor="light">
           <MDBContainer fluid>
             <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
-
-            <MDBNavbarToggler
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-              style={{ border: " 1px solid black" }}
-              onClick={() => setShowBasic(!showBasic)}
-            >
-              <MDBIcon icon="bars" fas />
-            </MDBNavbarToggler>
-
-            <MDBCollapse navbar show={showBasic}>
-              <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
-                <MDBNavbarItem
-                  onClick={() => {
-                    login();
-                  }}
+            <div className="nav2">
+              <MDBNavbarItem
+                onClick={() => {
+                  login();
+                }}
+              >
+                <MDBNavbarLink
+                  style={{ color: "black" }}
+                  active
+                  aria-current="page"
+                  href="#"
                 >
-                  <MDBNavbarLink active aria-current="page" href="#">
-                    Login
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
+                  Login
+                </MDBNavbarLink>
+              </MDBNavbarItem>
 
-                <MDBNavbarItem
-                  onClick={() => {
-                    register();
-                  }}
+              <MDBNavbarItem
+                onClick={() => {
+                  register();
+                }}
+              >
+                <MDBNavbarLink
+                  style={{ color: "black" }}
+                  active
+                  aria-current="page"
+                  href="#"
                 >
-                  <MDBNavbarLink active>Register</MDBNavbarLink>
-                </MDBNavbarItem>
-              </MDBNavbarNav>
-            </MDBCollapse>
+                  Register
+                </MDBNavbarLink>
+              </MDBNavbarItem>
+            </div>
           </MDBContainer>
         </MDBNavbar>
       )}

@@ -32,14 +32,11 @@ const Profile = () => {
     axios
       .get(`http://localhost:5000/users/others/info/${id}`)
       .then((Response) => {
-        // console.log(Response.data.result);
-
-        setUser((firstname) => {
-          return { ...firstname, firstname: Response.data.result.firstname };
-        });
-        setUser((lastname) => {
-          return { ...lastname, lastname: Response.data.result.lastname };
-        });
+        console.log(Response.data.result);
+const fullName={
+  firstname:Response.data.result.firstname,lastname:Response.data.result.lastname
+}
+      setUser(fullName)
       })
       .catch((err) => {
         // console.log(err);
@@ -60,14 +57,30 @@ const Profile = () => {
       };
     }
   );
+  // const getAllFriends = () => {
+  //   axios
+  //     .get(`http://localhost:5000/friends/get/all/${id}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     })
+  //     .then(function (response) {
+  //       dispatch(getAlluserFriends(response.data.result));
 
+  //       //check if this profile is a friend of the loggedin user
+  //       dispatch(isTheUserIsFriend(userId));
+  //     })
+  //     .catch(function (error) {
+  //       // console.log(error);
+  //     });
+  // };
   const getAllPostsByUserId = () => {
+    console.log(id,token)
     axios
       .get(`http://localhost:5000/posts/search_1/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((Response) => {
-        dispatch(setPosts(Response.data.posts));
+        console.log(Response.data.posts)
+        Response.data.posts.length>0 && dispatch(setPosts(Response.data.posts));
       })
       .catch((err) => {
         // console.log(err);
@@ -77,15 +90,16 @@ const Profile = () => {
   
 
   useEffect(() => {
-    getuserdata();
     getAllPostsByUserId();
+    getuserdata();
+   // getAllFriends()
+    
   }, []);
 
   return (
     <div>
       <SendMessage id={id} />
-      {/* <FriendRequests id={id} />
-      <AllFriends id={id} /> */}
+      
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
@@ -162,7 +176,7 @@ const Profile = () => {
                       </MDBCardText>
                     </div>
                     <div className="px-3">
-                      <MDBCardText className="mb-1 h6">
+                      <MDBCardText className="  h6" style={{marginBottom:"0px"}}>
                         {friends ? friends.length : 0}
                       </MDBCardText>
                       <MDBCardText className="small text-muted mb-0">

@@ -141,6 +141,7 @@ io.on("connection", (socket) => {
         let data = { firstname, lastname, avatar, receiver, messagecontent };
         socket.to([Recevier.socketId]).emit("RECEIVE_NOTIFICATION", data);
       }
+
     }
   );
 

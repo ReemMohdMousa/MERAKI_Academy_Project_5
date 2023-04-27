@@ -6,13 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setUserInfo } from "../redux/reducers/auth/index";
 import Dropdown from "react-bootstrap/Dropdown";
-// import {format} from "timeago.js";
 import Iframe from "react-iframe";
 import UpdatePost from "../AddPost/UpdatePost";
 import { removePost } from "../redux/reducers/posts/index";
 import Likes from "./Likes";
 import { setComments, addComment } from "../redux/reducers/posts/index";
 import { io } from "socket.io-client";
+import moment from "moment";
 import { useSocket } from "../../App";
 const Posts = ({ post, firstname, lastname }) => {
   const [show, setShow] = useState(false);
@@ -68,7 +68,9 @@ const Posts = ({ post, firstname, lastname }) => {
                     {firstname} {lastname}
                   </span>
                 </Link>
-                {/* <span className="date">{timeago.format(post.created_at)}</span> */}
+                <span className="date">
+                {moment().endOf(post.created_at).fromNow()  }
+                </span>
               </div>
             </div>
             <Dropdown>

@@ -10,7 +10,9 @@
   justify-content: space-between;
   align-items: center;
 }
-
+li {
+  list-style-type: none;
+}
 .friend-img-name {
   display: flex;
   justify-content: center;
@@ -33,11 +35,40 @@
   justify-content: center;
 }
 
-.buttons {
-  display: flex;
-  gap: 0.2rem;
+nav.navbar-light {
+  border-bottom: 2px solid black;
 }
-
 .newMsg {
   background-color: red;
+}
+
+a.nav-link {
+  padding: 0;
+}
+
+.nav-container {
+  display: flex;
+  gap: 4rem;
+}
+.nav2 {
+  display: flex;
+  gap: 1rem;
+  color: black;
+}
+@media (width: 500px) {
+  .nav-container {
+    gap: 2rem;
+  }
+  svg {
+    height: 20px;
+    width: 20px;
+  }
+  .svg1 {
+    height: 22px;
+    width: 22px;
+  }
+  .svg2 {
+    height: 13px;
+    width: 13px;
+  }
 }

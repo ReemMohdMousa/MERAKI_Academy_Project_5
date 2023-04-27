@@ -32,7 +32,7 @@ postsRouter.put(
 postsRouter.delete(
   "/:id",
   authentication,
-  authorization("DELETE_POST"),
+  // authorization("DELETE_POST"),
   deletePostById
 );
 // postsRouter.delete("/", authentication,

@@ -12,7 +12,7 @@ import {
 } from "recharts";
 const Chart = ({ aspect, title }) => {
   const [data, setdata] = useState([]);
-
+ 
   const get = async () => {
     try {
       const result = await axios.get(`http://localhost:5000/count/num`);
@@ -23,18 +23,18 @@ const Chart = ({ aspect, title }) => {
       console.log(error);
     }
   };
+
+  
   useEffect(() => {
     get();
   }, []);
-  if (!data && Array.isArray(data)) {
-    return (
-      <div className="spinner-grow" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
-    );
-  }
+ 
+
+  
 
   return (
+    <> 
+    {data && data.length!==0 ?  
     <div className="chart">
       <div className="c-title">{title}</div>
       <ResponsiveContainer width="90%" aspect={aspect}>
@@ -46,7 +46,7 @@ const Chart = ({ aspect, title }) => {
           margin={{ top: 10, right: 10, left: 50, bottom: 0 }}
         >
           <defs>
-            <linearGradient id="total" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="total" x1="0" y1="0" x2="24" y2="50">
               <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
               <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
             </linearGradient>
@@ -64,6 +64,10 @@ const Chart = ({ aspect, title }) => {
         </AreaChart>
       </ResponsiveContainer>
     </div>
+  : <div className="spinner-grow" role="status">
+  <span className="visually-hidden">Loading...</span>
+</div>}
+  </>
   );
 };
 

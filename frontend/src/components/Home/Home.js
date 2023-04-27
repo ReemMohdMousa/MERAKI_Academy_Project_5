@@ -13,7 +13,12 @@ import {
   MDBCardImage,
   MDBBtn,
   MDBTypography,
+  MDBCardTitle,
+  MDBCardLink,
+  MDBListGroup,
+  MDBListGroupItem,
 } from "mdb-react-ui-kit";
+
 import Comments from "../Comments";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts/index";
@@ -50,7 +55,7 @@ const Home = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        // console.log("*******", response.data.result);
+         console.log("*******", response.data.result);
         dispatch(setHomePosts(response.data.result));
       })
       .catch((err) => {
@@ -95,20 +100,47 @@ const Home = () => {
   }, [userId]);
 
   const notify = () =>
-    toast(`${notification.avatar} ${notification.messagecontent}`, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+  console.log(notification)
+  toast(({data}) =>`${data}`, {
+    data:`${notification?.data.messagecontent}`,
+    icon:<img style={{width:"30px",height:"30px"}} src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80"></img>
+  })
+    // toast.(<p>{notification?.messagecontent}</p>,{
+    //   position: "top-right",
+    //   autoClose: 5000,
+    //   hideProgressBar: true,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    //   theme: "light",
+    // });
   notification !== null && notify();
 
   return (
     <div>
+    {/*  <MDBCard className="home-card">
+      <MDBCardImage position='top' alt='...'  src={ userinfo &&
+                      userinfo.avatar
+                        ? userinfo.avatar
+                        : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                    } />
+      <MDBCardBody>
+        <MDBCardTitle>Card title</MDBCardTitle>
+        <MDBCardText>
+          Some quick example text to build on the card title and make up the bulk of the card's content.
+        </MDBCardText>
+      </MDBCardBody>
+      <MDBListGroup flush>
+        <MDBListGroupItem>Cras justo odio</MDBListGroupItem>
+        <MDBListGroupItem>Dapibus ac facilisis in</MDBListGroupItem>
+        <MDBListGroupItem>Vestibulum at eros</MDBListGroupItem>
+      </MDBListGroup>
+      <MDBCardBody>
+        <MDBCardLink href='#'>Card link</MDBCardLink>
+        <MDBCardLink href='#'>Card link</MDBCardLink>
+      </MDBCardBody>
+    </MDBCard>  */}
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
@@ -143,7 +175,7 @@ const Home = () => {
       </div>
       <div>
         {" "}
-        <ToastContainer
+      {notification &&  <ToastContainer
           position="top-right"
           autoClose={5000}
           hideProgressBar
@@ -155,6 +187,7 @@ const Home = () => {
           pauseOnHover
           theme="light"
         />
+      }
       </div>
     </div>
   );

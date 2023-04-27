@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import Comments from "../Comments";
 import { useDispatch, useSelector } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
-// import { format } from "timeago.js";
 import UpdatePost from "../AddPost/UpdatePost";
 import Likes from "../Posts/Likes";
+import moment from "moment";
 const HomePosts = ({ post ,socket}) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -44,7 +44,7 @@ const HomePosts = ({ post ,socket}) => {
                     {post.firstname} {post.lastname}
                   </span>
                 </Link>
-                {/* <span className="date">{format(post.created_at)}</span> */}
+                <span className="date"> {moment().endOf(post.created_at).fromNow()  }</span>
               </div>
             </div>
             <Dropdown>

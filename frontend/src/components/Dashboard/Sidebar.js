@@ -28,7 +28,7 @@ const Sidebar = () => {
       <div className="center">
         <div className="widget">
           <img
-            src={userinfo.avatar &&
+            src={userinfo && userinfo.avatar &&
               userinfo.avatar
                 ? userinfo.avatar
                 : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
@@ -46,9 +46,9 @@ const Sidebar = () => {
             }}
             style={{marginTop:"1.8rem",marginRight:".5rem" }}
           >
-            {userinfo.firstname}
+            {userinfo && userinfo.firstname}
             {"  "}
-            {userinfo.lastname}
+            {userinfo && userinfo.lastname}
           </span>
         </div>
       </div>
