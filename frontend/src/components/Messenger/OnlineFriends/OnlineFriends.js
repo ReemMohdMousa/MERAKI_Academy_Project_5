@@ -51,10 +51,10 @@ const OnlineFriends = ({ onlineUsers }) => {
     checkIfAFriendIsOnline();
   }, [onliners, onlineUsers]);
 
-  console.log("onlineUsers", onlineUsers);
-  console.log("onliners", onliners);
-  console.log("friends", friends);
-  console.log("onlineFriends", onlineFriends);
+  // console.log("onlineUsers", onlineUsers);
+  // console.log("onliners", onliners);
+  // console.log("friends", friends);
+  // console.log("onlineFriends", onlineFriends);
 
   // const onlineFriendss = () => {
   //   friends.filter((f) => onlineUsers.some((u) => u.userId === f.userId));

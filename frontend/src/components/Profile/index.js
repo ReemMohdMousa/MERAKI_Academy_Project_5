@@ -33,10 +33,11 @@ const Profile = () => {
       .get(`http://localhost:5000/users/others/info/${id}`)
       .then((Response) => {
         console.log(Response.data.result);
-const fullName={
-  firstname:Response.data.result.firstname,lastname:Response.data.result.lastname
-}
-      setUser(fullName)
+        const fullName = {
+          firstname: Response.data.result.firstname,
+          lastname: Response.data.result.lastname,
+        };
+        setUser(fullName);
       })
       .catch((err) => {
         // console.log(err);
@@ -88,19 +89,13 @@ const fullName={
       });
   };
 
-  
-
   useEffect(() => {
     getAllPostsByUserId();
     getuserdata();
-   // getAllFriends()
-    
   }, []);
 
   return (
     <div>
-      <SendMessage id={id} />
-      
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
@@ -170,14 +165,20 @@ const fullName={
                   style={{ backgroundColor: "#f8f9fa" }}
                 >
                   <div className="d-flex justify-content-end text-center py-1">
-                    <div>
+                    <div className="profile-btn">
                       <br />
                       <MDBCardText className="small text-muted mb-0">
                         <FriendRequests id={id} />
                       </MDBCardText>
+                      <MDBCardText className="small text-muted mb-0">
+                        <SendMessage id={id} />
+                      </MDBCardText>
                     </div>
                     <div className="px-3">
-                      <MDBCardText className="  h6" style={{marginBottom:"0px"}}>
+                      <MDBCardText
+                        className="  h6"
+                        style={{ marginBottom: "0px" }}
+                      >
                         {friends ? friends.length : 0}
                       </MDBCardText>
                       <MDBCardText className="small text-muted mb-0">

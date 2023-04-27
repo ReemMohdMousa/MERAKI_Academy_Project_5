@@ -11,10 +11,8 @@ export const posts = createSlice({
     homePosts: [],
     notifications: [],
     sharedPosts: [],
-
   },
   reducers: {
-  
     setPosts: (state, action) => {
       state.posts = action.payload;
       //   state.articles.map((elem)=>{
@@ -74,6 +72,7 @@ export const posts = createSlice({
         }
       });
     },
+
     setLike: (state, action) => {
       state.likes = [action.payload];
     },
@@ -81,7 +80,6 @@ export const posts = createSlice({
     addLike: (state, action) => {
       state.likes.push(action.payload);
     },
-
 
     removeLike: (state, action) => {
       state.likes = state.likes.filter((elem) => {

@@ -11,7 +11,7 @@ import {
   MDBInput,
   MDBTypography,
 } from "mdb-react-ui-kit";
-import moment from "moment"
+import moment from "moment";
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,10 +42,10 @@ const Comments = ({ id, firstname, lastname, socket }) => {
   const [currentEmoji, setCurrentEmoji] = useState("");
   const [allnested, setAllNested] = useState(null);
   const [newnrested, setNewNested] = useState({});
-  const[text,setText]=useState()
+  const [text, setText] = useState();
   function handleOnEnter(text) {}
   const [nemcomment, setNewComment] = useState({});
-const[openReplay,setOpenReply]=useState(false)
+  const [openReplay, setOpenReply] = useState(false);
 
   const { userinfo, token, userId, posts } = useSelector((state) => {
     return {
@@ -133,22 +133,21 @@ const[openReplay,setOpenReply]=useState(false)
   };
 
   const addNewComment = (text) => {
-    const NewObj={
-      content:text,image:image
-    }
+    const NewObj = {
+      content: text,
+      image: image,
+    };
     axios
-      .post(
-        `http://localhost:5000/comments/${id}`,
-        NewObj,
-        { headers: { Authorization: token } }
-      )
+      .post(`http://localhost:5000/comments/${id}`, NewObj, {
+        headers: { Authorization: token },
+      })
       .then((Response) => {
         console.log(Response.data);
         let newComment = Response.data.result;
 
         socket.emit("aaa", {
-          A:11
-        })
+          A: 11,
+        });
         socket &&
           socket.emit("SEND_NOTIFICATION", {
             firstname: Response.data.firstname,
@@ -179,6 +178,7 @@ const[openReplay,setOpenReply]=useState(false)
       console.log(error);
     }
   };
+
   useEffect(() => {
     getAllCommentsByPostId(id);
   }, []);
@@ -190,26 +190,32 @@ const[openReplay,setOpenReply]=useState(false)
           <MDBRow className="justify-content-center">
             <MDBCol md="12" lg="10" xl="8">
               <MDBCard>
-                <MDBCardBody  className="p-4">
+                <MDBCardBody className="p-4">
                   <MDBRow>
                     <MDBCol>
                       <div style={{padding:"12px",marginTop:"-60px",width:"110%"}}>
-                      <div
-                        className="d-flex flex-start"
-                        style={{}}
-                      >
-                        <MDBCardImage
-                          className="rounded-circle shadow-1-strong me-3"style={{}}
-                          src={
-                            userinfo.avatar
-                              ? userinfo.avatar
-                              : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                          }
-                          alt="img"
-                          width="65"
-                          height="65"
-                        />
 
+                      <div
+                        style={{
+                          padding: "12px",
+                          boxShadow: "5px 5px 		rgb(232,232,232)",
+                          marginTop: "-60px",
+                          width: "110%",
+                        }}
+                      >
+                        <div className="d-flex flex-start" style={{}}>
+                          <MDBCardImage
+                            className="rounded-circle shadow-1-strong me-3"
+                            style={{}}
+                            src={
+                              userinfo.avatar
+                                ? userinfo.avatar
+                                : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                            }
+                            alt="img"
+                            width="65"
+                            height="65"
+                          />
                         <div  className="flex-grow-1 flex-shrink-1">
                           <div>
                             <div className="d-flex justify-content-between align-items-center">
@@ -219,76 +225,74 @@ const[openReplay,setOpenReply]=useState(false)
                             </div>       
                           </div>
                         </div>
-                      </div>
-                      <div style={{width:"79%",marginLeft:"20%",marginTop:"-10%"}}>
-                        <InputEmoji 
-                          value={text}
-                          cleanOnEnter
-                         
-                          onEnter={handleOnEnter}
-                          selector="#mytextarea"
-                          placeholder="Write a Comment..."
-                          onChange={ 
-                            setText
-                          //   setNewComment((content) => {
-          
-                          //     return {
-                          //       ...content,
-                          //       content:e.target.value
-                          //     };
-                          //   });
-                            
-                          }
-                        />
+                        <div
+                          style={{
+                            width: "79%",
+                            marginLeft: "20%",
+                            marginTop: "-10%",
+                          }}
+                        >
+                          <InputEmoji
+                            value={text}
+                            cleanOnEnter
+                            onEnter={handleOnEnter}
+                            selector="#mytextarea"
+                            placeholder="Write a Comment..."
+                            onChange={
+                              setText
+                              //   setNewComment((content) => {
+
+                              //     return {
+                              //       ...content,
+                              //       content:e.target.value
+                              //     };
+                              //   });
+                            }
+                          />
                         </div>
-                                <button
-                                  onClick={(e) => {
-                                    handleShow();
-                                  }}
-                                  style={{
-                                  padding:"5px",
-                                    marginLeft:"93%",
-                                   width:"20px",
-                                   marginTop:"-1760px",
-                                    border:"none",
-                                    backgroundColor: "white",
-                                  }}
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="40"
-                                    height="30"
-                                    style={{marginTop:"-80px"}}
-                                    color="gray"
-                                    fill="currentColor"
-                                    className="bi bi-file-image"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path d="M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-                                    <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8l-2.083-2.083a.5.5 0 0 0-.76.063L8 11 5.835 9.7a.5.5 0 0 0-.611.076L3 12V2z" />
-                                  </svg>
-                                </button>
-                                <div  className="d-flex justify-content-between align-items-center">
-                              {nemcomment.image && (
-                                <img
-                                  style={{ width: "100px", marginLeft: "20%" }}
-                                  variant="success"
-                                  src={nemcomment.image}
-                                />
-                              )}
-                              {disabled && (
-                                <div>
-                                  <p variant="warning">
-                                    Please wait untile file uploaded
-                                  </p>
-                                  <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
-                                </div>
-                              )}
-                              {/* {text && text} */}
+                        <button
+                          onClick={(e) => {
+                            handleShow();
+                          }}
+                          style={{
+                            padding: "5px",
+                            marginLeft: "93%",
+                            width: "20px",
+                            marginTop: "-1760px",
+                            border: "none",
+                            backgroundColor: "white",
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="40"
+                            height="30"
+                            style={{ marginTop: "-80px" }}
+                            color="gray"
+                            fill="currentColor"
+                            className="bi bi-file-image"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                            <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8l-2.083-2.083a.5.5 0 0 0-.76.063L8 11 5.835 9.7a.5.5 0 0 0-.611.076L3 12V2z" />
+                          </svg>
+                        </button>
+                        <div className="d-flex justify-content-between align-items-center">
+                          {nemcomment.image && (
+                            <img
+                              style={{ width: "100px", marginLeft: "20%" }}
+                              variant="success"
+                              src={nemcomment.image}
+                            />
+                          )}
+                          {disabled && (
+                            <div>
+                              <p variant="warning">
+                                Please wait untile file uploaded
+                              </p>
+                              <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
                             </div>
-                              
-                            
-                           <button className="commentbtn" onClick={()=>{ addNewComment(text);}} >
+                     <button className="commentbtn" onClick={()=>{ addNewComment(text);}} >
                                 Comment</button>
                                 </div>
                                 <div style={{height:"200px",width:"120%",overflowY:"scroll"}}>
@@ -316,54 +320,58 @@ const[openReplay,setOpenReply]=useState(false)
                                   <div className="d-flex justify-content-between align-items-center">
                                     <p className="mb-1">
                                       {`${element.firstname}   ${element.lastname}`}
-                                     <br></br>
-                                      <span className="small" style={{color:"gray"}}>
-                                        {moment().endOf(element.created_at).fromNow()  }
+                                      <br></br>
+                                      <span
+                                        className="small"
+                                        style={{ color: "gray" }}
+                                      >
+                                        {moment()
+                                          .endOf(element.created_at)
+                                          .fromNow()}
                                         {/* - {format(element.created_at)} */}
                                       </span>
                                     </p>
 
+                                    <Dropdown>
+                                      <Dropdown.Toggle
+                                        variant="light"
+                                        id="dropdown-basic"
+                                        style={{ backgroundColor: "inherit" }}
+                                      >
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          width="16"
+                                          height="16"
+                                          className="bi bi-three-dots"
+                                          onClick={() => {}}
+                                        >
+                                          <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                                        </svg>
+                                      </Dropdown.Toggle>
 
-                                     <Dropdown>
-              <Dropdown.Toggle
-                variant="light"
-                id="dropdown-basic"
-                style={{ backgroundColor: "inherit" }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  className="bi bi-three-dots"
-                  onClick={() => {}}
-                >
-                  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                </svg>
-              </Dropdown.Toggle>
+                                      <Dropdown.Menu>
+                                        <Dropdown.Item
+                                          onClick={() => {
+                                            setShowEdit(true);
+                                          }}
+                                        >
+                                          Edit
+                                        </Dropdown.Item>
 
-              <Dropdown.Menu>
-                <Dropdown.Item
-                 onClick={() => {
-                  setShowEdit(true);
-                }}
-                >
-
-                  Edit 
-                </Dropdown.Item>
-
-                <Dropdown.Item
-                   onClick={() => {
-                    deleteComment(
-                      id,
-                      element.comment_id
-                    );
-                  }}
-                >
-                  Delete 
-                </Dropdown.Item>
-
-              </Dropdown.Menu>
-            </Dropdown>
+                                        <Dropdown.Item
+                                          onClick={() => {
+                                            console.log(element);
+                                            console.log(id, element.comment_id);
+                                            deleteComment(
+                                              id,
+                                              element.comment_id
+                                            );
+                                          }}
+                                        >
+                                          Delete
+                                        </Dropdown.Item>
+                                      </Dropdown.Menu>
+                                    </Dropdown>
                                   </div>
                                   {element.content && (
                                     <p className="small mb-0">
@@ -378,7 +386,8 @@ const[openReplay,setOpenReply]=useState(false)
                                           marginLeft: "20%",
                                         }}
                                         variant="success"
-                                        src={element.image} alt="img"
+                                        src={element.image}
+                                        alt="img"
                                       />
                                     )}
                                     {disabled && (
@@ -386,7 +395,10 @@ const[openReplay,setOpenReply]=useState(false)
                                         <p variant="warning">
                                           Please wait untile file uploaded
                                         </p>
-                                        <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" alt="img" />
+                                        <img
+                                          src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif"
+                                          alt="img"
+                                        />
                                       </div>
                                     )}
                                     <button
@@ -426,8 +438,7 @@ const[openReplay,setOpenReply]=useState(false)
                                           {userinfo.lastname}
                                           <br></br>{" "}
                                           <span className="small">
-                                            {moment().startOf('hour').fromNow()
-}
+                                            {moment().startOf("hour").fromNow()}
                                           </span>
                                         </p>
                                       </div>
@@ -447,6 +458,7 @@ const[openReplay,setOpenReply]=useState(false)
                                           });
                                         }}
                                       />
+
                                       <button
                                         onClick={() => {
                                           createNestedComment(
@@ -569,7 +581,7 @@ const[openReplay,setOpenReply]=useState(false)
                 <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z" />
               </svg>
               <h3>Upload Image</h3>
-              <img src={selectedimage} alt="img"/>
+              <img src={selectedimage} alt="img" />
             </div>
           </div>
         </Modal.Body>
