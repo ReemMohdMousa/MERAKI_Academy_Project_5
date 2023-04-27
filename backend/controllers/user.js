@@ -30,8 +30,8 @@ const register = async (req, res) => {
         const payload = {
           userId: result.rows[0].user_id,
           role: result.rows[0].role_id,
-          firstname:result.rows[0].firstName,
-          lastname:result.rows[0].lastName
+          firstname: result.rows[0].firstName,
+          lastname: result.rows[0].lastName,
         };
         const options = {
           expiresIn: "24h",
@@ -76,8 +76,8 @@ const login = (req, res) => {
             const payload = {
               userId: result.rows[0].user_id,
               role: result.rows[0].role_id,
-              firstname:result.rows[0].firstName,
-              lastname:result.rows[0].lastName
+              firstname: result.rows[0].firstName,
+              lastname: result.rows[0].lastName,
             };
 
             const options = {
@@ -90,7 +90,7 @@ const login = (req, res) => {
                 success: true,
                 message: `Valid login credentials`,
                 token,
-                userId: result.rows[0].user_id,                
+                userId: result.rows[0].user_id,
                 roleId: result.rows[0].role_id,
               });
             } else {
@@ -187,6 +187,44 @@ const otherUsersInfo = (req, res) => {
           success: true,
           message: `All info for the user: ${user_id}`,
           result: result.rows[0],
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err,
+      });
+    });
+};
+
+const editUserInfo = (req, res) => {
+  const user_id = req.token.userId;
+
+  let { avatar, coverImg, bio } = req.body;
+  const data = [avatar, coverImg, bio, user_id];
+
+  const query = `UPDATE posts SET 
+  avatar = COALESCE($1,avatar), 
+  coverImg = COALESCE($2, coverImg), 
+  bio = COALESCE($3, bio), 
+  updated_at=NOW() 
+  WHERE user_id=$4 RETURNING *;`;
+
+  pool
+    .query(query, data)
+    .then((result) => {
+      if (result.rows.length === 0) {
+        return res.status(200).json({
+          success: false,
+          message: `no data found`,
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: `user's info updated sucessfully `,
+          post: result.rows[0],
         });
       }
     })
@@ -686,4 +724,5 @@ module.exports = {
   checkGoogleUser,
   profileInfo,
   otherUsersInfo,
+  editUserInfo
 };
