@@ -82,7 +82,7 @@ const Likes = ({ post_id, post }) => {
 
   return (
     <>
-      <p id="post-info">
+      <div id="post-info">
         <AiFillLike
           style={{ color: "blue" }}
           onClick={(e) => {
@@ -98,7 +98,7 @@ const Likes = ({ post_id, post }) => {
               return <span key={post_id}>{acc}</span>;
             }
           }, 0)}
-      </p>
+      </div>
 
       <div className="item" onClick={handleLike} id={post_id}>
         <svg
