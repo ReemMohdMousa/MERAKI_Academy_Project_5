@@ -59,17 +59,20 @@ export const posts = createSlice({
       });
     },
     removeComment: (state, action) => {
-      console.log(action.payload);
-      // state.posts.forEach((elem, idx) => {
-      //   console.log(elem);
-        let found = state.posts.find((elem) => {
-          return elem.post_id == action.payload.post_id;
-        });
-        console.log("found", found);
-      //   if (elem.comment_id == action.payload) {
-         state.posts.comments.splice(found, 1);
-      //   }
-      // });
+      state.posts.map((element, i) => {
+        if (element.post_id == action.payload.post_id) {
+          console.log("enteer");
+          let commentsArr = element.comments;
+          commentsArr.map((comm, j) => {
+            if (comm.comment_id == action.payload.comment_id) {
+              console.log("enteer5555");
+              element.comments.splice(j, 1);
+            }
+            return comm;
+          });
+          return element;
+        }
+      });
     },
     setLike: (state, action) => {
       state.likes = [action.payload];
