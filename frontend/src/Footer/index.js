@@ -14,34 +14,25 @@ const Footer = () => {
       className="text-center text-lg-left"
       style={{ borderTop: "2px black solid" }}
     >
-      <section className="">
-        <MDBContainer className="text-center text-lg-center">
-          <MDBRow className="mt-3">
-            <MDBCol md="3" lg="4" xl="3" className="mx-auto mb-1">
-              <h6 className="text-uppercase fw-bold mb-4">Brand</h6>
-            </MDBCol>
-
-            <MDBCol md="3" lg="3" xl="3" className="mx-auto mb-3">
-              <span>
-                <a href="#!" className="text-reset">
-                  About &nbsp;  &nbsp; 
-                </a>
-              </span>
-
-              <span>
-                <a href="#!" className="text-reset">
-                  Privacy Policy &nbsp; &nbsp; 
-                </a>
-              </span>
-              <span>
-                <a href="#!" className="text-reset">
-                  Terms &nbsp;
-                </a>
-              </span>
+      
+      <MDBContainer className='p-4'>
+        <section className=''>
+          <MDBRow className='d-flex justify-content-center'>
+            <MDBCol lg='4'>
+              <div className='ratio ratio-16x9'>
+                <iframe
+                  className='shadow-1-strong rounded'
+                  src='./Mock.mp4'
+                  allowFullScreen
+                  data-gtm-yt-inspected-2340190_699='true'
+                  id='388567449'
+                ></iframe>
+              </div>
             </MDBCol>
           </MDBRow>
-        </MDBContainer>
-      </section>
+        </section>
+      </MDBContainer>
+      
 
       <div
         className="text-center p-4"
