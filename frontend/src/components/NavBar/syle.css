@@ -12,7 +12,6 @@
 }
 li {
   list-style-type: none;
- 
 }
 .friend-img-name {
   display: flex;
@@ -35,44 +34,41 @@ li {
 .mb-3.nav.nav-tabs {
   justify-content: center;
 }
- 
+
 nav.navbar-light {
   border-bottom: 2px solid black;
 }
 .newMsg {
   background-color: red;
 }
- 
-a.nav-link{
+
+a.nav-link {
   padding: 0;
 }
- 
-.nav-container{
-  display:flex;
+
+.nav-container {
+  display: flex;
   gap: 4rem;
-   
 }
-.nav2{
-  display:flex;
+.nav2 {
+  display: flex;
   gap: 1rem;
-   
+  color: black;
 }
-@media (width: 500px){
-  .nav-container{
+@media (width: 500px) {
+  .nav-container {
     gap: 2rem;
   }
-  svg{
-    height:20px;
-    width:20px;
+  svg {
+    height: 20px;
+    width: 20px;
   }
-  .svg1{
-    height:22px;
-    width:22px; 
+  .svg1 {
+    height: 22px;
+    width: 22px;
   }
-  .svg2{
-    height:13px;
-    width:13px; 
+  .svg2 {
+    height: 13px;
+    width: 13px;
   }
 }
-
- 

@@ -19,6 +19,7 @@ import Conversation from "./components/Messenger/Conversation/Conversation";
 import Message from "./components/Messenger/Message/Message";
 import SocketNotifications from "./components/NavBar/SocketNotifications";
 import CurrentConversation from "./components/Messenger/CurrentConversation";
+import Footer from "./Footer";
  
 
 
@@ -107,6 +108,7 @@ function App() {
           {/* <Route path="/cons" element={<Conversation />} />  */}
 
         </Routes>
+       <Footer/>
       </div>
     </GoogleOAuthProvider>
   );
