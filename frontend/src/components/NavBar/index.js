@@ -9,7 +9,6 @@ import {
   MDBNavbarItem,
   MDBNavbarLink,
   MDBBtn,
- 
   MDBCollapse,
 } from "mdb-react-ui-kit";
 import { useNavigate } from "react-router-dom";
@@ -17,10 +16,10 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setLogout } from "../redux/reducers/auth";
 import NavFriendReq from "./NavFriendReq";
-import SocketNotifications from "./SocketNotifications"
 import Notifications from "./Notifications"
 import { io } from "socket.io-client";
 import { useSocket } from "../../App";
+
 const NavBar = () => {
   const [showBasic, setShowBasic] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -43,21 +42,6 @@ const NavBar = () => {
     };
   });
 
-  //get user info, so i could use user info, such as name and pic
-  //! to be used in advance
-  useEffect(() => {
-  
-    axios
-      .get(`http://localhost:5000/users/info`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(function (response) {
-        // console.log(response.data.info);
-      })
-      .catch(function (error) {
-        throw error;
-      });
-  }, []);
 
   //navigations functions
   const goToMyProfile = () => {
@@ -212,9 +196,6 @@ const NavBar = () => {
                   }}
                 >
                   <MDBNavbarLink active>Register</MDBNavbarLink>
-                </MDBNavbarItem>
-                <MDBNavbarItem>
-                   <SocketNotifications socket={socket}/>
                 </MDBNavbarItem>
               </MDBNavbarNav>
             </MDBCollapse>

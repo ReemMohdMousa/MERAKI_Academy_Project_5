@@ -29,16 +29,18 @@ const OnlineFriends = ({ onlineUsers }) => {
   };
 
   const checkIfAFriendIsOnline = () => {
-    const results = friends.filter((frd) => {
-      console.log("************", frd.user_id);
-      console.log(onliners.includes(frd.user_id));
+    if (friends) {
+      const results = friends.filter((frd) => {
+        console.log("************", frd.user_id);
+        console.log(onliners.includes(frd.user_id));
 
-      if (onliners.includes(frd.user_id)) {
-        return frd;
-      }
-    });
-    console.log(results);
-    setOnlineFriends(results);
+        if (onliners.includes(frd.user_id)) {
+          return frd;
+        }
+      });
+      console.log(results);
+      setOnlineFriends(results);
+    }
   };
 
   useEffect(() => {
@@ -114,7 +116,7 @@ const OnlineFriends = ({ onlineUsers }) => {
                 o?.avatar ||
                 "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
               }
-              alt=""
+              alt="img"
             />
             <div className="chatOnlineBadge"></div>
           </div>

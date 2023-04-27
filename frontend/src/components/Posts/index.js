@@ -57,7 +57,7 @@ const Posts = ({ post, firstname, lastname }) => {
                     ? userinfo.avatar
                     : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                 }
-                alt=""
+                alt="img"
               />
               <div className="details">
                 <Link
@@ -109,7 +109,7 @@ const Posts = ({ post, firstname, lastname }) => {
           </div>
           <div className="contant">
             {post.content && <p>{post.content}</p>}
-            {post.image && <img src={post.image} alt="" />}
+            {post.image && <img src={post.image} alt="img" />}
             {post.video && (
               <embed
                 width="100%"

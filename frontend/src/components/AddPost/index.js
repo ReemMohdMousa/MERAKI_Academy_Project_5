@@ -3,8 +3,6 @@ import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { setUserInfo } from "../redux/reducers/auth/index";
-import Form from "react-bootstrap/Form";
 import {
   MDBCol,
   MDBContainer,
@@ -12,9 +10,7 @@ import {
   MDBCard,
   MDBCardText,
   MDBCardBody,
-  MDBCardImage,
   MDBBtn,
-  MDBTypography,
   MDBInput,
   MDBIcon,
 } from "mdb-react-ui-kit";
@@ -22,7 +18,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
 // import { format } from "timeago.js";
-import { setPosts, addpost } from "../redux/reducers/posts";
+import { addpost } from "../redux/reducers/posts";
 
 const AddPost = () => {
   const [show, setShow] = useState(false);
@@ -36,10 +32,9 @@ const AddPost = () => {
   const [post, setpost] = useState({});
   const dispatch = useDispatch();
   const [selectedvideo, setSelectedVideo] = useState("");
-  const { token, userId, userinfo } = useSelector((state) => {
+  const { token, userinfo } = useSelector((state) => {
     return {
       token: state.auth.token,
-      userId: state.auth.userId,
       userinfo: state.auth.userinfo,
     };
   });
@@ -120,7 +115,7 @@ const AddPost = () => {
                     ? userinfo.avatar
                     : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                 }
-                alt=""
+                alt="img"
               />
               <div className="details">
                 <Link
@@ -166,14 +161,16 @@ const AddPost = () => {
                         )}
 
                         {post.image && (
-                          <img variant="success" src={post.image} />
+                          <img variant="success" src={post.image} 
+                          alt="img"/>
                         )}
                         {disabled && (
                           <div>
                             <p variant="warning">
                               Please wait until file uploaded
                             </p>
-                            <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" />
+                            <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" alt="img"/>
+                            
                           </div>
                         )}
                         <hr className="my-4" />
@@ -274,7 +271,7 @@ const AddPost = () => {
                       <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z" />
                     </svg>
                     <h3>Upload Image</h3>
-                    <img src={selectedimage} />
+                    <img src={selectedimage} alt="img" />
                   </div>
                 </div>
               </Modal.Body>

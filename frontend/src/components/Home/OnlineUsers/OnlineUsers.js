@@ -46,7 +46,7 @@ const OnlineUsers = () => {
                   ? PF + o.profilePicture
                   : PF + "person/noAvatar.png"
               }
-              alt=""
+              alt="img"
             />
             <div className="chatOnlineBadge"></div>
           </div>

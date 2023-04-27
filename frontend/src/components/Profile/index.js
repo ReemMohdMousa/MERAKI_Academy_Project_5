@@ -32,7 +32,7 @@ const Profile = () => {
     axios
       .get(`http://localhost:5000/users/others/info/${id}`)
       .then((Response) => {
-        console.log(Response.data.result);
+        // console.log(Response.data.result);
 
         setUser((firstname) => {
           return { ...firstname, firstname: Response.data.result.firstname };
@@ -74,6 +74,8 @@ const Profile = () => {
       });
   };
 
+  
+
   useEffect(() => {
     getuserdata();
     getAllPostsByUserId();
@@ -103,7 +105,7 @@ const Profile = () => {
                           ? userinfo.avatar
                           : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                       }
-                      alt=""
+                      alt="image"
                       className="mt-4 mb-2 img-thumbnail"
                       fluid
                       style={{ width: "150px", zIndex: "1" }}

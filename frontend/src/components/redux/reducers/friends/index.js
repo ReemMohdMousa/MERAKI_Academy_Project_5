@@ -55,7 +55,7 @@ export const friends = createSlice({
       //action.payload = reciver_id
       state.sentReq.forEach((element, i) => {
         if (element.receiver_id === action.payload) {
-          element.splice(i, 1);
+          state.sentReq.splice(i, 1);
         }
       });
     },
@@ -66,10 +66,11 @@ export const friends = createSlice({
 
     declineFriendReq: (state, action) => {
       //action.payload = sender_id
-      state.sentReq.forEach((element, i) => {
-        if (element.sender_id === action.payload) {
-          element.splice(i, 1);
+      state.ReceivedReq.map((element, i) => {
+        if (element.sender_id == action.payload) {
+          state.ReceivedReq.splice(i, 1);
         }
+        return element;
       });
     },
 
@@ -86,8 +87,9 @@ export const friends = createSlice({
       //payload = user_id
       state.friends.map((element, i) => {
         if (element.user_id == action.payload) {
-          state.friends.splice(i, 0);
+          state.friends.splice(i, 1);
         }
+        return element;
       });
     },
 

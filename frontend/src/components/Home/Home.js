@@ -88,11 +88,11 @@ const Home = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   socket?.on("GET_USERS", (OnlineUsers) => {
-  //     console.log(OnlineUsers);
-  //   });
-  // }, [userId]);
+  useEffect(() => {
+    socket?.on("SEND_USER", (OnlineUsers) => {
+      console.log(OnlineUsers);
+    });
+  }, [userId]);
 
   const notify = () =>
     toast(`${notification.avatar} ${notification.messagecontent}`, {
