@@ -33,7 +33,7 @@ const HomePosts = ({ post ,socket}) => {
                     ? post.avatar
                     : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                 }
-                alt=""
+                alt="img"
               />
               <div className="details">
                 <Link
@@ -76,7 +76,7 @@ const HomePosts = ({ post ,socket}) => {
           </div>
           <div className="contant">
             <p>{post.content}</p>
-            <img src={post.image} alt="" />
+            <img src={post.image} alt="img" />
             <embed className="embed" type="video/webm" src={post.video} />
           </div>
 

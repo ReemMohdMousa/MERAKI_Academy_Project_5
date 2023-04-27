@@ -8,8 +8,13 @@ import { setFriendInfo } from "../redux/reducers/Messenger/index";
 import { io } from "socket.io-client";
 import { useNavigate, useParams, Outlet } from "react-router-dom";
 import CurrentConversation from "./CurrentConversation";
-const ENDPOINT = "http://localhost:5000";
+import {
+  setTheOpenedConversation,
+  setConversations,
+} from "../redux/reducers/Messenger/index";
+import OnlineFriends from "./OnlineFriends/OnlineFriends";
 
+const ENDPOINT = "http://localhost:5000";
 //connect to the backend server
 // const socket = io.connect(ENDPOINT);
 
@@ -17,25 +22,37 @@ const Messenger = () => {
   const navigate = useNavigate();
 
   //componant states
-  const [conversations, setConversations] = useState([]);
-  const [theOpenedConversation, setTheOpenedConversation] = useState(null);
+  // const [conversations, setConversations] = useState([]);
+  // const [theOpenedConversation, setTheOpenedConversation] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newWrittenMessage, setNewWrittenMessage] = useState("");
   const [socket, setSocket] = useState(io(ENDPOINT, { autoConnect: false }));
   const [sending, setSending] = useState(false);
   const [receiving, setReceiving] = useState(false);
   const scrollRef = useRef();
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
-  const { userinfo, token, userId, conversationFriendInfo } = useSelector(
-    (state) => {
-      return {
-        userinfo: state.auth.userinfo,
-        token: state.auth.token,
-        userId: state.auth.userId,
-        conversationFriendInfo: state.messenger.conversationFriendInfo,
-      };
-    }
-  );
+  const dispatch = useDispatch();
+
+  const {
+    userinfo,
+    token,
+    userId,
+    conversationFriendInfo,
+    openConversation,
+    theOpenedConversation,
+    conversations,
+  } = useSelector((state) => {
+    return {
+      userinfo: state.auth.userinfo,
+      token: state.auth.token,
+      userId: state.auth.userId,
+      conversationFriendInfo: state.messenger.conversationFriendInfo,
+      openConversation: state.messenger.openConversation,
+      theOpenedConversation: state.messenger.theOpenedConversation,
+      conversations: state.messenger.conversations,
+    };
+  });
 
   //connect to the backend server
   useEffect(() => {
@@ -72,7 +89,7 @@ const Messenger = () => {
       })
       .then(function (response) {
         // console.log(response.data);
-        setConversations(response.data);
+        dispatch(setConversations(response.data));
       })
       .catch(function (error) {
         throw error;
@@ -94,7 +111,7 @@ const Messenger = () => {
           }
         )
         .then(function (response) {
-          // console.log(response.data);
+          console.log(response.data);
           setMessages(response.data);
           setSending(true);
         })
@@ -148,7 +165,7 @@ const Messenger = () => {
           text: newWrittenMessage,
         });
         setNewWrittenMessage("");
-        // setMessages([...messages, response.data]);
+        setMessages([...messages, response.data]);
       })
       .catch(function (error) {
         throw error;
@@ -158,11 +175,12 @@ const Messenger = () => {
   useEffect(() => {
     getAllUserConversations();
     getAllConversationMessages();
-  }, [theOpenedConversation, sending, receiving]);
+  }, [theOpenedConversation]);
 
   useEffect(() => {
     socket?.on("GET_USERS", (users) => {
       console.log(users);
+      setOnlineUsers(users);
     });
   }, [userId]);
 
@@ -181,7 +199,10 @@ const Messenger = () => {
   // }, [messages]);
 
   // console.log(messages);
-  console.log(conversations);
+  // console.log(conversations);
+
+  // console.log(openConversation);
+  // console.log(theOpenedConversation);
 
   return (
     <>
@@ -190,21 +211,20 @@ const Messenger = () => {
           <div className="chatMenuWrapper">
             {/* <input placeholder="Search for friends" className="chatMenuInput" /> */}
             <h4>your conversations</h4>
-            {conversations.map((element) => {
+            {conversations?.map((element) => {
               return (
                 <div
                   key={element._id}
                   onClick={() => {
-                    setTheOpenedConversation(element);
+                    dispatch(setTheOpenedConversation(element));
 
                     //determine the receiver_id
-                    const receiver_id = theOpenedConversation?.members.find(
+                    const receiver_id = element.members.find(
                       (member) => member != userId
                     );
 
                     //navigate to current conversation
-                    receiver_id &&
-                      navigate(`/messenger/${userId}/${receiver_id}`);
+                    // navigate(`/messenger/${userId}/${receiver_id}`);
                   }}
                 >
                   <Conversation
@@ -230,25 +250,17 @@ const Messenger = () => {
               {theOpenedConversation ? (
                 <div>
                   <div className="chatBoxTop">
-                    {theOpenedConversation ? (
-                      messages.map((element) => {
-                        // console.log(element);
-                        return (
-                          <div>
-                            <Message
-                              message={element}
-                              mine={element.sender == userId ? true : false}
-                            />
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <CurrentConversation
-                        conversations={conversations}
-                        messages={messages}
-                        setMessages={setMessages}
-                      />
-                    )}
+                    {messages.map((element) => {
+                      // console.log(element);
+                      return (
+                        <div>
+                          <Message
+                            message={element}
+                            mine={element.sender == userId ? true : false}
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                   <div className="chatBoxBottom">
                     <input
@@ -273,7 +285,9 @@ const Messenger = () => {
           </div>
         </div>
         <div className="chatOnline">
-          <div className="chatOnlineWrapper"></div>
+          <div className="chatOnlineWrapper">
+            <OnlineFriends onlineUsers={onlineUsers} />
+          </div>
         </div>
       </div>
     </>

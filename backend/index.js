@@ -104,12 +104,13 @@ io.on("connection", (socket) => {
 
     //send the users array to the frontend
     io.emit("GET_USERS", users);
+    console.log(users);
   });
 
   //send messages
   socket.on("SEND_MESSAGE", ({ sender_id, receiver_id, text }) => {
     const user = getUser(receiver_id);
-    console.log(user);
+    // console.log(user);
 
     if (user) {
       io.to(user.socketId).emit("GET_MESSAGE", {
@@ -120,29 +121,29 @@ io.on("connection", (socket) => {
     }
   });
 
-
   socket.on("NEW_USER", (userId) => {
-    console.log(userId, "rrrrrrrrrr");
+    // console.log(userId, "rrrrrrrrrr");
     addNewUser(userId, socket.id);
-    console.log("online", onlineUsers);
+    // console.log("online", onlineUsers);
 
+    io.emit("SEND_USER", onlineUsers);
   });
   socket.on("aaa", (data) => {
     io.emit("eee", data);
   });
 
-
   socket.on(
     "SEND_NOTIFICATION",
     ({ firstname, lastname, avatar, receiver, messagecontent }) => {
-      const Recevier = getUserNoti(receiver);
-      console.log(Recevier.socketId);
-      let data = { firstname, lastname, avatar, receiver, messagecontent };
-      socket.to([Recevier.socketId]).emit("RECEIVE_NOTIFICATION", data);
+      const Recevier = getUserNoti("18");
+      // console.log(Recevier.socketId);
+      if (Recevier) {
+        let data = { firstname, lastname, avatar, receiver, messagecontent };
+        socket.to([Recevier.socketId]).emit("RECEIVE_NOTIFICATION", data);
+      }
+
     }
   );
-
-
 
   socket.on("disconnect", () => {
     console.log("user left");
@@ -150,7 +151,6 @@ io.on("connection", (socket) => {
     removeUser(socket.id);
     io.emit("GET_USERS", users);
     io.emit("NEW_USER", onlineUsers);
-    console.log(users);
-
+    // console.log(users);
   });
 });

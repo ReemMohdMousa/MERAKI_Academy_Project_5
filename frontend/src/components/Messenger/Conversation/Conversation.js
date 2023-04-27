@@ -104,7 +104,7 @@ const Conversation = ({ Oneconversation, theOpenedConversation }) => {
               (friendInfo && friendInfo.avatar) ||
               "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
             }
-            alt=""
+            alt="img"
           />
           <span className={isNew ? "newConvsName" : "conversationName"}>{`${
             friendInfo && friendInfo.firstname

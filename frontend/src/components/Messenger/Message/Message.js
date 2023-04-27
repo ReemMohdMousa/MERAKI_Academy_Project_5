@@ -35,7 +35,7 @@ const Messages = ({ mine, message }) => {
                   : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                 : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
             }
-            alt=""
+            alt="img"
           />
           <p className="messageText">{message.text}</p>
         </div>

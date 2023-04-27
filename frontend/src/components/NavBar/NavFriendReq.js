@@ -15,9 +15,8 @@ import {
   setIsReceived,
   declineFriendReq,
   setIsFriend,
+  getAlluserFriends,
 } from "../redux/reducers/friends/index";
-import { isPending } from "@reduxjs/toolkit";
-import { SlPeople } from "react-icons/sl";
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -32,10 +31,11 @@ export default function BasicMenu() {
   const dispatch = useDispatch();
 
   //redux states
-  const { token, sentReq, ReceivedReq, isAdded, isReceived, isFriend } =
+  const { userId, token, sentReq, ReceivedReq, isAdded, isReceived, isFriend } =
     useSelector((state) => {
       //return object contains the redux states
       return {
+        userId: state.auth.userId,
         token: state.auth.token,
         sentReq: state.friends.sentReq,
         ReceivedReq: state.friends.ReceivedReq,
@@ -44,6 +44,20 @@ export default function BasicMenu() {
         isFriend: state.friends.isFriend,
       };
     });
+
+  //get all friends of the logged in user
+  const getAllFriends = () => {
+    axios
+      .get(`http://localhost:5000/friends/get/all/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        dispatch(getAlluserFriends(response.data.result));
+      })
+      .catch(function (error) {
+        // throw error
+      });
+  };
 
   const ReceivedRequests = () => {
     //*ME => receiver_id
@@ -98,10 +112,10 @@ export default function BasicMenu() {
   };
 
   useEffect(() => {
+    getAllFriends();
     SentRequests();
     ReceivedRequests();
   }, [isAdded, isReceived]);
-
 
   //cancel friend request
   const cancelFriendReqFun = (receiver_id) => {
@@ -176,6 +190,7 @@ export default function BasicMenu() {
                         <div className="friend-img-name">
                           <img
                             className="friend-img"
+                            alt="img"
                             src={
                               element.avatar ||
                               "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
@@ -222,6 +237,7 @@ export default function BasicMenu() {
                         <div className="friend-img-name">
                           <img
                             className="friend-img"
+                            alt="img"
                             src={
                               element.avatar ||
                               "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"

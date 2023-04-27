@@ -92,6 +92,13 @@ const Home = () => {
       // ]});
     });
   }, []);
+
+  useEffect(() => {
+    socket?.on("SEND_USER", (OnlineUsers) => {
+      console.log(OnlineUsers);
+    });
+  }, [userId]);
+
   const notify = () =>
   console.log(notification)
   toast(({data}) =>`${data}`, {

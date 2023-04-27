@@ -8,7 +8,6 @@ const createNewComment = async (req, res) => {
   let avatar = "";
   let receiver;
 
-  //console.log(firstname,lastname)
   const querytofindname = `
   SELECT users.firstname,users.lastname ,users.avatar from users 
  where users.user_id =$1`;
@@ -55,7 +54,7 @@ const createNewNestedComment = async (req, res) => {
   const comment_id = req.query.comment_id;
   const post_id = req.query.post_id;
   const user_id = req.token.userId;
-  console.log(comment_id, post_id, user_id);
+
   let firstname = "";
   let lastname = "";
   let receiver ;

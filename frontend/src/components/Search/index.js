@@ -38,6 +38,7 @@ const Search = () => {
                 >
                   <img
                     className="friend-img"
+                    alt="img"
                     src={
                       element.avatar ||
                       "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"

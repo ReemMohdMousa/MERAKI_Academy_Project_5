@@ -6,7 +6,7 @@ const createNewConversation = (req, res) => {
   const { sender_id, receiver_id } = req.body;
 
   const newConversation = new conversationModel({
-    members: [sender_id, receiver_id],
+    members: [Number(sender_id), Number(receiver_id)],
   });
 
   newConversation
@@ -26,7 +26,6 @@ const getAllConversationsByUserId = (req, res) => {
   conversationModel
     .find({ members: { $in: [user_id] } })
     .then((results) => {
-      console.log(results);
       res.json(results);
     })
     .catch((err) => {
@@ -56,7 +55,6 @@ const getAConversationOfTheUserAndHisFriend = (req, res) => {
 const ProfileSendMsgBtn = (req, res) => {
   const user_id = req.token.userId;
   const friend_id = Number(req.params.friendId);
-  // console.log(user_id);
 
   conversationModel
     .find({
@@ -89,12 +87,9 @@ const checkIfThereAreNewMsgs = (req, res) => {
   const conversationId = req.params.conversationId;
   const receiverId = req.params.receiverId;
 
-  console.log("receiverId", receiverId);
-
   messageModel
     .find({ conversationId, sender: receiverId, seen: false })
     .then((results) => {
-      console.log("*****************", results);
       if (results.length === 0) {
         res.json(false);
       } else {
