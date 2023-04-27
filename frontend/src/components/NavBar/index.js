@@ -11,6 +11,9 @@ import {
   MDBBtn,
   MDBCollapse,
 } from "mdb-react-ui-kit";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { BiDownArrow, BiHome } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,7 +39,14 @@ const NavBar = () => {
 
   //useDispatch
   const dispatch = useDispatch();
-
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   //redux login states
   const { token, userId, isLoggedIn, roleId, newMsg, userinfo } = useSelector(
     (state) => {
@@ -125,6 +135,15 @@ const NavBar = () => {
                 <FcSearch size={20} />
               </MDBBtn>
             </form>
+            <MDBNavbarItem
+              onClick={() => {
+                goToHome();
+              }}
+            >
+              <MDBNavbarLink active aria-current="page" href="#">
+                <BiHome size={20} />
+              </MDBNavbarLink>
+            </MDBNavbarItem>
             <MDBNavbarItem>
               <MDBNavbarLink href="#">
                 <NavFriendReq />
@@ -136,74 +155,97 @@ const NavBar = () => {
               }}
             >
               <MDBNavbarLink href="#" className={newMsg ? "newMsg" : ""}>
-                <TiMessages size={20} />
+                <TiMessages color="royalblue" size={20} />
               </MDBNavbarLink>
             </MDBNavbarItem>
 
             <MDBNavbarItem>
-                  <MDBNavbarLink>
-                    <Notifications />
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
-                
-            <MDBNavbarToggler
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-              onClick={() => setShowBasic(!showBasic)}
-            >
-              <div className="userInfo">
-                <span>
-                  {" "}
-                  <img
-                    src={
-                      userinfo.avatar
-                        ? userinfo.avatar
-                        : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                    }
-                    alt=""
-                  />
-                  <BiDownArrow size={12} />
-                </span>
-              </div>
-            </MDBNavbarToggler>
-
-            <MDBCollapse navbar show={showBasic}>
-              <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
-                <MDBNavbarItem
-                  onClick={() => {
-                    goToHome();
-                  }}
-                >
-                  <MDBNavbarLink active aria-current="page" href="#">
-                    <BiHome /> Home
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
-                <MDBNavbarItem
+              <MDBNavbarLink>
+                <Notifications />
+              </MDBNavbarLink>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
+              <Button
+                id="demo-positioned-button"
+                aria-controls={open ? "demo-positioned-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+              >
+                <div className="userInfo">
+                  <span>
+                    {" "}
+                    <img
+                      src={
+                        userinfo.avatar
+                          ? userinfo.avatar
+                          : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                      }
+                      alt=""
+                    />
+                    <BiDownArrow size={12} />
+                  </span>
+                </div>
+              </Button>
+              <Menu
+        anchorEl={anchorEl}
+        id="account-menu"
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        PaperProps={{
+          elevation: 2,
+          style: {  
+            width: 120,  
+          },  
+          sx: {
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            mt: .01,
+            "& .MuiAvatar-root": {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            "&:before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+                <MenuItem
                   onClick={() => {
                     goToMyProfile();
+                    setAnchorEl(null);
                   }}
                 >
-                  <MDBNavbarLink active href="#">
-                    {" "}
-                    <CgProfile /> Profile
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
+                  {" "}
+                  <CgProfile />&nbsp;Profile
+                </MenuItem>
 
-                 
-                <MDBNavbarItem
+                <MenuItem
                   onClick={() => {
                     dispatch(setLogout());
-                    setShowBasic(false);
+                    setAnchorEl(null);
                     navigate("/login");
                   }}
                 >
-                  <MDBNavbarLink active href="#">
-                    <MdOutlineLogout /> Logout
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
-              </MDBNavbarNav>
-            </MDBCollapse>
+                  <MdOutlineLogout />&nbsp;Logout
+                </MenuItem>
+              </Menu>
+            </MDBNavbarItem>
           </MDBContainer>
         </MDBNavbar>
       ) : (

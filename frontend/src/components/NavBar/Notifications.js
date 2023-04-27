@@ -59,7 +59,7 @@ export default function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <IoIosNotificationsOutline style={{color: 'blue'}}/>
+            <IoIosNotificationsOutline color='royalblue'/>
           </IconButton>
         </Tooltip>
       </Box>
