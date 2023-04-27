@@ -14,8 +14,18 @@ const Footer = () => {
       className="text-center text-lg-left"
       style={{ borderTop: "2px black solid" }}
     >
-      
-      <MDBContainer className='p-4'>
+      <div className="text-center p-4">
+        Copyright &copy; {new Date().getFullYear()}{" "}
+        <span style={{ fontFamily: "Niconne", fontWeight: "50" }}>brand.</span>
+      </div>
+    </MDBFooter>
+  );
+};
+export default Footer;
+
+
+
+/* <MDBContainer className='p-4'>
         <section className=''>
           <MDBRow className='d-flex justify-content-center'>
             <MDBCol lg='4'>
@@ -31,19 +41,4 @@ const Footer = () => {
             </MDBCol>
           </MDBRow>
         </section>
-      </MDBContainer>
-      
-
-      <div
-        className="text-center p-4"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
-      >
-        Copyright &copy; {new Date().getFullYear()}{" "}
-        <span style={{ fontFamily: "Niconne", fontWeight: "50" }}>
-          brand.
-        </span>
-      </div>
-    </MDBFooter>
-  );
-};
-export default Footer;
+      </MDBContainer> */
