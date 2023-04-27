@@ -57,7 +57,6 @@ export const posts = createSlice({
       });
     },
     removeComment: (state, action) => {
-      // console.log(action.payload);
       state.posts.map((element, i) => {
         if (element.post_id == action.payload.post_id) {
           console.log("enteer");

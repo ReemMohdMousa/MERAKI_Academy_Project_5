@@ -111,9 +111,9 @@ const Profile = () => {
                   >
                     <MDBCardImage
                       src={
-                        userinfo.avatar
-                          ? userinfo.avatar
-                          : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                        userinfo && userinfo.avatar?userinfo.avatar
+                         
+                         :"https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                       }
                       alt="image"
                       className="mt-4 mb-2 img-thumbnail"
@@ -189,7 +189,7 @@ const Profile = () => {
                 </div>
 
                 <MDBCardBody className="text-black p-4">
-                  {userinfo.bio && (
+                  {userinfo && userinfo.bio && (
                     <div className="mb-5">
                       <p className="lead fw-normal mb-1">About</p>
                       <div
