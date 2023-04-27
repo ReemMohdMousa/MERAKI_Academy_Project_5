@@ -6,6 +6,7 @@ import Featured from "./Featured";
 import Chart from "./Chart";
 
 const Dashboard = () => {
+  
   return (
     <div className="dashboard">
       <Sidebar />
@@ -18,7 +19,7 @@ const Dashboard = () => {
           <Widget type="newUser" />
         </div>
         <div className="charts">
-          <Featured />
+          <Featured  />
           <Chart title="Posts per hour" aspect={2 / 1} />
         </div>
       </div>

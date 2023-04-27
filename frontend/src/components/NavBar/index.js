@@ -17,23 +17,18 @@ import MenuItem from "@mui/material/MenuItem";
 import { BiDownArrow, BiHome } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { setLogout } from "../redux/reducers/auth";
 import NavFriendReq from "./NavFriendReq";
-import SocketNotifications from "./SocketNotifications";
 import Notifications from "./Notifications";
-import { io } from "socket.io-client";
-import { useSocket } from "../../App";
 import { FcSearch } from "react-icons/fc";
 import { TiMessages } from "react-icons/ti";
-import LogoutIcon from "@mui/icons-material/Logout";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineLogout } from "react-icons/md";
-import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+
 const NavBar = () => {
   const [showBasic, setShowBasic] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const socket = useSocket(io);
+
   //useNavigate
   const navigate = useNavigate();
 
@@ -61,21 +56,6 @@ const NavBar = () => {
       };
     }
   );
-
-  //get user info, so i could use user info, such as name and pic
-  //! to be used in advance
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/users/info`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(function (response) {
-        // console.log(response.data.info);
-      })
-      .catch(function (error) {
-        throw error;
-      });
-  }, []);
 
   //navigations functions
   const goToMyProfile = () => {
@@ -178,8 +158,8 @@ const NavBar = () => {
                 <span>
                   {" "}
                   <img
-                    src={ userinfo &&
-                      userinfo.avatar
+                    src={
+                      userinfo && userinfo.avatar
                         ? userinfo.avatar
                         : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                     }
@@ -255,25 +235,36 @@ const NavBar = () => {
         <MDBNavbar expand="lg" light bgColor="light">
           <MDBContainer fluid>
             <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
-            <div className="nav2"> 
-            <MDBNavbarItem
-              onClick={() => {
-                login();
-              }}
-            >
-              <MDBNavbarLink style={{ "color": "black"}} active aria-current="page" href="#">
-                Login
-              </MDBNavbarLink>
-            </MDBNavbarItem>
+            <div className="nav2">
+              <MDBNavbarItem
+                onClick={() => {
+                  login();
+                }}
+              >
+                <MDBNavbarLink
+                  style={{ color: "black" }}
+                  active
+                  aria-current="page"
+                  href="#"
+                >
+                  Login
+                </MDBNavbarLink>
+              </MDBNavbarItem>
 
-            <MDBNavbarItem
-              onClick={() => {
-                register();
-              }}
-            >
-              <MDBNavbarLink style={{ "color": "black"}} active aria-current="page" href="#">Register</MDBNavbarLink>
-              <SocketNotifications socket={socket} />
-            </MDBNavbarItem>
+              <MDBNavbarItem
+                onClick={() => {
+                  register();
+                }}
+              >
+                <MDBNavbarLink
+                  style={{ color: "black" }}
+                  active
+                  aria-current="page"
+                  href="#"
+                >
+                  Register
+                </MDBNavbarLink>
+              </MDBNavbarItem>
             </div>
           </MDBContainer>
         </MDBNavbar>

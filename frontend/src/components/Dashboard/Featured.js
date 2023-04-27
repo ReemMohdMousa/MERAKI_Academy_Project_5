@@ -7,9 +7,12 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
  
 const Featured = () => {
+
   const [val, setval] = useState(0);
   const [avg, setAvg] = useState(0);
-  useEffect(() => {
+ 
+
+  const feature=()=>{
     axios
       .get(`http://localhost:5000/count/newpost`)
       .then((result) => {
@@ -26,9 +29,13 @@ const Featured = () => {
       })
       .catch((error) => {
         //  console.log(error);
-      });
+      }); 
+  }
+  useEffect(() => {
+ 
+    feature()
   }, []);
-  if (!val) {
+  if (val===0) {
     return (
       <h1>
         <div className="spinner-grow" role="status">
@@ -56,7 +63,7 @@ const Featured = () => {
         </div>
         
         <p className="f-title">Average posts per day</p>
-        <p className="f-amount">{avg}</p>
+        <p className="f-amount">{avg.toFixed(0)}</p>
       </div>
     </div>
   );

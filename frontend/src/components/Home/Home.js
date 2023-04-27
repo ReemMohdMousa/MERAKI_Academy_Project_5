@@ -107,7 +107,7 @@ const Home = () => {
 
   return (
     <div>
-     <MDBCard className="home-card">
+    {/*  <MDBCard className="home-card">
       <MDBCardImage position='top' alt='...'  src={ userinfo &&
                       userinfo.avatar
                         ? userinfo.avatar
@@ -128,7 +128,7 @@ const Home = () => {
         <MDBCardLink href='#'>Card link</MDBCardLink>
         <MDBCardLink href='#'>Card link</MDBCardLink>
       </MDBCardBody>
-    </MDBCard> 
+    </MDBCard>  */}
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">

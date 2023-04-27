@@ -12,7 +12,7 @@ import {
 } from "recharts";
 const Chart = ({ aspect, title }) => {
   const [data, setdata] = useState([]);
-
+ 
   const get = async () => {
     try {
       const result = await axios.get(`http://localhost:5000/count/num`);
@@ -23,18 +23,18 @@ const Chart = ({ aspect, title }) => {
       console.log(error);
     }
   };
+
+  
   useEffect(() => {
     get();
   }, []);
-  if (!data && Array.isArray(data)) {
-    return (
-      <div className="spinner-grow" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
-    );
-  }
+ 
+
+  
 
   return (
+    <> 
+    {data && data.length!==0 ?  
     <div className="chart">
       <div className="c-title">{title}</div>
       <ResponsiveContainer width="90%" aspect={aspect}>
@@ -64,6 +64,10 @@ const Chart = ({ aspect, title }) => {
         </AreaChart>
       </ResponsiveContainer>
     </div>
+  : <div className="spinner-grow" role="status">
+  <span className="visually-hidden">Loading...</span>
+</div>}
+  </>
   );
 };
 

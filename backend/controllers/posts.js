@@ -152,7 +152,7 @@ const updatePostById = (req, res) => {
 const deletePostById = (req, res) => {
   const post_id = req.params.id;
   const user_id = req.token.userId;
-
+console.log(">>>>>>",user_id)
   const query = `UPDATE posts SET is_deleted=1 WHERE post_id=$1 AND user_id=$2;`;
   const data = [post_id, user_id];
   pool

@@ -46,9 +46,9 @@ const Sidebar = () => {
             }}
             style={{marginTop:"1.8rem",marginRight:".5rem" }}
           >
-            {userinfo.firstname}
+            {userinfo && userinfo.firstname}
             {"  "}
-            {userinfo.lastname}
+            {userinfo && userinfo.lastname}
           </span>
         </div>
       </div>
