@@ -47,7 +47,7 @@ const Home = () => {
       };
     }
   );
-
+  console.log("home>>>>",userinfo)
   // get all the user's and his friends posts orderd DESC
   const getAllHomePosts = () => {
     axios
@@ -119,16 +119,18 @@ const Home = () => {
 
   return (
     <div>
-    {/*  <MDBCard className="home-card">
+      <MDBCard className="home-card">
       <MDBCardImage position='top' alt='...'  src={ userinfo &&
                       userinfo.avatar
                         ? userinfo.avatar
                         : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                    } />
+                     }  style={{ width: "150px", zIndex: "1" }}/>
       <MDBCardBody>
-        <MDBCardTitle>Card title</MDBCardTitle>
+        <MDBCardTitle> {userinfo && userinfo.firstname}
+                      {"  "}
+                      {userinfo && userinfo.lastname}</MDBCardTitle>
         <MDBCardText>
-          Some quick example text to build on the card title and make up the bulk of the card's content.
+        {userinfo && userinfo.bio}
         </MDBCardText>
       </MDBCardBody>
       <MDBListGroup flush>
@@ -140,7 +142,7 @@ const Home = () => {
         <MDBCardLink href='#'>Card link</MDBCardLink>
         <MDBCardLink href='#'>Card link</MDBCardLink>
       </MDBCardBody>
-    </MDBCard>  */}
+    </MDBCard>  * 
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
