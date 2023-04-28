@@ -19,6 +19,8 @@ import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
 import moment from "moment";
 import { setPosts, addpost, AddToHomePosts } from "../redux/reducers/posts";
+
+
 const AddPost = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);

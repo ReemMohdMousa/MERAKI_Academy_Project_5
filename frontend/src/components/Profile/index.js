@@ -12,7 +12,6 @@ import {
   MDBBtn,
   MDBTypography,
 } from "mdb-react-ui-kit";
-import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,12 +21,17 @@ import { useParams } from "react-router-dom";
 import FriendRequests from "./FriendRequests";
 import AllFriends from "./AllFriends";
 import SendMessage from "./SendMessage";
+import EditProfileInfoBtn from "./EditProfileInfoBtn";
 
 const Profile = () => {
   const params = useParams();
   const id = params.id;
+
+  //componant states
   const [user, setUser] = useState({});
+  //dispatch
   const dispatch = useDispatch();
+
   const getuserdata = () => {
     axios
       .get(`http://localhost:5000/users/others/info/${id}`)
@@ -45,7 +49,6 @@ const Profile = () => {
   };
 
   //redux states
-
   const { posts, userinfo, token, userId, friends, sharedPosts } = useSelector(
     (state) => {
       return {
@@ -58,23 +61,8 @@ const Profile = () => {
       };
     }
   );
-  // const getAllFriends = () => {
-  //   axios
-  //     .get(`http://localhost:5000/friends/get/all/${id}`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     })
-  //     .then(function (response) {
-  //       dispatch(getAlluserFriends(response.data.result));
 
-  //       //check if this profile is a friend of the loggedin user
-  //       dispatch(isTheUserIsFriend(userId));
-  //     })
-  //     .catch(function (error) {
-  //       // console.log(error);
-  //     });
-  // };
   const getAllPostsByUserId = () => {
-    console.log(id, token);
     axios
       .get(`http://localhost:5000/posts/search_1/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -92,7 +80,7 @@ const Profile = () => {
   useEffect(() => {
     getAllPostsByUserId();
     getuserdata();
-  }, []);
+  }, [id]);
 
   return (
     <div>
@@ -111,9 +99,9 @@ const Profile = () => {
                   >
                     <MDBCardImage
                       src={
-                        userinfo && userinfo.avatar?userinfo.avatar
-                         
-                         :"https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                        userinfo && userinfo.avatar
+                          ? userinfo.avatar
+                          : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                       }
                       alt="image"
                       className="mt-4 mb-2 img-thumbnail"
@@ -129,24 +117,7 @@ const Profile = () => {
                       Edit profile Info
                     </MDBBtn> */}
                     {userId == id ? (
-                      <Dropdown>
-                        <Dropdown.Toggle
-                          variant="light"
-                          id="dropdown-basic"
-                          style={{
-                            backgroundColor: "inherit",
-                            border: "2px solid black",
-                          }}
-                        >
-                          Edit Profile Info
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                          <Dropdown.Item>Upload profile picture</Dropdown.Item>
-                          <Dropdown.Item>Upload cover picture</Dropdown.Item>
-                          <Dropdown.Item>Edit about</Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                      <EditProfileInfoBtn/>
                     ) : (
                       ""
                     )}

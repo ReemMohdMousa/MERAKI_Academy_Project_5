@@ -117,6 +117,7 @@ const Likes = ({ post_id, post }) => {
         </svg>{" "}
         like
       </div>
+
       <Modal
         show={show}
         onHide={handleClose}
