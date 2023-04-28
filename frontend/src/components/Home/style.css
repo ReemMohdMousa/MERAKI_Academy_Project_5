@@ -19,3 +19,11 @@
   .containers {
     padding: 20px;
   }
+
+
+  @media (width: 500px) {
+    .home-card{
+      display: none;
+    }
+     
+  }

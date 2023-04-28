@@ -25,20 +25,3 @@ export default Footer;
 
 
 
-/* <MDBContainer className='p-4'>
-        <section className=''>
-          <MDBRow className='d-flex justify-content-center'>
-            <MDBCol lg='4'>
-              <div className='ratio ratio-16x9'>
-                <iframe
-                  className='shadow-1-strong rounded'
-                  src='./Mock.mp4'
-                  allowFullScreen
-                  data-gtm-yt-inspected-2340190_699='true'
-                  id='388567449'
-                ></iframe>
-              </div>
-            </MDBCol>
-          </MDBRow>
-        </section>
-      </MDBContainer> */

@@ -132,7 +132,7 @@ const Home = () => {
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center  h-100">
             <MDBCol md="2">
-              <MDBCard className="home-card ">
+              <MDBCard className="home-card hide">
                 <MDBCardImage
                   position="top"
                   src={
@@ -175,7 +175,7 @@ const Home = () => {
                     onClick={() => {
                       dispatch(setLogout());
                     }}
-                    href="/login"
+                    href="/"
                   >
                     Switch account
                   </MDBCardLink>

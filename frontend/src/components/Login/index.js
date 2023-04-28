@@ -135,6 +135,7 @@ const Login = () => {
                 className="shadow-1-strong rounded hide"
                 src="./nigh.mp4"
                 allowFullScreen
+                alt="welcome"
                 data-gtm-yt-inspected-2340190_699="true"
                 id="388567449"
                 style={{ marginLeft:"3rem",marginTop: "3rem" ,width:"40rem"}}

@@ -64,7 +64,7 @@ const NavBar = () => {
   };
 
   const login = () => {
-    navigate(`/login`);
+    navigate(`/`);
     setShowBasic(false);
   };
 
@@ -226,7 +226,7 @@ const NavBar = () => {
                 onClick={() => {
                   dispatch(setLogout());
                   setAnchorEl(null);
-                  navigate("/login");
+                  navigate("/");
                 }}
               >
                 <MdOutlineLogout />
