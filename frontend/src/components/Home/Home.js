@@ -151,15 +151,13 @@ const Home = () => {
                   </MDBCardTitle>
                   <MDBCardText>{userinfo && userinfo.bio}</MDBCardText>
                 </MDBCardBody>
-                {/* <MDBListGroup flush>
+               {/*  <MDBListGroup flush>
                   <MDBListGroupItem
                     style={{
                       cursor: "pointer",
                     }}
                   >
-                    <AllFriends
-                      id={userId}
-                    />
+                    <AllFriends id={userId} />
                   </MDBListGroupItem>
                 </MDBListGroup> */}
                 <MDBListGroup flush style={{ marginTop: "10px" }}>

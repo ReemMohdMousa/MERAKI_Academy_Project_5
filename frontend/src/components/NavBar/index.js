@@ -95,7 +95,11 @@ const NavBar = () => {
       ) : isLoggedIn ? (
         <MDBNavbar expand="lg" light bgColor="light">
           <MDBContainer fluid>
-            <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
+            <MDBNavbarBrand href="/home"><img
+                src="./logo.png"
+                style={{ height: "50px", width: "50px", paddingLeft: "1px" }}
+                alt="This will display logo"
+              /></MDBNavbarBrand>
 
             <form className="d-flex input-group w-auto">
               <input
