@@ -43,8 +43,8 @@ const NavBar = () => {
     setAnchorEl(null);
   };
   //redux login states
-  const { token, userId, isLoggedIn, roleId, newMsg, userinfo } = useSelector(
-    (state) => {
+  const { token, userId, isLoggedIn, roleId, newMsg, userinfo, newReq } =
+    useSelector((state) => {
       //return object contains the redux states
       return {
         token: state.auth.token,
@@ -53,9 +53,9 @@ const NavBar = () => {
         roleId: state.auth.roleId,
         newMsg: state.messenger.newMsg,
         userinfo: state.auth.userinfo,
+        newReq: state.friends.newReq,
       };
-    }
-  );
+    });
 
   //navigations functions
   const goToMyProfile = () => {

@@ -72,3 +72,13 @@ a.nav-link {
     width: 13px;
   }
 }
+
+.new-req-badge {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: red;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}

@@ -121,19 +121,15 @@ const Profile = () => {
                   className="rounded-top text-white d-flex flex-row"
                   style={{
                     height: "200px",
+                    backgroundColor: "#000",
+                    // border: "20px solid red",
+                    backgroundImage: `url(${userData && userData.coverimg})`,
+                    backgroundSize: "cover",
                   }}
                 >
-                  {/* <img className="cover-img"
-                    src={
-                      userData && userData.avatar
-                        ? userData.avatar
-                        : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                    }
-                    alt="cover-img"
-                  /> */}
                   <div
                     className="ms-4 mt-5 d-flex flex-column"
-                    style={{ width: "150px" }}
+                    style={{ width: "160px", height: "230px" }}
                   >
                     <MDBCardImage
                       src={
@@ -144,7 +140,7 @@ const Profile = () => {
                       alt="image"
                       className="mt-4 mb-2 img-thumbnail"
                       fluid
-                      style={{ width: "150px", zIndex: "1" }}
+                      style={{ width: "150px", zIndex: "1", height: "200px" }}
                     ></MDBCardImage>
 
                     {/* <MDBBtn
@@ -156,7 +152,10 @@ const Profile = () => {
                     </MDBBtn> */}
                     {userId == id ? <EditProfileInfoBtn /> : ""}
                   </div>
-                  <div className="ms-3" style={{ marginTop: "130px" }}>
+                  <div
+                    className="ms-3"
+                    style={{ marginTop: "210px", color: "black", zIndex: "1" }}
+                  >
                     <MDBTypography tag="h5">
                       {userData && userData.firstname}
                       {"  "}

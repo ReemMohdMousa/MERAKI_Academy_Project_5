@@ -20,6 +20,8 @@ const Messages = ({ mine, message }) => {
     };
   });
 
+  console.log(friendInfo);
+
   return (
     <div>
       <div className={mine ? "my message" : "message"}>

@@ -30,10 +30,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import HomePosts from "./HomePosts";
 import { io } from "socket.io-client";
 import { useSocket } from "../../App";
+import OnlineUsers from "./OnlineUsers/OnlineUsers";
 
 const Home = () => {
   const dispatch = useDispatch();
   const socket = useSocket(io);
+
+  //componant states
+  const [onlineUsersArr, setOnlineUsersArr] = useState([]);
+
   //redux states
   const {
     posts,
@@ -104,6 +109,7 @@ const Home = () => {
   useEffect(() => {
     socket?.on("SEND_USER", (OnlineUsers) => {
       console.log(OnlineUsers);
+      setOnlineUsersArr(OnlineUsers)
     });
   }, [userId]);
 
@@ -153,6 +159,7 @@ const Home = () => {
         <MDBCardLink href='#'>Card link</MDBCardLink>
       </MDBCardBody>
     </MDBCard>  */}
+        <OnlineUsers onlineUsersArr={onlineUsersArr}/>
 
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
