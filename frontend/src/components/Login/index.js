@@ -21,6 +21,7 @@ import {
   MDBCard,
   MDBCardBody,
   MDBInput,
+  MDBCardImage,
 } from "mdb-react-ui-kit";
 
 const Login = () => {
@@ -52,7 +53,6 @@ const Login = () => {
         password,
       })
       .then((result) => {
-         
         localStorage.setItem("token", result.data.token);
         localStorage.setItem("userId", result.data.userId);
         localStorage.setItem("isLoggedIn", true);
@@ -67,8 +67,6 @@ const Login = () => {
         setMessage(error.response.data.message);
       });
   };
-
-  
 
   const loginGoogle = (result) => {
     const { credential, clientId } = result;
@@ -114,7 +112,6 @@ const Login = () => {
       });
   };
 
-
   useEffect(() => {
     if (isLoggedIn && roleId == 1) {
       navigate("/dashboard");
@@ -126,87 +123,116 @@ const Login = () => {
     }
   });
   return (
-    <div className="cont">
-      <MDBContainer fluid>
-        <MDBRow className="d-flex justify-content-center align-items-center h-100">
-          <MDBCol col="12">
-            <MDBCard
-              className="bg-dark text-white my-5 mx-auto"
-              style={{ borderRadius: "1rem", maxWidth: "400px" }}
-            >
-              <MDBCardBody className="p-5 d-flex flex-column align-items-center mx-auto w-100">
-                <h2 className="fw-bold mb-2">Sign to your account</h2>
-                <br />
-                <br />
+    <MDBContainer className="py-5 h-100 center">
+      <MDBCard
+        className=" rounded-2"
+        style={{ marginLeft: "0px", marginRight: "0px" }}
+      >
+        <MDBRow className="g-0">
+          <MDBCol md="7">
+            <div className="ratio ratio-16x9 hide">
+              <iframe
+                className="shadow-1-strong rounded hide"
+                src="./nigh.mp4"
+                allowFullScreen
+                data-gtm-yt-inspected-2340190_699="true"
+                id="388567449"
+                style={{ marginLeft:"3rem",marginTop: "3rem" ,width:"40rem"}}
+              ></iframe>
+            </div>
+          </MDBCol>
 
-                <MDBInput
-                  wrapperClass="mb-4 mx-5 w-100"
-                  labelClass="text-white"
-                  label="Email address"
-                  id="formControlLg"
-                  type="email"
-                  size="lg"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <MDBInput
-                  wrapperClass="mb-4 mx-5 w-100"
-                  labelClass="text-white"
-                  label="Password"
-                  id="formControlLg1"
-                  type="password"
-                  size="lg"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+          <MDBCol md="4">
+            <MDBCardBody className="d-flex flex-column">
+              <div className="d-flex flex-row mt-2">
+                <span className="h1 fw-bold mb-0">
+                  <img
+                    className="main-logo1"
+                    src="./main.png"
+                    style={{
+                      height: "120px",
+                      width: "100px",
+                    }}
+                  />
+                </span>
+              </div>
 
-                <MDBBtn
-                  outline
-                  className="mx-2 px-5"
-                  color="white"
-                  size="lg"
-                  onClick={(e) => {
-                    login(e);
-                  }}
-                >
-                  Login
-                </MDBBtn>
+              <h5
+                className=" my-3 pb-2"
+                style={{ letterSpacing: "1px", fontWeight: "700" }}
+              >
+                Sign to your account
+              </h5>
 
-                <br />
-                <br />
+              <MDBInput
+                wrapperClass="mb-2"
+                label="Email address"
+                id="formControlLg"
+                style={{ width: "400px" }}
+                size="lg"
+                className="email"
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <MDBInput
+                wrapperClass="mb-4"
+                label="Password"
+                id="formControlLg1"
+                className="password"
+                type="password"
+                placeholder="Password"
+                size="lg"
+                onChange={(e) => setPassword(e.target.value)}
+              />
 
-                <div>
-                  <p className="mb-0">
-                    Don't have an account?{" "}
-                    <a href="#!" className="text-white-50 fw-bold">
-                      Sign Up
-                    </a>
-                  </p>
-                </div>
-                <Modal show={show} onHide={handleClose}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Message</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>{message}</Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                      Close
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
-                <GoogleLogin
-                  width={"90000px"}
-                  theme={"filled_black"}
-                  size={"large"}
-                  onSuccess={loginGoogle}
-                  onError={() => {
-                    console.log("Login Failed");
-                  }}
-                />
-              </MDBCardBody>
-            </MDBCard>
+              <MDBBtn
+                outline
+                className="mx-2 px-5"
+                color="white"
+                size="lg"
+                onClick={(e) => {
+                  login(e);
+                }}
+              >
+                Login
+              </MDBBtn>
+
+              <br />
+              <br />
+
+              <div>
+                <p className="mb-0">
+                  Don't have an account?{" "}
+                  <a href="/register" className="fw-bold">
+                    Sign Up
+                  </a>
+                </p>
+              </div>
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Message</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{message}</Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleClose}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+              <GoogleLogin
+                width={"90000px"}
+                theme={"filled_black"}
+                size={"large"}
+                onSuccess={loginGoogle}
+                onError={() => {
+                  console.log("Login Failed");
+                }}
+              />
+            </MDBCardBody>
           </MDBCol>
         </MDBRow>
-      </MDBContainer>
-    </div>
+      </MDBCard>
+    </MDBContainer>
   );
 };
 
