@@ -138,7 +138,11 @@ const Login = () => {
                 alt="welcome"
                 data-gtm-yt-inspected-2340190_699="true"
                 id="388567449"
-                style={{ marginLeft:"3rem",marginTop: "3rem" ,width:"40rem"}}
+                style={{
+                  marginLeft: "3rem",
+                  marginTop: "5rem",
+                  width: "40rem",
+                }}
               ></iframe>
             </div>
           </MDBCol>
@@ -151,8 +155,10 @@ const Login = () => {
                     className="main-logo1"
                     src="./main.png"
                     style={{
-                      height: "120px",
-                      width: "100px",
+                      height: "100px",
+                      width: "200px",
+                      marginLeft: "5rem",
+                      marginTop: "0px",
                     }}
                   />
                 </span>
@@ -166,10 +172,9 @@ const Login = () => {
               </h5>
 
               <MDBInput
-                wrapperClass="mb-2"
+                wrapperClass="mb-4"
                 label="Email address"
                 id="formControlLg"
-                style={{ width: "400px" }}
                 size="lg"
                 className="email"
                 type="email"
@@ -188,8 +193,7 @@ const Login = () => {
 
               <MDBBtn
                 outline
-                className="mx-2 px-5"
-                color="white"
+                className="mx-0 px-4"
                 size="lg"
                 onClick={(e) => {
                   login(e);
@@ -222,7 +226,7 @@ const Login = () => {
               </Modal>
               <GoogleLogin
                 width={"90000px"}
-                theme={"filled_black"}
+                theme={"outline"}
                 size={"large"}
                 onSuccess={loginGoogle}
                 onError={() => {

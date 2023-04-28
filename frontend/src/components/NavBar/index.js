@@ -93,11 +93,11 @@ const NavBar = () => {
       {roleId == 1 ? (
         ""
       ) : isLoggedIn ? (
-        <MDBNavbar expand="lg" light bgColor="light">
+        <MDBNavbar expand="lg">
           <MDBContainer fluid>
             <MDBNavbarBrand href="/home" style={{ padding: "0px",margin:"0px" }}><img
                 src="./logo.png"
-                style={{ height: "40px", width: "40px", padding: "0px",margin:"0px" }}
+                style={{ height: "50px", width: "100px", padding: "0px",margin:"0px" }}
                 alt="This will display logo"
               /></MDBNavbarBrand>
 
@@ -240,7 +240,7 @@ const NavBar = () => {
           <MDBContainer fluid>
           <MDBNavbarBrand href="/" style={{ padding: "0px",margin:"0px" }}><img
                 src="./logo.png"
-                style={{ height: "40px", width: "40px", padding: "0px",margin:"0px" }}
+                style={{ height: "50px", width: "100px", padding: "0px",margin:"0px" }}
                 alt="This will display logo"
               /></MDBNavbarBrand>
             <div className="nav2">

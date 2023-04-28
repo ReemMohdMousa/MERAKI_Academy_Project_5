@@ -163,11 +163,22 @@ const Register = () => {
         style={{ marginLeft: "0px", marginRight: "0px" }}
       >
         <MDBRow className="g-0">
-          <MDBCol md="6">
-            <MDBCardImage src="./reg.jpg" className="hide" style={{ height: "40rem", width:"40rem", marginTop:"5rem"}} />
+          <MDBCol md="7">
+            <MDBCardImage
+              src="./reg.jpg"
+              className="hide"
+              style={{
+                height: "25rem",
+                width: "35rem",
+                marginTop: "15rem",
+                marginLeft: "6rem",
+                marginRight: "2rem",
+                borderRadius: "2rem",
+              }}
+            />
           </MDBCol>
 
-          <MDBCol md="6">
+          <MDBCol md="4">
             <MDBCardBody className="d-flex flex-column">
               <div className="d-flex flex-row mt-2">
                 <span className="h1 fw-bold mb-2">
@@ -175,9 +186,9 @@ const Register = () => {
                     className="main-logo"
                     src="./main.png"
                     style={{
-                      height: "120px",
-                      width: "100px",
-                      marginLeft: "15rem",
+                      height: "130px",
+                      width: "200px",
+                      marginLeft: "-13rem",
                     }}
                   />
                 </span>
@@ -190,7 +201,7 @@ const Register = () => {
                 Join Us
               </h5>
               <MDBInput
-                wrapperClass="mb-4"
+                wrapperClass=" mb-4"
                 label="First Name"
                 size="lg"
                 id="form1"
@@ -200,7 +211,7 @@ const Register = () => {
                 }}
               />
               <MDBInput
-                wrapperClass="mb-4"
+                wrapperClass=" mb-4"
                 label="Last Name"
                 size="lg"
                 id="form12"
@@ -227,7 +238,7 @@ const Register = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <MDBInput
-                wrapperClass="mb-4"
+                wrapperClass=" mb-4"
                 label="Password"
                 size="lg"
                 id="form3"
@@ -252,24 +263,26 @@ const Register = () => {
                 />
               </div>
               <div className="btn-div">
-              <MDBBtn
-                className="mb-3 px-5"
-                color="dark"
-                size="lg"
-                style={{ width: "400px"}}
-                onClick={createAccount}
-              >
-                Join
-              </MDBBtn>
-              <GoogleLogin
-                width={"400px"}
-                theme={"filled_black"}
-                size={"large"}
-                onSuccess={loginGoogle}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
-              />
+                <MDBBtn
+                  outline
+                  className=" mb-3 px-5"
+                  size="lg"
+                  style={{ width: "400px" }}
+                  onClick={createAccount}
+                >
+                  Join
+                </MDBBtn>
+                <GoogleLogin
+                  className="w-75 mb-3 px-5"
+                  width={"90000px"}
+                  theme={"outline"}
+                  style={{}}
+                  size={"large"}
+                  onSuccess={loginGoogle}
+                  onError={() => {
+                    console.log("Login Failed");
+                  }}
+                />
               </div>
               <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -282,7 +295,6 @@ const Register = () => {
                   </Button>
                 </Modal.Footer>
               </Modal>
-            
             </MDBCardBody>
           </MDBCol>
         </MDBRow>

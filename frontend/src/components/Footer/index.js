@@ -12,7 +12,7 @@ const Footer = () => {
     <MDBFooter
       bgColor="white"
       className="text-center text-lg-left"
-      style={{ borderTop: "2px black solid" }}
+       
     >
       <div className="text-center p-4">
         Copyright &copy; {new Date().getFullYear()}{" "}
