@@ -67,7 +67,14 @@ const AllFriends = ({ id }) => {
 
   return (
     <div>
-      <Button className="hover-style" variant="light" style={{padding:"0px",}} onClick={handleShow}>
+      <Button
+        className="hover-style"
+        variant="light"
+        style={{
+          padding: "0px",
+        }}
+        onClick={handleShow}
+      >
         Friends
       </Button>
 

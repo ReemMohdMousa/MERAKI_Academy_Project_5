@@ -31,8 +31,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import HomePosts from "./HomePosts";
 import { io } from "socket.io-client";
 import { useSocket } from "../../App";
+import { setLogout } from "../redux/reducers/auth";
+import AllFriends from "../Profile/AllFriends";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const socket = useSocket(io);
   //redux states
@@ -127,7 +131,7 @@ const Home = () => {
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center  h-100">
-            <MDBCol md='2'>
+            <MDBCol md="2">
               <MDBCard className="home-card ">
                 <MDBCardImage
                   position="top"
@@ -136,7 +140,7 @@ const Home = () => {
                       ? userinfo.avatar
                       : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                   }
-                  style={{ width: "150px", zIndex: "1",marginLeft:"10px" }}
+                  style={{ width: "150px", zIndex: "1", marginLeft: "10px" }}
                 />
                 <MDBCardBody>
                   <MDBCardTitle>
@@ -147,14 +151,36 @@ const Home = () => {
                   </MDBCardTitle>
                   <MDBCardText>{userinfo && userinfo.bio}</MDBCardText>
                 </MDBCardBody>
-                <MDBListGroup flush>
-                  <MDBListGroupItem>Friends</MDBListGroupItem>
-                  </MDBListGroup>
-                <MDBListGroup flush style={{marginTop:"10px"}}>
-                  <MDBListGroupItem>View Profile</MDBListGroupItem>
+                {/* <MDBListGroup flush>
+                  <MDBListGroupItem
+                    style={{
+                      cursor: "pointer",
+                    }}
+                  >
+                    <AllFriends
+                      id={userId}
+                    />
+                  </MDBListGroupItem>
+                </MDBListGroup> */}
+                <MDBListGroup flush style={{ marginTop: "10px" }}>
+                  <MDBListGroupItem
+                    onClick={() => {
+                      navigate(`/profile/${userId}`);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    View profile
+                  </MDBListGroupItem>
                 </MDBListGroup>
                 <MDBCardBody>
-                  <MDBCardLink href="/login">Switch account</MDBCardLink>
+                  <MDBCardLink
+                    onClick={() => {
+                      dispatch(setLogout());
+                    }}
+                    href="/login"
+                  >
+                    Switch account
+                  </MDBCardLink>
                 </MDBCardBody>
               </MDBCard>
             </MDBCol>
