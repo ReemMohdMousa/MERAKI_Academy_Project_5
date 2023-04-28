@@ -95,9 +95,9 @@ const NavBar = () => {
       ) : isLoggedIn ? (
         <MDBNavbar expand="lg" light bgColor="light">
           <MDBContainer fluid>
-            <MDBNavbarBrand href="/home"><img
+            <MDBNavbarBrand href="/home" style={{ padding: "0px",margin:"0px" }}><img
                 src="./logo.png"
-                style={{ height: "50px", width: "50px", paddingLeft: "1px" }}
+                style={{ height: "40px", width: "40px", padding: "0px",margin:"0px" }}
                 alt="This will display logo"
               /></MDBNavbarBrand>
 
@@ -238,7 +238,11 @@ const NavBar = () => {
       ) : (
         <MDBNavbar expand="lg" light bgColor="light">
           <MDBContainer fluid>
-            <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
+          <MDBNavbarBrand href="/" style={{ padding: "0px",margin:"0px" }}><img
+                src="./logo.png"
+                style={{ height: "40px", width: "40px", padding: "0px",margin:"0px" }}
+                alt="This will display logo"
+              /></MDBNavbarBrand>
             <div className="nav2">
               <MDBNavbarItem
                 onClick={() => {

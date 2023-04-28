@@ -16,7 +16,7 @@ const Footer = () => {
     >
       <div className="text-center p-4">
         Copyright &copy; {new Date().getFullYear()}{" "}
-        <span style={{ fontFamily: "Niconne", fontWeight: "50" }}>brand.</span>
+        <span style={{ fontFamily: "Niconne", fontWeight: "50" }}><img src="./logoF.png"  style={{ height: "25px", width: "40px", padding: "0px",margin:"0px" }}/>.</span>
       </div>
     </MDBFooter>
   );

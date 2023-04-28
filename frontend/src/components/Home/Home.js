@@ -140,7 +140,7 @@ const Home = () => {
                       ? userinfo.avatar
                       : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                   }
-                  style={{ width: "150px", zIndex: "1", marginLeft: "10px" }}
+                  style={{ width: "150px", zIndex: "1", marginLeft: "15px" }}
                 />
                 <MDBCardBody>
                   <MDBCardTitle>
