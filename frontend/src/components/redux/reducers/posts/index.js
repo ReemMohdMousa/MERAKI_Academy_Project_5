@@ -12,6 +12,7 @@ export const posts = createSlice({
     notifications: [],
     sharedPosts: [],
     isPostFromHomeDeleted: false,
+    areUserInfoChanged: false,
   },
   reducers: {
     setPosts: (state, action) => {
@@ -138,6 +139,10 @@ export const posts = createSlice({
     sharepost: (state, action) => {
       state.sharedPosts.push(action.payload);
     },
+
+    setAreUserInfoChanged: (state, action) => {
+      state.areUserInfoChanged = !state.areUserInfoChanged;
+    },
   },
 });
 export const {
@@ -159,7 +164,8 @@ export const {
   setSharedPosts,
   sharepost,
   AddToHomePosts,
-  setIsPostFromHomeDeleted
+  setIsPostFromHomeDeleted,
+  setAreUserInfoChanged
 } = posts.actions;
 
 export default posts.reducer;

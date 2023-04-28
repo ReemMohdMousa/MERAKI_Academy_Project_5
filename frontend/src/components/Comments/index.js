@@ -27,6 +27,7 @@ import posts, {
   addNested,
 } from "../redux/reducers/posts/index";
 import UpdateComment from "./UpdateComment";
+
 const Comments = ({ id, firstname, lastname, socket }) => {
   const dispatch = useDispatch();
   const [image, setImage] = useState("");
@@ -321,7 +322,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                   className="rounded-circle shadow-1-strong me-3"
                                   src={
                                     element.avatar
-                                      ? userinfo.avatar
+                                      ? element.avatar
                                       : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                                   }
                                   alt="avatar"

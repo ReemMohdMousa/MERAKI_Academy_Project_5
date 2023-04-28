@@ -5,18 +5,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
 import { MDBFile } from "mdb-react-ui-kit";
 import Modal from "react-bootstrap/Modal";
+import { setAreUserInfoChanged } from "../redux/reducers/posts/index";
 
 const EditProfileInfoBtn = () => {
   //componant states
   const [userAvatar, setUserAvatar] = useState("");
   const [selectedimage, setSelectedImage] = useState("");
+  const [userBio, setUserBio] = useState("");
 
+  //modal states
   const [show, setShow] = useState(false);
+  const [showBio, setShowBio] = useState(false);
+
   const [disabled, setDisabled] = useState(false);
 
-  //modal functions
+  //profile pic modal functions
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  //bio modal functions
+  const handleShowBio = () => setShowBio(true);
+  const handleCloseBio = () => setShowBio(false);
 
   //redux states
   const { posts, userinfo, token, userId, friends, sharedPosts } = useSelector(
@@ -32,15 +41,58 @@ const EditProfileInfoBtn = () => {
     }
   );
 
+  //dispatch
+  const dispatch = useDispatch();
+
   //upload pic
   const UploadProfilePic = () => {
-    axios
-      .get(`http://localhost:5000/users/update/user/info`, {
-        headers: { Authorization: `Bearer ${token}` },
+    const data = new FormData();
+    data.append("file", userAvatar);
+    data.append("upload_preset", "kowezfsv");
+    data.append("cloud_name", "deqwvkyth");
+    fetch("https://api.cloudinary.com/v1_1/deqwvkyth/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        //setpost()
+        console.log("dataurl", data.url);
+        axios
+          .put(
+            `http://localhost:5000/users/update/user/info`,
+            { avatar: data.url },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          )
+          .then((response) => {
+            // console.log(response.data);
+            dispatch(setAreUserInfoChanged());
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
-      .then((Response) => {})
+      .catch((err) => console.log(err));
+  };
+
+  //edit bio
+  const editBio = () => {
+    axios
+      .put(
+        `http://localhost:5000/users/update/user/info`,
+        { bio: userBio },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((response) => {
+        // console.log(response.data);
+        dispatch(setAreUserInfoChanged());
+      })
       .catch((err) => {
-        // console.log(err);
+        console.log(err);
       });
   };
 
@@ -63,7 +115,8 @@ const EditProfileInfoBtn = () => {
             Upload profile picture
           </Dropdown.Item>
           <Dropdown.Item>Upload cover picture</Dropdown.Item>
-          <Dropdown.Item>Edit about</Dropdown.Item>
+
+          <Dropdown.Item onClick={handleShowBio}>Edit about</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
 
@@ -81,6 +134,7 @@ const EditProfileInfoBtn = () => {
                 setSelectedImage(URL.createObjectURL(e.target.files[0]));
               }}
             />
+            <br />
             <div className="imgarea">
               <svg
                 className="icon bi bi-cloud-arrow-up-fill"
@@ -102,12 +156,38 @@ const EditProfileInfoBtn = () => {
           <Button
             variant="primary"
             onClick={(e) => {
-              //   uploadImage();
-
+              UploadProfilePic();
               handleClose();
             }}
           >
             SelectImage
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showBio} onHide={handleCloseBio}>
+        <Modal.Header>About</Modal.Header>
+        <Modal.Body>
+          <input
+            placeholder="edit bio ..."
+            style={{ height: "7rem", width: "29rem", fontSize: "medium" }}
+            onChange={(e) => {
+              setUserBio(e.target.value);
+            }}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseBio}>
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={(e) => {
+              editBio();
+              handleCloseBio();
+            }}
+          >
+            Save
           </Button>
         </Modal.Footer>
       </Modal>

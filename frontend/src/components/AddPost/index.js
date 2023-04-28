@@ -20,7 +20,6 @@ import { MDBFile } from "mdb-react-ui-kit";
 import moment from "moment";
 import { setPosts, addpost, AddToHomePosts } from "../redux/reducers/posts";
 
-
 const AddPost = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -63,6 +62,7 @@ const AddPost = () => {
 
           return { ...image, image: data.url };
         });
+        console.log(post);
       })
       .catch((err) => console.log(err));
   };

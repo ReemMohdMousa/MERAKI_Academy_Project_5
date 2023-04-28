@@ -26,8 +26,8 @@ import {
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoggedIn, token, userinfo, userId, roleId } = useSelector(
-    (state) => {
+  const { isLoggedIn, token, userinfo, userId, roleId } =
+    useSelector((state) => {
       return {
         isLoggedIn: state.auth.isLoggedIn,
         userinfo: state.auth.userinfo,
@@ -35,8 +35,7 @@ const Login = () => {
         userId: state.auth.userId,
         roleId: state.auth.roleId,
       };
-    }
-  );
+    });
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -121,6 +120,7 @@ const Login = () => {
       getAllUserInfo();
     }
   });
+
 
   return (
     <div className="cont">
