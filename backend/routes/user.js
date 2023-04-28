@@ -18,6 +18,6 @@ usersRouter.post("/login", login);
 usersRouter.post("/google", checkGoogleUser);
 
 usersRouter.get("/others/info/:id", otherUsersInfo);
-usersRouter.put("/update/user/info", editUserInfo);
+usersRouter.put("/update/user/info", authentication, editUserInfo);
 
 module.exports = usersRouter;
