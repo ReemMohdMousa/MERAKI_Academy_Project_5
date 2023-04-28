@@ -157,17 +157,14 @@ const Register = () => {
   });
 
   return (
-    <MDBContainer className="py-5 h-100 center">
+    <MDBContainer className="py-5 h-80 center">
       <MDBCard
         className=" rounded-2"
         style={{ marginLeft: "0px", marginRight: "0px" }}
       >
         <MDBRow className="g-0">
           <MDBCol md="6">
-            <MDBCardImage
-              src=""
-              style={{ height: "35rem" }}
-            />
+            <MDBCardImage src="./reg.jpg" className="hide" style={{ height: "40rem", width:"40rem", marginTop:"5rem"}} />
           </MDBCol>
 
           <MDBCol md="6">
@@ -175,12 +172,12 @@ const Register = () => {
               <div className="d-flex flex-row mt-2">
                 <span className="h1 fw-bold mb-2">
                   <img
-                  className="main-logo"
+                    className="main-logo"
                     src="./main.png"
                     style={{
                       height: "120px",
                       width: "100px",
-                      marginLeft:"15rem"
+                      marginLeft: "15rem",
                     }}
                   />
                 </span>
@@ -193,25 +190,21 @@ const Register = () => {
                 Join Us
               </h5>
               <MDBInput
-                wrapperClass="mb-2"
-                placeholder="First Name"
-                type="text"
-                className="firstName"
-                style={{ width: "400px" }}
-                id="formControlLg"
+                wrapperClass="mb-4"
+                label="First Name"
                 size="lg"
+                id="form1"
+                type="text"
                 onChange={(e) => {
                   setFirstName(e.target.value);
                 }}
               />
               <MDBInput
-                wrapperClass="mb-2"
-                id="formControlLg"
+                wrapperClass="mb-4"
+                label="Last Name"
                 size="lg"
-                className="lastName"
+                id="form12"
                 type="text"
-                placeholder="Last Name"
-                style={{ width: "400px" }}
                 onChange={(e) => {
                   setLastName(e.target.value);
                 }}
@@ -226,29 +219,20 @@ const Register = () => {
                 onChange={(e) => setAge(e.target.value)}
               />
               <MDBInput
-                wrapperClass="mb-2"
-                id="formControlLg"
+                wrapperClass="mb-4"
+                label=" Email"
                 size="lg"
-                className="email"
+                id="form2"
                 type="email"
-                placeholder="Email"
-                style={{ width: "400px" }}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
+                onChange={(e) => setEmail(e.target.value)}
               />
-
               <MDBInput
                 wrapperClass="mb-4"
-                id="formControlLg"
+                label="Password"
                 size="lg"
-                className="password"
+                id="form3"
                 type="password"
-                placeholder="Password"
-                style={{ width: "400px" }}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
+                onChange={(e) => setPassword(e.target.value)}
               />
 
               <MDBInput
@@ -260,25 +244,25 @@ const Register = () => {
                 onChange={(e) => setRePassword(e.target.value)}
               />
 
-              <div className="d-flex flex-row justify-content-center mb-4">
+              <div className="d-flex flex-row mb-4">
                 <MDBCheckbox
                   name="flexCheck"
                   id="agree"
                   label="I agree all statements in Terms of service"
                 />
               </div>
+              <div className="btn-div">
               <MDBBtn
                 className="mb-3 px-5"
                 color="dark"
                 size="lg"
-                style={{ width: "400px" }}
+                style={{ width: "400px"}}
                 onClick={createAccount}
               >
                 Join
               </MDBBtn>
-
               <GoogleLogin
-                width={"90000px"}
+                width={"400px"}
                 theme={"filled_black"}
                 size={"large"}
                 onSuccess={loginGoogle}
@@ -286,6 +270,7 @@ const Register = () => {
                   console.log("Login Failed");
                 }}
               />
+              </div>
               <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                   <Modal.Title>Message</Modal.Title>
@@ -297,15 +282,7 @@ const Register = () => {
                   </Button>
                 </Modal.Footer>
               </Modal>
-              <GoogleLogin
-                width={"90000px"}
-                theme={"filled_black"}
-                size={"large"}
-                onSuccess={loginGoogle}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
-              />
+            
             </MDBCardBody>
           </MDBCol>
         </MDBRow>
