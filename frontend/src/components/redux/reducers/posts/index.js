@@ -11,6 +11,7 @@ export const posts = createSlice({
     homePosts: [],
     notifications: [],
     sharedPosts: [],
+    isPostFromHomeDeleted: false,
   },
   reducers: {
     setPosts: (state, action) => {
@@ -20,7 +21,7 @@ export const posts = createSlice({
       //   })
     },
     addpost: (state, action) => {
-      state.posts.push(action.payload);
+      state.posts.unshift(action.payload);
       //   state.articles.map((elem)=>{
       //     console.log("ADDArticles",elem)
       //   })
@@ -90,6 +91,15 @@ export const posts = createSlice({
     setHomePosts: (state, action) => {
       state.homePosts = action.payload;
     },
+
+    AddToHomePosts: (state, action) => {
+      state.homePosts.unshift(action.payload);
+    },
+
+    setIsPostFromHomeDeleted: (state, action) => {
+      state.isPostFromHomeDeleted = action.payload;
+    },
+
     setNestedComments: (state, action) => {
       let found = state.posts.find((elem) => {
         return elem.post_id === action.payload.post_id;
@@ -148,6 +158,8 @@ export const {
   setNotifications,
   setSharedPosts,
   sharepost,
+  AddToHomePosts,
+  setIsPostFromHomeDeleted
 } = posts.actions;
 
 export default posts.reducer;

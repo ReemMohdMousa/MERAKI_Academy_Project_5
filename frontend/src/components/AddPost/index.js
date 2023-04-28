@@ -18,7 +18,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
 import moment from "moment";
-import { setPosts, addpost } from "../redux/reducers/posts";
+import { setPosts, addpost, AddToHomePosts } from "../redux/reducers/posts";
 const AddPost = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -96,7 +96,9 @@ const AddPost = () => {
       .then((Response) => {
         console.log(Response.data.result);
         dispatch(addpost(Response.data.result));
-        
+
+        //add to home posts if the user was at home page
+        dispatch(AddToHomePosts(Response.data.result));
       })
       .catch((err) => {
         console.log(err);
@@ -127,7 +129,7 @@ const AddPost = () => {
                   </span>
                 </Link>
 
-                {moment().endOf(post.created_at).fromNow()  }
+                {moment().endOf(post.created_at).fromNow()}
                 <span className="date"></span>
               </div>
             </div>
@@ -160,16 +162,17 @@ const AddPost = () => {
                         )}
 
                         {post.image && (
-                          <img variant="success" src={post.image} 
-                          alt="img"/>
+                          <img variant="success" src={post.image} alt="img" />
                         )}
                         {disabled && (
                           <div>
                             <p variant="warning">
                               Please wait until file uploaded
                             </p>
-                            <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" alt="img"/>
-                            
+                            <img
+                              src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif"
+                              alt="img"
+                            />
                           </div>
                         )}
                         <hr className="my-4" />

@@ -115,7 +115,7 @@ const Likes = ({ post_id, post }) => {
             id={post_id}
           />
         </svg>{" "}
-        likes
+        like
       </div>
       <Modal
         show={show}

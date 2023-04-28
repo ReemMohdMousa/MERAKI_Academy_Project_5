@@ -18,7 +18,7 @@ import {
   setIsFriend,
   getAlluserFriends,
 } from "../redux/reducers/friends/index";
-import { SlPeople } from "react-icons/sl";
+
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -184,7 +184,7 @@ export default function BasicMenu() {
         >
           <Tab eventKey="Add Requests" title="Add Requests">
             <div className="friend-list-body">
-              {ReceivedReq &&
+              {ReceivedReq ?
                 ReceivedReq.map((element) => {
                   return (
                     <div key={element.request_id}>
@@ -226,12 +226,12 @@ export default function BasicMenu() {
                       </div>
                     </div>
                   );
-                })}
+                }): "No requests"}
             </div>
           </Tab>
           <Tab eventKey="Sent Requests" title="Sent Requests">
             <div className="friend-list-body">
-              {sentReq &&
+              {sentReq ?
                 sentReq.map((element) => {
                   return (
                     <div key={element.request_id}>
@@ -263,7 +263,7 @@ export default function BasicMenu() {
                       </div>
                     </div>
                   );
-                })}
+                }): "you haven't sent any requests"}
             </div>
           </Tab>
         </Tabs>

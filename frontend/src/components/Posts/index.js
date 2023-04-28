@@ -102,7 +102,7 @@ const Posts = ({ post, firstname, lastname }) => {
                 <Dropdown.Item
                   onClick={() => {
                     deletePost(post.post_id);
-                  }}
+                  }} 
                 >
                   Delete Post
                 </Dropdown.Item>

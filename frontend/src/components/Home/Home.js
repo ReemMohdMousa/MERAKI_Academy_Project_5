@@ -35,18 +35,25 @@ const Home = () => {
   const dispatch = useDispatch();
   const socket = useSocket(io);
   //redux states
-  const { posts, userinfo, token, userId, friends, homePosts } = useSelector(
-    (state) => {
-      return {
-        posts: state.posts.posts,
-        userinfo: state.auth.userinfo,
-        token: state.auth.token,
-        userId: state.auth.userId,
-        friends: state.friends.friends,
-        homePosts: state.posts.homePosts,
-      };
-    }
-  );
+  const {
+    posts,
+    userinfo,
+    token,
+    userId,
+    friends,
+    homePosts,
+    isPostFromHomeDeleted,
+  } = useSelector((state) => {
+    return {
+      posts: state.posts.posts,
+      userinfo: state.auth.userinfo,
+      token: state.auth.token,
+      userId: state.auth.userId,
+      friends: state.friends.friends,
+      homePosts: state.posts.homePosts,
+      isPostFromHomeDeleted: state.posts.isPostFromHomeDeleted,
+    };
+  });
 
   // get all the user's and his friends posts orderd DESC
   const getAllHomePosts = () => {
@@ -55,7 +62,6 @@ const Home = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-         console.log("*******", response.data.result);
         dispatch(setHomePosts(response.data.result));
       })
       .catch((err) => {
@@ -65,14 +71,16 @@ const Home = () => {
   const [notification, setNotification] = useState(null);
 
   useEffect(() => {
-    getAllHomePosts();
-
     socket.connect();
     socket.emit("NEW_USER", userId);
     return () => {
       socket.close();
     };
   }, []);
+
+  useEffect(() => {
+    getAllHomePosts();
+  }, [isPostFromHomeDeleted]);
 
   useEffect(() => {
     console.log(socket);
@@ -99,27 +107,31 @@ const Home = () => {
     });
   }, [userId]);
 
-  const notify = () =>
-  console.log(notification)
-  toast(({data}) =>`${data}`, {
-    data:`${notification?.data.messagecontent}`,
-    icon:<img style={{width:"30px",height:"30px"}} src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80"></img>
-  })
-    // toast.(<p>{notification?.messagecontent}</p>,{
-    //   position: "top-right",
-    //   autoClose: 5000,
-    //   hideProgressBar: true,
-    //   closeOnClick: true,
-    //   pauseOnHover: true,
-    //   draggable: true,
-    //   progress: undefined,
-    //   theme: "light",
-    // });
+  const notify = () => console.log(notification);
+  toast(({ data }) => `${data}`, {
+    data: `${notification?.data.messagecontent}`,
+    icon: (
+      <img
+        style={{ width: "30px", height: "30px" }}
+        src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80"
+      ></img>
+    ),
+  });
+  // toast.(<p>{notification?.messagecontent}</p>,{
+  //   position: "top-right",
+  //   autoClose: 5000,
+  //   hideProgressBar: true,
+  //   closeOnClick: true,
+  //   pauseOnHover: true,
+  //   draggable: true,
+  //   progress: undefined,
+  //   theme: "light",
+  // });
   notification !== null && notify();
 
   return (
     <div>
-    {/*  <MDBCard className="home-card">
+      {/*  <MDBCard className="home-card">
       <MDBCardImage position='top' alt='...'  src={ userinfo &&
                       userinfo.avatar
                         ? userinfo.avatar
@@ -141,6 +153,7 @@ const Home = () => {
         <MDBCardLink href='#'>Card link</MDBCardLink>
       </MDBCardBody>
     </MDBCard>  */}
+
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center align-items-center h-100">
@@ -149,7 +162,7 @@ const Home = () => {
                 <MDBCardBody className="text-black p-4">
                   <MDBRow className="g-2">
                     <MDBCol className="mb-2">
-                      <AddPost />
+                      <AddPost getAllHomePosts={getAllHomePosts} />
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -175,19 +188,20 @@ const Home = () => {
       </div>
       <div>
         {" "}
-      {notification &&  <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-      }
+        {notification && (
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        )}
       </div>
     </div>
   );
