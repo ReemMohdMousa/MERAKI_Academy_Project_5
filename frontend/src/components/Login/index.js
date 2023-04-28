@@ -150,18 +150,16 @@ const Login = () => {
           <MDBCol md="4">
             <MDBCardBody className="d-flex flex-column">
               <div className="d-flex flex-row mt-2">
-                <span className="h1 fw-bold mb-0">
-                  <img
-                    className="main-logo1"
-                    src="./main.png"
-                    style={{
-                      height: "100px",
-                      width: "200px",
-                      marginLeft: "5rem",
-                      marginTop: "0px",
-                    }}
-                  />
-                </span>
+                <img
+                  className="main-logo1 hide"
+                  src="./main.png"
+                  style={{
+                    height: "100px",
+                    width: "200px",
+                    marginLeft: "5rem",
+                    marginTop: "0px",
+                  }}
+                />
               </div>
 
               <h5

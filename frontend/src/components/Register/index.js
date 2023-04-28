@@ -170,7 +170,7 @@ const Register = () => {
               style={{
                 height: "25rem",
                 width: "35rem",
-                marginTop: "15rem",
+                marginTop: "14.5rem",
                 marginLeft: "6rem",
                 marginRight: "2rem",
                 borderRadius: "2rem",
@@ -181,17 +181,15 @@ const Register = () => {
           <MDBCol md="4">
             <MDBCardBody className="d-flex flex-column">
               <div className="d-flex flex-row mt-2">
-                <span className="h1 fw-bold mb-2">
-                  <img
-                    className="main-logo"
-                    src="./main.png"
-                    style={{
-                      height: "130px",
-                      width: "200px",
-                      marginLeft: "-13rem",
-                    }}
-                  />
-                </span>
+                <img
+                  className="main-logo hide"
+                  src="./main.png"
+                  style={{
+                    height: "130px",
+                    width: "200px",
+                    marginLeft: "-13rem",
+                  }}
+                />
               </div>
 
               <h5

@@ -26,8 +26,8 @@ const Sidebar = () => {
           src="./main.png"
           style={{
             height: "100px",
-            width: "100px",
-            marginLeft:"2.8rem",
+            width: "150px",
+            marginLeft:"1rem",
           }}
         /></span>  
       </div>

@@ -68,10 +68,10 @@ const AllFriends = ({ id }) => {
   return (
     <div>
       <Button
-        className="hover-style"
         variant="light"
         style={{
           padding: "0px",
+          fontWeight:"bold"
         }}
         onClick={handleShow}
       >

@@ -6,8 +6,8 @@
   iframe.hide,div.hide {
     display: none;
   }
-  .main-logo1{
-    margin-left: 3rem;
+  img.main-logo1{
+    margin-left: 10rem;
   }
 }
 .btn-custom-class {
