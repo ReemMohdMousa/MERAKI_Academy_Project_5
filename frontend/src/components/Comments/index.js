@@ -48,7 +48,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
   function handleOnEnter(text) {}
   const [nemcomment, setNewComment] = useState({});
   const [openReplay, setOpenReply] = useState(false);
-
+  const[newImage,setNewImage]=useState()
   const { userinfo, token, userId, posts } = useSelector((state) => {
     return {
       userinfo: state.auth.userinfo,
@@ -72,12 +72,15 @@ const Comments = ({ id, firstname, lastname, socket }) => {
         //setpost()
         console.log(data.url);
 
-        setNewComment((image) => {
-          setDisabled(false);
+        // setNewComment((image) => {
+        //   setDisabled(false);
 
-          return { ...image, image: data.url };
-        });
+        //   return { ...image, image: data.url };
+        // });
+        setNewImage(data.url)
+        setDisabled(false);
       })
+     
       .catch((err) => console.log(err));
   };
 
@@ -137,10 +140,11 @@ const Comments = ({ id, firstname, lastname, socket }) => {
       });
   };
 
-  const addNewComment = (text) => {
+  const addNewComment = (text,newImage) => {
+    console.log(text,image)
     const NewObj = {
       content: text,
-      image: image,
+      image: newImage,
     };
     axios
       .post(`http://localhost:5000/comments/${id}`, NewObj, {
@@ -287,14 +291,14 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                           </div>
 
                           <div className="d-flex justify-content-between align-items-center">
-                            {nemcomment.image && (
-                              <img
+                          {newImage &&
+                            (  <img
                                 style={{ width: "100px", marginLeft: "20%" }}
                                 variant="success"
-                                src={nemcomment.image}
-                              />
-                            )}
-                            {disabled && (
+                                src={newImage}
+                              />)
+}
+                           {disabled &&(
                               <div>
                                 <p variant="warning">
                                   Please wait untile file uploaded
@@ -307,7 +311,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                           <button
                             className="commentbtn"
                             onClick={() => {
-                              addNewComment(text);
+                              addNewComment(text,newImage);
                             }}
                           >
                             Comment
@@ -354,8 +358,8 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                               className="small"
                                               style={{ color: "gray" }}
                                             >
-                                              {moment()
-                                                .endOf(element.created_at)
+                                              {moment(`${element.created_at}`)
+                                               
                                                 .fromNow()}
                                             </span>
                                           </div>
