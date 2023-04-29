@@ -147,7 +147,7 @@ const Posts = ({ post, firstname, lastname, userData }) => {
               </svg>{" "}
               comments
             </div>
-            {/*   <div className="item">
+              {/* <div className="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -161,7 +161,7 @@ const Posts = ({ post, firstname, lastname, userData }) => {
               share
             </div> */}
           </div>
-          {/*condition comments  */}
+          
 
           {openComments && post.post_id && (
             <Comments
@@ -169,6 +169,7 @@ const Posts = ({ post, firstname, lastname, userData }) => {
               firstname={userData.firstname}
               lastname={userData.lastname}
               socket={socket}
+              style= {{height: "2rem"}}
             />
           )}
 

@@ -35,7 +35,6 @@ import OnlineUsers from "./OnlineUsers/OnlineUsers";
 import { setLogout } from "../redux/reducers/auth";
 import AllFriends from "../Profile/AllFriends";
 
-
 const Home = () => {
   const navigate = useNavigate();
 
@@ -66,7 +65,6 @@ const Home = () => {
       isPostFromHomeDeleted: state.posts.isPostFromHomeDeleted,
     };
   });
-
 
   // get all the user's and his friends posts orderd DESC
   const getAllHomePosts = () => {
@@ -117,7 +115,7 @@ const Home = () => {
   useEffect(() => {
     socket?.on("SEND_USER", (OnlineUsers) => {
       console.log(OnlineUsers);
-      setOnlineUsersArr(OnlineUsers)
+      setOnlineUsersArr(OnlineUsers);
     });
   }, [userId]);
 
@@ -145,7 +143,26 @@ const Home = () => {
 
   return (
     <div>
-        <OnlineUsers onlineUsersArr={onlineUsersArr}/>
+      <OnlineUsers onlineUsersArr={onlineUsersArr} />
+      <div>
+        {" "}
+        {notification ? (
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        ) : (
+          ""
+        )}
+      </div>
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center  h-100">
@@ -169,7 +186,7 @@ const Home = () => {
                   </MDBCardTitle>
                   <MDBCardText>{userinfo && userinfo.bio}</MDBCardText>
                 </MDBCardBody>
-               <MDBListGroup flush>
+                <MDBListGroup flush>
                   <MDBListGroupItem
                     style={{
                       cursor: "pointer",
@@ -177,7 +194,7 @@ const Home = () => {
                   >
                     <AllFriends id={userId} />
                   </MDBListGroupItem>
-                </MDBListGroup> 
+                </MDBListGroup>
                 <MDBListGroup flush style={{ marginTop: "10px" }}>
                   <MDBListGroupItem
                     onClick={() => {
@@ -228,23 +245,6 @@ const Home = () => {
             </MDBCol>
           </MDBRow>
         </MDBContainer>
-      </div>
-      <div>
-        {" "}
-        {notification && (
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-        )}
       </div>
     </div>
   );

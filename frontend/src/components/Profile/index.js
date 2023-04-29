@@ -85,7 +85,7 @@ const Profile = () => {
       .catch((err) => {
         // console.log(err);
       });
-  };
+  }; 
 
   //loggedin user info should be changed when he changes his info (pic)
   const getTheLoggedInUserInfo = () => {
