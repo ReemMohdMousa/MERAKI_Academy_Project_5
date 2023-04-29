@@ -1,37 +1,11 @@
 const { pool } = require("../models/db");
 
-const addLike =async (req, res) => {
+const addLike = (req, res) => {
   const { post_id } = req.body;
   const user_id = req.token.userId;
 
-  let firstname=""
-  let lastname=""
-let receiver=""
-let postcontent=""
-let postimage=""
-let postvideo=""
-
-const querytofindname=`
-  SELECT users.firstname,users.lastname ,users.avatar from users where user_id =$1`
-  const result1= await pool.query(querytofindname,[user_id])
-      firstname=result1.rows[0].firstname
-      lastname=result1.rows[0].lastname
-      avatar= result1.rows[0].avatar;
-  
-    let messagecontent=`${firstname}  ${lastname} like  your post`
-    const queryuser=`SELECT user_id from posts where post_id=$1`
-    const result2=await pool.query(queryuser,[post_id])
-    receiver=result2.rows[0].user_id
-
-
-
-    const notiquery = `INSERT INTO notifications(user_id,sender_id,content,avatar) VALUES($1,$2,$3,$4)RETURNING*`;
-
-
   const query1 = `select exists(select 1 from likes where user_id=$1 AND post_id=$2)`;
   const data1 = [user_id, post_id];
-  await pool.query(notiquery,[receiver,user_id,messagecontent,avatar])
-
   pool
     .query(query1, data1)
     .then((result) => {
@@ -43,15 +17,23 @@ const querytofindname=`
       } else {
         const query = `INSERT INTO likes (user_id, post_id) VALUES ($1,$2) RETURNING *;`;
         const data = [user_id, post_id];
-        pool.query(query, data).then((result) => {
-          res.status(200).json({
-            success: true,
-            message: "Like added successfully",
-            result: result.rows[0],
+        pool
+          .query(query, data)
+          .then((result) => {
+            res.status(200).json({
+              success: true,
+              message: "Like added successfully",
+              result: result.rows[0],
+            });
+          })
+          .catch((err) => {
+            res.status(500).json({
+              success: false,
+              message: "Server error",
+              err: err,
+            });
           });
-        });
       }
-    
     })
     .catch((err) => {
       res.status(500).json({
@@ -71,7 +53,7 @@ const getLikesByUser = (req, res) => {
     .query(query, data)
     .then((result) => {
       if (result.rows.length === 0) {
-        res.status(200).json({
+        res.status(404).json({
           success: false,
           message: `The user: ${user_id} has no likes`,
         });
@@ -163,7 +145,7 @@ const removeLike = (req, res) => {
     .query(query, data)
     .then((result) => {
       if (result.rowCount === 0) {
-        res.status(200).json({
+        res.status(404).json({
           success: false,
           message: `The user: ${user_id} has no likes on this post`,
         });

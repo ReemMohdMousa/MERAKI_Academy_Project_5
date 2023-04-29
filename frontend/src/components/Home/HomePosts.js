@@ -65,10 +65,9 @@ const HomePosts = ({ post, socket, getAllHomePosts }) => {
                     {post.firstname} {post.lastname}
                   </span>
                 </Link>
-                <span className="date">
-                  {" "}
-                  {moment().endOf(post.created_at).fromNow()}
-                </span>
+
+                <span className="date"> {moment(`${post.created_at}`).fromNow()}</span>
+
               </div>
             </div>
             {post.user_id == userId ? (

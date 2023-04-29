@@ -36,20 +36,20 @@ export default function AccountMenu() {
     setAnchorEl(null);
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:5000/home/notification`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     })
-  //     .then((response) => {
-  //       console.log(response.data.result);
-  //       setNotification(response.data.result);
-  //       dispatch(setNotifications(response.data.result));
-  //     })
-  //     .catch(function (error) {
-  //       throw error;
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/home/notification`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        console.log(response.data.result);
+        setNotification(response.data.result);
+        dispatch(setNotifications(response.data.result));
+      })
+      .catch(function (error) {
+        throw error;
+      });
+  }, []);
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>

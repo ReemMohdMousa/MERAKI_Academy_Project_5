@@ -18,6 +18,7 @@ import {
   MDBListGroup,
   MDBListGroupItem,
 } from "mdb-react-ui-kit";
+import "./style.css";
 
 import Comments from "../Comments";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -31,8 +32,13 @@ import HomePosts from "./HomePosts";
 import { io } from "socket.io-client";
 import { useSocket } from "../../App";
 import OnlineUsers from "./OnlineUsers/OnlineUsers";
+import { setLogout } from "../redux/reducers/auth";
+import AllFriends from "../Profile/AllFriends";
+
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const socket = useSocket(io);
 
@@ -40,6 +46,7 @@ const Home = () => {
   const [onlineUsersArr, setOnlineUsersArr] = useState([]);
 
   //redux states
+
   const {
     posts,
     userinfo,
@@ -59,6 +66,7 @@ const Home = () => {
       isPostFromHomeDeleted: state.posts.isPostFromHomeDeleted,
     };
   });
+
 
   // get all the user's and his friends posts orderd DESC
   const getAllHomePosts = () => {
@@ -137,33 +145,61 @@ const Home = () => {
 
   return (
     <div>
-      {/*  <MDBCard className="home-card">
-      <MDBCardImage position='top' alt='...'  src={ userinfo &&
-                      userinfo.avatar
-                        ? userinfo.avatar
-                        : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                    } />
-      <MDBCardBody>
-        <MDBCardTitle>Card title</MDBCardTitle>
-        <MDBCardText>
-          Some quick example text to build on the card title and make up the bulk of the card's content.
-        </MDBCardText>
-      </MDBCardBody>
-      <MDBListGroup flush>
-        <MDBListGroupItem>Cras justo odio</MDBListGroupItem>
-        <MDBListGroupItem>Dapibus ac facilisis in</MDBListGroupItem>
-        <MDBListGroupItem>Vestibulum at eros</MDBListGroupItem>
-      </MDBListGroup>
-      <MDBCardBody>
-        <MDBCardLink href='#'>Card link</MDBCardLink>
-        <MDBCardLink href='#'>Card link</MDBCardLink>
-      </MDBCardBody>
-    </MDBCard>  */}
         <OnlineUsers onlineUsersArr={onlineUsersArr}/>
-
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
-          <MDBRow className="justify-content-center align-items-center h-100">
+          <MDBRow className="justify-content-center  h-100">
+            <MDBCol md="2">
+              <MDBCard className="home-card hide">
+                <MDBCardImage
+                  position="top"
+                  src={
+                    userinfo && userinfo.avatar
+                      ? userinfo.avatar
+                      : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                  }
+                  style={{ width: "150px", zIndex: "1", marginLeft: "15px" }}
+                />
+                <MDBCardBody>
+                  <MDBCardTitle>
+                    {" "}
+                    {userinfo && userinfo.firstname}
+                    {"  "}
+                    {userinfo && userinfo.lastname}
+                  </MDBCardTitle>
+                  <MDBCardText>{userinfo && userinfo.bio}</MDBCardText>
+                </MDBCardBody>
+               <MDBListGroup flush>
+                  <MDBListGroupItem
+                    style={{
+                      cursor: "pointer",
+                    }}
+                  >
+                    <AllFriends id={userId} />
+                  </MDBListGroupItem>
+                </MDBListGroup> 
+                <MDBListGroup flush style={{ marginTop: "10px" }}>
+                  <MDBListGroupItem
+                    onClick={() => {
+                      navigate(`/profile/${userId}`);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    View profile
+                  </MDBListGroupItem>
+                </MDBListGroup>
+                <MDBCardBody>
+                  <MDBCardLink
+                    onClick={() => {
+                      dispatch(setLogout());
+                    }}
+                    href="/"
+                  >
+                    Switch account
+                  </MDBCardLink>
+                </MDBCardBody>
+              </MDBCard>
+            </MDBCol>
             <MDBCol lg="9" xl="7">
               <MDBCard>
                 <MDBCardBody className="text-black p-4">

@@ -35,13 +35,6 @@ li {
   justify-content: center;
 }
 
-nav.navbar-light {
-  border-bottom: 2px solid black;
-}
-/* .newMsg {
-  background-color: red;
-} */
-
 a.nav-link {
   padding: 0;
 }

@@ -14,7 +14,7 @@ import Dashboard from "./components/Dashboard";
 import UserTable from "./components/Dashboard/UserTable";
 import NewUsers from "./components/Dashboard/NewUsers";
 import Messenger from "./components/Messenger/Messenger";
-import Footer from "./Footer";
+import Footer from "./components/Footer";
 
 const ENDPOINT = "http://localhost:5000";
 //custom hook to use socket because socket io conflict with redux roles
@@ -78,7 +78,7 @@ function App() {
 
         <Routes>
           <Route path="/home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path={"/register"} element={<Register />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/home/:user" element={<Search />} />
