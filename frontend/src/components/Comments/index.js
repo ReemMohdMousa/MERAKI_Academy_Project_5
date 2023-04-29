@@ -179,8 +179,8 @@ const Comments = ({ id, firstname, lastname, socket }) => {
         })
         .then((result) => {
           dispatch(removeComment({ post_id, comment_id }));
+          getAllCommentsByPostId(id);
         });
-      getAllCommentsByPostId(id);
     } catch (error) {
       console.log(error);
     }
@@ -549,8 +549,8 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                                     <MDBCardImage
                                                       className="rounded-circle shadow-1-strong me-3"
                                                       src={
-                                                        element.avatar
-                                                          ? element.avatar
+                                                        nestedComm.avatar
+                                                          ? nestedComm.avatar
                                                           : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                                                       }
                                                       alt="avatar"
