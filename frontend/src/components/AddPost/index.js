@@ -241,7 +241,7 @@ const AddPost = () => {
                           <MDBIcon fas icon="plus" />
                           <MDBBtn
                             onClick={() => {
-                              console.log("totalpost", post);
+                              // console.log("totalpost", post);
                               AddingPost();
                             }}
                           >

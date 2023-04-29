@@ -52,14 +52,17 @@ const Comments = ({ id, firstname, lastname, socket }) => {
   const [newImage, setNewImage] = useState();
   const [idOfTheOpenedComment, setIdOfTheOpenedComment] = useState("");
 
-  const { userinfo, token, userId, posts } = useSelector((state) => {
-    return {
-      userinfo: state.auth.userinfo,
-      token: state.auth.token,
-      userId: state.auth.userId,
-      posts: state.posts.posts,
-    };
-  });
+  const { userinfo, token, userId, posts, isCommentUpdated } = useSelector(
+    (state) => {
+      return {
+        userinfo: state.auth.userinfo,
+        token: state.auth.token,
+        userId: state.auth.userId,
+        posts: state.posts.posts,
+        isCommentUpdated: state.posts.isCommentUpdated,
+      };
+    }
+  );
 
   const uploadImage = () => {
     const data = new FormData();
@@ -188,7 +191,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
 
   useEffect(() => {
     getAllCommentsByPostId(id);
-  }, []);
+  }, [isCommentUpdated]);
 
   console.log(userinfo);
 

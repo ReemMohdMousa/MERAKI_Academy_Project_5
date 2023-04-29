@@ -14,6 +14,7 @@ export const posts = createSlice({
     isPostFromHomeDeleted: false,
     areUserInfoChanged: false,
     isPostAddedFromHome: false,
+    isCommentUpdated: false,
   },
   reducers: {
     setPosts: (state, action) => {
@@ -148,6 +149,10 @@ export const posts = createSlice({
     setAreUserInfoChanged: (state, action) => {
       state.areUserInfoChanged = !state.areUserInfoChanged;
     },
+
+    setIsCommentUpdated: (state, action) => {
+      state.isCommentUpdated = action.payload;
+    },
   },
 });
 export const {
@@ -172,6 +177,7 @@ export const {
   setIsPostFromHomeDeleted,
   setAreUserInfoChanged,
   setIsPostAddedFromHome,
+  setIsCommentUpdated,
 } = posts.actions;
 
 export default posts.reducer;

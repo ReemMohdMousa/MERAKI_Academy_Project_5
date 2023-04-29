@@ -295,9 +295,6 @@ const UpdatePost = ({ showModal, post, setShowModal }) => {
                                 </svg>
                               </button>
                               <MDBBtn
-                                outline
-                                color="dark"
-                                floating
                                 size="sm"
                                 style={{ width: "25%", marginLeft: "50px" }}
                                 onClick={() => {
