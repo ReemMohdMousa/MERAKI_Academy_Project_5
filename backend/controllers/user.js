@@ -160,7 +160,7 @@ const profileInfo = (req, res) => {
         res.status(200).json({
           success: true,
           message: `All info for the user: ${user_id}`,
-          info: result.rows,
+          info: result.rows[0],
         });
       }
     })
