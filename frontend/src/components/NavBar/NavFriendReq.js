@@ -8,7 +8,7 @@ import Tabs from "react-bootstrap/Tabs";
 import { SlPeople } from "react-icons/sl";
 import axios from "axios";
 import "./syle.css";
-import { SlPeople } from "react-icons/sl";
+
 import {
   setSentReq,
   setReceivedReq,
