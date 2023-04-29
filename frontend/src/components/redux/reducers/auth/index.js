@@ -32,9 +32,9 @@ export const auth = createSlice({
       localStorage.clear();
     },
     setUserInfo: (state, action) => {
-      console.log(">>>>>re",action.payload[0])
-      state.userinfo = action.payload[0];
-      localStorage.setItem("userinfo", JSON.stringify(action.payload[0]));
+      console.log(">>>>>re",action.payload)
+      state.userinfo = action.payload;
+      localStorage.setItem("userinfo", JSON.stringify(action.payload));
     },
   },
 });

@@ -58,6 +58,7 @@ const Login = () => {
         localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("roleId", result.data.roleId);
         dispatch(setRoleId(result.data.roleId));
+        dispatch(setUserInfo(result.data.userInfo));
 
         dispatch(setLogin(result.data.token));
         dispatch(setUserId(result.data.userId));
@@ -85,6 +86,7 @@ const Login = () => {
             password: fakePass,
           })
           .then((result) => {
+            console.log(">>>>>>>>>>>>>",result)
             localStorage.setItem("token", result.data.token);
             localStorage.setItem("userId", result.data.userId);
             localStorage.setItem("isLoggedIn", true);
@@ -92,6 +94,8 @@ const Login = () => {
             dispatch(setLogin(result.data.token));
             dispatch(setUserId(result.data.userId));
             dispatch(setRoleId(2));
+        dispatch(setUserInfo(result.data.userInfo));
+
           })
           .catch((err) => {
             setShow(true);
@@ -115,11 +119,11 @@ const Login = () => {
   useEffect(() => {
     if (isLoggedIn && roleId == 1) {
       navigate("/dashboard");
-      getAllUserInfo();
+      // getAllUserInfo();
     }
     if (isLoggedIn && roleId == 2) {
       navigate("/home");
-      getAllUserInfo();
+      // getAllUserInfo();
     }
   });
 
