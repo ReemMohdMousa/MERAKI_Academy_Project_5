@@ -31,6 +31,7 @@ const Messenger = () => {
   const [receiving, setReceiving] = useState(false);
   const scrollRef = useRef();
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [friendInfo, setFriendInfo] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -120,24 +121,6 @@ const Messenger = () => {
         });
   };
 
-  // const getFriendInfo = () => {
-  //   if (message.sender != userId) {
-  //     axios
-  //       .get(`http://localhost:5000/users/others/info/${message.sender}`, {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       })
-  //       .then(function (response) {
-  //         console.log(response.data);
-  //         // dispatch(setFriendInfo(response.data.result));
-
-  //         setFriendInfo(response.data.result);
-  //       })
-  //       .catch(function (error) {
-  //         throw error;
-  //       });
-  //   }
-  // };
-
   const SendNewMsg = () => {
     // setCurrentUserId(userId);
     axios
@@ -172,9 +155,27 @@ const Messenger = () => {
       });
   };
 
+  const getFriendInfo = () => {
+    const receiver_id = theOpenedConversation?.members.find(
+      (member) => member != userId
+    );
+    theOpenedConversation &&
+      axios
+        .get(`http://localhost:5000/users/others/info/${receiver_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          setFriendInfo(response.data.result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  };
+
   useEffect(() => {
     getAllUserConversations();
     getAllConversationMessages();
+    getFriendInfo();
   }, [theOpenedConversation]);
 
   useEffect(() => {
@@ -184,25 +185,16 @@ const Messenger = () => {
     });
   }, [userId]);
 
-  // console.log(theOpenedConversation);
-
   // useEffect(() => {
   //   socket?.on("welcome", (msg) => {
   //     console.log(msg);
   //   });
   // }, [socket]);
 
-  // // console.log(socket);
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
-  // useEffect(() => {
-  //   scrollRef?.scrollIntoView({ behavior: "smooth" });
-  // }, [messages]);
-
-  // console.log(messages);
-  // console.log(conversations);
-
-  // console.log(openConversation);
-  // console.log(theOpenedConversation);
 
   return (
     <>
@@ -219,9 +211,9 @@ const Messenger = () => {
                     dispatch(setTheOpenedConversation(element));
 
                     //determine the receiver_id
-                    const receiver_id = element.members.find(
-                      (member) => member != userId
-                    );
+                    // const receiver_id = element.members.find(
+                    //   (member) => member != userId
+                    // );
 
                     //navigate to current conversation
                     // navigate(`/messenger/${userId}/${receiver_id}`);
@@ -238,14 +230,13 @@ const Messenger = () => {
         </div>
         <div className="chatBox">
           <div className="chatBoxWrapper">
-            {/* <div>
-              <h5>
+            <div>
+              <h4>
                 {theOpenedConversation &&
-                  conversationFriendInfo.firstname +
-                    " " +
-                    conversationFriendInfo.lastname}
-              </h5>
-            </div> */}
+                  friendInfo &&
+                  friendInfo?.firstname + " " + friendInfo?.lastname}
+              </h4>
+            </div>
             <>
               {theOpenedConversation ? (
                 <div>
@@ -258,6 +249,7 @@ const Messenger = () => {
                             message={element}
                             mine={element.sender == userId ? true : false}
                             theOpenedConversation={theOpenedConversation}
+                            friendInfo={friendInfo}
                           />
                         </div>
                       );
@@ -280,7 +272,7 @@ const Messenger = () => {
                   </div>
                 </div>
               ) : (
-                "no conversations open"
+                <div className="noConversationText">"Open a conversation"</div>
               )}
             </>
           </div>

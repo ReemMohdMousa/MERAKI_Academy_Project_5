@@ -52,7 +52,7 @@ const AllFriends = ({ id }) => {
 
   useEffect(() => {
     getAllFriends();
-  }, [isFriend, id]);
+  }, [isFriend, id, userId]);
 
   //*remove friend function
   // i need the user2_id as a params (the friend id i want to remove)
@@ -75,7 +75,7 @@ const AllFriends = ({ id }) => {
         style={{
           padding: "0px",
           border: "none",
-          backgroundColor: "rgb(248, 249, 250)",
+          backgroundColor: "inherit",
           color: "#4f4f4f",
         }}
         onClick={handleShow}
