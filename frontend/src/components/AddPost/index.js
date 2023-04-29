@@ -235,7 +235,7 @@ const AddPost = () => {
                             <span className="ms-3 me-4"> | </span>&nbsp; &nbsp;
                           </MDBCardText>
                           <MDBIcon fas icon="plus" />
-                          <MDBBtn
+                          <MDBBtn  
                             onClick={() => {
                               console.log("totalpost", post);
                               AddingPost();

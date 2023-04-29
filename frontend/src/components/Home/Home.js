@@ -79,7 +79,7 @@ const Home = () => {
         console.log(err);
       });
   };
-  const [notification, setNotification] = useState(null);
+  const [socketnotification, setSocketNotification] = useState(null);
 
   useEffect(() => {
     socket.connect();
@@ -97,9 +97,7 @@ const Home = () => {
     console.log(socket);
     socket.on("RECEIVE_NOTIFICATION", (data) => {
       console.log("HI", data);
-      setNotification((current) => {
-        return { ...current, data };
-      });
+      setSocketNotification(data)
       socket.on("eee", (data) => {
         console.log(data);
       });
@@ -119,9 +117,9 @@ const Home = () => {
     });
   }, [userId]);
 
-  const notify = () => console.log(notification);
+  const notify = () => console.log(socketnotification);
   toast(({ data }) => `${data}`, {
-    data: `${notification?.data.messagecontent}`,
+    data: `${socketnotification?.messagecontent}`,
     icon: (
       <img
         style={{ width: "30px", height: "30px" }}
@@ -139,83 +137,80 @@ const Home = () => {
   //   progress: undefined,
   //   theme: "light",
   // });
-  notification !== null && notify();
+  socketnotification !== null && notify();
 
   return (
     <div>
-      <OnlineUsers onlineUsersArr={onlineUsersArr} />
-      <div>
-        {" "}
-        {notification ? (
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-        ) : (
-          ""
-        )}
-      </div>
       <div className="gradient-custom-2" style={{ backgroundColor: "#eee" }}>
         <MDBContainer className="py-5 h-100">
           <MDBRow className="justify-content-center  h-100">
             <MDBCol md="2">
-              <MDBCard className="home-card hide">
-                <MDBCardImage
-                  position="top"
-                  src={
-                    userinfo && userinfo.avatar
-                      ? userinfo.avatar
-                      : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                  }
-                  style={{ width: "150px", zIndex: "1", marginLeft: "15px" }}
-                />
-                <MDBCardBody>
-                  <MDBCardTitle>
-                    {" "}
-                    {userinfo && userinfo.firstname}
-                    {"  "}
-                    {userinfo && userinfo.lastname}
-                  </MDBCardTitle>
-                  <MDBCardText>{userinfo && userinfo.bio}</MDBCardText>
-                </MDBCardBody>
-                <MDBListGroup flush>
-                  <MDBListGroupItem
-                    style={{
-                      cursor: "pointer",
-                    }}
-                  >
-                    <AllFriends id={userId} />
-                  </MDBListGroupItem>
-                </MDBListGroup>
-                <MDBListGroup flush style={{ marginTop: "10px" }}>
-                  <MDBListGroupItem
-                    onClick={() => {
-                      navigate(`/profile/${userId}`);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    View profile
-                  </MDBListGroupItem>
-                </MDBListGroup>
-                <MDBCardBody>
-                  <MDBCardLink
-                    onClick={() => {
-                      dispatch(setLogout());
-                    }}
-                    href="/"
-                  >
-                    Switch account
-                  </MDBCardLink>
-                </MDBCardBody>
-              </MDBCard>
+              <MDBRow>
+                <MDBCard className="home-card hide">
+                  <MDBCardImage
+                    position="top"
+                    src={
+                      userinfo && userinfo.avatar
+                        ? userinfo.avatar
+                        : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                    }
+                    style={{ width: "150px", zIndex: "1", marginLeft: "15px" }}
+                  />
+                  <MDBCardBody>
+                    <MDBCardTitle>
+                      {" "}
+                      {userinfo && userinfo.firstname}
+                      {"  "}
+                      {userinfo && userinfo.lastname}
+                    </MDBCardTitle>
+                    <MDBCardText>{userinfo && userinfo.bio}</MDBCardText>
+                  </MDBCardBody>
+                  <MDBListGroup flush>
+                    <MDBListGroupItem
+                      style={{
+                        cursor: "pointer",
+                      }}
+                    >
+                      <AllFriends id={userId} />
+                    </MDBListGroupItem>
+                  </MDBListGroup>
+                  <MDBListGroup flush style={{ marginTop: "10px" }}>
+                    <MDBListGroupItem
+                      onClick={() => {
+                        navigate(`/profile/${userId}`);
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      View profile
+                    </MDBListGroupItem>
+                  </MDBListGroup>
+                  <MDBCardBody>
+                    <MDBCardLink
+                      onClick={() => {
+                        dispatch(setLogout());
+                      }}
+                      href="/"
+                    >
+                      Switch account
+                    </MDBCardLink>
+                  </MDBCardBody>
+                </MDBCard>
+              </MDBRow>
+              <MDBRow style={{ marginTop: "15px" }}>
+                <MDBCard className="home-card hide">
+                  <MDBCardBody style={{ marginTop: "-8px" }}>
+                    <h6
+                      style={{
+                        fontSize: "14px",
+                      }}
+                    >
+                      Active now
+                    </h6>
+
+                    <OnlineUsers onlineUsersArr={onlineUsersArr} />
+                  </MDBCardBody>
+                </MDBCard>
+              </MDBRow>
             </MDBCol>
             <MDBCol lg="9" xl="7">
               <MDBCard>
@@ -245,6 +240,23 @@ const Home = () => {
             </MDBCol>
           </MDBRow>
         </MDBContainer>
+      </div>
+      <div>
+        {" "}
+        {socketnotification && (
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        )}
       </div>
     </div>
   );

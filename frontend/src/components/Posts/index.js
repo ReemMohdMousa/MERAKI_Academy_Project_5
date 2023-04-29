@@ -69,8 +69,7 @@ const Posts = ({ post, firstname, lastname, userData }) => {
                   </span>
                 </Link>
                 <span className="date">
-
-                {moment(`${post.created_at}`).fromNow()  }
+                  {moment(`${post.created_at}`).fromNow()}
                 </span>
               </div>
             </div>
@@ -140,11 +139,11 @@ const Posts = ({ post, firstname, lastname, userData }) => {
                 width="16"
                 height="16"
                 fill="currentColor"
-                className="bi bi-chat-left"
+                class="bi bi-chat-left-text-fill"
                 viewBox="0 0 16 16"
               >
-                <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-              </svg>{" "}
+                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z" />
+              </svg> {"  "}
               comments
             </div>
               {/* <div className="item">
