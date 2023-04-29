@@ -195,11 +195,11 @@ export default function BasicMenu() {
         }}
       >
         <Tabs
-          defaultActiveKey="Add Requests"
+          defaultActiveKey="Recieved Requests"
           id="uncontrolled-tab-example"
           className="mb-3"
         >
-          <Tab eventKey="Add Requests" title="Add Requests">
+          <Tab eventKey="quests" title="Recieved Requests">
             <div className="friend-list-body">
               {ReceivedReq
                 ? ReceivedReq.map((element) => {

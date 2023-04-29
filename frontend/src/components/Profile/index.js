@@ -143,11 +143,12 @@ const Profile = () => {
                       style={{ width: "150px", zIndex: "1", height: "200px" }}
                     ></MDBCardImage>
                     <MDBTypography
+                      className="py-1"
                       tag="h5"
                       style={{
                         zIndex: "1",
                         color: "black",
-                        marginLeft: "35px",
+                        marginLeft: "7px",
                       }}
                     >
                       {userData && userData.firstname}
@@ -164,24 +165,14 @@ const Profile = () => {
                     {userId == id ? <EditProfileInfoBtn /> : ""}
                   </div>
                 </div>
-
                 <div
                   className="p-4 text-black"
                   style={{ backgroundColor: "#f8f9fa" }}
                 >
                   <div className="d-flex justify-content-end text-center py-1">
-                    <div className="profile-btn">
-                      <br />
-                      <MDBCardText className="small text-muted mb-0">
-                        <FriendRequests id={id} />
-                      </MDBCardText>
-                      <MDBCardText className="small text-muted mb-0">
-                        <SendMessage id={id} />
-                      </MDBCardText>
-                    </div>
-                    <div className="px-3">
+                    <div className="px-4">
                       <MDBCardText
-                        className="  h6"
+                        className="p"
                         style={{ marginBottom: "0px" }}
                       >
                         {friends ? friends.length : 0}
@@ -191,8 +182,18 @@ const Profile = () => {
                       </MDBCardText>
                     </div>
                   </div>
+                  <div className="d-flex justify-content-start text-center py-1">
+                    <div className="profile-btn">
+                      <br />
+                      <MDBCardText className="small text-muted mb-0">
+                        <FriendRequests id={id} />
+                      </MDBCardText>
+                      <MDBCardText className="small text-muted mb-0">
+                        <SendMessage id={id} />
+                      </MDBCardText>
+                    </div>
+                  </div>
                 </div>
-
                 <MDBCardBody className="text-black p-4">
                   {userData && userData.bio && (
                     <div className="mb-5">
@@ -207,7 +208,7 @@ const Profile = () => {
                       </div>
                     </div>
                   )}
-
+                  {/* userData && userData.bio &&  */}
                   <MDBRow className="g-2">
                     <MDBCol className="mb-2">
                       {id == userId && <AddPost />}
