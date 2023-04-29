@@ -66,6 +66,7 @@ const Register = () => {
               localStorage.setItem("isLoggedIn", true);
               localStorage.setItem("roleId", result.data.roleId);
               dispatch(setRoleId(result.data.roleId));
+              dispatch(setUserInfo(result.data.userInfo));
 
               dispatch(setLogin(result.data.token));
               dispatch(setUserId(result.data.userId));
@@ -111,6 +112,7 @@ const Register = () => {
             dispatch(setRoleId(2));
             dispatch(setLogin(result.data.token));
             dispatch(setUserId(result.data.userId));
+            dispatch(setUserInfo(result.data.userInfo));
           })
           .catch((err) => {
             if (err.response.data.message === "The email already exists") {
@@ -125,6 +127,7 @@ const Register = () => {
                   localStorage.setItem("isLoggedIn", true);
                   dispatch(setLogin(result.data.token));
                   dispatch(setUserId(result.data.userId));
+                  dispatch(setUserInfo(result.data.userInfo));
                 })
                 .catch((err) => {
                   setShow(true);
@@ -152,7 +155,7 @@ const Register = () => {
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/home");
-      getAllUserInfo();
+      // getAllUserInfo();
     }
   });
 

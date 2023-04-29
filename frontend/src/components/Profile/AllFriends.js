@@ -72,12 +72,11 @@ const AllFriends = ({ id }) => {
   return (
     <div>
       <button
-   
         style={{
           padding: "0px",
-          border:"none",
-          backgroundColor:"white",
-          color:"#4f4f4f"
+          border: "none",
+          backgroundColor: "rgb(248, 249, 250)",
+          color: "#4f4f4f",
         }}
         onClick={handleShow}
       >

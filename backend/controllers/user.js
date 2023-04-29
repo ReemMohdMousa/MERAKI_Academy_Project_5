@@ -41,6 +41,7 @@ const register = async (req, res) => {
         res.status(200).json({
           success: true,
           token: token,
+          userInfo: result.rows[0],
           userId: result.rows[0].user_id,
           roleId: result.rows[0].role_id,
           message: "Account created successfully",
@@ -92,6 +93,7 @@ const login = (req, res) => {
                 token,
                 userId: result.rows[0].user_id,
                 roleId: result.rows[0].role_id,
+                userInfo: result.rows[0],
               });
             } else {
               throw Error;

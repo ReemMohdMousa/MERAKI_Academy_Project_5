@@ -7,7 +7,7 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import axios from "axios";
 import "./syle.css";
-import { SlPeople } from "react-icons/sl";
+
 import {
   setSentReq,
   setReceivedReq,
@@ -198,7 +198,7 @@ export default function BasicMenu() {
           id="uncontrolled-tab-example"
           className="mb-3"
         >
-          <Tab eventKey="Add Requests" title="Add Requests">
+          <Tab eventKey="quests" title="Add Requests">
             <div className="friend-list-body">
               {ReceivedReq
                 ? ReceivedReq.map((element) => {
