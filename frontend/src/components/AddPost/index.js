@@ -96,7 +96,6 @@ const AddPost = () => {
       .then((Response) => {
         console.log(Response.data.result);
         dispatch(addpost(Response.data.result));
-        
       })
       .catch((err) => {
         console.log(err);
@@ -127,7 +126,7 @@ const AddPost = () => {
                   </span>
                 </Link>
 
-                {moment().endOf(post.created_at).fromNow()  }
+                {moment().endOf(post.created_at).fromNow()}
                 <span className="date"></span>
               </div>
             </div>
@@ -160,16 +159,17 @@ const AddPost = () => {
                         )}
 
                         {post.image && (
-                          <img variant="success" src={post.image} 
-                          alt="img"/>
+                          <img variant="success" src={post.image} alt="img" />
                         )}
                         {disabled && (
                           <div>
                             <p variant="warning">
                               Please wait until file uploaded
                             </p>
-                            <img src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif" alt="img"/>
-                            
+                            <img
+                              src="https://media.tenor.com/67b631tr-g0AAAAC/loading-now-loading.gif"
+                              alt="img"
+                            />
                           </div>
                         )}
                         <hr className="my-4" />

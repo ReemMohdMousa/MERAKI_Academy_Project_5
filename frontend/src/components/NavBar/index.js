@@ -112,8 +112,9 @@ const NavBar = () => {
                 }}
               />
               <MDBBtn
-                color="dark"
-                className="btn btn-dark btn-sm"
+color="secondary"
+               style={{border:"1px solid gray"}}
+                className="btn  btn-sm"
                 onClick={searchNow}
               >
                 <FcSearch size={20} />
