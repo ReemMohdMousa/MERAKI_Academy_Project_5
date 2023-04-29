@@ -64,7 +64,7 @@ const NavBar = () => {
   };
 
   const login = () => {
-    navigate(`/login`);
+    navigate(`/`);
     setShowBasic(false);
   };
 
@@ -93,9 +93,13 @@ const NavBar = () => {
       {roleId == 1 ? (
         ""
       ) : isLoggedIn ? (
-        <MDBNavbar expand="lg" light bgColor="light">
+        <MDBNavbar expand="lg">
           <MDBContainer fluid>
-            <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
+            <MDBNavbarBrand href="/home" style={{ padding: "0px",margin:"0px" }}><img
+                src="./logo.png"
+                style={{ height: "50px", width: "100px", padding: "0px",margin:"0px" }}
+                alt="This will display logo"
+              /></MDBNavbarBrand>
 
             <form className="d-flex input-group w-auto">
               <input
@@ -108,8 +112,9 @@ const NavBar = () => {
                 }}
               />
               <MDBBtn
-                color="dark"
-                className="btn btn-dark btn-sm"
+color="secondary"
+               style={{border:"1px solid gray"}}
+                className="btn  btn-sm"
                 onClick={searchNow}
               >
                 <FcSearch size={20} />
@@ -222,7 +227,7 @@ const NavBar = () => {
                 onClick={() => {
                   dispatch(setLogout());
                   setAnchorEl(null);
-                  navigate("/login");
+                  navigate("/");
                 }}
               >
                 <MdOutlineLogout />
@@ -234,7 +239,11 @@ const NavBar = () => {
       ) : (
         <MDBNavbar expand="lg" light bgColor="light">
           <MDBContainer fluid>
-            <MDBNavbarBrand href="#">Brand</MDBNavbarBrand>
+          <MDBNavbarBrand href="/" style={{ padding: "0px",margin:"0px" }}><img
+                src="./logo.png"
+                style={{ height: "50px", width: "100px", padding: "0px",margin:"0px" }}
+                alt="This will display logo"
+              /></MDBNavbarBrand>
             <div className="nav2">
               <MDBNavbarItem
                 onClick={() => {

@@ -67,9 +67,18 @@ const AllFriends = ({ id }) => {
 
   return (
     <div>
-      <Button className="hover-style" variant="light" style={{padding:"0px",}} onClick={handleShow}>
+      <button
+   
+        style={{
+          padding: "0px",
+          border:"none",
+          backgroundColor:"white",
+          color:"#4f4f4f"
+        }}
+        onClick={handleShow}
+      >
         Friends
-      </Button>
+      </button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

@@ -32,12 +32,14 @@
   background-color: white;
 }
 .sidebar .top {
-  height: 50px;
+  height: 8rem;
   display: flex;
   align-items: center;
-  margin-left: 1rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
-.sidebar .top .logo {
+.sidebar  .logo {
+  
   font-size: 20px;
   font-weight: bold;
   color: #6439ff;

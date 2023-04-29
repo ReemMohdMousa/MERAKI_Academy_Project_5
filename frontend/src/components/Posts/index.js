@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setUserInfo } from "../redux/reducers/auth/index";
 import Dropdown from "react-bootstrap/Dropdown";
-import Iframe from "react-iframe";
 import UpdatePost from "../AddPost/UpdatePost";
 import { removePost } from "../redux/reducers/posts/index";
 import Likes from "./Likes";

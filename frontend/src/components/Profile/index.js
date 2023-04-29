@@ -110,10 +110,11 @@ const Profile = () => {
                     style={{ width: "150px" }}
                   >
                     <MDBCardImage
-                      src={
-                        userinfo && userinfo.avatar?userinfo.avatar
-                         
-                         :"https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+
+                      src={userinfo &&
+                        userinfo.avatar
+                          ? userinfo.avatar
+                          : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                       }
                       alt="image"
                       className="mt-4 mb-2 img-thumbnail"
