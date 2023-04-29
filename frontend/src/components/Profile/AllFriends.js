@@ -75,7 +75,7 @@ const AllFriends = ({ id }) => {
         style={{
           padding: "0px",
           border: "none",
-          backgroundColor: "white",
+          backgroundColor: "inherit",
           color: "#4f4f4f",
         }}
         onClick={handleShow}
