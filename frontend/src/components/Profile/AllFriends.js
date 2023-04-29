@@ -3,6 +3,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import "./style.css";
+import { useNavigate } from "react-router-dom";
 
 import {
   getAlluserFriends,
@@ -18,6 +19,9 @@ const AllFriends = ({ id }) => {
 
   //dispatch
   const dispatch = useDispatch();
+
+  //navigate
+  const navigate = useNavigate();
 
   //redux states
   const { token, userId, friends, isFriend } = useSelector((state) => {
@@ -90,7 +94,12 @@ const AllFriends = ({ id }) => {
               friends.map((element, i) => {
                 return (
                   <div className="friend-list" key={element.id}>
-                    <div className="friend-img-name">
+                    <div
+                      className="friend-img-name"
+                      onClick={() => {
+                        navigate(`/profile/${element.user_id}`);
+                      }}
+                    >
                       <img
                         className="friend-img"
                         alt="img"

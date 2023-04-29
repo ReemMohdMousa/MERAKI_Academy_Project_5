@@ -12,7 +12,6 @@ import {
   MDBBtn,
   MDBTypography,
 } from "mdb-react-ui-kit";
-import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Posts from "../Posts";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,12 +21,19 @@ import { useParams } from "react-router-dom";
 import FriendRequests from "./FriendRequests";
 import AllFriends from "./AllFriends";
 import SendMessage from "./SendMessage";
+import EditProfileInfoBtn from "./EditProfileInfoBtn";
+import { setUserInfo } from "../redux/reducers/auth/index";
 
 const Profile = () => {
   const params = useParams();
   const id = params.id;
+
+  //componant states
   const [user, setUser] = useState({});
+  const [userData, setUserData] = useState(null);
+  //dispatch
   const dispatch = useDispatch();
+
   const getuserdata = () => {
     axios
       .get(`http://localhost:5000/users/others/info/${id}`)
@@ -38,6 +44,7 @@ const Profile = () => {
           lastname: Response.data.result.lastname,
         };
         setUser(fullName);
+        setUserData(Response.data.result);
       })
       .catch((err) => {
         // console.log(err);
@@ -45,36 +52,27 @@ const Profile = () => {
   };
 
   //redux states
+  const {
+    posts,
+    userinfo,
+    token,
+    userId,
+    friends,
+    sharedPosts,
+    areUserInfoChanged,
+  } = useSelector((state) => {
+    return {
+      posts: state.posts.posts,
+      userinfo: state.auth.userinfo,
+      token: state.auth.token,
+      userId: state.auth.userId,
+      friends: state.friends.friends,
+      sharedPosts: state.posts.sharedPosts,
+      areUserInfoChanged: state.posts.areUserInfoChanged,
+    };
+  });
 
-  const { posts, userinfo, token, userId, friends, sharedPosts } = useSelector(
-    (state) => {
-      return {
-        posts: state.posts.posts,
-        userinfo: state.auth.userinfo,
-        token: state.auth.token,
-        userId: state.auth.userId,
-        friends: state.friends.friends,
-        sharedPosts: state.posts.sharedPosts,
-      };
-    }
-  );
-  // const getAllFriends = () => {
-  //   axios
-  //     .get(`http://localhost:5000/friends/get/all/${id}`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     })
-  //     .then(function (response) {
-  //       dispatch(getAlluserFriends(response.data.result));
-
-  //       //check if this profile is a friend of the loggedin user
-  //       dispatch(isTheUserIsFriend(userId));
-  //     })
-  //     .catch(function (error) {
-  //       // console.log(error);
-  //     });
-  // };
   const getAllPostsByUserId = () => {
-    console.log(id, token);
     axios
       .get(`http://localhost:5000/posts/search_1/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -89,10 +87,28 @@ const Profile = () => {
       });
   };
 
+  //loggedin user info should be changed when he changes his info (pic)
+  const getTheLoggedInUserInfo = () => {
+    axios
+      .get(`http://localhost:5000/users/info`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((Response) => {
+        dispatch(setUserInfo(Response.data.info));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     getAllPostsByUserId();
     getuserdata();
-  }, []);
+  }, [id, areUserInfoChanged]);
+
+  useEffect(() => {
+    getTheLoggedInUserInfo();
+  }, [areUserInfoChanged]);
 
   return (
     <div>
@@ -103,23 +119,28 @@ const Profile = () => {
               <MDBCard>
                 <div
                   className="rounded-top text-white d-flex flex-row"
-                  style={{ backgroundColor: "#000", height: "200px" }}
+                  style={{
+                    height: "200px",
+                    backgroundColor: "#000",
+                    // border: "20px solid red",
+                    backgroundImage: `url(${userData && userData.coverimg})`,
+                    backgroundSize: "cover",
+                  }}
                 >
                   <div
                     className="ms-4 mt-5 d-flex flex-column"
-                    style={{ width: "150px" }}
+                    style={{ width: "150px", height: "200px" }}
                   >
                     <MDBCardImage
-
-                      src={userinfo &&
-                        userinfo.avatar
-                          ? userinfo.avatar
+                      src={
+                        userData && userData.avatar
+                          ? userData.avatar
                           : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                       }
                       alt="image"
                       className="mt-4 mb-2 img-thumbnail"
                       fluid
-                      style={{ width: "150px", zIndex: "1" }}
+                      style={{ width: "150px", zIndex: "1", height: "200px" }}
                     ></MDBCardImage>
 
                     {/* <MDBBtn
@@ -129,34 +150,16 @@ const Profile = () => {
                     >
                       Edit profile Info
                     </MDBBtn> */}
-                    {userId == id ? (
-                      <Dropdown>
-                        <Dropdown.Toggle
-                          variant="light"
-                          id="dropdown-basic"
-                          style={{
-                            backgroundColor: "inherit",
-                            border: "2px solid black",
-                          }}
-                        >
-                          Edit Profile Info
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                          <Dropdown.Item>Upload profile picture</Dropdown.Item>
-                          <Dropdown.Item>Upload cover picture</Dropdown.Item>
-                          <Dropdown.Item>Edit about</Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    ) : (
-                      ""
-                    )}
+                    {userId == id ? <EditProfileInfoBtn /> : ""}
                   </div>
-                  <div className="ms-3" style={{ marginTop: "130px" }}>
+                  <div
+                    className="ms-3"
+                    style={{ marginTop: "215px", color: "black", zIndex: "1" }}
+                  >
                     <MDBTypography tag="h5">
-                      {user.firstname}
+                      {userData && userData.firstname}
                       {"  "}
-                      {user.lastname}
+                      {userData && userData.lastname}
                     </MDBTypography>
                   </div>
                 </div>
@@ -190,7 +193,7 @@ const Profile = () => {
                 </div>
 
                 <MDBCardBody className="text-black p-4">
-                  {userinfo && userinfo.bio && (
+                  {userData && userData.bio && (
                     <div className="mb-5">
                       <p className="lead fw-normal mb-1">About</p>
                       <div
@@ -198,7 +201,7 @@ const Profile = () => {
                         style={{ backgroundColor: "#f8f9fa" }}
                       >
                         <MDBCardText className="font-italic mb-1">
-                          {userinfo.bio}
+                          {userData.bio}
                         </MDBCardText>
                       </div>
                     </div>
@@ -220,6 +223,7 @@ const Profile = () => {
                               firstname={user.firstname}
                               lastname={user.lastname}
                               key={elem.post_id}
+                              userData={userData}
                             />
                           );
                         })}

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  useEffect } from "react";
+import { useEffect } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import Tab from "react-bootstrap/Tab";
@@ -18,12 +18,15 @@ import {
   declineFriendReq,
   setIsFriend,
   getAlluserFriends,
+  setNewReq,
 } from "../redux/reducers/friends/index";
+
 export default function BasicMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    dispatch(setNewReq(false));
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -33,19 +36,28 @@ export default function BasicMenu() {
   const dispatch = useDispatch();
 
   //redux states
-  const { userId, token, sentReq, ReceivedReq, isAdded, isReceived, isFriend } =
-    useSelector((state) => {
-      //return object contains the redux states
-      return {
-        userId: state.auth.userId,
-        token: state.auth.token,
-        sentReq: state.friends.sentReq,
-        ReceivedReq: state.friends.ReceivedReq,
-        isAdded: state.friends.isAdded,
-        isReceived: state.friends.isReceived,
-        isFriend: state.friends.isFriend,
-      };
-    });
+  const {
+    userId,
+    token,
+    sentReq,
+    ReceivedReq,
+    isAdded,
+    isReceived,
+    isFriend,
+    newReq,
+  } = useSelector((state) => {
+    //return object contains the redux states
+    return {
+      userId: state.auth.userId,
+      token: state.auth.token,
+      sentReq: state.friends.sentReq,
+      ReceivedReq: state.friends.ReceivedReq,
+      isAdded: state.friends.isAdded,
+      isReceived: state.friends.isReceived,
+      isFriend: state.friends.isFriend,
+      newReq: state.friends.newReq,
+    };
+  });
 
   //get all friends of the logged in user
   const getAllFriends = () => {
@@ -69,8 +81,12 @@ export default function BasicMenu() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        //response.data.result => array of received requests
+        // response.data.result => array of received requests
         dispatch(setReceivedReq(response.data.result));
+        // console.log("setReceivedReq", response.data.result);
+        if (response.data.result && response.data.result.length !== 0) {
+          dispatch(setNewReq(true));
+        }
       })
       .catch(function (error) {
         throw error;
@@ -165,7 +181,8 @@ export default function BasicMenu() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-         <SlPeople  size={22}/>
+        <div className={newReq && "new-req-badge"}></div>
+        <SlPeople size={22} />
       </Button>
       <Menu
         id="basic-menu"
@@ -184,86 +201,88 @@ export default function BasicMenu() {
         >
           <Tab eventKey="Add Requests" title="Add Requests">
             <div className="friend-list-body">
-              {ReceivedReq &&
-                ReceivedReq.map((element) => {
-                  return (
-                    <div key={element.request_id}>
-                      <div className="friend-list">
-                        <div className="friend-img-name">
-                          <img
-                            className="friend-img"
-                            alt="img"
-                            src={
-                              element.avatar ||
-                              "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                            }
-                          />
+              {ReceivedReq
+                ? ReceivedReq.map((element) => {
+                    return (
+                      <div key={element.request_id}>
+                        <div className="friend-list">
+                          <div className="friend-img-name">
+                            <img
+                              className="friend-img"
+                              alt="img"
+                              src={
+                                element.avatar ||
+                                "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                              }
+                            />
 
-                          <p>{element.firstname + " " + element.lastname}</p>
-                        </div>
-                        <div className="buttons">
-                          <Button
-                            variant="contained"
-                            size="small"
-                            color="success"
-                            onClick={() => {
-                              acceptFriendReq(element.sender_id);
-                            }}
-                          >
-                            Accept
-                          </Button>
-                          <Button
-                            variant="contained"
-                            size="small"
-                            color="error"
-                            onClick={() => {
-                              declineFriendReqFun(element.sender_id);
-                            }}
-                          >
-                            Decline
-                          </Button>
+                            <p>{element.firstname + " " + element.lastname}</p>
+                          </div>
+                          <div className="buttons">
+                            <Button
+                              variant="contained"
+                              size="small"
+                              color="success"
+                              onClick={() => {
+                                acceptFriendReq(element.sender_id);
+                              }}
+                            >
+                              Accept
+                            </Button>
+                            <Button
+                              variant="contained"
+                              size="small"
+                              color="error"
+                              onClick={() => {
+                                declineFriendReqFun(element.sender_id);
+                              }}
+                            >
+                              Decline
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                : "No requests"}
             </div>
           </Tab>
           <Tab eventKey="Sent Requests" title="Sent Requests">
             <div className="friend-list-body">
-              {sentReq &&
-                sentReq.map((element) => {
-                  return (
-                    <div key={element.request_id}>
-                      <div className="friend-list">
-                        <div className="friend-img-name">
-                          <img
-                            className="friend-img"
-                            alt="img"
-                            src={
-                              element.avatar ||
-                              "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                            }
-                          />
+              {sentReq
+                ? sentReq.map((element) => {
+                    return (
+                      <div key={element.request_id}>
+                        <div className="friend-list">
+                          <div className="friend-img-name">
+                            <img
+                              className="friend-img"
+                              alt="img"
+                              src={
+                                element.avatar ||
+                                "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                              }
+                            />
 
-                          <p>{element.firstname + " " + element.lastname}</p>
-                        </div>
-                        <div className="buttons">
-                          <Button
-                            variant="contained"
-                            size="small"
-                            color="error"
-                            onClick={() => {
-                              cancelFriendReqFun(element.receiver_id);
-                            }}
-                          >
-                            Cancel
-                          </Button>
+                            <p>{element.firstname + " " + element.lastname}</p>
+                          </div>
+                          <div className="buttons">
+                            <Button
+                              variant="contained"
+                              size="small"
+                              color="error"
+                              onClick={() => {
+                                cancelFriendReqFun(element.receiver_id);
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                : "you haven't sent any requests"}
             </div>
           </Tab>
         </Tabs>

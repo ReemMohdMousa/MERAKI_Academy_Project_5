@@ -10,7 +10,7 @@ const getAllFriendsPosts = (req, res) => {
     END) 
     UNION 
     (SELECT U.user_id, firstname, lastname, avatar, P.* FROM users AS U, posts AS P
-    WHERE P.user_id = $1 AND U.user_id = $1
+    WHERE P.user_id = $1 AND U.user_id = $1 AND P.is_deleted=0
     )
     ORDER BY created_at DESC
     `;

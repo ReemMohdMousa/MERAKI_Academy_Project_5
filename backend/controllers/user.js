@@ -205,7 +205,7 @@ const editUserInfo = (req, res) => {
   let { avatar, coverImg, bio } = req.body;
   const data = [avatar, coverImg, bio, user_id];
 
-  const query = `UPDATE posts SET 
+  const query = `UPDATE users SET 
   avatar = COALESCE($1,avatar), 
   coverImg = COALESCE($2, coverImg), 
   bio = COALESCE($3, bio), 
@@ -224,7 +224,7 @@ const editUserInfo = (req, res) => {
         res.status(200).json({
           success: true,
           message: `user's info updated sucessfully `,
-          post: result.rows[0],
+          result: result.rows[0],
         });
       }
     })
@@ -603,5 +603,5 @@ module.exports = {
   checkGoogleUser,
   profileInfo,
   otherUsersInfo,
-  editUserInfo
+  editUserInfo,
 };

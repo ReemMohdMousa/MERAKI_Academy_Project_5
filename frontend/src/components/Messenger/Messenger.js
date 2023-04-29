@@ -257,6 +257,7 @@ const Messenger = () => {
                           <Message
                             message={element}
                             mine={element.sender == userId ? true : false}
+                            theOpenedConversation={theOpenedConversation}
                           />
                         </div>
                       );

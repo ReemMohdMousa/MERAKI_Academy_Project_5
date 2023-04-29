@@ -18,7 +18,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
 import moment from "moment";
-import { setPosts, addpost } from "../redux/reducers/posts";
+import { setPosts, addpost, AddToHomePosts } from "../redux/reducers/posts";
+
 const AddPost = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -36,7 +37,7 @@ const AddPost = () => {
       token: state.auth.token,
       userinfo: state.auth.userinfo,
     };
-  });
+  }); 
 
   /********************************************/
   const [video, setVedio] = useState("");
@@ -61,6 +62,7 @@ const AddPost = () => {
 
           return { ...image, image: data.url };
         });
+        console.log(post);
       })
       .catch((err) => console.log(err));
   };
@@ -96,6 +98,9 @@ const AddPost = () => {
       .then((Response) => {
         console.log(Response.data.result);
         dispatch(addpost(Response.data.result));
+
+        //add to home posts if the user was at home page
+        dispatch(AddToHomePosts(Response.data.result));
       })
       .catch((err) => {
         console.log(err);
@@ -127,7 +132,6 @@ const AddPost = () => {
                 </Link>
 
                 {moment().endOf(post.created_at).fromNow()}
-
                 <span className="date"></span>
               </div>
             </div>
@@ -181,7 +185,7 @@ const AddPost = () => {
                             <button
                               onClick={(e) => {
                                 handleShow();
-                                console.log(show);
+                                // console.log(show);
                               }}
                               style={{
                                 border: "none",
@@ -209,7 +213,7 @@ const AddPost = () => {
                           <button
                             onClick={(e) => {
                               handleShowVideo();
-                              console.log(show);
+                              // console.log(show);
                             }}
                             style={{ border: "none", backgroundColor: "white" }}
                           >

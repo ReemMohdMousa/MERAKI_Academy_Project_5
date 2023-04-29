@@ -135,13 +135,12 @@ io.on("connection", (socket) => {
   socket.on(
     "SEND_NOTIFICATION",
     ({ firstname, lastname, avatar, receiver, messagecontent }) => {
-      const Recevier = getUserNoti("receiver",receiver);
-      console.log(Recevier);
+      const Recevier = getUserNoti(receiver);
+      // console.log(Recevier.socketId);
       if (Recevier) {
         let data = { firstname, lastname, avatar, receiver, messagecontent };
         socket.to([Recevier.socketId]).emit("RECEIVE_NOTIFICATION", data);
       }
-
     }
   );
 

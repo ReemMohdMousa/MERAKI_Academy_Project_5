@@ -25,8 +25,12 @@ const createNewComment = async (req, res) => {
 
   const query = `INSERT INTO comments (post_id, user_id, content, image, video) VALUES ($1,$2,$3,$4,$5) RETURNING *`;
   const data = [post_id, user_id, content, image, video];
+
+
   const notiquery = `INSERT INTO notifications(user_id,sender_id,content,avatar) VALUES($1,$2,$3,$4)RETURNING*`;
   await pool.query(notiquery, [receiver, user_id, messagecontent, avatar]);
+
+
   pool
     .query(query, data)
     .then((result) => {
@@ -132,7 +136,7 @@ ORDER BY nestedcomments.created_at DESC`;
 const getCommentsByPostId = (req, res) => {
   const post_id = req.params.id;
 
-  const query = `SELECT comments.*, users.firstname,users.lastname
+  const query = `SELECT comments.*, users.firstname,users.lastname, users.avatar
   FROM comments 
   INNER JOIN users ON comments.user_id = users.user_id
   WHERE comments.is_deleted=0 AND comments.post_id =$1 

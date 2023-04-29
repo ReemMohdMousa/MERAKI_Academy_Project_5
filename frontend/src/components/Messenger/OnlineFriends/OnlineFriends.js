@@ -31,14 +31,14 @@ const OnlineFriends = ({ onlineUsers }) => {
   const checkIfAFriendIsOnline = () => {
     if (friends) {
       const results = friends.filter((frd) => {
-        console.log("************", frd.user_id);
-        console.log(onliners.includes(frd.user_id));
+        // console.log("************", frd.user_id);
+        // console.log(onliners);
+        // console.log(onliners.includes(frd.user_id));
 
         if (onliners.includes(frd.user_id)) {
           return frd;
         }
       });
-      console.log(results);
       setOnlineFriends(results);
     }
   };

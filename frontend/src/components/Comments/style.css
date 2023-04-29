@@ -26,3 +26,13 @@
 .react-input-emoji--button svg {
   fill: #858585;
 }
+
+
+
+.write-comment{
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  
+}

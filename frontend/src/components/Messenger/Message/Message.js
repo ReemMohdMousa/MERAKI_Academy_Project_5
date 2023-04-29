@@ -4,10 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate, useParams, Outlet } from "react-router-dom";
 import moment from "moment";
-const Messages = ({ mine, message }) => {
+
+
+const Messages = ({ mine, message, theOpenedConversation }) => {
 
   // console.log("************", message);
   const [friendInfo, setFriendInfo] = useState(null);
+  const [theFriendId, setTheFriendId] = useState("");
 
   //dispatch
   const dispatch = useDispatch();
@@ -20,6 +23,38 @@ const Messages = ({ mine, message }) => {
     };
   });
 
+  //render the friend name and picture
+  const getFriendId = () => {
+    let userFriendId = theOpenedConversation.members.find((element) => {
+      // console.log("*************", element);
+      return element != userId;
+    });
+    console.log(userFriendId);
+    setTheFriendId(userFriendId);
+  };
+  //loggedin user info should be changed when he changes his info (pic)
+  const getFriendInfo = () => {
+    axios
+      .get(`http://localhost:5000/users/others/info/${theFriendId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        console.log(response.data.info);
+        setFriendInfo(response.data.info);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // useEffect(() => {
+  //   getFriendId();
+  //   getFriendInfo();
+  // }, [theFriendId]);
+
+  // console.log(theFriendId);
+  // console.log(message);
+
   return (
     <div>
       <div className={mine ? "my message" : "message"}>
@@ -27,13 +62,9 @@ const Messages = ({ mine, message }) => {
           <img
             className="messageImg"
             src={
-              mine
-                ? userinfo
-                  ? userinfo.avatar
-                  : friendInfo
-                  ? friendInfo.avatar
-                  : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+              mine && userinfo
+                ? userinfo.avatar
+                : friendInfo && friendInfo.avatar
             }
             alt="img"
           />

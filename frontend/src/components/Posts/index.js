@@ -13,7 +13,8 @@ import { setComments, addComment } from "../redux/reducers/posts/index";
 import { io } from "socket.io-client";
 import moment from "moment";
 import { useSocket } from "../../App";
-const Posts = ({ post, firstname, lastname }) => {
+
+const Posts = ({ post, firstname, lastname, userData }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const socket = useSocket(io);
@@ -45,29 +46,30 @@ const Posts = ({ post, firstname, lastname }) => {
   };
 
   return (
-    userinfo && (
+    userData && (
       <div className="posts">
         <div className="containers">
           <div className="user">
             <div className="userInfo">
               <img
                 src={
-                  userinfo.avatar
-                    ? userinfo.avatar
+                  userData.avatar
+                    ? userData.avatar
                     : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                 }
                 alt="img"
               />
               <div className="details">
                 <Link
-                  to={`/profile/${userId}`}
+                  to={`/profile/${userData.user_id}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <span className="name">
-                    {firstname} {lastname}
+                    {userData.firstname} {userData.lastname}
                   </span>
                 </Link>
                 <span className="date">
+
                 {moment(`${post.created_at}`).fromNow()  }
                 </span>
               </div>
@@ -164,8 +166,8 @@ const Posts = ({ post, firstname, lastname }) => {
           {openComments && post.post_id && (
             <Comments
               id={post.post_id}
-              firstname={firstname}
-              lastname={lastname}
+              firstname={userData.firstname}
+              lastname={userData.lastname}
               socket={socket}
             />
           )}
