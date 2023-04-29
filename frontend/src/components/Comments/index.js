@@ -190,6 +190,8 @@ const Comments = ({ id, firstname, lastname, socket }) => {
     getAllCommentsByPostId(id);
   }, []);
 
+  console.log(userinfo);
+
   return (
     <>
       <section className="gradient-custom">

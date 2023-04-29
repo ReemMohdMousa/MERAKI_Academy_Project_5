@@ -18,7 +18,12 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { MDBFile } from "mdb-react-ui-kit";
 import moment from "moment";
-import { setPosts, addpost, AddToHomePosts } from "../redux/reducers/posts";
+
+import {
+  setIsPostAddedFromHome,
+  addpost,
+  AddToHomePosts,
+} from "../redux/reducers/posts";
 
 const AddPost = () => {
   const [show, setShow] = useState(false);
@@ -32,12 +37,13 @@ const AddPost = () => {
   const [post, setpost] = useState({});
   const dispatch = useDispatch();
   const [selectedvideo, setSelectedVideo] = useState("");
+
   const { token, userinfo } = useSelector((state) => {
     return {
       token: state.auth.token,
       userinfo: state.auth.userinfo,
     };
-  }); 
+  });
 
   /********************************************/
   const [video, setVedio] = useState("");
@@ -100,7 +106,8 @@ const AddPost = () => {
         dispatch(addpost(Response.data.result));
 
         //add to home posts if the user was at home page
-        dispatch(AddToHomePosts(Response.data.result));
+        // dispatch(AddToHomePosts(Response.data.result));
+        dispatch(setIsPostAddedFromHome(true));
       })
       .catch((err) => {
         console.log(err);
@@ -130,9 +137,6 @@ const AddPost = () => {
                     {userinfo.firstname} {userinfo.lastname}
                   </span>
                 </Link>
-
-                {moment().endOf(post.created_at).fromNow()}
-                <span className="date"></span>
               </div>
             </div>
           </div>
@@ -235,7 +239,7 @@ const AddPost = () => {
                             <span className="ms-3 me-4"> | </span>&nbsp; &nbsp;
                           </MDBCardText>
                           <MDBIcon fas icon="plus" />
-                          <MDBBtn  
+                          <MDBBtn
                             onClick={() => {
                               console.log("totalpost", post);
                               AddingPost();

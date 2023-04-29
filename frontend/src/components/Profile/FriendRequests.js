@@ -105,7 +105,7 @@ const FriendRequests = ({ id }) => {
   useEffect(() => {
     checkIfReqWasSent();
     checkIfReqWasReceived();
-  }, []);
+  }, [isAdded, isReceived, isFriend]);
 
   //add friend request
   const addFriendFun = (id) => {
