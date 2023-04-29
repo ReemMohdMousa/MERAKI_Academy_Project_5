@@ -217,7 +217,7 @@ const Messenger = () => {
           </h5>
           {conversations?.map((element) => {
             return (
-              <MDBCard>
+              <MDBCard >
                 <MDBCardBody style={{ paddingTop: "0px" }}>
                   <MDBTypography listUnStyled className="mb-0">
                     <li className="p-2 border-bottom">
@@ -261,7 +261,7 @@ const Messenger = () => {
                       friendInfo?.firstname + " " + friendInfo?.lastname}
                   </p>
                 </MDBCardHeader>
-                <MDBCardBody>
+                <MDBCardBody className="chatBoxWrapper ">
                   <div>
                     <div className="chatBoxTop">
                       {messages.map((element) => {
