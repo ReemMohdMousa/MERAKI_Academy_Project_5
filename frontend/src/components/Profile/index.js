@@ -142,7 +142,18 @@ const Profile = () => {
                       fluid
                       style={{ width: "150px", zIndex: "1", height: "200px" }}
                     ></MDBCardImage>
-
+                    <MDBTypography
+                      tag="h5"
+                      style={{
+                        zIndex: "1",
+                        color: "black",
+                        marginLeft: "35px",
+                      }}
+                    >
+                      {userData && userData.firstname}
+                      {"  "}
+                      {userData && userData.lastname}
+                    </MDBTypography>
                     {/* <MDBBtn
                       outline
                       color="dark"
@@ -151,16 +162,6 @@ const Profile = () => {
                       Edit profile Info
                     </MDBBtn> */}
                     {userId == id ? <EditProfileInfoBtn /> : ""}
-                  </div>
-                  <div
-                    className="ms-3"
-                    style={{ marginTop: "215px", color: "black", zIndex: "1" }}
-                  >
-                    <MDBTypography tag="h5">
-                      {userData && userData.firstname}
-                      {"  "}
-                      {userData && userData.lastname}
-                    </MDBTypography>
                   </div>
                 </div>
 
