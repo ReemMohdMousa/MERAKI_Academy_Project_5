@@ -209,9 +209,9 @@ const Messenger = () => {
   }, [messages]);
 
   return (
-    <MDBContainer fluid className="py-5" style={{ backgroundColor: "#eee" }}>
+    <MDBContainer fluid className="py-5" style={{ backgroundColor: "#eee",paddingLeft:"10rem",paddingRight:"8rem"  }}>
       <MDBRow>
-        <MDBCol md="4" lg="3" xl="2" className="mb-4 mb-md-0">
+        <MDBCol md="4" lg="3" xl="3" className="mb-4 mb-md-0">
           <h5 className="font-weight-bold mb-3 text-center text-lg-start">
             Chats
           </h5>
@@ -246,7 +246,7 @@ const Messenger = () => {
           })}
         </MDBCol>
 
-        <MDBCol md="6" lg="7" xl="8">
+        <MDBCol md="5" lg="5" xl="6">
           <MDBTypography listUnStyled>
             {theOpenedConversation ? (
               <MDBCard>
@@ -301,8 +301,8 @@ const Messenger = () => {
               <div className="noConversationText">"Open a conversation"</div>
             )}
           </MDBTypography>
-        </MDBCol>
-        <MDBCol>
+        </MDBCol >
+        <MDBCol md="5" lg="5" xl="3">
           <h5 className="font-weight-bold mb-3 text-center text-lg-start">
             Active now
           </h5>
