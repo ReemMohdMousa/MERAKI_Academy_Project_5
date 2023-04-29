@@ -3,11 +3,14 @@ import {
   MDBContainer,
   MDBNavbar,
   MDBNavbarBrand,
+  MDBNavbarToggler,
+  MDBIcon,
+  MDBNavbarNav,
   MDBNavbarItem,
   MDBNavbarLink,
   MDBBtn,
+  MDBCollapse,
 } from "mdb-react-ui-kit";
-
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -93,7 +96,7 @@ const NavBar = () => {
         <MDBNavbar expand="lg">
           <MDBContainer fluid>
             <MDBNavbarBrand href="/home" style={{ padding: "0px",margin:"0px" }}><img
-                src="/logo.png"
+                src="./logo.png"
                 style={{ height: "50px", width: "100px", padding: "0px",margin:"0px" }}
                 alt="logo"
               /></MDBNavbarBrand>
@@ -237,7 +240,7 @@ color="secondary"
         <MDBNavbar expand="lg" light bgColor="light">
           <MDBContainer fluid>
           <MDBNavbarBrand href="/" style={{ padding: "0px",margin:"0px" }}><img
-                src="/logo.png"
+                src="./logo.png"
                 style={{ height: "50px", width: "100px", padding: "0px",margin:"0px" }}
                 alt="This will display logo"
               /></MDBNavbarBrand>

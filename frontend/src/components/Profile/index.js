@@ -169,7 +169,7 @@ const Profile = () => {
                   className="p-4 text-black"
                   style={{ backgroundColor: "#f8f9fa" }}
                 >
-                   <div className="d-flex justify-content-start" style={{marginLeft:"118px", marginTop:"3px"}}>
+                   <div className="d-flex justify-content-end" style={{marginRight:"5px", marginTop:"-23px"}}>
 
                     {userId == id ? <EditProfileInfoBtn /> : ""}
                    </div>

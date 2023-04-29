@@ -37,7 +37,7 @@ const AddPost = () => {
       token: state.auth.token,
       userinfo: state.auth.userinfo,
     };
-  });
+  }); 
 
   /********************************************/
   const [video, setVedio] = useState("");
@@ -130,6 +130,9 @@ const AddPost = () => {
                     {userinfo.firstname} {userinfo.lastname}
                   </span>
                 </Link>
+
+                {moment().endOf(post.created_at).fromNow()}
+                <span className="date"></span>
               </div>
             </div>
           </div>
@@ -232,7 +235,7 @@ const AddPost = () => {
                             <span className="ms-3 me-4"> | </span>&nbsp; &nbsp;
                           </MDBCardText>
                           <MDBIcon fas icon="plus" />
-                          <MDBBtn
+                          <MDBBtn  
                             onClick={() => {
                               console.log("totalpost", post);
                               AddingPost();

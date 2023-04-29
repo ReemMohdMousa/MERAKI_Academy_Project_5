@@ -79,7 +79,7 @@ const Home = () => {
         console.log(err);
       });
   };
-  const [socketnotification, setSocketNotification] = useState(null);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     socket.connect();
@@ -97,7 +97,9 @@ const Home = () => {
     console.log(socket);
     socket.on("RECEIVE_NOTIFICATION", (data) => {
       console.log("HI", data);
-      setSocketNotification(data)
+      setNotification((current) => {
+        return { ...current, data };
+      });
       socket.on("eee", (data) => {
         console.log(data);
       });
@@ -117,9 +119,9 @@ const Home = () => {
     });
   }, [userId]);
 
-  const notify = () => console.log(socketnotification);
+  const notify = () => console.log(notification);
   toast(({ data }) => `${data}`, {
-    data: `${socketnotification?.messagecontent}`,
+    data: `${notification?.data.messagecontent}`,
     icon: (
       <img
         style={{ width: "30px", height: "30px" }}
@@ -137,7 +139,7 @@ const Home = () => {
   //   progress: undefined,
   //   theme: "light",
   // });
-  socketnotification !== null && notify();
+  notification !== null && notify();
 
   return (
     <div>
@@ -243,7 +245,7 @@ const Home = () => {
       </div>
       <div>
         {" "}
-        {socketnotification && (
+        {notification && (
           <ToastContainer
             position="top-right"
             autoClose={5000}
