@@ -71,12 +71,19 @@
 
 .noConversationText {
   position: absolute;
-  top: 10%;
+  top: 12rem;
+  left: 30rem;
   font-size: 50px;
   color: rgb(224, 220, 220);
   cursor: default;
 }
-
+@media screen and (max-width: 768px) {
+  .noConversationText {
+    display: none;
+ 
+    
+  }
+}
 @media screen and (max-width: 768px) {
   .chatMenu {
     flex: 1;
