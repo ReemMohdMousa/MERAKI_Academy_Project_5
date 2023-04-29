@@ -142,6 +142,7 @@ const Profile = () => {
                       fluid
                       style={{ width: "150px", zIndex: "1", height: "200px" }}
                     ></MDBCardImage>
+                   
                     <MDBTypography
                       className="py-1"
                       tag="h5"
@@ -162,15 +163,20 @@ const Profile = () => {
                     >
                       Edit profile Info
                     </MDBBtn> */}
-                    {userId == id ? <EditProfileInfoBtn /> : ""}
                   </div>
                 </div>
                 <div
                   className="p-4 text-black"
                   style={{ backgroundColor: "#f8f9fa" }}
                 >
+                   <div className="d-flex justify-content-end" style={{marginRight:"5px", marginTop:"-23px"}}>
+
+                    {userId == id ? <EditProfileInfoBtn /> : ""}
+                   </div>
+                   <br/>
                   <div className="d-flex justify-content-end text-center py-1">
                     <div className="px-4">
+
                       <MDBCardText
                         className="p"
                         style={{ marginBottom: "0px" }}
@@ -208,7 +214,7 @@ const Profile = () => {
                       </div>
                     </div>
                   )}
-                  {/* userData && userData.bio &&  */}
+                  
                   <MDBRow className="g-2">
                     <MDBCol className="mb-2">
                       {id == userId && <AddPost />}

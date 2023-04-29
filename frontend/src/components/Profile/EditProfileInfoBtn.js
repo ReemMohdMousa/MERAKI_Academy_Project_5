@@ -6,6 +6,7 @@ import { Button } from "react-bootstrap";
 import { MDBFile } from "mdb-react-ui-kit";
 import Modal from "react-bootstrap/Modal";
 import { setAreUserInfoChanged } from "../redux/reducers/posts/index";
+import EditIcon from "@mui/icons-material/Edit";
 
 const EditProfileInfoBtn = () => {
   //componant states
@@ -138,14 +139,15 @@ const EditProfileInfoBtn = () => {
     <div>
       <Dropdown>
         <Dropdown.Toggle
-          variant="light"
           id="dropdown-basic"
           style={{
-            backgroundColor: "inherit",
-            border: "2px solid black",
+            background: "rgb(59,113,202)",
+            position: "absolute",
+            padding: "2px",
+            boxShadow: "0 4px 5px rgba(0, 0, 0, 0.2)",
           }}
         >
-          Edit Profile Info
+          <EditIcon />
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
