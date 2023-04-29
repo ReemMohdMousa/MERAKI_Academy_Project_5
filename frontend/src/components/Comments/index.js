@@ -70,6 +70,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
       .then((resp) => resp.json())
       .then((data) => {
         //setpost()
+        console.log(data.url);
 
         setNewComment((image) => {
           setDisabled(false);
@@ -183,7 +184,6 @@ const Comments = ({ id, firstname, lastname, socket }) => {
       console.log(error);
     }
   };
-
 
   useEffect(() => {
     getAllCommentsByPostId(id);
@@ -323,6 +323,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                         >
                           {comments?.length > 0 &&
                             comments.map((element) => {
+                              console.log(element);
                               return (
                                 <div
                                   className="d-flex flex-start mt-4"
@@ -418,7 +419,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                               }}
                                               variant="success"
                                               src={element.image}
-                                              alt="img"
+                                              alt="imggg"
                                             />
                                           )}
                                           {disabled && (
@@ -444,8 +445,6 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                           >
                                             all replies
                                           </button>
-
-
                                         </div>
                                       </div>
                                     </div>

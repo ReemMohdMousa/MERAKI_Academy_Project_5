@@ -129,7 +129,7 @@ const Profile = () => {
                 >
                   <div
                     className="ms-4 mt-5 d-flex flex-column"
-                    style={{ width: "160px", height: "230px" }}
+                    style={{ width: "150px", height: "200px" }}
                   >
                     <MDBCardImage
                       src={
@@ -154,7 +154,7 @@ const Profile = () => {
                   </div>
                   <div
                     className="ms-3"
-                    style={{ marginTop: "210px", color: "black", zIndex: "1" }}
+                    style={{ marginTop: "215px", color: "black", zIndex: "1" }}
                   >
                     <MDBTypography tag="h5">
                       {userData && userData.firstname}

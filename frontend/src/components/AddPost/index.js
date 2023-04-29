@@ -37,7 +37,7 @@ const AddPost = () => {
       token: state.auth.token,
       userinfo: state.auth.userinfo,
     };
-  });
+  }); 
 
   /********************************************/
   const [video, setVedio] = useState("");
@@ -185,7 +185,7 @@ const AddPost = () => {
                             <button
                               onClick={(e) => {
                                 handleShow();
-                                console.log(show);
+                                // console.log(show);
                               }}
                               style={{
                                 border: "none",
@@ -213,7 +213,7 @@ const AddPost = () => {
                           <button
                             onClick={(e) => {
                               handleShowVideo();
-                              console.log(show);
+                              // console.log(show);
                             }}
                             style={{ border: "none", backgroundColor: "white" }}
                           >

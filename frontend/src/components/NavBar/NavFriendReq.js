@@ -25,6 +25,7 @@ export default function BasicMenu() {
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    dispatch(setNewReq(false));
   };
   const handleClose = () => {
     setAnchorEl(null);

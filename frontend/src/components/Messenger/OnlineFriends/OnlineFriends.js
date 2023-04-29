@@ -31,9 +31,9 @@ const OnlineFriends = ({ onlineUsers }) => {
   const checkIfAFriendIsOnline = () => {
     if (friends) {
       const results = friends.filter((frd) => {
-        console.log("************", frd.user_id);
-        console.log(onliners);
-        console.log(onliners.includes(frd.user_id));
+        // console.log("************", frd.user_id);
+        // console.log(onliners);
+        // console.log(onliners.includes(frd.user_id));
 
         if (onliners.includes(frd.user_id)) {
           return frd;
@@ -51,10 +51,10 @@ const OnlineFriends = ({ onlineUsers }) => {
     checkIfAFriendIsOnline();
   }, [onliners, onlineUsers]);
 
-  console.log("onlineUsers", onlineUsers);
-  console.log("onliners", onliners);
-  console.log("friends", friends);
-  console.log("onlineFriends", onlineFriends);
+  // console.log("onlineUsers", onlineUsers);
+  // console.log("onliners", onliners);
+  // console.log("friends", friends);
+  // console.log("onlineFriends", onlineFriends);
 
   // const onlineFriendss = () => {
   //   friends.filter((f) => onlineUsers.some((u) => u.userId === f.userId));

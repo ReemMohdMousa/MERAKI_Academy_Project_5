@@ -54,7 +54,7 @@ export const posts = createSlice({
     addComment: (state, action) => {
       state.posts.map((elem, i) => {
         if (elem.post_id === action.payload.id) {
-          elem.comments.push(action.payload.newComment);
+          elem.comments.unshift(action.payload.newComment);
         }
       });
     },
