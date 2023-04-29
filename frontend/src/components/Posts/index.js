@@ -68,7 +68,7 @@ const Posts = ({ post, firstname, lastname }) => {
                   </span>
                 </Link>
                 <span className="date">
-                {moment().endOf(post.created_at).fromNow()  }
+                {moment(`${post.created_at}`).fromNow()  }
                 </span>
               </div>
             </div>

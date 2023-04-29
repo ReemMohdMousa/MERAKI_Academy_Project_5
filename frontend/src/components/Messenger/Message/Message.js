@@ -3,7 +3,7 @@ import "./message.css";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate, useParams, Outlet } from "react-router-dom";
-
+import moment from "moment";
 const Messages = ({ mine, message }) => {
 
   // console.log("************", message);
@@ -39,7 +39,7 @@ const Messages = ({ mine, message }) => {
           />
           <p className="messageText">{message.text}</p>
         </div>
-        <div className="messageBottom"> {message.createdAt}</div>
+        <div className="messageBottom">{moment(`${message.createdAt}`).fromNow()}</div>
       </div>
     </div>
   );

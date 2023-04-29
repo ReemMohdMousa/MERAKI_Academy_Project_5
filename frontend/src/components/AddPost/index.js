@@ -127,6 +127,7 @@ const AddPost = () => {
                 </Link>
 
                 {moment().endOf(post.created_at).fromNow()}
+
                 <span className="date"></span>
               </div>
             </div>

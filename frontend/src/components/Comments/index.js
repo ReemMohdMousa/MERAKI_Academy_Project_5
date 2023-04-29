@@ -193,7 +193,8 @@ const[openReplay,setOpenReply]=useState(false)
                 <MDBCardBody  className="p-4">
                   <MDBRow>
                     <MDBCol>
-                      <div style={{padding:"12px",boxShadow:"5px 5px 		rgb(232,232,232)", marginTop:"-60px",width:"110%"}}>
+                    <div style={{padding:"12px",marginTop:"-60px",width:"110%"}}>
+                      
                       <div
                         className="d-flex flex-start"
                         style={{}}
@@ -218,36 +219,7 @@ const[openReplay,setOpenReply]=useState(false)
                               </p>
                             </div>
                            
-                            {/* <MDBInput
-                              style={{height: "60px"}}
-                              wrapperClass="mb-4"
-                              placeholder="write a comment..."
-                              id="mytextarea"
-                              type="text"
-                              onChange={(e) => {
-                                setNewComment((content) => {
-                                  setDisabled(false);
-
-                                  return {
-                                    ...content,
-                                    content: e.target.value + text,
-                                  };
-                                });
-                              }}
-                            /> */}
-                        
-
-                            <div >
-                            
-                              {/* <button
-                                onClick={() => {
-                                  addNewComment();
-                                }}
-                              >
-                                comment
-                              </button> */}
                           
-                            </div>
                            
                           </div>
                         </div>
@@ -323,6 +295,7 @@ const[openReplay,setOpenReply]=useState(false)
                            <button className="commentbtn" onClick={()=>{ addNewComment(text);}} >
                                 Comment</button>
                                 </div>
+                                <div style={{height:"200px",width:"120%",overflowY:"scroll"}}>
                       {comments?.length > 0 &&
                         comments.map((element) => {
                           return (
@@ -349,7 +322,8 @@ const[openReplay,setOpenReply]=useState(false)
                                       {`${element.firstname}   ${element.lastname}`}
                                      <br></br>
                                       <span className="small" style={{color:"gray"}}>
-                                        {moment().endOf(element.created_at).fromNow()  }
+                                        {moment(`${element.created_at}`).fromNow()  }
+                                       
                                         {/* - {format(element.created_at)} */}
                                       </span>
                                     </p>
@@ -422,6 +396,7 @@ const[openReplay,setOpenReply]=useState(false)
                                     )}
                                     <button
                                       onClick={() => {
+                                        setOpenReply(!openReplay)
                                         getAllNestedCommentsBycommentId(
                                           element.post_id,
                                           element.comment_id
@@ -432,12 +407,16 @@ const[openReplay,setOpenReply]=useState(false)
                                     </button>
                                   </div>
                                 </div>
-
+                                {openReplay &&
                                 <div className="d-flex flex-start mt-4">
                                   <a className="me-3" href="#">
                                     <MDBCardImage
                                       className="rounded-circle shadow-1-strong me-3"
-                                      src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(31).webp"
+                                      src={
+                                      userinfo &&  userinfo.avatar
+                                          ? userinfo.avatar
+                                          : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                                      }
                                       alt="avatar"
                                       width="65"
                                       height="65"
@@ -452,13 +431,13 @@ const[openReplay,setOpenReply]=useState(false)
                                           {userinfo.lastname}
                                           <br></br>{" "}
                                           <span className="small">
-                                            {moment().startOf('hour').fromNow()
-}
+                                            {moment().fromNow()
+}                                          
                                           </span>
                                         </p>
                                       </div>
                                      
-                                      <button
+                                      {/* <button
                                         onClick={() => {
                                           createNestedComment(
                                             element.post_id,
@@ -469,7 +448,7 @@ const[openReplay,setOpenReply]=useState(false)
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply" viewBox="0 0 16 16">
   <path d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.74 8.74 0 0 0-1.921-.306 7.404 7.404 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254a.503.503 0 0 0-.042-.028.147.147 0 0 1 0-.252.499.499 0 0 0 .042-.028l3.984-2.933zM7.8 10.386c.068 0 .143.003.223.006.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96v-.667z"/>
 </svg>
-                                      </button>
+                                      </button> */}
 
                                       <MDBInput
                                         style={{ height: "40px" }}
@@ -486,13 +465,26 @@ const[openReplay,setOpenReply]=useState(false)
                                           });
                                         }}
                                       />
-
+ <button
+                                        onClick={() => {
+                                          createNestedComment(
+                                            element.post_id,
+                                            element.comment_id
+                                          );
+                                        }}
+                                      >
+                                        //!Reply
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply" viewBox="0 0 16 16">
+  <path d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.74 8.74 0 0 0-1.921-.306 7.404 7.404 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254a.503.503 0 0 0-.042-.028.147.147 0 0 1 0-.252.499.499 0 0 0 .042-.028l3.984-2.933zM7.8 10.386c.068 0 .143.003.223.006.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96v-.667z"/>
+</svg>
+                                      </button>
 
                                     </div>
                                   </div>
                                 </div>
-
-                                {allnested?.length > 0 &&
+                        }
+                        <div style={{height:"100px",overflowY:"scroll"}}>
+                                {openReplay && allnested?.length > 0 &&
                                   allnested.map((elementnested) => {
                                     return (
                                       <div
@@ -503,8 +495,8 @@ const[openReplay,setOpenReply]=useState(false)
                                           <MDBCardImage
                                             className="rounded-circle shadow-1-strong me-3"
                                             src={
-                                              elementnested.avatar
-                                                ? elementnested.avatar
+                                              userinfo.avatar
+                                                ? userinfo.avatar
                                                 : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                                             }
                                             alt="avatar"
@@ -521,9 +513,8 @@ const[openReplay,setOpenReply]=useState(false)
                                                 {elementnested.lastname}
                                                 <br></br>{" "}
                                                 <span className="small">
-                                                  {/* {format(
-                                                    elementnested.created_at
-                                                  )} */}
+                                                  {moment(`${elementnested.created_at}`).fromNow()}
+                                                  
                                                 </span>
                                               </p>
                                             </div>
@@ -542,7 +533,7 @@ const[openReplay,setOpenReply]=useState(false)
                                       </div>
                                     );
                                   })}
-
+</div>
                                 {showEdit ? (
                                   <UpdateComment
                                     showModal={showEdit}
@@ -556,6 +547,7 @@ const[openReplay,setOpenReply]=useState(false)
                             </div>
                           );
                         })}
+                        </div>
                     </MDBCol>
                   </MDBRow>
                 </MDBCardBody>
