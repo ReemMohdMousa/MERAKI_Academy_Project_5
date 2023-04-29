@@ -203,7 +203,6 @@ const editUserInfo = (req, res) => {
   const user_id = req.token.userId;
 
   let { avatar, coverImg, bio } = req.body;
-  console.log(req.body);
   const data = [avatar, coverImg, bio, user_id];
 
   const query = `UPDATE users SET 
