@@ -174,7 +174,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
   };
 
   const deleteComment = async (post_id, comment_id) => {
-    console.log(post_id, comment_id);
+    // console.log(post_id, comment_id);
     try {
       await axios
         .delete(`http://localhost:5000/comments/comment/${comment_id}`, {
