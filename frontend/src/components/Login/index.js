@@ -138,7 +138,8 @@ const Login = () => {
             <div className="ratio ratio-16x9 hide">
               <iframe
                 className="shadow-1-strong rounded hide"
-                src="./nigh.mp4"
+                src="./nighw.mp4"
+                mute={true}
                 allowFullScreen
                 alt="welcome"
                 data-gtm-yt-inspected-2340190_699="true"

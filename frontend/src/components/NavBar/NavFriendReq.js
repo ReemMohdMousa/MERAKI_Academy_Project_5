@@ -5,10 +5,9 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import { SlPeople } from "react-icons/sl";
 import axios from "axios";
 import "./syle.css";
-
+import { SlPeople } from "react-icons/sl";
 import {
   setSentReq,
   setReceivedReq,
