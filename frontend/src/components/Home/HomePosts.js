@@ -44,7 +44,7 @@ const HomePosts = ({ post ,socket}) => {
                     {post.firstname} {post.lastname}
                   </span>
                 </Link>
-                <span className="date"> {moment().endOf(post.created_at).fromNow()  }</span>
+                <span className="date"> {moment(`${post.created_at}`).fromNow()}</span>
               </div>
             </div>
             <Dropdown>
