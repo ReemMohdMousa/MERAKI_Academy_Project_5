@@ -141,7 +141,7 @@ const EditProfileInfoBtn = () => {
         <Dropdown.Toggle
           id="dropdown-basic"
           style={{
-            background: "rgb(59,113,202)",
+            background: "rgba(0, 0, 0, 0.2)",
             position: "absolute",
             padding: "2px",
             boxShadow: "0 4px 5px rgba(0, 0, 0, 0.2)",
