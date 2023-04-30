@@ -440,44 +440,80 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                               getAllNestedCommentsBycommentId(
                                                 element.post_id,
                                                 element.comment_id
-                                              );
-                                            }}
-                                          >
-                                            all replies
-                                          </button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    {openReplay && (
-                                      <div className="d-flex flex-start mt-4">
-                                        <a className="me-3" href="#">
-                                          <MDBCardImage
-                                            className="rounded-circle shadow-1-strong me-3"
-                                            src={
-                                              userinfo && userinfo.avatar
-                                                ? userinfo.avatar
-                                                : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
-                                            }
-                                            alt="avatar"
-                                            width="65"
-                                            height="65"
-                                          />
-                                        </a>
+                                              ) {
+                                                return (
+                                                  <div
+                                                    className="d-flex flex-start mt-4"
+                                                    key={
+                                                      nestedComm.nestedcomments_id
+                                                    }
+                                                  >
+                                                    <MDBCardImage
+                                                      className="rounded-circle shadow-1-strong me-3"
+                                                      src={
+                                                        element.avatar
+                                                          ? element.avatar
+                                                          : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
+                                                      }
+                                                      alt="avatar"
+                                                      width="65"
+                                                      height="65"
+                                                    />
 
-                                        <div className="flex-grow-1 flex-shrink-1">
-                                          <div>
-                                            <div className="d-flex justify-content-between align-items-center">
-                                              <p className="mb-1">
-                                                {userinfo.firstname}{" "}
-                                                {userinfo.lastname}
-                                                <br></br>{" "}
-                                                <span className="small">
-                                                  {moment()
-                                                    .startOf("hour")
-                                                    .fromNow()}
-                                                </span>
-                                              </p>
-                                            </div>
+                                                    <div>
+                                                      <div>
+                                                        <div className="d-flex justify-content-between align-items-center">
+                                                          <div className="mb-1">
+                                                            <div>
+                                                              {`${nestedComm.firstname}   ${nestedComm.lastname}`}
+                                                            </div>
+                                                            <div>
+                                                              <span
+                                                                className="small"
+                                                                style={{
+                                                                  color: "gray",
+                                                                }}
+                                                              >
+                                                                {moment(
+                                                                  `${nestedComm.created_at}`
+                                                                ).fromNow()}
+                                                  
+                                                              </span>
+                                                            </div>
+                                                          </div>
+
+                                                          <div>
+                                                            <Dropdown>
+                                                              <Dropdown.Toggle
+                                                                variant="light"
+                                                                id="dropdown-basic"
+                                                                style={{
+                                                                  backgroundColor:
+                                                                    "inherit",
+                                                                }}
+                                                              >
+                                                                <svg
+                                                                  xmlns="http://www.w3.org/2000/svg"
+                                                                  width="16"
+                                                                  height="16"
+                                                                  className="bi bi-three-dots"
+                                                                  onClick={() => {}}
+                                                                >
+                                                                  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                                                                </svg>
+                                                              </Dropdown.Toggle>
+
+                                                              <Dropdown.Menu>
+                                                                <Dropdown.Item>
+                                                                  Edit
+                                                                </Dropdown.Item>
+                                                                <Dropdown.Item>
+                                                                  Delete
+                                                                </Dropdown.Item>
+                                                              </Dropdown.Menu>
+                                                            </Dropdown>
+                                                          </div>
+                                                        </div>
 
                                             <MDBInput
                                               style={{ height: "40px" }}

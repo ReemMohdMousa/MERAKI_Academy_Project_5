@@ -93,10 +93,12 @@ const NavBar = () => {
         <MDBNavbar expand="lg">
           <MDBContainer fluid>
             <MDBNavbarBrand href="/home" style={{ padding: "0px",margin:"0px" }}><img
+
                 src="/logo.png"
                 style={{ height: "50px", width: "100px", padding: "0px",margin:"0px" }}
                 alt="logo"
-              /></MDBNavbarBrand>
+              />
+            </MDBNavbarBrand>
 
             <form className="d-flex input-group w-auto">
               <input
