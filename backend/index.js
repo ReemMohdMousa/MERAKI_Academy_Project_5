@@ -139,7 +139,8 @@ io.on("connection", (socket) => {
       // console.log(Recevier.socketId);
       if (Recevier) {
         let data = { firstname, lastname, avatar, receiver, messagecontent };
-        socket.to([Recevier.socketId]).emit("RECEIVE_NOTIFICATION", data);
+        console.log(data);
+        socket.to(Recevier.socketId).emit("RECEIVE_NOTIFICATION", data);
       }
     }
   );

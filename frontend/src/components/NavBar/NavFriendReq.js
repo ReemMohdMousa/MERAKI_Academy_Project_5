@@ -132,7 +132,7 @@ export default function BasicMenu() {
     getAllFriends();
     SentRequests();
     ReceivedRequests();
-  }, [isAdded, isReceived]);
+  }, [isAdded, isReceived, isFriend]);
 
   //cancel friend request
   const cancelFriendReqFun = (receiver_id) => {
@@ -198,7 +198,7 @@ export default function BasicMenu() {
           id="uncontrolled-tab-example"
           className="mb-3"
         >
-          <Tab eventKey="quests" title="Add Requests">
+          <Tab eventKey="Add Requests" title="Add Requests">
             <div className="friend-list-body">
               {ReceivedReq
                 ? ReceivedReq.map((element) => {

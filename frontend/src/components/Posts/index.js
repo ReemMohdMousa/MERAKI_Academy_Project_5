@@ -119,7 +119,7 @@ const Posts = ({ post, firstname, lastname, userData }) => {
                 className="embed"
                 type="video/webm"
                 src={post.video}
-              />
+              /> 
             )}
           </div>
           <br></br>

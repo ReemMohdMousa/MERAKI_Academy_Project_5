@@ -49,14 +49,17 @@ const Comments = ({ id, firstname, lastname, socket }) => {
   const [nemcomment, setNewComment] = useState({});
   const [openReplay, setOpenReply] = useState(false);
 
-  const { userinfo, token, userId, posts } = useSelector((state) => {
-    return {
-      userinfo: state.auth.userinfo,
-      token: state.auth.token,
-      userId: state.auth.userId,
-      posts: state.posts.posts,
-    };
-  });
+  const { userinfo, token, userId, posts, isCommentUpdated } = useSelector(
+    (state) => {
+      return {
+        userinfo: state.auth.userinfo,
+        token: state.auth.token,
+        userId: state.auth.userId,
+        posts: state.posts.posts,
+        isCommentUpdated: state.posts.isCommentUpdated,
+      };
+    }
+  );
 
   const uploadImage = () => {
     const data = new FormData();
@@ -170,7 +173,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
   };
 
   const deleteComment = async (post_id, comment_id) => {
-    console.log(post_id, comment_id);
+    // console.log(post_id, comment_id);
     try {
       await axios
         .delete(`http://localhost:5000/comments/comment/${comment_id}`, {
@@ -178,8 +181,8 @@ const Comments = ({ id, firstname, lastname, socket }) => {
         })
         .then((result) => {
           dispatch(removeComment({ post_id, comment_id }));
+          getAllCommentsByPostId(id);
         });
-      getAllCommentsByPostId(id);
     } catch (error) {
       console.log(error);
     }
@@ -187,7 +190,9 @@ const Comments = ({ id, firstname, lastname, socket }) => {
 
   useEffect(() => {
     getAllCommentsByPostId(id);
-  }, []);
+  }, [isCommentUpdated]);
+
+  console.log(userinfo);
 
   return (
     <>
@@ -451,8 +456,8 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                                     <MDBCardImage
                                                       className="rounded-circle shadow-1-strong me-3"
                                                       src={
-                                                        element.avatar
-                                                          ? element.avatar
+                                                        nestedComm.avatar
+                                                          ? nestedComm.avatar
                                                           : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                                                       }
                                                       alt="avatar"

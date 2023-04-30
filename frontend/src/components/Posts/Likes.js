@@ -84,7 +84,7 @@ const Likes = ({ post_id, post }) => {
     <>
       <div id="post-info">
         <AiFillLike
-          style={{ color: "blue",cursor:"pointer" }}
+          style={{ color: "blue", cursor: "pointer" }}
           onClick={(e) => {
             setShow(true);
           }}

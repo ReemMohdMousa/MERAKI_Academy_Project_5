@@ -1,15 +1,15 @@
 <p align="center">
 <a href="https://www.meraki-academy.org" target="_blank" rel="noopener noreferrer">
- <img width="400px" height="100px" src="https://www.meraki-academy.org/assets/img/logov02.svg" alt="Project logo">
+ <img width="400px" height="100px" src="./logo.png" alt="Project logo">
  </a>
 </p>
 
-<h3 align="center">Project Title
+<h3 align="center">Nigh
 </h3>
 
 ---
 
-<p align="center"> An awesome Project to describe README 
+<p align="center"> Nigh where you can stay close to your friends  
     <br> 
 <a href=''>Demo</a>
     <br> 
@@ -27,9 +27,8 @@
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
-
-Ex. Are you looking for a quick and easy way to action, action, and action? The **(name of application)** is the greatest and most accurate application to do this for you. It helps you to **(list of activities)**. The **(name of application)** provides a simple design to ensure having the best user experience.
+Nigh where you can stay close to your friends
+Nigh is a social media website that helps people stay in touch with their family and friends. As social media platform Nigh comes with a very basic design, to allow other users to design their own profile and pages with pictures and posts.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
@@ -37,17 +36,18 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-- Visual Studio Code follow this <a href=''>link</a> to install.
-- Git Bash follow this <a href=''>link</a> to install.
-- MongoDB follow this <a href=''>link</a> to install.
-- Node.js follow this <a href=''>link</a> to install.
+- Visual Studio Code follow this <a href='https://code.visualstudio.com/download'>link</a> to install.
+- Git Bash follow this <a href='https://git-scm.com/downloads'>link</a> to install.
+- MongoDB follow this <a href='https://www.mongodb.com/docs/manual/installation/'>link</a> to install.
+- Node.js follow this <a href='https://nodejs.org/en/download'>link</a> to install.
+- ElephantSQL follow this <a href='https://www.elephantsql.com/'>link</a> to install.
 
 ### Installing:
 
 1. Clone the repo to your local machine using git bash.
 
 ```
-git clone https://github.com/your_username_/Project-Name.git
+git clone https://github.com/The-Rubix-Cube/MERAKI_Academy_Project_5.git
 ```
 
 2. Install packeges repeat this step in backend and frontend folder
@@ -72,17 +72,30 @@ Now app ready to use
 
 ## 🎈 Usage <a name="usage"></a>
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+In Nigh user can do the followings:
+create, update, and delete posts with text, images, and videos.
+send and accept friend requests.
+remove friends.
+create, update, and delete comments with text and images.
+like posts.
+create nested comments; reply to other comments.
+personalize his/her profile, by adding a profile picture, cover picture, and about text.
+create conversations and send messages in real-time.
+get notification when someone commented/liked on his/her post, and when someone accepted his friend request in real-time.
+discover his/her friend's posts on the home/feeds page.
+see who is online on the website at the moment.
 
-Ex.
-
-- You don't have to register to navigate our web app
-- You can click on the **Home** tab provided in the navigation bar to view the home section
-- You can click on the **Add to cart** button to add this product to your cart but you have to be one of our users, so you should create an account
+Nigh also has an admin dashboard where admins can monitor the followings:
+number of users, posts, and likes, on the website.
+number of posts per hour.
+number of posts per day.
+new users registered to the website.
+users' info with their activity status depending on posting recently.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
 - [MongoDB](https://www.mongodb.com/) - Database
+- [Postgres](https://www.postgresql.org/) - Database
 - [Express JS](https://expressjs.com/) - Server Framework
 - [React JS](https://https://reactjs.org/) - Web Framework
 - [Node JS](https://nodejs.org/en/) - Server Environment
@@ -90,11 +103,11 @@ Ex.
 ## User Story <a name = "#user_story"></a>
 
 Your trello board link
-<a href=''>Trello</a>
+<a href='https://trello.com/b/QVPR13cg/merakiacademyproject5'>Trello</a>
 
 ## Data Flow <a name = "#data_flow"></a>
 
-<img width=200px height=200px src="https://cacoo.com/assets/site/img/templates/screenshots/er-database-diagram.png" alt="Diagram"></a>
+<img width=200px height=200px src="./SCHEMA" alt="Diagram"></a>
 
 ## ⚠️ Guided By <a name = "guided_by"></a>
 

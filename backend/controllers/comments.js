@@ -26,10 +26,8 @@ const createNewComment = async (req, res) => {
   const query = `INSERT INTO comments (post_id, user_id, content, image, video) VALUES ($1,$2,$3,$4,$5) RETURNING *`;
   const data = [post_id, user_id, content, image, video];
 
-
   const notiquery = `INSERT INTO notifications(user_id,sender_id,content,avatar) VALUES($1,$2,$3,$4)RETURNING*`;
   await pool.query(notiquery, [receiver, user_id, messagecontent, avatar]);
-
 
   pool
     .query(query, data)
@@ -42,7 +40,7 @@ const createNewComment = async (req, res) => {
         lastname: lastname,
         avatar: avatar,
         receiver: receiver,
-        messagecontent:messagecontent,
+        messagecontent: messagecontent,
       });
     })
 
@@ -61,10 +59,10 @@ const createNewNestedComment = async (req, res) => {
 
   let firstname = "";
   let lastname = "";
-  let receiver ;
+  let receiver;
   let postcontent = "";
   let postimage = "";
-  let avatar=""
+  let avatar = "";
   const { content, image } = req.body;
   const querytofindname = `
   SELECT users.firstname,users.lastname ,users.avatar from users 
@@ -74,7 +72,7 @@ const createNewNestedComment = async (req, res) => {
     lastname = result.rows[0].lastname;
     postcontent = result.rows[0].content;
     postimage = result.rows[0].image;
-    avatar=result.rows[0].avatar
+    avatar = result.rows[0].avatar;
   });
   let messagecontent = `${firstname}  ${lastname} comment in your comment`;
   const queryuser = `SELECT user_id from comments where comment_id=$1`;
@@ -84,9 +82,8 @@ const createNewNestedComment = async (req, res) => {
   const query = `INSERT INTO nestedComments (post_id, comment_id, content, image,user_id) VALUES ($1,$2,$3,$4,$5) RETURNING *`;
   const data = [post_id, comment_id, content || null, image || null, user_id];
   const notiquery = `INSERT INTO notifications(user_id,sender_id,content,avatar) VALUES($1,$2,$3,$4)RETURNING*`;
-  
-  await pool.query(notiquery, [receiver, user_id, messagecontent,avatar]);
 
+  await pool.query(notiquery, [receiver, user_id, messagecontent, avatar]);
 
   pool
     .query(query, data)
@@ -171,7 +168,7 @@ const UpdateCommentById = (req, res) => {
   SET content = COALESCE($1,content), 
   image = COALESCE($2, image), 
   updated_at=NOW()
-  WHERE comment_id=$4 AND user_id=$5 AND is_deleted = 0  RETURNING *;`;
+  WHERE comment_id=$3 AND user_id=$4 AND is_deleted = 0  RETURNING *`;
   const data = [content, image, comment_id, user_id];
 
   pool

@@ -54,6 +54,7 @@ const Home = () => {
     friends,
     homePosts,
     isPostFromHomeDeleted,
+    isPostAddedFromHome,
   } = useSelector((state) => {
     return {
       posts: state.posts.posts,
@@ -63,6 +64,7 @@ const Home = () => {
       friends: state.friends.friends,
       homePosts: state.posts.homePosts,
       isPostFromHomeDeleted: state.posts.isPostFromHomeDeleted,
+      isPostAddedFromHome: state.posts.isPostAddedFromHome,
     };
   });
 
@@ -91,7 +93,7 @@ const Home = () => {
 
   useEffect(() => {
     getAllHomePosts();
-  }, [isPostFromHomeDeleted]);
+  }, [isPostFromHomeDeleted, isPostAddedFromHome]);
 
   useEffect(() => {
     console.log(socket);
@@ -113,10 +115,10 @@ const Home = () => {
 
   useEffect(() => {
     socket?.on("SEND_USER", (OnlineUsers) => {
-      console.log(OnlineUsers);
       setOnlineUsersArr(OnlineUsers);
     });
   }, [userId]);
+
 
   const notify = (info) => {
     setSocketNotification(true)
@@ -218,7 +220,7 @@ const Home = () => {
                 <MDBCardBody className="text-black p-4">
                   <MDBRow className="g-2">
                     <MDBCol className="mb-2">
-                      <AddPost getAllHomePosts={getAllHomePosts} />
+                      <AddPost />
                     </MDBCol>
                   </MDBRow>
                   <MDBRow>
@@ -244,7 +246,7 @@ const Home = () => {
       </div>
       <div>
         {" "}
-        {socketnotification && (
+        {socketnotification && socketnotification ? (
           <ToastContainer
             position="top-right"
             autoClose={5000}
@@ -257,6 +259,8 @@ const Home = () => {
             pauseOnHover
             theme="light"
           />
+        ) : (
+          ""
         )}
       </div>
     </div>
