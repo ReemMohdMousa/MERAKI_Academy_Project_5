@@ -109,10 +109,12 @@ const Conversation = ({ Oneconversation, theOpenedConversation }) => {
           <span className={isNew ? "newConvsName" : "conversationName"}>{`${
             friendInfo && friendInfo.firstname
           } ${friendInfo.lastname}`}</span>
+
         </div>
       ) : (
-        ""
-      )}
+        <img src="https://cdn.dribbble.com/users/8424/screenshots/1036999/dots_2.gif"/>
+
+)}
     </div>
   );
 };
