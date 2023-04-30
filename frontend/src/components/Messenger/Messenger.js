@@ -1,4 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
+
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardBody,
+  MDBIcon,
+  MDBBtn,
+  MDBTypography,
+  MDBTextArea,
+  MDBCardHeader,
+} from "mdb-react-ui-kit";
 import "./messenger.css";
 import Conversation from "./Conversation/Conversation";
 import Message from "./Message/Message";
@@ -195,95 +208,112 @@ const Messenger = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-
   return (
-    <>
-      <div className="messenger">
-        <div className="chatMenu">
-          <div className="chatMenuWrapper">
-            {/* <input placeholder="Search for friends" className="chatMenuInput" /> */}
-            <h4>your conversations</h4>
-            {conversations?.map((element) => {
-              return (
-                <div
-                  key={element._id}
-                  onClick={() => {
-                    dispatch(setTheOpenedConversation(element));
-
-                    //determine the receiver_id
-                    // const receiver_id = element.members.find(
-                    //   (member) => member != userId
-                    // );
-
-                    //navigate to current conversation
-                    // navigate(`/messenger/${userId}/${receiver_id}`);
-                  }}
-                >
-                  <Conversation
-                    Oneconversation={element}
-                    theOpenedConversation={theOpenedConversation}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className="chatBox">
-          <div className="chatBoxWrapper">
-            <div>
-              <h4>
-                {theOpenedConversation &&
-                  friendInfo &&
-                  friendInfo?.firstname + " " + friendInfo?.lastname}
-              </h4>
-            </div>
-            <>
-              {theOpenedConversation ? (
-                <div>
-                  <div className="chatBoxTop">
-                    {messages.map((element) => {
-                      // console.log(element);
-                      return (
-                        <div>
-                          <Message
-                            message={element}
-                            mine={element.sender == userId ? true : false}
+    <MDBContainer fluid className="py-5" style={{ backgroundColor: "#eee",paddingLeft:"10rem",paddingRight:"8rem"  }}>
+      <MDBRow>
+        <MDBCol md="4" lg="3" xl="3" className="mb-4 mb-md-0">
+          <h5 className="font-weight-bold mb-3 text-center text-lg-start">
+            Chats
+          </h5>
+          {conversations?.map((element) => {
+            return (
+              <MDBCard >
+                <MDBCardBody style={{ paddingTop: "0px" }}>
+                  <MDBTypography listUnStyled className="mb-0">
+                    <li className="p-2 border-bottom">
+                      <div
+                        className="d-flex flex-row"
+                        style={{ padding: "0px" }}
+                      >
+                        <p
+                          className="fw-bold mb-0"
+                          key={element._id}
+                          onClick={() => {
+                            dispatch(setTheOpenedConversation(element));
+                          }}
+                        >
+                          <Conversation
+                            Oneconversation={element}
                             theOpenedConversation={theOpenedConversation}
-                            friendInfo={friendInfo}
                           />
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="chatBoxBottom">
-                    <input
-                      className="chatMessageInput"
-                      placeholder="write something..."
-                      onChange={(e) => {
-                        // console.log(e.target.value);
-                        setNewWrittenMessage(e.target.value);
-                      }}
+                        </p>
+                      </div>
+                    </li>
+                  </MDBTypography>
+                </MDBCardBody>
+              </MDBCard>
+            );
+          })}
+        </MDBCol>
 
-                      // value={newMessage}
-                    ></input>
-                    <button className="chatSubmitButton" onClick={SendNewMsg}>
-                      Send
-                    </button>
+        <MDBCol md="5" lg="5" xl="6">
+          <MDBTypography listUnStyled>
+            {theOpenedConversation ? (
+              <MDBCard>
+                <MDBCardHeader
+                  className="d-flex justify-content-between p-3"
+                  style={{ border: "none" }}
+                >
+                  <p className="fw-bold mb-0">
+                    {" "}
+                    {theOpenedConversation &&
+                      friendInfo &&
+                      friendInfo?.firstname + " " + friendInfo?.lastname}
+                  </p>
+                </MDBCardHeader>
+                <MDBCardBody className="chatBoxWrapper ">
+                  <div>
+                    <div className="chatBoxTop">
+                      {messages.map((element) => {
+                        // console.log(element);
+                        return (
+                          <div>
+                            <Message
+                              message={element}
+                              mine={element.sender == userId ? true : false}
+                              theOpenedConversation={theOpenedConversation}
+                              friendInfo={friendInfo}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="chatBoxBottom">
+                      <input
+                        className="chatMessageInput"
+                        placeholder="write something..."
+                        onChange={(e) => {
+                          // console.log(e.target.value);
+                          setNewWrittenMessage(e.target.value);
+                        }}
+
+                        // value={newMessage}
+                      ></input>
+                      <br />
+                      <button className="chatSubmitButton" onClick={SendNewMsg}>
+                        Send
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div className="noConversationText">"Open a conversation"</div>
-              )}
-            </>
-          </div>
-        </div>
-        <div className="chatOnline">
-          <div className="chatOnlineWrapper">
-            <OnlineFriends onlineUsers={onlineUsers} />
-          </div>
-        </div>
-      </div>
-    </>
+                </MDBCardBody>
+              </MDBCard>
+            ) : (
+              <div className="noConversationText">"Open a conversation"</div>
+            )}
+          </MDBTypography>
+        </MDBCol >
+        <MDBCol md="5" lg="5" xl="3">
+          <h5 className="font-weight-bold mb-3 text-center text-lg-start">
+            Active now
+          </h5>
+          <MDBCard>
+            <MDBCardBody>
+              <OnlineFriends onlineUsers={onlineUsers} />
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   );
 };
 
