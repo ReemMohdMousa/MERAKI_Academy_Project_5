@@ -79,7 +79,7 @@ const Home = () => {
         console.log(err);
       });
   };
-  const [socketnotification, setSocketNotification] = useState(null);
+  const [socketnotification, setSocketNotification] = useState(false);
 
   useEffect(() => {
     socket.connect();
@@ -97,10 +97,11 @@ const Home = () => {
     console.log(socket);
     socket.on("RECEIVE_NOTIFICATION", (data) => {
       console.log("HI", data);
-      setSocketNotification(data)
-      socket.on("eee", (data) => {
-        console.log(data);
-      });
+      //setSocketNotification(data)
+      notify(data)
+      // socket.on("eee", (data) => {
+      //   console.log(data);
+      // });
 
       // setNotification((pre)=>
       // {return [
@@ -117,16 +118,17 @@ const Home = () => {
     });
   }, [userId]);
 
-  const notify = () => console.log(socketnotification);
-  toast(({ data }) => `${data}`, {
-    data: `${socketnotification?.messagecontent}`,
+  const notify = (info) => {
+    setSocketNotification(true)
+ return toast(({ data }) => `${data}`, {
+    data: `${info?.messagecontent}`,
     icon: (
       <img
         style={{ width: "30px", height: "30px" }}
-        src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80"
+        src={info.avatar}
       ></img>
     ),
-  });
+  });}
   // toast.(<p>{notification?.messagecontent}</p>,{
   //   position: "top-right",
   //   autoClose: 5000,
@@ -137,7 +139,6 @@ const Home = () => {
   //   progress: undefined,
   //   theme: "light",
   // });
-  socketnotification !== null && notify();
 
   return (
     <div>

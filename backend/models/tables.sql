@@ -13,25 +13,6 @@ CREATE TABLE permissions (
   updated_at TIMESTAMP,
   PRIMARY KEY (permission_id)
 );
-
-CREATE TABLE users(
-  user_id SERIAL NOT NULL,
-  firstName VARCHAR(255) REQ,
-  lastName VARCHAR(255),
-  age INT,
-  email VARCHAR(255) UNIQUE,
-  password VARCHAR(255),
-  role_id INT DEFAULT 2,
-  is_deleted SMALLINT DEFAULT 0,
-  avatar TEXT,
-  coverImg TEXT,
-  bio VARCHAR(255),
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (role_id) REFERENCES roles(role_id),
-  PRIMARY KEY (user_id)
-);
-
 CREATE TABLE role_permission (
   role_permission_id SERIAL NOT NULL,
   role_id INT,
@@ -42,6 +23,25 @@ CREATE TABLE role_permission (
   FOREIGN KEY (permission_id) REFERENCES permissions(permission_id),
   PRIMARY KEY (role_permission_id)
 );
+CREATE TABLE users(
+  user_id SERIAL NOT NULL,
+  firstName VARCHAR(255),
+  lastName VARCHAR(255),
+  age INT,
+  email VARCHAR(255) UNIQUE,
+  password VARCHAR(255),
+  role_id INT DEFAULT 2,
+  is_deleted SMALLINT DEFAULT 0,
+  avatar TEXT DEFAULT 'https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg',
+  coverImg TEXT,
+  bio VARCHAR(255),
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (role_id) REFERENCES roles(role_id),
+  PRIMARY KEY (user_id)
+);
+
+
 
 CREATE TABLE posts (
   post_id SERIAL NOT NULL,
@@ -138,7 +138,7 @@ CREATE TABLE notifications (
   user_id INT,
   sender_id INT,
   avatar TEXT,
-  content VARCHAR(255),4
+  content VARCHAR(255),
   is_deleted SMALLINT DEFAULT 0,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP,
@@ -172,13 +172,7 @@ CREATE TABLE nestedComments (
   FOREIGN KEY (post_id) REFERENCES posts(post_id),
   FOREIGN KEY (comment_id) REFERENCES comments(comment_id)ON DELETE CASCADE,
   PRIMARY KEY (nestedComments_id)
-);
-  image TEXT,
-  is_deleted SMALLINT DEFAULT 0,
-  created_at TIMESTAMP DEFAULT NOW(),
-  FOREIGN KEY (post_id) REFERENCES posts(post_id),
-  FOREIGN KEY (comment_id) REFERENCES comments(comment_id),
-  PRIMARY KEY (nestedComments_id)
+
 );
 
 CREATE TABLE sharedPost1 (

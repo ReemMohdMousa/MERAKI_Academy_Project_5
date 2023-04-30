@@ -377,7 +377,7 @@ const verfiyResjsterByEmail = (email, firstName, lastName) => {
 <table border="0" cellpadding="0" cellspacing="0" class="image_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
 <tr>
 <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;">
-<div align="center" class="alignment" style="line-height:10px"><img alt="Bell Icon" src="images/Image20230428021250.png" style="display: block; height: auto; border: 0; width: 95px; max-width: 100%;" title="Bell Icon" width="95"/></div>
+<div align="center" class="alignment" style="line-height:10px"><img alt="Bell Icon" src="https://res.cloudinary.com/deqwvkyth/image/upload/v1682733247/uonylyz1mza8zd1kqsc4.png" style="display: block; height: auto; border: 0; width: 95px; max-width: 100%;" title="Bell Icon" width="95"/></div>
 </td>
 </tr>
 </table>
@@ -435,14 +435,14 @@ const verfiyResjsterByEmail = (email, firstName, lastName) => {
 <tbody>
 <tr>
 <td>
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cbdbef; background-image: url('images/background-reminder.jpg'); background-repeat: repeat; color: #000000; width: 680px;" width="680">
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cbdbef; background-image: url('https://res.cloudinary.com/deqwvkyth/image/upload/v1682796421/background-reminder_frbmja.jpg'); background-repeat: repeat; color: #000000; width: 680px;" width="680">
 <tbody>
 <tr>
 <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
 <table border="0" cellpadding="0" cellspacing="0" class="image_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
 <tr>
 <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;">
-<div align="center" class="alignment" style="line-height:10px"><img alt="Girls Image" class="fullMobileWidth" src="images/depositphotos_87087824-stock-photo-students-to-walk.jpg" style="display: block; height: auto; border: 0; width: 680px; max-width: 100%;" title="Girls Image" width="680"/></div>
+<div align="center" class="alignment" style="line-height:10px"><img alt="Girls Image" class="fullMobileWidth" src="https://res.cloudinary.com/deqwvkyth/image/upload/v1682742268/obom2p2nnulko7jbr5ci.webp" style="display: block; height: auto; border: 0; width: 680px; max-width: 100%;" title="Girls Image" width="680"/></div>
 </td>
 </tr>
 </table>
@@ -468,10 +468,10 @@ const verfiyResjsterByEmail = (email, firstName, lastName) => {
 <div align="center" class="alignment">
 <table border="0" cellpadding="0" cellspacing="0" class="social-table" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;" width="144px">
 <tr>
-<td style="padding:0 2px 0 2px;"><a href="https://www.facebook.com/" target="_blank"><img alt="Facebook" height="32" src="images/facebook2x.png" style="display: block; height: auto; border: 0;" title="Facebook" width="32"/></a></td>
-<td style="padding:0 2px 0 2px;"><a href="https://twitter.com/" target="_blank"><img alt="Twitter" height="32" src="images/twitter2x.png" style="display: block; height: auto; border: 0;" title="Twitter" width="32"/></a></td>
-<td style="padding:0 2px 0 2px;"><a href="https://instagram.com/" target="_blank"><img alt="Instagram" height="32" src="images/instagram2x.png" style="display: block; height: auto; border: 0;" title="Instagram" width="32"/></a></td>
-<td style="padding:0 2px 0 2px;"><a href="mailto:tasnim.gharaibeh@gmail.com" target="_blank"><img alt="E-Mail" height="32" src="images/mail2x.png" style="display: block; height: auto; border: 0;" title="E-Mail" width="32"/></a></td>
+<td style="padding:0 2px 0 2px;"><a href="https://www.facebook.com/" target="_blank"><img alt="Facebook" height="32" src="https://res.cloudinary.com/deqwvkyth/image/upload/v1682795869/facebook2x_nzxyls.png" style="display: block; height: auto; border: 0;" title="Facebook" width="32"/></a></td>
+<td style="padding:0 2px 0 2px;"><a href="https://twitter.com/" target="_blank"><img alt="Twitter" height="32" src="https://res.cloudinary.com/deqwvkyth/image/upload/v1682796070/twitter2x_tyzwc8.png" style="display: block; height: auto; border: 0;" title="Twitter" width="32"/></a></td>
+<td style="padding:0 2px 0 2px;"><a href="https://instagram.com/" target="_blank"><img alt="Instagram" height="32" src="https://res.cloudinary.com/deqwvkyth/image/upload/v1682796018/instagram2x_n0xouf.png" style="display: block; height: auto; border: 0;" title="Instagram" width="32"/></a></td>
+<td style="padding:0 2px 0 2px;"><a href="mailto:tasnim.gharaibeh@gmail.com" target="_blank"><img alt="E-Mail" height="32" src="https://res.cloudinary.com/deqwvkyth/image/upload/v1682796104/mail2x_ygvgzc.png" style="display: block; height: auto; border: 0;" title="E-Mail" width="32"/></a></td>
 </tr>
 </table>
 </div>
@@ -556,7 +556,7 @@ const verfiyResjsterByEmail = (email, firstName, lastName) => {
 <!--[if !vml]><!-->
 <table cellpadding="0" cellspacing="0" class="icons-inner" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block; margin-right: -4px; padding-left: 0px; padding-right: 0px;"><!--<![endif]-->
 <tr>
-<td style="vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 6px;"><a href="https://www.designedwithbee.com/" style="text-decoration: none;" target="_blank"><img align="center" alt="Designed with BEE" class="icon" height="32" src="images/bee.png" style="display: block; height: auto; margin: 0 auto; border: 0;" width="34"/></a></td>
+<td style="vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 6px;"><a href="https://www.designedwithbee.com/" style="text-decoration: none;" target="_blank"><img align="center" alt="Designed with BEE" class="icon" height="32" src="https://res.cloudinary.com/deqwvkyth/image/upload/v1682796221/bee_w9wmpd.png" style="display: block; height: auto; margin: 0 auto; border: 0;" width="34"/></a></td>
 <td style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 15px; color: #9d9d9d; vertical-align: middle; letter-spacing: undefined; text-align: center;"><a href="https://www.designedwithbee.com/" style="color: #9d9d9d; text-decoration: none;" target="_blank">Designed with BEE</a></td>
 </tr>
 </table>

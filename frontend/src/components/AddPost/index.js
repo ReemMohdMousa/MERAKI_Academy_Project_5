@@ -130,9 +130,6 @@ const AddPost = () => {
                     {userinfo.firstname} {userinfo.lastname}
                   </span>
                 </Link>
-
-                {moment().endOf(post.created_at).fromNow()}
-                <span className="date"></span>
               </div>
             </div>
           </div>
