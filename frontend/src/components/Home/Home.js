@@ -100,7 +100,7 @@ const Home = () => {
     socket.on("RECEIVE_NOTIFICATION", (data) => {
       console.log("HI", data);
       //setSocketNotification(data)
-      notify(data)
+      notify(data);
       // socket.on("eee", (data) => {
       //   console.log(data);
       // });
@@ -119,18 +119,15 @@ const Home = () => {
     });
   }, [userId]);
 
-
   const notify = (info) => {
-    setSocketNotification(true)
- return toast(({ data }) => `${data}`, {
-    data: `${info?.messagecontent}`,
-    icon: (
-      <img
-        style={{ width: "30px", height: "30px" }}
-        src={info.avatar}
-      ></img>
-    ),
-  });}
+    setSocketNotification(true);
+    return toast(({ data }) => `${data}`, {
+      data: `${info?.messagecontent}`,
+      icon: (
+        <img style={{ width: "30px", height: "30px" }} src={info.avatar}></img>
+      ),
+    });
+  };
   // toast.(<p>{notification?.messagecontent}</p>,{
   //   position: "top-right",
   //   autoClose: 5000,

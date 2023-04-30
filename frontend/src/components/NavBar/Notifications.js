@@ -50,6 +50,9 @@ export default function AccountMenu() {
         throw error;
       });
   }, []);
+
+  console.log(notification);
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -60,7 +63,11 @@ export default function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <IoIosNotificationsOutline  className= "svg1" color='royalblue' size={25}/>
+            <IoIosNotificationsOutline
+              className="svg1"
+              color="royalblue"
+              size={25}
+            />
           </Button>
         </Tooltip>
       </Box>

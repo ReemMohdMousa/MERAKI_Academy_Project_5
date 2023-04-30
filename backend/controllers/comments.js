@@ -105,7 +105,7 @@ const createNewNestedComment = async (req, res) => {
 const getAllNestedCommentsByCommentId = (req, res) => {
   const post_id = req.query.post_id;
   const comment_id = req.query.comment_id;
-  const query = `SELECT nestedcomments.*, users.firstname ,users.lastname
+  const query = `SELECT nestedcomments.*, users.firstname, users.lastname, users.avatar
   FROM nestedcomments 
   INNER JOIN users ON nestedcomments.user_id = users.user_id
   WHERE nestedcomments.is_deleted=0 AND nestedcomments.post_id =$1
