@@ -196,9 +196,6 @@ const Comments = ({ id, firstname, lastname, socket }) => {
     getAllCommentsByPostId(id);
   }, [isCommentUpdated]);
 
-  console.log(userinfo);
-  console.log(comments);
-
   return (
     <>
       <section className="gradient-custom">
