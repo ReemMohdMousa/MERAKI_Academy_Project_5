@@ -573,6 +573,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                                                 {moment(
                                                                   `${nestedComm.created_at}`
                                                                 ).fromNow()}
+                                                  
                                                               </span>
                                                             </div>
                                                           </div>
