@@ -1,6 +1,6 @@
 <p align="center">
 <a href="https://www.meraki-academy.org" target="_blank" rel="noopener noreferrer">
- <img width="400px" height="100px" src="./logo.png" alt="Project logo">
+ <img width="400px" height="100px" src="/logo.png" alt="Project logo">
  </a>
 </p>
 
@@ -73,24 +73,24 @@ Now app ready to use
 ## 🎈 Usage <a name="usage"></a>
 
 In Nigh user can do the followings:
-create, update, and delete posts with text, images, and videos.
-send and accept friend requests.
-remove friends.
-create, update, and delete comments with text and images.
-like posts.
-create nested comments; reply to other comments.
-personalize his/her profile, by adding a profile picture, cover picture, and about text.
-create conversations and send messages in real-time.
-get notification when someone commented/liked on his/her post, and when someone accepted his friend request in real-time.
-discover his/her friend's posts on the home/feeds page.
-see who is online on the website at the moment.
+- create, update, and delete posts with text, images, and videos.
+- send and accept friend requests.
+- remove friends.
+- create, update, and delete comments with text and images.
+- like posts.
+- create nested comments; reply to other comments.
+- personalize his/her profile, by adding a profile picture, cover picture, and about text.
+- create conversations and send messages in real-time.
+- get notification when someone commented/liked on his/her post, and when someone accepted his friend request in real-time.
+- discover his/her friend's posts on the home/feeds page.
+- see who is online on the website at the moment.
 
 Nigh also has an admin dashboard where admins can monitor the followings:
-number of users, posts, and likes, on the website.
-number of posts per hour.
-number of posts per day.
-new users registered to the website.
-users' info with their activity status depending on posting recently.
+- number of users, posts, and likes, on the website.
+- number of posts per hour.
+- number of posts per day.
+- new users registered to the website.
+- users' info with their activity status depending on posting recently.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
@@ -107,7 +107,7 @@ Your trello board link
 
 ## Data Flow <a name = "#data_flow"></a>
 
-<img width=200px height=200px src="./SCHEMA" alt="Diagram"></a>
+<img width=200px height=200px src="/SCHEMA" alt="Diagram"></a>
 
 ## ⚠️ Guided By <a name = "guided_by"></a>
 
