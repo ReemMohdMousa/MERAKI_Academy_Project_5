@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { io } from "socket.io-client";
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://nigh-deploy.onrender.com";
 
 export const posts = createSlice({
   name: "posts",
@@ -134,9 +134,6 @@ export const posts = createSlice({
     },
     setNotifications: (state, action) => {
       state.notifications = action.payload;
-      console.log(action.payload);
-
-      state.homePosts = action.payload;
     },
 
     setSharedPosts: (state, action) => {

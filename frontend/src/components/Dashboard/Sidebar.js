@@ -23,7 +23,7 @@ const Sidebar = () => {
     <div className="sidebar">
       <div className="top">
        <span><img
-          src="./main.png"
+          src="/main.png"
           style={{
             height: "100px",
             width: "150px",

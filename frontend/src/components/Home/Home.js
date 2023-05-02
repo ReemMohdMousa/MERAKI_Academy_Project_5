@@ -71,7 +71,7 @@ const Home = () => {
   // get all the user's and his friends posts orderd DESC
   const getAllHomePosts = () => {
     axios
-      .get(`http://localhost:5000/home/`, {
+      .get(`https://nigh-deploy.onrender.com/home/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -81,6 +81,7 @@ const Home = () => {
         console.log(err);
       });
   };
+
   const [socketnotification, setSocketNotification] = useState(false);
 
   useEffect(() => {
@@ -227,7 +228,7 @@ const Home = () => {
                         homePosts.map((elem) => {
                           return (
                             <HomePosts
-                              post={elem}
+                              homepost={elem}
                               socket={socket}
                               key={elem.post_id}
                             />

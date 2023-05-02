@@ -27,7 +27,7 @@ import {
 } from "../redux/reducers/Messenger/index";
 import OnlineFriends from "./OnlineFriends/OnlineFriends";
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://nigh-deploy.onrender.com";
 //connect to the backend server
 // const socket = io.connect(ENDPOINT);
 
@@ -98,7 +98,7 @@ const Messenger = () => {
   //get all user's conversations
   const getAllUserConversations = () => {
     axios
-      .get(`http://localhost:5000/conversation/`, {
+      .get(`https://nigh-deploy.onrender.com/conversation/`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
@@ -119,7 +119,7 @@ const Messenger = () => {
     theOpenedConversation &&
       axios
         .get(
-          `http://localhost:5000/messages/${theOpenedConversation._id}/${receiver_id}`,
+          `https://nigh-deploy.onrender.com/messages/${theOpenedConversation._id}/${receiver_id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -138,7 +138,7 @@ const Messenger = () => {
     // setCurrentUserId(userId);
     axios
       .post(
-        `http://localhost:5000/messages`,
+        `https://nigh-deploy.onrender.com/messages`,
         {
           text: newWrittenMessage,
           sender: userId,
@@ -174,9 +174,12 @@ const Messenger = () => {
     );
     theOpenedConversation &&
       axios
-        .get(`http://localhost:5000/users/others/info/${receiver_id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .get(
+          `https://nigh-deploy.onrender.com/users/others/info/${receiver_id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
         .then((response) => {
           setFriendInfo(response.data.result);
         })
@@ -193,7 +196,6 @@ const Messenger = () => {
 
   useEffect(() => {
     socket?.on("GET_USERS", (users) => {
-      console.log(users);
       setOnlineUsers(users);
     });
   }, [userId]);
@@ -209,7 +211,15 @@ const Messenger = () => {
   }, [messages]);
 
   return (
-    <MDBContainer fluid className="py-5" style={{ backgroundColor: "#eee",paddingLeft:"10rem",paddingRight:"8rem"  }}>
+    <MDBContainer
+      fluid
+      className="py-5"
+      style={{
+        backgroundColor: "#eee",
+        paddingLeft: "10rem",
+        paddingRight: "8rem",
+      }}
+    >
       <MDBRow>
         <MDBCol md="4" lg="3" xl="3" className="mb-4 mb-md-0">
           <h5 className="font-weight-bold mb-3 text-center text-lg-start">
@@ -217,7 +227,7 @@ const Messenger = () => {
           </h5>
           {conversations?.map((element) => {
             return (
-              <MDBCard >
+              <MDBCard>
                 <MDBCardBody style={{ paddingTop: "0px" }}>
                   <MDBTypography listUnStyled className="mb-0">
                     <li className="p-2 border-bottom">
@@ -301,7 +311,7 @@ const Messenger = () => {
               <div className="noConversationText">"Open a conversation"</div>
             )}
           </MDBTypography>
-        </MDBCol >
+        </MDBCol>
         <MDBCol md="5" lg="5" xl="3">
           <h5 className="font-weight-bold mb-3 text-center text-lg-start">
             Active now

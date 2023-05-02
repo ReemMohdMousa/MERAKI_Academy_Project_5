@@ -61,7 +61,7 @@ export default function BasicMenu() {
   //get all friends of the logged in user
   const getAllFriends = () => {
     axios
-      .get(`http://localhost:5000/friends/get/all/${userId}`, {
+      .get(`https://nigh-deploy.onrender.com/friends/get/all/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
@@ -76,7 +76,7 @@ export default function BasicMenu() {
     //*ME => receiver_id
 
     axios
-      .get(`http://localhost:5000/friends/received/requests`, {
+      .get(`https://nigh-deploy.onrender.com/friends/received/requests`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
@@ -96,7 +96,7 @@ export default function BasicMenu() {
     //*ME => sender_id
 
     axios
-      .get(`http://localhost:5000/friends/sent/requests`, {
+      .get(`https://nigh-deploy.onrender.com/friends/sent/requests`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
@@ -112,7 +112,7 @@ export default function BasicMenu() {
   const acceptFriendReq = (sender_id) => {
     axios
       .post(
-        `http://localhost:5000/friends/accept`,
+        `https://nigh-deploy.onrender.com/friends/accept`,
         { user2_id: sender_id },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -129,17 +129,20 @@ export default function BasicMenu() {
   };
 
   useEffect(() => {
-    getAllFriends();
+    // getAllFriends();
     SentRequests();
     ReceivedRequests();
-  }, [isAdded, isReceived, isFriend]);
+  }, [isAdded, isReceived]);
 
   //cancel friend request
   const cancelFriendReqFun = (receiver_id) => {
     axios
-      .delete(`http://localhost:5000/friends/cancel/${receiver_id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .delete(
+        `https://nigh-deploy.onrender.com/friends/cancel/${receiver_id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then(function (response) {
         dispatch(setIsAdded(false));
         dispatch(cancelFriendReq(receiver_id));
@@ -158,7 +161,7 @@ export default function BasicMenu() {
   // when the receiver delete or decline the request
   const declineFriendReqFun = (sender_id) => {
     axios
-      .delete(`http://localhost:5000/friends/decline/${sender_id}`, {
+      .delete(`https://nigh-deploy.onrender.com/friends/decline/${sender_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {

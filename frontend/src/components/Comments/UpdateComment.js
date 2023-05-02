@@ -77,7 +77,7 @@ const UpdateComment = ({ showModal, comment, setShowModal }) => {
     console.log(Updatedpost);
     axios
       .put(
-        `http://localhost:5000/comments/comment/${comment.comment_id}`,
+        `https://nigh-deploy.onrender.com/comments/comment/${comment.comment_id}`,
         { ...Updatedpost },
         { headers: { Authorization: token } }
       )

@@ -10,8 +10,6 @@ import {
 } from "../../redux/reducers/Messenger/index";
 
 const Conversation = ({ Oneconversation, theOpenedConversation }) => {
-
-
   const [theFriendId, setTheFriendId] = useState("");
   const [friendInfo, setFriendInfo] = useState({});
   const [isNew, setIsNew] = useState(false);
@@ -41,9 +39,12 @@ const Conversation = ({ Oneconversation, theOpenedConversation }) => {
   const getFriendInfo = () => {
     theFriendId &&
       axios
-        .get(`http://localhost:5000/users/others/info/${theFriendId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .get(
+          `https://nigh-deploy.onrender.com/users/others/info/${theFriendId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
         .then(function (response) {
           // console.log("***********************************", response.data);
           dispatch(setConversationFriendInfo(response.data.result));
@@ -59,7 +60,7 @@ const Conversation = ({ Oneconversation, theOpenedConversation }) => {
     theFriendId &&
       axios
         .get(
-          `http://localhost:5000/conversation/new/messages/${Oneconversation._id}/${theFriendId}`,
+          `https://nigh-deploy.onrender.com/conversation/new/messages/${Oneconversation._id}/${theFriendId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -109,12 +110,10 @@ const Conversation = ({ Oneconversation, theOpenedConversation }) => {
           <span className={isNew ? "newConvsName" : "conversationName"}>{`${
             friendInfo && friendInfo.firstname
           } ${friendInfo.lastname}`}</span>
-
         </div>
       ) : (
-        <img src="https://cdn.dribbble.com/users/8424/screenshots/1036999/dots_2.gif"/>
-
-)}
+        <img src="https://cdn.dribbble.com/users/8424/screenshots/1036999/dots_2.gif" />
+      )}
     </div>
   );
 };

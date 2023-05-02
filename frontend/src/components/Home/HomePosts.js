@@ -12,20 +12,7 @@ import {
   setIsPostFromHomeDeleted,
 } from "../redux/reducers/posts/index";
 
-// export const getAllHomePosts = () => {
-//   axios
-//     .get(`https://project5-deploy.onrender.com/home/`, {
-//       headers: { Authorization: `Bearer ${token}` },
-//     })
-//     .then((response) => {
-//       dispatch(setHomePosts(response.data.result));
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
-
-const HomePosts = ({ post, socket }) => {
+const HomePosts = ({ homepost, socket }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const [openComments, setopenComments] = useState(false);
@@ -40,11 +27,10 @@ const HomePosts = ({ post, socket }) => {
     };
   });
 
-
   const deletePost = async (id) => {
     try {
       await axios
-        .delete(`http://localhost:5000/posts/${id}`, {
+        .delete(`https://nigh-deploy.onrender.com/posts/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((result) => {
@@ -56,37 +42,39 @@ const HomePosts = ({ post, socket }) => {
     }
   };
 
+  console.log(homepost);
+
   return (
-    post && (
+    homepost && (
       <div className="posts">
         <div className="container">
           <div className="user">
             <div className="userInfo">
               <img
                 src={
-                  post.avatar
-                    ? post.avatar
+                  homepost.avatar
+                    ? homepost.avatar
                     : "https://png.pngtree.com/png-clipart/20210613/original/pngtree-gray-silhouette-avatar-png-image_6404679.jpg"
                 }
                 alt="img"
               />
               <div className="details">
                 <Link
-                  to={`/profile/${post.user_id}`}
+                  to={`/profile/${homepost.user_id}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <span className="name">
-                    {post.firstname} {post.lastname}
+                    {homepost.firstname} {homepost.lastname}
                   </span>
                 </Link>
 
                 <span className="date">
                   {" "}
-                  {moment(`${post.created_at}`).fromNow()}
+                  {moment(`${homepost.created_at}`).fromNow()}
                 </span>
               </div>
             </div>
-            {post.user_id == userId ? (
+            {homepost.user_id == userId ? (
               <Dropdown>
                 <Dropdown.Toggle
                   id="dropdown-basic"
@@ -114,7 +102,7 @@ const HomePosts = ({ post, socket }) => {
                   </Dropdown.Item>
                   <Dropdown.Item
                     onClick={() => {
-                      deletePost(post.post_id);
+                      deletePost(homepost.post_id);
                     }}
                   >
                     Delete Post
@@ -126,21 +114,21 @@ const HomePosts = ({ post, socket }) => {
             )}
           </div>
           <div className="contant">
-            {post.content && <p>{post.content}</p>}
-            {post.image && <img src={post.image} alt="img" />}
-            {post.video && (
+            {homepost.content && <p>{homepost.content}</p>}
+            {homepost.image && <img src={homepost.image} alt="img" />}
+            {homepost.video && (
               <embed
                 width="100%"
                 height="300px"
                 className="embed"
                 type="video/webm"
-                src={post.video}
+                src={homepost.video}
               />
             )}
           </div>
           <br />
           <div className="infomation">
-            {post.post_id && <Likes post_id={post.post_id} post={post} />}
+            {homepost.post_id && <Likes post_id={homepost.post_id} post={homepost} />}
 
             <div
               onClick={() => {
@@ -179,14 +167,14 @@ const HomePosts = ({ post, socket }) => {
 
           {openComments && (
             <Comments
-              id={post.post_id}
+              id={homepost.post_id}
               socket={socket}
               style={{ height: "2rem" }}
             />
           )}
 
           {show ? (
-            <UpdatePost showModal={show} post={post} setShowModal={setShow} />
+            <UpdatePost showModal={show} post={homepost} setShowModal={setShow} />
           ) : (
             ""
           )}
