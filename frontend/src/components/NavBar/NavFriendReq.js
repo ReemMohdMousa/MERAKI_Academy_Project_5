@@ -44,6 +44,7 @@ export default function BasicMenu() {
     isReceived,
     isFriend,
     newReq,
+    openProfile,
   } = useSelector((state) => {
     //return object contains the redux states
     return {
@@ -55,6 +56,7 @@ export default function BasicMenu() {
       isReceived: state.friends.isReceived,
       isFriend: state.friends.isFriend,
       newReq: state.friends.newReq,
+      openProfile: state.friends.openProfile,
     };
   });
 
@@ -120,8 +122,8 @@ export default function BasicMenu() {
       )
       .then(function (response) {
         dispatch(setIsFriend(true));
-        dispatch(setIsAdded(false));
-        dispatch(setIsReceived(false));
+        // dispatch(setIsAdded(false));
+        // dispatch(setIsReceived(false));
       })
       .catch(function (error) {
         throw error;
@@ -129,10 +131,13 @@ export default function BasicMenu() {
   };
 
   useEffect(() => {
-    // getAllFriends();
     SentRequests();
     ReceivedRequests();
-  }, [isAdded, isReceived]);
+  }, [isAdded, isReceived, isFriend]);
+
+  useEffect(() => {
+    getAllFriends();
+  }, []);
 
   //cancel friend request
   const cancelFriendReqFun = (receiver_id) => {

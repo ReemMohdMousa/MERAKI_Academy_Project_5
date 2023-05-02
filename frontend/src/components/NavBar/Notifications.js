@@ -43,7 +43,6 @@ export default function AccountMenu() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        console.log(response.data.result);
         setNotification(response.data.result);
         dispatch(setNotifications(response.data.result));
       })
@@ -52,7 +51,6 @@ export default function AccountMenu() {
       });
   }, []);
 
-  console.log(notification);
 
   return (
     <React.Fragment>

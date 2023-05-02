@@ -12,13 +12,14 @@ import {
 } from "../redux/reducers/friends/index";
 
 const AllFriends = ({ id }) => {
+  //dispatch
+  const dispatch = useDispatch();
+  //when enters a new profile
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  //dispatch
-  const dispatch = useDispatch();
 
   //navigate
   const navigate = useNavigate();
@@ -62,7 +63,6 @@ const AllFriends = ({ id }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data);
         dispatch(removeFriend(user2_id));
       })
       .catch(function (error) {
@@ -98,6 +98,7 @@ const AllFriends = ({ id }) => {
                       className="friend-img-name"
                       onClick={() => {
                         navigate(`/profile/${element.user_id}`);
+                        handleClose();
                       }}
                     >
                       <img

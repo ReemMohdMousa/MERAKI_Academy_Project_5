@@ -71,7 +71,7 @@ const Home = () => {
   // get all the user's and his friends posts orderd DESC
   const getAllHomePosts = () => {
     axios
-      .get(`https://nigh-deploy.onrender.com/home/`, {
+      .get(`https://nigh-deploy.onrender.com/home`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -97,7 +97,6 @@ const Home = () => {
   }, [isPostFromHomeDeleted, isPostAddedFromHome]);
 
   useEffect(() => {
-    console.log(socket);
     socket.on("RECEIVE_NOTIFICATION", (data) => {
       console.log("HI", data);
       //setSocketNotification(data)
