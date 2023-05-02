@@ -27,7 +27,6 @@
 
 ## 🧐 About <a name = "about"></a>
 
-- Nigh where you can stay close to your friends
 Nigh is a social media website that helps people stay in touch with their family and friends. As social media platform Nigh comes with a very basic design, to allow other users to design their own profile and pages with pictures and posts.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
