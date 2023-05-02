@@ -38,7 +38,6 @@ const Profile = () => {
     axios
       .get(`https://nigh-deploy.onrender.com/users/others/info/${id}`)
       .then((Response) => {
-        console.log(Response.data.result);
         const fullName = {
           firstname: Response.data.result.firstname,
           lastname: Response.data.result.lastname,
@@ -78,9 +77,11 @@ const Profile = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((Response) => {
-        console.log(Response.data.posts);
-        Response.data.posts.length > 0 &&
+        if (Response.data.success) {
           dispatch(setPosts(Response.data.posts));
+        } else {
+          dispatch(setPosts([]));
+        }
       })
       .catch((err) => {
         // console.log(err);
@@ -104,7 +105,7 @@ const Profile = () => {
   useEffect(() => {
     getAllPostsByUserId();
     getuserdata();
-  }, [id, areUserInfoChanged]);
+  }, [id]);
 
   useEffect(() => {
     getTheLoggedInUserInfo();

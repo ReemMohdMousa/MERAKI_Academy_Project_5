@@ -85,13 +85,11 @@ export const friends = createSlice({
     },
 
     removeFriend: (state, action) => {
-      console.log(action.payload);
       //payload = user_id
-      state.friends.map((element, i) => {
-        if (element.user_id == action.payload) {
-          state.friends.splice(i, 1);
+      state.friends = state.friends.filter((element, i) => {
+        if (element.user_id != action.payload) {
+          return element;
         }
-        return element;
       });
     },
 

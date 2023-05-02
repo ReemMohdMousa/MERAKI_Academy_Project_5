@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import "./OnlineUsers.css";
 
 const OnlineUsers = ({ onlineUsersArr }) => {
-  console.log(onlineUsersArr);
   const [onlineFriends, setOnlineFriends] = useState([]);
   const [theFriendId, setTheFriendId] = useState(null);
   const [friendsInfo, setFriendsInfo] = useState([]);
@@ -32,13 +31,11 @@ const OnlineUsers = ({ onlineUsersArr }) => {
   const checkIfAFriendIsOnline = () => {
     if (friends) {
       const results = friends.filter((frd) => {
-        console.log(onliners.includes(frd.user_id));
 
         if (onliners.includes(frd.user_id)) {
           return frd;
         }
       });
-      console.log(results);
       setOnlineFriends(results);
     }
   };

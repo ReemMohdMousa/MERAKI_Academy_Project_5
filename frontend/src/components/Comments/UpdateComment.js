@@ -82,7 +82,8 @@ const UpdateComment = ({ showModal, comment, setShowModal }) => {
         { headers: { Authorization: token } }
       )
       .then((Response) => {
-        let updatedcomment = Response.data.comment;
+        console.log(Response.data.comment);
+        // let updatedcomment = Response.data.comment;
         // dispatch(updateComment({ updatedcomment }));
         dispatch(setIsCommentUpdated(true));
       })

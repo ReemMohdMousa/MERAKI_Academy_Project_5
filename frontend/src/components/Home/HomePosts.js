@@ -42,7 +42,6 @@ const HomePosts = ({ homepost, socket }) => {
     }
   };
 
-  console.log(homepost);
 
   return (
     homepost && (
