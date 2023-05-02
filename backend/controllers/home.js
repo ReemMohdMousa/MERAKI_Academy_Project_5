@@ -5,8 +5,8 @@ const getAllFriendsPosts = (req, res) => {
   const user_id = req.token.userId;
 
   const query = `(SELECT U.user_id, firstname, lastname, avatar, P.* FROM friends AS F, users AS U, posts AS P
-    WHERE CASE WHEN F.user1_id = $1 THEN F.user2_id = U.user_id AND (P.user_id = F.user2_id)
-    WHEN F.user2_id = $1 THEN F.user1_id = U.user_id AND (P.user_id = F.user1_id)
+    WHERE CASE WHEN F.user1_id = $1 THEN F.user2_id = U.user_id AND (P.user_id = F.user2_id) AND (P.is_deleted=0)
+    WHEN F.user2_id = $1 THEN F.user1_id = U.user_id AND (P.user_id = F.user1_id) AND (P.is_deleted=0)
     END) 
     UNION 
     (SELECT U.user_id, firstname, lastname, avatar, P.* FROM users AS U, posts AS P

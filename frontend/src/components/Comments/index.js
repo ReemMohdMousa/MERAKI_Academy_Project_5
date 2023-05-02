@@ -87,7 +87,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
   const getAllNestedCommentsBycommentId = (post_id, comment_id) => {
     axios
       .get(
-        `http://localhost:5000/comments/getnested?comment_id=${comment_id}&post_id=${post_id}`
+        `https://nigh-deploy.onrender.com/comments/getnested?comment_id=${comment_id}&post_id=${post_id}`
       )
 
       .then((Response) => {
@@ -108,7 +108,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
   const createNestedComment = (post_id, comment_id) => {
     axios
       .post(
-        `http://localhost:5000/comments/nested?comment_id=${comment_id}&post_id=${post_id}`,
+        `https://nigh-deploy.onrender.com/comments/nested?comment_id=${comment_id}&post_id=${post_id}`,
         { content: newnrested },
         { headers: { Authorization: token } }
       )
@@ -125,7 +125,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
 
   const getAllCommentsByPostId = (id) => {
     axios
-      .get(`http://localhost:5000/comments/${id}`, {
+      .get(`https://nigh-deploy.onrender.com/comments/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((Response) => {
@@ -147,7 +147,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
       image: newImage,
     };
     axios
-      .post(`http://localhost:5000/comments/${id}`, NewObj, {
+      .post(`https://nigh-deploy.onrender.com/comments/${id}`, NewObj, {
         headers: { Authorization: token },
       })
       .then((Response) => {
@@ -178,7 +178,7 @@ const Comments = ({ id, firstname, lastname, socket }) => {
     try {
       await axios
         .delete(
-          `http://localhost:5000/comments/comment/${comment_id}`,
+          `https://nigh-deploy.onrender.com/comments/comment/${comment_id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -584,37 +584,41 @@ const Comments = ({ id, firstname, lastname, socket }) => {
                                                             </div>
                                                           </div>
 
-                                                          <div>
-                                                            <Dropdown>
-                                                              <Dropdown.Toggle
-                                                                variant="light"
-                                                                id="dropdown-basic"
-                                                                style={{
-                                                                  backgroundColor:
-                                                                    "inherit",
-                                                                }}
-                                                              >
-                                                                <svg
-                                                                  xmlns="http://www.w3.org/2000/svg"
-                                                                  width="16"
-                                                                  height="16"
-                                                                  className="bi bi-three-dots"
-                                                                  onClick={() => {}}
+                                                          {userId == id ? (
+                                                            <div>
+                                                              <Dropdown>
+                                                                <Dropdown.Toggle
+                                                                  variant="light"
+                                                                  id="dropdown-basic"
+                                                                  style={{
+                                                                    backgroundColor:
+                                                                      "inherit",
+                                                                  }}
                                                                 >
-                                                                  <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                                                                </svg>
-                                                              </Dropdown.Toggle>
+                                                                  <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="16"
+                                                                    height="16"
+                                                                    className="bi bi-three-dots"
+                                                                    onClick={() => {}}
+                                                                  >
+                                                                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                                                                  </svg>
+                                                                </Dropdown.Toggle>
 
-                                                              <Dropdown.Menu>
-                                                                <Dropdown.Item>
-                                                                  Edit
-                                                                </Dropdown.Item>
-                                                                <Dropdown.Item>
-                                                                  Delete
-                                                                </Dropdown.Item>
-                                                              </Dropdown.Menu>
-                                                            </Dropdown>
-                                                          </div>
+                                                                <Dropdown.Menu>
+                                                                  <Dropdown.Item>
+                                                                    Edit
+                                                                  </Dropdown.Item>
+                                                                  <Dropdown.Item>
+                                                                    Delete
+                                                                  </Dropdown.Item>
+                                                                </Dropdown.Menu>
+                                                              </Dropdown>
+                                                            </div>
+                                                          ) : (
+                                                            ""
+                                                          )}
                                                         </div>
 
                                                         <div>
